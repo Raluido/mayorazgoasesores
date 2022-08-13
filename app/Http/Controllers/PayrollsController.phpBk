@@ -1,0 +1,170 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
+use App\Models\Payroll;
+use DB;
+
+
+class PayrollsController extends Controller
+{
+
+    public function generatepayrolls()
+    {
+        for ($i = 1; $i < 300; $i++) {
+            for ($j = 1; $j < 6; $j++) {
+                $company = str_pad($i, 3, "0", STR_PAD_LEFT);
+                $employee = str_pad($j, 3, "0", STR_PAD_LEFT);
+                $success = \File::copy(public_path('storage/media/file.pdf'), public_path('storage/media/' . $company .  $employee . '052022' . '.pdf'));
+            }
+        }
+    }
+
+    public function index()
+    {
+        return view('payrolls.index');
+    }
+
+    public function uploadPayrolls(Request $request)
+    {
+        if ($request->hasFile('payrolls')) {
+
+            $month = $request->input('month');
+            $year = $request->input('year');
+
+            switch ($month) {
+                case 'January':
+                    $monthFix = '01';
+                    break;
+                case 'February':
+                    $monthFix = '02';
+                    break;
+                case 'March':
+                    $monthFix = '03';
+                    break;
+                case 'April':
+                    $monthFix = '04';
+                    break;
+                case 'May':
+                    $monthFix = '05';
+                    break;
+                case 'June':
+                    $monthFix = '06';
+                    break;
+                case 'July':
+                    $monthFix = '07';
+                    break;
+                case 'August':
+                    $monthFix = '08';
+                    break;
+                case 'September':
+                    $monthFix = '09';
+                    break;
+                case 'October':
+                    $monthFix = '10';
+                    break;
+                case 'November':
+                    $monthFix = '11';
+                    break;
+                case 'december':
+                    $monthFix = '12';
+                    break;
+            }
+
+            $path = public_path('/storage/media/' . $month . $year);
+
+            if (!File::exists($path)) {
+                File::makeDirectory($path, 0777, true);
+
+                $files = $request->file('payrolls');
+
+                foreach ($files as $file) {
+                    $filenamewithextension = $file->getClientOriginalName();
+                    $allowedfileExtension = ['pdf'];
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+                    $check = in_array($extension, $allowedfileExtension);
+
+                    if ($check) {
+                        if ($monthFix . $year == substr($filename, 6, 12)) {
+                            $file->storeAs('public/media/' .  $month . $year, $filenamewithextension);
+                            $payroll = new Payroll();
+                            $payroll->userCode = substr($filenamewithextension, 0, 3);
+                            $payroll->user_id = "666";
+                            // $userId = DB::Table('users')->where($user->code = $payroll->userCode)->value('id');
+                            // $payroll->user_id = $userId;
+                            $payroll->filename = $path . '/' . $filenamewithextension;
+                            $payroll->monthyear = $month . $year;
+                            $payroll->save();
+                        } else {
+                            echo '<div class="alert alert-warning"><strong>Warning!</strong>' . 'El archivo ' . $filenamewithextension . ' no pertenece al mes ' . $month . '.' . '</div>';
+                        }
+                    } else {
+                        echo '<div class="alert alert-warning"><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
+                    }
+                }
+            } else {
+
+                $files = $request->file('payrolls');
+
+                foreach ($files as $file) {
+                    $filenamewithextension = $file->getClientOriginalName();
+                    $allowedfileExtension = ['pdf'];
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+                    $check = in_array($extension, $allowedfileExtension);
+                    $monthYear = $monthFix . $year;
+                    $monthYearCheck = substr($filename, 6, 12);
+
+                    if ($check) {
+                        if ($monthYear == $monthYearCheck) {
+                            if (File::exists($path . '/' . $filenamewithextension)) {
+                                $file->storeAs('public/media/' .  $month . $year, $filenamewithextension);
+                                Payroll::where('filename', $path . '/' . $filenamewithextension)->delete();
+                                $payroll = new Payroll();
+                                $payroll->userCode = substr($filenamewithextension, 0, 3);
+                                $payroll->user_id = "666";
+                                // $userId = DB::Table('users')->where($user->code = $payroll->userCode)->value('id');
+                                // $payroll->user_id = $userId;
+                                $payroll->filename = $path . '/' . $filenamewithextension;
+                                $payroll->monthyear = $month . $year;
+                                $payroll->save();
+                            } else {
+                                $file->storeAs('public/media/' .  $month . $year, $filenamewithextension);
+                                $payroll = new Payroll();
+                                $payroll->userCode = substr($filenamewithextension, 0, 3);
+                                $payroll->user_id = "666";
+                                // $userId = DB::Table('users')->where($user->code = $payroll->userCode)->value('id');
+                                // $payroll->user_id = $userId;
+                                $payroll->filename = $path . '/' . $filenamewithextension;
+                                $payroll->monthyear = $month . $year;
+                                $payroll->save();
+                            }
+                        } else {
+                            echo '<div class="alert alert-warning"><strong>Warning!</strong>' . 'El archivo ' . $filenamewithextension . ' no pertenece al mes de ' . $month . '.' . '</div>';
+                        }
+                    } else {
+                        echo '<div class="alert alert-warning"><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
+                    }
+                }
+            }
+        }
+
+        return view('payrolls.index')->with('status', "Payrolls uploaded successfully.");
+    }
+
+    public function deletePayrolls(Request $request)
+    {
+        $month = $request->input('month');
+        $year = $request->input('year');
+        Payroll::where('monthyear', $month . $year)->delete();
+
+        File::deleteDirectory(public_path('/storage/media/' . $month . $year));
+
+        return view('payrolls.index');
+    }
+}

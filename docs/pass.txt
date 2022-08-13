@@ -1,0 +1,2 @@
+user: admin@admin.es
+pass: tV93e222WAgwYT
