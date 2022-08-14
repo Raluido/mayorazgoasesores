@@ -67,6 +67,8 @@ class AddUsersAuto implements ShouldQueue
         // read each .pdf
         $fileNameNoExt = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
+        $usersNifPass = array();
+
         for ($i = 1; $i <= $pageCount; $i++) {
             $path = public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf');
             $pdfParser = new Parser();
@@ -91,11 +93,11 @@ class AddUsersAuto implements ShouldQueue
                 $user->password = $password;
 
                 $data = array(
-                    'nif'      =>  $Nif,
-                    'password'   =>   $password
+                    'nif' => $Nif,
+                    'password' => $password,
                 );
 
-                $usersNifPass = array();
+
                 $usersNifPass[] = $data;
 
                 $user->save();
@@ -103,8 +105,6 @@ class AddUsersAuto implements ShouldQueue
                 $user->assignRole(2);
             }
         }
-
-        Log::info(print_r($usersNifPass, true));
 
         Mail::to("raluido@gmail.com")->send(new ContactMails($usersNifPass));
 

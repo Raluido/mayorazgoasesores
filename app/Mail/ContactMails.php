@@ -29,6 +29,6 @@ class ContactMails extends Mailable
      */
     public function build()
     {
-        return $this->from('test@websiwebs.es')->subject('Nuevo registro')->view('mails-template')->with('usersNifPass', $this->usersNifPass);
+        return $this->from('test@websiwebs.es')->subject('Nuevo registro empresas')->view('mails-template')->with('usersNifPass', $this->usersNifPass);
     }
 }

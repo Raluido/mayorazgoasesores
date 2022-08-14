@@ -8,8 +8,8 @@
         </tr>
         @foreach ($usersNifPass as $userNifPass)
             <tr>
-                <td>{{ $userNifPass[0] }}</td>
-                <td>{{ $userNifPass[1] }}</td>
+                <td>{{ $userNifPass['nif'] }}</td>
+                <td>{{ $userNifPass['password'] }}</td>
             </tr>
         @endforeach
     </table>
