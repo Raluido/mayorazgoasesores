@@ -7,19 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ContactMails extends Mailable
+class UploadPayrollsNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $usersNifPass;
+    public $uploadError;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($usersNifPass)
+    public function __construct($uploadError)
     {
-        $this->usersNifPass = $usersNifPass;
+        $this->uploadError = $uploadError;
     }
 
     /**
@@ -29,6 +29,6 @@ class ContactMails extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Nuevo registro empresas')->view('mails-template')->with('usersNifPass', $this->usersNifPass);
+        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Nóminas que ha dado error')->view('uploadError-template')->with('uploadError', $this->uploadError);
     }
 }

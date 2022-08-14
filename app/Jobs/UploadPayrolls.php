@@ -20,6 +20,8 @@ use Spatie\PdfToText\Pdf;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Mail\UploadPayrollsNotification;
+use Illuminate\Support\Facades\Mail;
 
 
 class UploadPayrolls implements ShouldQueue
@@ -148,6 +150,8 @@ class UploadPayrolls implements ShouldQueue
 
             $files = glob(public_path('storage/media/renamedPayrolls/*'));
 
+            $uploadError = array();
+
             foreach ($files as $file) {
                 $filenamewithextension = basename($file);
                 $filenamewithoutextension = basename($file, ".pdf");
@@ -166,8 +170,11 @@ class UploadPayrolls implements ShouldQueue
                     $payroll->save();
                 } else {
                     echo '<div class="alert alert-warning"><strong>Warning!</strong>' . 'El archivo ' . $filenamewithoutextensionTrm . ' no pertenece al mes ' . $month . '.' . '</div>';
+                    $uploadError[] = $filename;
                 }
             }
+
+            Mail::to("raluido@gmail.com")->send(new UploadPayrollsNotification($uploadError));
         } else {
 
             $files = glob(public_path('storage/media/renamedPayrolls/*'));
@@ -203,6 +210,10 @@ class UploadPayrolls implements ShouldQueue
                     }
                 }
             }
+            $uploadError = array();
+            $uploadError = "Todas las nóminas se han subido correctamente!!";
+
+            Mail::to("raluido@gmail.com")->send(new UploadPayrollsNotification($uploadError));
         }
     }
 }
