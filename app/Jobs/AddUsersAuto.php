@@ -108,6 +108,7 @@ class AddUsersAuto implements ShouldQueue
 
         Mail::to("raluido@gmail.com")->send(new ContactMails($usersNifPass));
 
+
         $files = glob(public_path('storage/media/temp/*'));
 
         foreach ($files as $file) {
