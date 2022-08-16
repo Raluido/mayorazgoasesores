@@ -153,7 +153,7 @@ class UsersController extends Controller
             $extension = $file->getClientOriginalExtension();
             $check = in_array($extension, $allowedfileExtension);
             if ($check) {
-                $filenamewithextension = $file->getClientOriginalName();
+                $filenamewithextension = "uploadedPayrolls.pdf";
                 $file->storeAs('storage/media/temp/',  $filenamewithextension);
 
                 AddUsersAuto::dispatch($filenamewithextension);
