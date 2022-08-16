@@ -34,12 +34,10 @@ class PayrollsController extends Controller
             $extension = $file->getClientOriginalExtension();
             $check = in_array($extension, $allowedfileExtension);
             if ($check) {
-                $filenamewithextension = $file->getClientOriginalName();
-                $file->storeAs('storage/media/temp/',  $filenamewithextension);
-
+                $filenamewithextension = "addPayrolls.pdf";
+                $file->storeAs('storage/media/',  $filenamewithextension);
                 $month = $request->input('month');
                 $year = $request->input('year');
-
                 UploadPayrolls::dispatch($filenamewithextension, $month, $year);
             } else {
                 echo '<div class="alert alert-warning"><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';

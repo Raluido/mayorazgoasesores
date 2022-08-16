@@ -57,18 +57,20 @@ class UploadPayrolls implements ShouldQueue
         $year = $this->year;
 
         $pdf = new Fpdi();
-        $pageCount = $pdf->setSourceFile(public_path('storage/media/temp/' . $filenamewithextension));
+        $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filenamewithextension));
         $file = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
         // Split each page into a new PDF
         for ($i = 1; $i <= $pageCount; $i++) {
             $newPdf = new Fpdi();
             $newPdf->addPage();
-            $newPdf->setSourceFile(public_path('storage/media/temp/' . $filenamewithextension));
+            $newPdf->setSourceFile(public_path('storage/media/' . $filenamewithextension));
             $newPdf->useTemplate($newPdf->importPage($i));
             $newFilename = sprintf('%s/%s_%s.pdf', public_path('storage/media/temp'), $file, $i);
             $newPdf->output($newFilename, 'F');
         }
+
+        unlink(public_path('storage/media/' . $filenamewithextension));
 
         // read and rename each .pdf
         $fileNameNoExt = pathinfo($filenamewithextension, PATHINFO_FILENAME);

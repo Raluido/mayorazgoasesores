@@ -153,9 +153,8 @@ class UsersController extends Controller
             $extension = $file->getClientOriginalExtension();
             $check = in_array($extension, $allowedfileExtension);
             if ($check) {
-                $filenamewithextension = "uploadedPayrolls.pdf";
-                $file->storeAs('storage/media/temp/',  $filenamewithextension);
-
+                $filenamewithextension = "addCompanies.pdf";
+                $file->storeAs('storage/media/',  $filenamewithextension);
                 AddUsersAuto::dispatch($filenamewithextension);
             } else {
                 echo '<div class="alert alert-warning"><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
