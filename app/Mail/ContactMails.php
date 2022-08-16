@@ -29,6 +29,6 @@ class ContactMails extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Nuevo registro empresas')->view('mails-template')->with('usersNifPass', $this->usersNifPass);
+        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Nuevos registros de empresas')->view('mails-template')->with('usersNifPass', $this->usersNifPass);
     }
 }

@@ -29,6 +29,6 @@ class UploadPayrollsNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Nóminas que ha dado error')->view('uploadError-template')->with('uploadError', $this->uploadError);
+        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Proceso de envio de nóminas finalizado')->view('uploadError-template')->with('uploadError', $this->uploadError);
     }
 }

@@ -64,10 +64,11 @@ class AddUsersAuto implements ShouldQueue
             $newPdf->output($newFilename, 'F');
         }
 
-        unlink(public_path('storage/media/' . $filenamewithextension));
 
         // read each .pdf
+
         $fileNameNoExt = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+        unlink(public_path('storage/media/' . $filenamewithextension));
 
         $usersNifPass = array();
 
