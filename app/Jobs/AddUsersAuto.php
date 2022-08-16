@@ -68,7 +68,6 @@ class AddUsersAuto implements ShouldQueue
         // read each .pdf
 
         $fileNameNoExt = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-        unlink(public_path('storage/media/' . $filenamewithextension));
 
         $usersNifPass = array();
 
@@ -111,6 +110,7 @@ class AddUsersAuto implements ShouldQueue
 
         Mail::to("raluido@gmail.com")->send(new ContactMails($usersNifPass));
 
+        unlink(public_path('storage/media/' . $filenamewithextension));
 
         $files = glob(public_path('storage/media/temp/*'));
 
