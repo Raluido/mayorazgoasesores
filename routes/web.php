@@ -64,15 +64,13 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/downloadForm', 'PayrollsController@downloadForm')->name('payrolls.downloadForm');
             Route::post('/download', 'PayrollsController@getData')->name('payrolls.getData');
             Route::get('/download/{month}/{year}', 'PayrollsController@downloadPayrolls')->name('payrolls.downloadPayrolls');
+            Route::get('/showForm', 'PayrollsController@showForm')->name('payrolls.showForm');
+            Route::get('/show/{month}/{year}', 'PayrollsController@showPayrolls')->name('payrolls.showPayrolls');
             // Route::post('/delete', 'PayrollsController@deletePayrolls')->name('payrolls.deletePayrolls');
         });
 
         Route::resource('roles', RolesController::class);
         Route::resource('permissions', PermissionsController::class);
 
-        // Route::group(['prefix' => 'pdf'], function () {
-        //     Route::get('/', 'FileController@index')->name('pdf.index');
-        //     Route::post('/store', 'FileController@store')->name('pdf.store');
-        // });
     });
 });

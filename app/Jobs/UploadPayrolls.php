@@ -145,12 +145,12 @@ class UploadPayrolls implements ShouldQueue
 
         $path = public_path('/storage/media/' . $monthFix . $year);
 
+        $uploadError = array(null);
+
         if (!File::exists($path)) {
             File::makeDirectory($path, 0777, true);
 
             $files = glob(public_path('storage/media/renamedPayrolls/*'));
-
-            $uploadError = array();
 
             foreach ($files as $file) {
                 $filenamewithextension = basename($file);
@@ -169,12 +169,10 @@ class UploadPayrolls implements ShouldQueue
                     $payroll->monthyear = $monthFix . $year;
                     $payroll->save();
                 } else {
-                    echo '<div class="alert alert-warning"><strong>Warning!</strong>' . 'El archivo ' . $filenamewithoutextensionTrm . ' no pertenece al mes ' . $month . '.' . '</div>';
-                    $uploadError[] = $filename;
+                    unlink(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'));
+                    $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
                 }
             }
-
-            Mail::to("raluido@gmail.com")->send(new UploadPayrollsNotification($uploadError));
         } else {
 
             $files = glob(public_path('storage/media/renamedPayrolls/*'));
@@ -208,12 +206,18 @@ class UploadPayrolls implements ShouldQueue
                         $payroll->monthyear = $monthFix . $year;
                         $payroll->save();
                     }
+                } else {
+                    unlink(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'));
+                    $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
                 }
             }
-            $uploadError = array();
-            $uploadError = "Todas las nóminas se han subido correctamente!!";
-
-            Mail::to("raluido@gmail.com")->send(new UploadPayrollsNotification($uploadError));
         }
+
+        if ($uploadError[0] == null) {
+            $uploadError[0] = 'Todas las nóminas se han subido correctamente';
+            log::info($uploadError);
+        }
+
+        Mail::to("raluido@gmail.com")->send(new UploadPayrollsNotification($uploadError));
     }
 }
