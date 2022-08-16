@@ -215,7 +215,6 @@ class UploadPayrolls implements ShouldQueue
 
         if ($uploadError[0] == null) {
             $uploadError[0] = 'Todas las nóminas se han subido correctamente';
-            log::info($uploadError);
         }
 
         Mail::to("raluido@gmail.com")->send(new UploadPayrollsNotification($uploadError));
