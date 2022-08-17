@@ -69,7 +69,7 @@ class AddUsersAuto implements ShouldQueue
 
         $fileNameNoExt = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-        $usersNifPass = array();
+        $usersNifNameAr = array();
 
         for ($i = 1; $i <= $pageCount; $i++) {
             $path = public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf');
@@ -80,30 +80,39 @@ class AddUsersAuto implements ShouldQueue
             $findme = 'NIF. ';
             $pos = strpos($content, $findme);
             $Nif = substr($content, ($pos + 5), 9);
+            $NifFix = preg_replace('/\s+/', '', $Nif);
 
             $findme2 = 'EMPRESA';
             $pos2 = strpos($content, $findme2);
             $Name = substr($content, ($pos2 + 37), 31);
 
-            if (User::where('nif', '=', $Nif)->exists()) {
+            $usersNifName = array();
+            $usersNifName[] = $NifFix;
+            $usersNifName[] = $Name;
+            $usersNifNameAr[] = $usersNifName;
+        }
+
+        $usersNifNameAr = array_map("unserialize", array_unique(array_map("serialize", $usersNifNameAr)));
+        $usersNifPass = array();
+
+        foreach ($usersNifNameAr as $index) {
+
+            if (User::where('nif', '=', $index[0])->exists()) {
             } else {
                 $user = new User();
-                $user->nif = $Nif;
-                $user->name = $Name;
+                $user->nif = $index[0];
+                $user->name = $index[1];
                 $user->email = "email@email.es";
                 $password = Str::random(10);
                 $user->password = $password;
 
                 $data = array(
-                    'nif' => $Nif,
+                    'nif' => $index[0],
                     'password' => $password,
                 );
 
-
                 $usersNifPass[] = $data;
-
                 $user->save();
-
                 $user->assignRole(2);
             }
         }
