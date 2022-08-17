@@ -22,7 +22,13 @@
                                 <a href="{{ route('payrolls.downloadForm') }}" class="nav-link px-2 text-dark">Descargar nóminas</a>
                             </div>
                         @endrole
-
+                    </div>
+                    <div class="col-6 p-3">
+                        @role('admin')
+                            <div class="d-flex justify-content-center align-items-center border" style="height: 110px">
+                                <a href="{{ route('payrolls.showForm') }}" class="nav-link px-2 text-dark">Listar nóminas</a>
+                            </div>
+                        @endrole
                     </div>
                     <div class="col-6 p-3">
                         @role('admin')

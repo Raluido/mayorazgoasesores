@@ -103,4 +103,43 @@ class PayrollsController extends Controller
 
         return view('payrolls.downloadForm')->with('month', $month)->with('year', $year);
     }
+
+    public function showForm()
+    {
+        return view('payrolls.showForm');
+    }
+
+    public function showPayrolls(Request $request)
+    {
+        $month = $request->input('month');
+        $year = $request->input('year');
+
+        $payrolls = DB::Table('payrolls')->where('monthyear', $month . $year)->get()->toArray();
+
+        return view('payrolls.showPayrolls', compact('payrolls', 'month', 'year'));
+    }
+
+    public function deletePayrolls(Payroll $payroll, $monthyear)
+    {
+        $payroll->delete();
+
+        $month = substr(0, 3);
+        $year = substr(3, 2);
+
+        $payrolls = DB::Table('payrolls')->where('monthyear', $month . $year)->get()->toArray();
+
+        return view('payrolls.showForm');
+    }
+
+    public function deleteAllPayrolls($month, $year)
+    {
+
+        log::info($month);
+
+        Payroll::where('monthyear', $month . $year)->delete();
+
+        File::deleteDirectory(public_path('/storage/media/' . $month . $year));
+
+        return view('payrolls.showForm');
+    }
 }

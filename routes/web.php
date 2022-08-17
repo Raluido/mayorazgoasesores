@@ -65,8 +65,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('/download', 'PayrollsController@getData')->name('payrolls.getData');
             Route::get('/download/{month}/{year}', 'PayrollsController@downloadPayrolls')->name('payrolls.downloadPayrolls');
             Route::get('/showForm', 'PayrollsController@showForm')->name('payrolls.showForm');
-            Route::get('/show/{month}/{year}', 'PayrollsController@showPayrolls')->name('payrolls.showPayrolls');
-            // Route::post('/delete', 'PayrollsController@deletePayrolls')->name('payrolls.deletePayrolls');
+            Route::post('/show', 'PayrollsController@showPayrolls')->name('payrolls.showPayrolls');
+            Route::delete('/delete/{payroll}/{monthyear}', 'PayrollsController@deletePayrolls')->name('payrolls.deletePayrolls');
+            Route::get('/deleteAll/{month}/{year}', 'PayrollsController@deleteAllPayrolls')->name('payrolls.deleteAllPayrolls');
         });
 
         Route::resource('roles', RolesController::class);
