@@ -3,7 +3,7 @@
 @section('content')
     <div class="d-flex justify-content-center mt-5">
         <div class="bg-light p-5 rounded border">
-            <form method="POST" name="showCostsImputsForm" action="/costsimputs/show" enctype="multipart/form-data">
+            <form method="POST" name="showOthersDocumentsForm" action="/othersdocuments/show" enctype="multipart/form-data">
                 <div class="form-group my-4">
                     <input name="_token" type="hidden" value="{{ csrf_token() }}">
                     <label for="month">Selecciona un mes</label>

@@ -75,7 +75,7 @@
                             <h5>Otros documentos</h5>
                             <a href="{{ route('othersdocuments.uploadForm') }}" class="nav-link px-2 text-dark">Documentos de
                                 interés</a>
-                            <a href="{{ route('othersdocuments.showOthersDocuments') }}" class="nav-link px-2 text-dark">Listar documentos de
+                            <a href="{{ route('othersdocuments.showForm') }}" class="nav-link px-2 text-dark">Listar documentos de
                                 interés</a>
                         </div>
                     @endrole

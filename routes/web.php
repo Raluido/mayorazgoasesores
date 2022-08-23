@@ -88,7 +88,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/downloadForm', 'OthersDocumentsController@downloadForm')->name('othersdocuments.downloadForm');
             Route::post('/download', 'OthersDocumentsController@getData')->name('othersdocuments.getData');
             Route::get('/download/{month}/{year}', 'OthersDocumentsController@downloadOthersDocuments')->name('othersdocuments.downloadOthersDocuments');            Route::get('/showForm', 'OthersDocumentsController@showForm')->name('othersdocuments.showForm');
-            Route::get('/show', 'OthersDocumentsController@showOthersDocuments')->name('othersdocuments.showOthersDocuments');
+            Route::get('/showForm', 'OthersDocumentsController@showForm')->name('othersdocuments.showForm');
+            Route::post('/show', 'OthersDocumentsController@showOthersDocuments')->name('othersdocuments.showOthersDocuments');
             Route::delete('/delete/{othersdocuments}/{month}/{year}', 'OthersDocumentsController@deleteOtherDocuments')->name('othersdocuments.deleteOtherDocuments');
             Route::get('/deleteAll/{month}/{year}', 'OthersDocumentsController@deleteAllOtherDocuments')->name('othersdocuments.deleteAllOtherDocuments');
         });

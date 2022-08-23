@@ -119,7 +119,7 @@ class OthersDocumentsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $othersdocuments = DB::Table('otherdocuments')->where('year', $year)->where('month', $month)->get()->toArray();
+        $othersdocuments = DB::Table('others_documents')->where('year', $year)->where('month', $month)->get()->toArray();
 
         return view('othersdocuments.showOtherDocuments', compact('othersdocuments', 'month', 'year'));
     }
@@ -128,10 +128,7 @@ class OthersDocumentsController extends Controller
     {
         $otherdocument->delete();
 
-        $month = substr(0, 3);
-        $year = substr(3, 2);
-
-        $otherdocument = DB::Table('othersdocuments')->where('year', $year)->where('month', $month)->get()->toArray();
+        $otherdocument = DB::Table('others_documents')->where('year', $year)->where('month', $month)->get()->toArray();
 
         return view('othersdocuments.showForm');
     }
@@ -139,7 +136,7 @@ class OthersDocumentsController extends Controller
     public function deleteAllOtherDocuments($month, $year)
     {
 
-        OtherDocument::where('year', $year)::where('month', $month)->delete();
+        DB::Table('others_documents')->where('year', $year)->where('month', $month)->delete();
 
         File::deleteDirectory(public_path('/storage/media/othersDocuments/' . $year . '/' . $month));
 

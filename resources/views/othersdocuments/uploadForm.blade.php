@@ -20,18 +20,18 @@
                             <div class="form-group my-4">
                                 <label for="month">Mes</label>
                                 <select name="month" id="month">
-                                    <option value="Enero">Enero</option>
-                                    <option value="Febrero">Febrero</option>
-                                    <option value="Marzo">Marzo</option>
-                                    <option value="Abril">Abril</option>
-                                    <option value="Mayo">Mayo</option>
-                                    <option value="Junio">Junio</option>
-                                    <option value="Julio">Julio</option>
-                                    <option value="Agosto">Agosto</option>
-                                    <option value="Septiembre">Septiembre</option>
-                                    <option value="Octubre">Octubre</option>
-                                    <option value="Noviembre">Noviembre</option>
-                                    <option value="Diciembre">Diciembre</option>
+                                    <option value="ENE">Enero</option>
+                                    <option value="FEB">Febrero</option>
+                                    <option value="MAR">Marzo</option>
+                                    <option value="ABR">Abril</option>
+                                    <option value="MAY">Mayo</option>
+                                    <option value="JUN">Junio</option>
+                                    <option value="JUL">Julio</option>
+                                    <option value="AGO">Agosto</option>
+                                    <option value="SEP">Septiembre</option>
+                                    <option value="OCT">Octubre</option>
+                                    <option value="NOV">Noviembre</option>
+                                    <option value="DIC">Diciembre</option>
                                 </select>
                             </div>
                             <div class="form-group my-4">
