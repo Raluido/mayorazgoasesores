@@ -148,7 +148,7 @@ class CostsImputsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $costsimputs = DB::Table('costsimputs')->where('year', $year)->where('month', $month)->get()->toArray();
+        $costsimputs = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->get()->toArray();
 
         return view('costsimputs.showCostsImputs', compact('costsimputs', 'month', 'year'));
     }
@@ -165,7 +165,7 @@ class CostsImputsController extends Controller
     public function deleteAllCostsImputs($month, $year)
     {
 
-        CostsImput::where('year', $year)::where('month', $month)->delete();
+        DB::table('costs_imputs')->where('year', $year)->where('month', $month)->delete();
 
         File::deleteDirectory(public_path('/storage/media/costsimputs/' . '20' . $year . '/' . $month));
 

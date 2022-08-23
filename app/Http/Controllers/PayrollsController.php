@@ -130,10 +130,9 @@ class PayrollsController extends Controller
 
     public function deleteAllPayrolls($month, $year)
     {
+        DB::table('payroll')->where('year', $year)->where('month', $month)->delete();
 
-        Payroll::where('year', $year)::where('month', $month)->delete();
-
-        File::deleteDirectory(public_path('/storage/media/' . '20' . $year . '/' . $month));
+        File::deleteDirectory(public_path('/storage/media/payrolls/' . '20' . $year . '/' . $month));
 
         return view('payrolls.showForm');
     }

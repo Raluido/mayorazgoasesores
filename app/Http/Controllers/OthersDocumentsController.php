@@ -36,7 +36,7 @@ class OthersDocumentsController extends Controller
 
             foreach ($files as $key => $file) {
                 $name = $file->getClientOriginalName();
-                $file->storeAs('public/media/othersdocuments' . '/' . $year . '/' . $month, $name);
+                $file->storeAs('public/media/othersDocuments' . '/' . $year . '/' . $month, $name);
                 $docs[] = new OtherDocument([
                     'filename' => $name,
                 ]);
@@ -54,7 +54,7 @@ class OthersDocumentsController extends Controller
             return view('othersdocuments.uploadForm');
         }
 
-        return view('othersdocuments.uploadForm')->with('successMsg', "Los documentos de imputacón de costes se han subido, gracias ;)");
+        return view('othersdocuments.uploadForm')->with('successMsg', "Los documentos de imputación de costes se han subido, gracias ;)");
     }
 
 
@@ -86,7 +86,7 @@ class OthersDocumentsController extends Controller
                 $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
                 $zip = new ZipArchive;
 
-                $public_dir = public_path('storage/media/othersdocuments/' . $year . '/' . $month);
+                $public_dir = public_path('storage/media/othersDocuments/' . $year . '/' . $month);
 
                 if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                     foreach ($files as $file) {
@@ -97,7 +97,7 @@ class OthersDocumentsController extends Controller
                 }
 
                 if (file_exists($public_dir . '/' . $zipFilename)) {
-                    return response()->download(public_path('storage/media/othersdocuments/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
+                    return response()->download(public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
                 }
             } else {
                 echo '<div class="alert alert-warning"><strong>Warning!</strong> Los documentos solicitados de ' . $month . $year . ' no están disponibles.<div>';

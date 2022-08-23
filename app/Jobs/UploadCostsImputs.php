@@ -14,7 +14,6 @@ use App\Models\User;
 use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
-use CostsImputs;
 use Smalot\PdfParser\Parser;
 use Spatie\PdfToText\Pdf;
 use Illuminate\Support\Facades\File;
@@ -156,14 +155,14 @@ class UploadCostsImputs implements ShouldQueue
                 $filenamewithoutextension = basename($file, ".pdf");
                 $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-                if ($monthFix . $year == substr($filename, 0, 5)) {
+                if ($monthFix . $year == substr($filename, 10, 5)) {
                     rename(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'), public_path('storage/media/costsImputs/' . '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextension . '.pdf'));
-                    $payroll = new CostsImput();
-                    $payroll->nif = substr($filenamewithoutextension, 0, 9);
-                    $payroll->filename = $filenamewithoutextension . '.pdf';
-                    $payroll->month = $monthFix;
-                    $payroll->year = $year;
-                    $payroll->save();
+                    $costsImput = new CostsImput();
+                    $costsImput->nif = substr($filenamewithoutextension, 0, 9);
+                    $costsImput->filename = $filenamewithoutextension . '.pdf';
+                    $costsImput->month = $monthFix;
+                    $costsImput->year = $year;
+                    $costsImput->save();
                 } else {
                     unlink(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'));
                     $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
@@ -183,24 +182,24 @@ class UploadCostsImputs implements ShouldQueue
                     $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
                     $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-                    if ($monthFix . $year == substr($filename, 0, 5)) {
+                    if ($monthFix . $year == substr($filename, 10, 5)) {
                         if (File::exists($path . '/' . $filenamewithoutextensionTrm . '.pdf')) {
                             rename(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'), public_path('storage/media/costsImputs/' . '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextension . '.pdf'));
                             CostsImput::where('filename', $filenamewithoutextension . '.pdf')->delete();
-                            $payroll = new CostsImput();
-                            $payroll->nif = substr($filenamewithoutextension, 0, 9);
-                            $payroll->filename = $filenamewithoutextension . '.pdf';
-                            $payroll->month = $monthFix;
-                            $payroll->year = $year;
-                            $payroll->save();
+                            $costsImput = new CostsImput();
+                            $costsImput->nif = substr($filenamewithoutextension, 0, 9);
+                            $costsImput->filename = $filenamewithoutextension . '.pdf';
+                            $costsImput->month = $monthFix;
+                            $costsImput->year = $year;
+                            $costsImput->save();
                         } else {
                             rename(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'), public_path('storage/media/costsImputs/' . '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextension . '.pdf'));
-                            $payroll = new CostsImput();
-                            $payroll->nif = substr($filenamewithoutextension, 0, 9);
-                            $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
-                            $payroll->month = $monthFix;
-                            $payroll->year = $year;
-                            $payroll->save();
+                            $costsImput = new CostsImput();
+                            $costsImput->nif = substr($filenamewithoutextension, 0, 9);
+                            $costsImput->filename = $filenamewithoutextensionTrm . '.pdf';
+                            $costsImput->month = $monthFix;
+                            $costsImput->year = $year;
+                            $costsImput->save();
                         }
                     } else {
                         unlink(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'));
@@ -216,24 +215,24 @@ class UploadCostsImputs implements ShouldQueue
                     $filenamewithoutextension = basename($file, ".pdf");
                     $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-                    if ($monthFix . $year == substr($filename, 11, 5)) {
+                    if ($monthFix . $year == substr($filename, 10, 5)) {
                         if (File::exists($path . '/' . $filenamewithoutextension . '.pdf')) {
                             rename(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'), public_path('storage/media/costsImputs/' . '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextension . '.pdf'));
                             CostsImput::where('filename', $filenamewithoutextension . '.pdf')->delete();
-                            $payroll = new CostsImput();
-                            $payroll->nif = substr($filenamewithoutextension, 0, 9);
-                            $payroll->filename = $filenamewithoutextension . '.pdf';
-                            $payroll->month = $monthFix;
-                            $payroll->year = $year;
-                            $payroll->save();
+                            $costsImput = new CostsImput();
+                            $costsImput->nif = substr($filenamewithoutextension, 0, 9);
+                            $costsImput->filename = $filenamewithoutextension . '.pdf';
+                            $costsImput->month = $monthFix;
+                            $costsImput->year = $year;
+                            $costsImput->save();
                         } else {
                             rename(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'), public_path('storage/media/costsImputs/' . '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextension . '.pdf'));
-                            $payroll = new CostsImput();
-                            $payroll->nif = substr($filenamewithoutextension, 0, 9);
-                            $payroll->filename = $filenamewithoutextension . '.pdf';
-                            $payroll->month = $monthFix;
-                            $payroll->year = $year;
-                            $payroll->save();
+                            $costsImput = new CostsImput();
+                            $costsImput->nif = substr($filenamewithoutextension, 0, 9);
+                            $costsImput->filename = $filenamewithoutextension . '.pdf';
+                            $costsImput->month = $monthFix;
+                            $costsImput->year = $year;
+                            $costsImput->save();
                         }
                     } else {
                         unlink(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'));

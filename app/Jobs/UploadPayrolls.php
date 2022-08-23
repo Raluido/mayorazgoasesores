@@ -161,11 +161,11 @@ class UploadPayrolls implements ShouldQueue
                 $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
                 $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-                if ($monthFix . $year == substr($filename, 21, 5)) {
+                if ($monthFix . $year == substr($filename, 22, 5)) {
                     rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' .  '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextensionTrm . '.pdf'));
                     $payroll = new Payroll();
                     $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
-                    $payroll->dni = substr($filenamewithoutextensionTrm, 11, 9);
+                    $payroll->dni = substr($filenamewithoutextensionTrm, 10, 9);
                     $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
                     $payroll->year = $year;
                     $payroll->month = $monthFix;
@@ -188,13 +188,13 @@ class UploadPayrolls implements ShouldQueue
                     $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
                     $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-                    if ($monthFix . $year == substr($filename, 21, 5)) {
+                    if ($monthFix . $year == substr($filename, 22, 5)) {
                         if (File::exists($path . '/' . $filenamewithoutextensionTrm . '.pdf')) {
                             rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' .  '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextensionTrm . '.pdf'));
                             Payroll::where('filename', $filenamewithoutextensionTrm . '.pdf')->delete();
                             $payroll = new Payroll();
                             $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
-                            $payroll->dni = substr($filenamewithoutextensionTrm, 11, 9);
+                            $payroll->dni = substr($filenamewithoutextensionTrm, 10, 9);
                             $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
                             $payroll->year = $year;
                             $payroll->month = $monthFix;
@@ -203,7 +203,7 @@ class UploadPayrolls implements ShouldQueue
                             rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' .  '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextensionTrm . '.pdf'));
                             $payroll = new Payroll();
                             $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
-                            $payroll->dni = substr($filenamewithoutextensionTrm, 11, 9);
+                            $payroll->dni = substr($filenamewithoutextensionTrm, 10, 9);
                             $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
                             $payroll->year = $year;
                             $payroll->month = $monthFix;
@@ -223,13 +223,13 @@ class UploadPayrolls implements ShouldQueue
                     $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
                     $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-                    if ($monthFix . $year == substr($filename, 21, 5)) {
+                    if ($monthFix . $year == substr($filename, 22, 5)) {
                         if (File::exists($path . '/' . $filenamewithoutextensionTrm . '.pdf')) {
                             rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' .  '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextensionTrm . '.pdf'));
                             Payroll::where('filename', $filenamewithoutextensionTrm . '.pdf')->delete();
                             $payroll = new Payroll();
                             $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
-                            $payroll->dni = substr($filenamewithoutextensionTrm, 11, 9);
+                            $payroll->dni = substr($filenamewithoutextensionTrm, 10, 9);
                             $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
                             $payroll->year = $year;
                             $payroll->month = $monthFix;
@@ -238,7 +238,7 @@ class UploadPayrolls implements ShouldQueue
                             rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' .  '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextensionTrm . '.pdf'));
                             $payroll = new Payroll();
                             $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
-                            $payroll->dni = substr($filenamewithoutextensionTrm, 11, 9);
+                            $payroll->dni = substr($filenamewithoutextensionTrm, 10, 9);
                             $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
                             $payroll->year = $year;
                             $payroll->month = $monthFix;

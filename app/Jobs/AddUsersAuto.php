@@ -113,7 +113,7 @@ class AddUsersAuto implements ShouldQueue
 
                 $usersNifPass[] = $data;
                 $user->save();
-                $user->assignRole(2);
+                $user->assignRole(4);
             }
         }
 
