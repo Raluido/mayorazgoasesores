@@ -94,7 +94,7 @@ class UploadPayrolls implements ShouldQueue
             $monthYear = substr($content, ($pos2 + 79), 6);
             $monthYearFix = str_replace(' ', '', $monthYear);
 
-            rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedPayrolls/' . $monthYearFix . '_' . $Nif . '_' . $Dni . '.pdf'));
+            rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedPayrolls/' . $Nif . '_' . $Dni . '_' . $monthYearFix . '.pdf'));
         }
 
         $files = glob(public_path('storage/media/temp/*'));
@@ -145,13 +145,14 @@ class UploadPayrolls implements ShouldQueue
                 break;
         }
 
-        $path = public_path('/storage/media/' . $monthFix . $year);
+        $path = public_path('/storage/media/payrolls/' . '20' . $year);
 
         $uploadError = array(null);
 
         if (!File::exists($path)) {
             File::makeDirectory($path, 0777, true);
-
+            $path = public_path('/storage/media/payrolls/' . '20' . $year . '/' . $monthFix);
+            File::makeDirectory($path, 0777, true);
             $files = glob(public_path('storage/media/renamedPayrolls/*'));
 
             foreach ($files as $file) {
@@ -160,15 +161,14 @@ class UploadPayrolls implements ShouldQueue
                 $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
                 $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-                if ($monthFix . $year == substr($filename, 0, 5)) {
-                    rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/' .  $monthFix . $year . '/' . $filenamewithoutextensionTrm . '.pdf'));
+                if ($monthFix . $year == substr($filename, 21, 5)) {
+                    rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' .  '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextensionTrm . '.pdf'));
                     $payroll = new Payroll();
-                    $payroll->nif = substr($filenamewithoutextensionTrm, 6, 9);
-                    $payroll->dni = substr($filenamewithoutextensionTrm, 16, 9);
-                    // $name = DB::Table('users')->where('nif', $payroll->nif)->value('name');
-                    // $payroll->name = $name;
+                    $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
+                    $payroll->dni = substr($filenamewithoutextensionTrm, 11, 9);
                     $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
-                    $payroll->monthyear = $monthFix . $year;
+                    $payroll->year = $year;
+                    $payroll->month = $monthFix;
                     $payroll->save();
                 } else {
                     unlink(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'));
@@ -176,41 +176,78 @@ class UploadPayrolls implements ShouldQueue
                 }
             }
         } else {
+            $path = public_path('/storage/media/payrolls/' . '20' . $year . '/' . $monthFix);
+            if (!File::exists($path)) {
+                File::makeDirectory($path, 0777, true);
 
-            $files = glob(public_path('storage/media/renamedPayrolls/*'));
+                $files = glob(public_path('storage/media/renamedPayrolls/*'));
 
-            foreach ($files as $file) {
-                $filenamewithextension = basename($file);
-                $filenamewithoutextension = basename($file, ".pdf");
-                $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
-                $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+                foreach ($files as $file) {
+                    $filenamewithextension = basename($file);
+                    $filenamewithoutextension = basename($file, ".pdf");
+                    $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
+                    $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-                if ($monthFix . $year == substr($filename, 0, 5)) {
-                    if (File::exists($path . '/' . $filenamewithoutextensionTrm . '.pdf')) {
-                        rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/' .  $monthFix . $year . '/' . $filenamewithoutextensionTrm . '.pdf'));
-                        Payroll::where('filename', $filenamewithoutextensionTrm . '.pdf')->delete();
-                        $payroll = new Payroll();
-                        $payroll->nif = substr($filenamewithoutextensionTrm, 6, 9);
-                        $payroll->dni = substr($filenamewithoutextensionTrm, 16, 9);
-                        // $name = DB::Table('users')->where('nif', $payroll->nif)->value('name');
-                        // $payroll->name = $name;
-                        $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
-                        $payroll->monthyear = $monthFix . $year;
-                        $payroll->save();
+                    if ($monthFix . $year == substr($filename, 21, 5)) {
+                        if (File::exists($path . '/' . $filenamewithoutextensionTrm . '.pdf')) {
+                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' .  '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextensionTrm . '.pdf'));
+                            Payroll::where('filename', $filenamewithoutextensionTrm . '.pdf')->delete();
+                            $payroll = new Payroll();
+                            $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
+                            $payroll->dni = substr($filenamewithoutextensionTrm, 11, 9);
+                            $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
+                            $payroll->year = $year;
+                            $payroll->month = $monthFix;
+                            $payroll->save();
+                        } else {
+                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' .  '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextensionTrm . '.pdf'));
+                            $payroll = new Payroll();
+                            $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
+                            $payroll->dni = substr($filenamewithoutextensionTrm, 11, 9);
+                            $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
+                            $payroll->year = $year;
+                            $payroll->month = $monthFix;
+                            $payroll->save();
+                        }
                     } else {
-                        rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/' .  $monthFix . $year . '/' . $filenamewithoutextensionTrm . '.pdf'));
-                        $payroll = new Payroll();
-                        $payroll->nif = substr($filenamewithoutextensionTrm, 6, 9);
-                        $payroll->dni = substr($filenamewithoutextensionTrm, 16, 9);
-                        // $name = DB::Table('users')->where('nif', $payroll->nif)->value('name');
-                        // $payroll->name = $name;
-                        $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
-                        $payroll->monthyear = $monthFix . $year;
-                        $payroll->save();
+                        unlink(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'));
+                        $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
                     }
-                } else {
-                    unlink(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'));
-                    $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                }
+            } else {
+                $files = glob(public_path('storage/media/renamedPayrolls/*'));
+
+                foreach ($files as $file) {
+                    $filenamewithextension = basename($file);
+                    $filenamewithoutextension = basename($file, ".pdf");
+                    $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
+                    $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                    if ($monthFix . $year == substr($filename, 21, 5)) {
+                        if (File::exists($path . '/' . $filenamewithoutextensionTrm . '.pdf')) {
+                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' .  '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextensionTrm . '.pdf'));
+                            Payroll::where('filename', $filenamewithoutextensionTrm . '.pdf')->delete();
+                            $payroll = new Payroll();
+                            $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
+                            $payroll->dni = substr($filenamewithoutextensionTrm, 11, 9);
+                            $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
+                            $payroll->year = $year;
+                            $payroll->month = $monthFix;
+                            $payroll->save();
+                        } else {
+                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' .  '20' . $year . '/' . $monthFix . '/' . $filenamewithoutextensionTrm . '.pdf'));
+                            $payroll = new Payroll();
+                            $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
+                            $payroll->dni = substr($filenamewithoutextensionTrm, 11, 9);
+                            $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
+                            $payroll->year = $year;
+                            $payroll->month = $monthFix;
+                            $payroll->save();
+                        }
+                    } else {
+                        unlink(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'));
+                        $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                    }
                 }
             }
         }

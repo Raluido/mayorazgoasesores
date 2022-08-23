@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Payroll extends Model
+class OtherDocument extends Model
 {
     use HasFactory;
 
-    protected $table = 'payrolls';
+    protected $table = 'others_documents';
 
     protected $fillable = [
         'nif',
-        'dni',
         'filename',
         'month',
         'year',

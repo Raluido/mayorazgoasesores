@@ -70,7 +70,7 @@ class PayrollsController extends Controller
     }
 
 
-    public function downloadPayrolls(Request $request, $month, $year)
+    public function downloadPayrolls($month, $year)
     {
         if ($month || $year != null) {
 
@@ -78,10 +78,10 @@ class PayrollsController extends Controller
 
             if ($files != null) {
 
-                $zipFilename = Auth::user()->nif . $month . $year . '.zip';
+                $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
                 $zip = new ZipArchive;
 
-                $public_dir = public_path('storage/media/' . $month . $year);
+                $public_dir = public_path('storage/media/payrolls/' . '20' . $year . '/' . $month);
 
                 if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                     foreach ($files as $file) {
@@ -92,7 +92,7 @@ class PayrollsController extends Controller
                 }
 
                 if (file_exists($public_dir . '/' . $zipFilename)) {
-                    return response()->download(public_path('storage/media/' . $month . $year . '/' . $zipFilename))->deleteFileAfterSend(true);
+                    return response()->download(public_path('storage/media/payrolls/' . '20' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
                 }
             } else {
                 echo '<div class="alert alert-warning"><strong>Warning!</strong> Las nóminas de ' . $month . $year . ' no están disponibles.<div>';
@@ -114,31 +114,26 @@ class PayrollsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $payrolls = DB::Table('payrolls')->where('monthyear', $month . $year)->get()->toArray();
+        $payrolls = DB::Table('payrolls')->where('year', $year)->where('month', $month)->get()->toArray();
 
         return view('payrolls.showPayrolls', compact('payrolls', 'month', 'year'));
     }
 
-    public function deletePayrolls(Payroll $payroll, $monthyear)
+    public function deletePayrolls(Payroll $payroll, $month, $year)
     {
         $payroll->delete();
 
-        $month = substr(0, 3);
-        $year = substr(3, 2);
-
         $payrolls = DB::Table('payrolls')->where('monthyear', $month . $year)->get()->toArray();
 
-        return view('payrolls.showForm');
+        return view('payrolls.showForm', compact('payrolls'));
     }
 
     public function deleteAllPayrolls($month, $year)
     {
 
-        log::info($month);
+        Payroll::where('year', $year)::where('month', $month)->delete();
 
-        Payroll::where('monthyear', $month . $year)->delete();
-
-        File::deleteDirectory(public_path('/storage/media/' . $month . $year));
+        File::deleteDirectory(public_path('/storage/media/' . '20' . $year . '/' . $month));
 
         return view('payrolls.showForm');
     }

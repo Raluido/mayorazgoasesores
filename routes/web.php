@@ -59,7 +59,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
          */
         Route::group(['prefix' => 'payrolls'], function () {
             Route::get('/uploadForm', 'PayrollsController@uploadForm')->name('payrolls.uploadForm');
-            // Route::get('/generate', 'PayrollsController@generatepayrolls')->name('payrolls.generatePayrolls');
             Route::post('/upload', 'PayrollsController@uploadPayrolls')->name('payrolls.uploadPayrolls');
             Route::get('/downloadForm', 'PayrollsController@downloadForm')->name('payrolls.downloadForm');
             Route::post('/download', 'PayrollsController@getData')->name('payrolls.getData');
@@ -68,6 +67,30 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('/show', 'PayrollsController@showPayrolls')->name('payrolls.showPayrolls');
             Route::delete('/delete/{payroll}/{monthyear}', 'PayrollsController@deletePayrolls')->name('payrolls.deletePayrolls');
             Route::get('/deleteAll/{month}/{year}', 'PayrollsController@deleteAllPayrolls')->name('payrolls.deleteAllPayrolls');
+        });
+
+        Route::group(['prefix' => 'costsimputs'], function () {
+            Route::get('/uploadForm', 'CostsImputsController@uploadForm')->name('costsimputs.uploadForm');
+            Route::post('/upload', 'CostsImputsController@uploadCostsImputs')->name('costsimputs.uploadCostsImputs');
+            Route::get('/downloadForm', 'CostsImputsController@downloadForm')->name('costsimputs.downloadForm');
+            Route::post('/download', 'CostsImputsController@getData')->name('costsimputs.getData');
+            Route::get('/download/{month}/{year}/{nif}', 'CostsImputsController@downloadCostsImputs')->name('costsimputs.downloadCostsImputs');
+            Route::get('/download/{month}/{year}', 'CostsImputsController@downloadAllCostsImputs')->name('costsimputs.downloadAllCostsImputs');
+            Route::get('/showForm', 'CostsImputsController@showForm')->name('costsimputs.showForm');
+            Route::post('/show', 'CostsImputsController@showCostsImputs')->name('costsimputs.showCostsImputs');
+            Route::delete('/delete/{costsimput}/{monthyear}', 'CostsImputsController@deleteCostsImputs')->name('costsimputs.deleteCostsImputs');
+            Route::get('/deleteAll/{month}/{year}', 'CostsImputsController@deleteAllCostsImputs')->name('costsimputs.deleteAllCostsImputs');
+        });
+
+        Route::group(['prefix' => 'othersdocuments'], function () {
+            Route::get('/uploadForm', 'OthersDocumentsController@uploadForm')->name('othersdocuments.uploadForm');
+            Route::post('/upload', 'OthersDocumentsController@uploadOthersDocuments')->name('othersdocuments.uploadOthersDocuments');
+            Route::get('/downloadForm', 'OthersDocumentsController@downloadForm')->name('othersdocuments.downloadForm');
+            Route::post('/download', 'OthersDocumentsController@getData')->name('othersdocuments.getData');
+            Route::get('/download/{month}/{year}', 'OthersDocumentsController@downloadOthersDocuments')->name('othersdocuments.downloadOthersDocuments');            Route::get('/showForm', 'OthersDocumentsController@showForm')->name('othersdocuments.showForm');
+            Route::post('/show', 'OthersDocumentsController@showOthersDocuments')->name('othersdocuments.showOthersDocuments');
+            Route::delete('/delete/{othersdocuments}/{month}/{year}', 'OthersDocumentsController@deleteOtherDocuments')->name('othersdocuments.deleteOtherDocuments');
+            Route::get('/deleteAll/{month}/{year}', 'OthersDocumentsController@deleteAllOtherDocuments')->name('othersdocuments.deleteAllOtherDocuments');
         });
 
         Route::resource('roles', RolesController::class);

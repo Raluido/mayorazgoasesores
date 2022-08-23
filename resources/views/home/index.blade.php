@@ -5,7 +5,7 @@
         @auth
             <div class="container">
                 <div class="row w-75 gy-4 mx-auto">
-                    @role('supervisor')
+                    @role('asesor')
                         <h3>Área de administración</h3>
                         <p>Sólo el supervisor puede acceder a éstas opciones</p>
                         <div class="border col-4" style="height: 110px">
@@ -19,7 +19,7 @@
                             <a href="{{ route('payrolls.uploadForm') }}" class="nav-link px-2 text-dark">Subir nóminas</a>
                             <a href="{{ route('payrolls.showForm') }}" class="nav-link px-2 text-dark">Listar nóminas</a>
                         </div>
-                        <div class="border col-4" style="height: 110px">
+                        {{-- <div class="border col-4" style="height: 110px">
                             <h5>Modelos</h5>
                             <a href="" class="nav-link px-2 text-dark">Modelo 111</a>
                             <a href="" class="nav-link px-2 text-dark">Modelo 190</a>
@@ -27,10 +27,13 @@
                         <div class="border col-4" style="height: 110px">
                             <h5>Seguridad social</h5>
                             <a href="" class="nav-link px-2 text-dark">Notificaciones de Seguridad Social</a>
-                        </div>
+                        </div> --}}
                         <div class="border col-4" style="height: 110px">
-                            <h5>Otras gestiones</h5>
-                            <a href="" class="nav-link px-2 text-dark">Imputaciones de costes y otras</a>
+                            <h5>Modelo de Imputación de Costes</h5>
+                            <a href="{{ route('costsimputs.uploadForm') }}" class="nav-link px-2 text-dark">Imputaciones de costes y
+                                otras</a>
+                            <a href="{{ route('costsimputs.showForm') }}" class="nav-link px-2 text-dark">Imputaciones de costes y
+                                otras</a>
                         </div>
                     @endrole
                     @role('admin')
@@ -47,7 +50,7 @@
                             <a href="{{ route('payrolls.uploadForm') }}" class="nav-link px-2 text-dark">Subir nóminas</a>
                             <a href="{{ route('payrolls.showForm') }}" class="nav-link px-2 text-dark">Listar nóminas</a>
                         </div>
-                        <div class="border col-4" style="height: 110px">
+                        {{-- <div class="border col-4" style="height: 110px">
                             <h5>Modelos</h5>
                             <a href="" class="nav-link px-2 text-dark">Modelo 111</a>
                             <a href="" class="nav-link px-2 text-dark">Modelo 190</a>
@@ -55,10 +58,22 @@
                         <div class="border col-4" style="height: 110px">
                             <h5>Seguridad social</h5>
                             <a href="" class="nav-link px-2 text-dark">Notificaciones de Seguridad Social</a>
+                        </div> --}}
+                        <div class="border col-4" style="height: 110px">
+                            <h5>Modelo de Imputación de Costes</h5>
+                            <a href="{{ route('costsimputs.uploadForm') }}" class="nav-link px-2 text-dark"> Subir documentos de
+                                Imputación de costes
+                                y
+                                otras</a>
+                            <a href="{{ route('othersdocuments.showOthersDocuments') }}" class="nav-link px-2 text-dark"> Listar
+                                documentos de
+                                Imputación de costes
+                                y
+                                otras</a>
                         </div>
                         <div class="border col-4" style="height: 110px">
-                            <h5>Otras gestiones</h5>
-                            <a href="" class="nav-link px-2 text-dark">Imputaciones de costes y otras</a>
+                            <h5>Otros documentos</h5>
+                            <a href="" class="nav-link px-2 text-dark">Documentos de interés</a>
                         </div>
                     @endrole
                 </div>
@@ -70,6 +85,11 @@
                             <a href="{{ route('payrolls.downloadForm') }}" class="nav-link px-2 text-dark">Nóminas</a>
                         </div>
                         <div class="border col-4" style="height: 110px">
+                            <h5>Documentos de interés</h5>
+                            <a href="{{ route('othersdocuments.downloadForm') }}" class="nav-link px-2 text-dark">Otros
+                                documentos</a>
+                        </div>
+                        {{-- <div class="border col-4" style="height: 110px">
                             <h5>Modelos</h5>
                             <a href="" class="nav-link px-2 text-dark">Modelo 111</a>
                             <a href="" class="nav-link px-2 text-dark">Modelo 190</a>
@@ -77,10 +97,15 @@
                         <div class="border col-4" style="height: 110px">
                             <h5>Seguridad social</h5>
                             <a href="" class="nav-link px-2 text-dark">Notificaciones de Seguridad Social</a>
-                        </div>
+                        </div> --}}
+                    @endrole
+                </div>
+                <div class="row w-75 mt-3 gy-4 mx-auto">
+                    @role('contable')
                         <div class="border col-4" style="height: 110px">
-                            <h5>Otras documentos</h5>
-                            <a href="" class="nav-link px-2 text-dark">Imputaciones de costes y otras</a>
+                            <h5>Sección descargas</h5>
+                            <a href="{{ route('costsimputs.downloadForm') }}" class="nav-link px-2 text-dark">Imputaciones de
+                                costes</a>
                         </div>
                     @endrole
                 </div>
