@@ -4,10 +4,6 @@
     <div class="d-flex justify-content-center mt-5">
         <div class="bg-light p-5 rounded border">
 
-            <div class=""><button class="btn btn-danger"><a class="text-decoration-none text-white"
-                        href="{{ url('payrolls/deleteAll/' . $month . '/' . $year) }}">Eliminar</a></button>
-            </div>
-
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -38,7 +34,9 @@
                     @endforeach
                 </tbody>
             </table>
-
+            <div class=""><button class="btn btn-danger"><a class="text-decoration-none text-white"
+                        href="{{ url('payrolls/deleteAll/' . $month . '/' . $year) }}">Eliminar</a></button>
+            </div>
         </div>
     </div>
 @endsection

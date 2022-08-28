@@ -14,3 +14,13 @@
         @endforeach
     </table>
 @endif
+
+<h5>Listado de empresas que han dado error</h5>
+
+@if ($uploadError)
+    @foreach ($uploadError as $index)
+        <ul>
+            <li>{{ $index }}</li>
+        </ul>
+    @endforeach
+@endif

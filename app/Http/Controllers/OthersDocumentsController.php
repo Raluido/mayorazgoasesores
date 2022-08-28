@@ -31,22 +31,91 @@ class OthersDocumentsController extends Controller
 
         if ($request->hasFile('othersdocuments')) {
 
-            $docs = [];
-            $files = $request->file('othersdocuments');
+            $path = public_path('/storage/media/othersDocuments/' . $year);
 
-            foreach ($files as $key => $file) {
-                $name = $file->getClientOriginalName();
-                $file->storeAs('public/media/othersDocuments' . '/' . $year . '/' . $month, $name);
-                $docs[] = new OtherDocument([
-                    'filename' => $name,
-                ]);
+            if (!File::exists($path)) {
+                File::makeDirectory($path, 0777, true);
+                $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
+                File::makeDirectory($path, 0777, true);
+                $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
+                File::makeDirectory($path, 0777, true);
 
-                $otherDocument = new OtherDocument();
-                $otherDocument->nif = $nif;
-                $otherDocument->filename = $name;
-                $otherDocument->month = $month;
-                $otherDocument->year = $year;
-                $otherDocument->save();
+                $files = $request->file('othersdocuments');
+
+                foreach ($files as $index) {
+                    $check = DB::Table('others_documents')->where('year', $year)->where('month', $month)->where('nif', $nif)->where('filename', $index->filename)->exists();
+                    if ($check) {
+                        $name = $index->getClientOriginalName();
+                        $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
+                        $otherDocument = new OtherDocument();
+                        $otherDocument->nif = $nif;
+                        $otherDocument->filename = $name;
+                        $otherDocument->month = $month;
+                        $otherDocument->year = $year;
+                        $otherDocument->save();
+                    } else {
+                        $name = $index->getClientOriginalName();
+                        $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
+                        $otherDocument = new OtherDocument();
+                        $otherDocument->nif = $nif;
+                        $otherDocument->filename = $name;
+                        $otherDocument->month = $month;
+                        $otherDocument->year = $year;
+                        $otherDocument->save();
+                    }
+                }
+            } else {
+                $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
+
+                if (!File::exists($path)) {
+                    File::makeDirectory($path, 0777, true);
+                    $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
+                    File::makeDirectory($path, 0777, true);
+
+                    $files = $request->file('othersdocuments');
+
+                    foreach ($files as $index) {
+                        $name = $index->getClientOriginalName();
+                        $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
+                        $otherDocument = new OtherDocument();
+                        $otherDocument->nif = $nif;
+                        $otherDocument->filename = $name;
+                        $otherDocument->month = $month;
+                        $otherDocument->year = $year;
+                        $otherDocument->save();
+                    }
+                } else {
+                    $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
+                    if (!File::exists($path)) {
+                        File::makeDirectory($path, 0777, true);
+                        $files = $request->file('othersdocuments');
+
+                        foreach ($files as $index) {
+                            $name = $index->getClientOriginalName();
+                            $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
+                            $otherDocument = new OtherDocument();
+                            $otherDocument->nif = $nif;
+                            $otherDocument->filename = $name;
+                            $otherDocument->month = $month;
+                            $otherDocument->year = $year;
+                            $otherDocument->save();
+                        }
+                    } else {
+                        $files = $request->file('othersdocuments');
+
+                        foreach ($files as $index) {
+                            $name = pathinfo($index, PATHINFO_FILENAME) . '+1';
+                            $extension = $index->getClientOriginalExtension();
+                            $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name . $extension);
+                            $otherDocument = new OtherDocument();
+                            $otherDocument->nif = $nif;
+                            $otherDocument->filename = $name;
+                            $otherDocument->month = $month;
+                            $otherDocument->year = $year;
+                            $otherDocument->save();
+                        }
+                    }
+                }
             }
         } else {
             echo '<div class="alert alert-warning"><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
@@ -54,7 +123,7 @@ class OthersDocumentsController extends Controller
             return view('othersdocuments.uploadForm');
         }
 
-        return view('othersdocuments.uploadForm')->with('successMsg', "Los documentos de imputación de costes se han subido, gracias ;)");
+        return view('othersdocuments.uploadForm')->with('successMsg', "Los documentos de imputación de costes se han subido correctamente, gracias ;)");
     }
 
 
@@ -63,15 +132,16 @@ class OthersDocumentsController extends Controller
         $month = null;
         $year = null;
 
-        return view('othersdocuments.downloadForm')->with('month', $month)->with('year', $year);
+        return view('othersdocuments.downloadForm', compact('month', 'year'));
     }
 
     public function getData(Request $request)
     {
         $month = $request->input('month');
         $year = $request->input('year');
+        $nif = null;
 
-        return view('othersdocuments.downloadForm', compact('month', 'year'));
+        return view('othersdocuments.downloadForm', compact('month', 'year', 'nif'));
     }
 
 
@@ -79,7 +149,7 @@ class OthersDocumentsController extends Controller
     {
         if ($month || $year != null) {
 
-            $files = DB::Table('othersdocuments')->where('year', $year)->where('month', $month)->where('nif', Auth::user()->nif)->select('filename')->get()->toArray();
+            $files = DB::Table('others_documents')->where('year', $year)->where('month', $month)->where('nif', Auth::user()->nif)->select('filename')->get()->toArray();
 
             if ($files != null) {
 
@@ -106,7 +176,7 @@ class OthersDocumentsController extends Controller
             echo '<div class="alert alert-warning"><strong>Warning!</strong> Debes elegir un mes y un año.<div>';
         }
 
-        return view('otherdocuments.downloadForm')->with('month', $month)->with('year', $year);
+        return view('othersdocuments.downloadForm', compact('month', 'year'));
     }
 
     public function showForm()
@@ -128,9 +198,11 @@ class OthersDocumentsController extends Controller
     {
         $otherdocument->delete();
 
-        $otherdocument = DB::Table('others_documents')->where('year', $year)->where('month', $month)->get()->toArray();
+        $othersdocuments = DB::Table('others_documents')->where('year', $year)->where('month', $month)->get()->toArray();
+        unlink(public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $otherdocument->nif . '/' . $otherdocument->filename));
 
-        return view('othersdocuments.showForm');
+
+        return view('othersdocuments.showForm', compact('othersdocuments'));
     }
 
     public function deleteAllOtherDocuments($month, $year)

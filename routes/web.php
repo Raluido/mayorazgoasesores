@@ -65,7 +65,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/download/{month}/{year}', 'PayrollsController@downloadPayrolls')->name('payrolls.downloadPayrolls');
             Route::get('/showForm', 'PayrollsController@showForm')->name('payrolls.showForm');
             Route::post('/show', 'PayrollsController@showPayrolls')->name('payrolls.showPayrolls');
-            Route::delete('/delete/{payroll}/{monthyear}', 'PayrollsController@deletePayrolls')->name('payrolls.deletePayrolls');
+            Route::delete('/delete/{payroll}/{month}/{year}', 'PayrollsController@deletePayrolls')->name('payrolls.deletePayrolls');
             Route::get('/deleteAll/{month}/{year}', 'PayrollsController@deleteAllPayrolls')->name('payrolls.deleteAllPayrolls');
         });
 
@@ -78,7 +78,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/download/{month}/{year}', 'CostsImputsController@downloadAllCostsImputs')->name('costsimputs.downloadAllCostsImputs');
             Route::get('/showForm', 'CostsImputsController@showForm')->name('costsimputs.showForm');
             Route::post('/show', 'CostsImputsController@showCostsImputs')->name('costsimputs.showCostsImputs');
-            Route::delete('/delete/{costsimput}/{monthyear}', 'CostsImputsController@deleteCostsImputs')->name('costsimputs.deleteCostsImputs');
+            Route::delete('/delete/{costsimput}/{month}/{year}', 'CostsImputsController@deleteCostsImputs')->name('costsimputs.deleteCostsImputs');
             Route::get('/deleteAll/{month}/{year}', 'CostsImputsController@deleteAllCostsImputs')->name('costsimputs.deleteAllCostsImputs');
         });
 
@@ -87,15 +87,14 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('/upload', 'OthersDocumentsController@uploadOthersDocuments')->name('othersdocuments.uploadOthersDocuments');
             Route::get('/downloadForm', 'OthersDocumentsController@downloadForm')->name('othersdocuments.downloadForm');
             Route::post('/download', 'OthersDocumentsController@getData')->name('othersdocuments.getData');
-            Route::get('/download/{month}/{year}', 'OthersDocumentsController@downloadOthersDocuments')->name('othersdocuments.downloadOthersDocuments');            Route::get('/showForm', 'OthersDocumentsController@showForm')->name('othersdocuments.showForm');
+            Route::get('/download/{month}/{year}', 'OthersDocumentsController@downloadOthersDocuments')->name('othersdocuments.downloadOthersDocuments');
             Route::get('/showForm', 'OthersDocumentsController@showForm')->name('othersdocuments.showForm');
             Route::post('/show', 'OthersDocumentsController@showOthersDocuments')->name('othersdocuments.showOthersDocuments');
-            Route::delete('/delete/{othersdocuments}/{month}/{year}', 'OthersDocumentsController@deleteOtherDocuments')->name('othersdocuments.deleteOtherDocuments');
-            Route::get('/deleteAll/{month}/{year}', 'OthersDocumentsController@deleteAllOtherDocuments')->name('othersdocuments.deleteAllOtherDocuments');
+            Route::delete('/delete/{otherdocument}/{month}/{year}', 'OthersDocumentsController@deleteOthersDocuments')->name('othersdocuments.deleteOthersDocuments');
+            Route::get('/deleteAll/{month}/{year}', 'OthersDocumentsController@deleteAllOtherDocuments')->name('othersdocuments.deleteAllOthersDocuments');
         });
 
         Route::resource('roles', RolesController::class);
         Route::resource('permissions', PermissionsController::class);
-
     });
 });

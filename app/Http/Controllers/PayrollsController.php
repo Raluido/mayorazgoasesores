@@ -2,19 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Smalot\PdfParser\Parser;
-use Spatie\PdfToText\Pdf;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
-use setasign\Fpdi\Fpdi;
 use App\Models\Payroll;
-use App\Models\User;
 use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
-use Payrolls;
 use App\Jobs\UploadPayrolls;
 
 class PayrollsController extends Controller
@@ -74,14 +68,14 @@ class PayrollsController extends Controller
     {
         if ($month || $year != null) {
 
-            $files = DB::Table('payrolls')->where('monthyear', $month . $year)->where('nif', Auth::user()->nif)->select('filename')->get()->toArray();
+            $files = DB::Table('payrolls')->where('year', $year)->where('month', $month)->where('nif', Auth::user()->nif)->select('filename')->get()->toArray();
 
             if ($files != null) {
 
                 $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
                 $zip = new ZipArchive;
 
-                $public_dir = public_path('storage/media/payrolls/' . '20' . $year . '/' . $month);
+                $public_dir = public_path('storage/media/payrolls/' . $year . '/' . $month);
 
                 if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                     foreach ($files as $file) {
@@ -92,7 +86,7 @@ class PayrollsController extends Controller
                 }
 
                 if (file_exists($public_dir . '/' . $zipFilename)) {
-                    return response()->download(public_path('storage/media/payrolls/' . '20' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
+                    return response()->download(public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
                 }
             } else {
                 echo '<div class="alert alert-warning"><strong>Warning!</strong> Las nóminas de ' . $month . $year . ' no están disponibles.<div>';
@@ -123,16 +117,17 @@ class PayrollsController extends Controller
     {
         $payroll->delete();
 
-        $payrolls = DB::Table('payrolls')->where('monthyear', $month . $year)->get()->toArray();
+        $payrolls = DB::Table('payrolls')->where('year', $year)->where('month', $month)->get()->toArray();
+        unlink(public_path('/storage/media/payrolls/' . $year . '/' . $month . '/' . $payroll->filename));
 
         return view('payrolls.showForm', compact('payrolls'));
     }
 
     public function deleteAllPayrolls($month, $year)
     {
-        DB::table('payroll')->where('year', $year)->where('month', $month)->delete();
+        DB::table('payrolls')->where('year', $year)->where('month', $month)->delete();
 
-        File::deleteDirectory(public_path('/storage/media/payrolls/' . '20' . $year . '/' . $month));
+        File::deleteDirectory(public_path('/storage/media/payrolls/' . $year . '/' . $month));
 
         return view('payrolls.showForm');
     }

@@ -12,14 +12,16 @@ class ContactMails extends Mailable
     use Queueable, SerializesModels;
 
     public $usersNifPass;
+    public $uploadError;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($usersNifPass)
+    public function __construct($usersNifPass,$uploadError)
     {
         $this->usersNifPass = $usersNifPass;
+        $this->uploadError = $uploadError;
     }
 
     /**
@@ -29,6 +31,6 @@ class ContactMails extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Nuevos registros de empresas')->view('mails-template')->with('usersNifPass', $this->usersNifPass);
+        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Nuevos registros de empresas')->view('mails-template')->with('usersNifPass', $this->usersNifPass)->with('uploadError', $this->uploadError);
     }
 }

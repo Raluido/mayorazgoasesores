@@ -5,7 +5,7 @@
         <div class="bg-light p-5 rounded border">
 
             <div class=""><button class="btn btn-danger"><a class="text-decoration-none text-white"
-                        href="{{ url('costsimputs/deleteAll/' . $month . '/' . $year) }}">Eliminar todos</a></button>
+                        href="{{ url('othersdocuments/deleteAll/' . $month . '/' . $year) }}">Eliminar todos</a></button>
             </div>
 
             <table class="table table-striped">
@@ -28,7 +28,7 @@
                             <td>
                                 {!! Form::open([
                                     'method' => 'DELETE',
-                                    'route' => ['costsimputs.deleteCostsImputs', $index->id, $index->month, $index->year],
+                                    'route' => ['othersdocuments.deleteOthersDocuments', $index->id, $index->month, $index->year],
                                     'style' => 'display:inline',
                                 ]) !!}
                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}

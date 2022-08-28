@@ -1,8 +1,0 @@
-admin
-user: admin@admin.es
-pass: tV93e222WAgwYT
-
-
-supervisor
-user: 11222333Q
-pass: NwOKLyEyy5

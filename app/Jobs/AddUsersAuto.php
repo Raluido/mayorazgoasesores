@@ -64,7 +64,6 @@ class AddUsersAuto implements ShouldQueue
             $newPdf->output($newFilename, 'F');
         }
 
-
         // read each .pdf
 
         $fileNameNoExt = pathinfo($filenamewithextension, PATHINFO_FILENAME);
@@ -86,10 +85,19 @@ class AddUsersAuto implements ShouldQueue
             $pos2 = strpos($content, $findme2);
             $Name = substr($content, ($pos2 + 37), 31);
 
-            $usersNifName = array();
-            $usersNifName[] = $NifFix;
-            $usersNifName[] = $Name;
-            $usersNifNameAr[] = $usersNifName;
+
+            // check if the nif format is correct
+            $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+            $uploadError = array(null);
+
+            if (in_array($NifFix[0], $abc) || in_array($NifFix[8], $abc)) {
+                $usersNifName = array();
+                $usersNifName[] = $NifFix;
+                $usersNifName[] = $Name;
+                $usersNifNameAr[] = $usersNifName;
+            } else {
+                $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+            }
         }
 
         $usersNifNameAr = array_map("unserialize", array_unique(array_map("serialize", $usersNifNameAr)));
@@ -113,11 +121,15 @@ class AddUsersAuto implements ShouldQueue
 
                 $usersNifPass[] = $data;
                 $user->save();
-                $user->assignRole(4);
+                $user->assignRole('user');
             }
         }
 
-        Mail::to("raluido@gmail.com")->send(new ContactMails($usersNifPass));
+        if ($uploadError[0] == null) {
+            $uploadError[0] = 'Todos las empresas se han subido correctamente';
+        }
+
+        Mail::to("raluido@gmail.com")->send(new ContactMails($usersNifPass, $uploadError));
 
         unlink(public_path('storage/media/' . $filenamewithextension));
 

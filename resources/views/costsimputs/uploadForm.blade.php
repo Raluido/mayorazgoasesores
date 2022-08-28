@@ -16,32 +16,32 @@
                             <div class="form-group my-4">
                                 <label for="month">Mes</label>
                                 <select name="month" id="month">
-                                    <option value="Enero">Enero</option>
-                                    <option value="Febrero">Febrero</option>
-                                    <option value="Marzo">Marzo</option>
-                                    <option value="Abril">Abril</option>
-                                    <option value="Mayo">Mayo</option>
-                                    <option value="Junio">Junio</option>
-                                    <option value="Julio">Julio</option>
-                                    <option value="Agosto">Agosto</option>
-                                    <option value="Septiembre">Septiembre</option>
-                                    <option value="Octubre">Octubre</option>
-                                    <option value="Noviembre">Noviembre</option>
-                                    <option value="Diciembre">Diciembre</option>
+                                    <option value="ENE">Enero</option>
+                                    <option value="FEB">Febrero</option>
+                                    <option value="MAR">Marzo</option>
+                                    <option value="ABR">Abril</option>
+                                    <option value="MAY">Mayo</option>
+                                    <option value="JUN">Junio</option>
+                                    <option value="JUL">Julio</option>
+                                    <option value="AGO">Agosto</option>
+                                    <option value="SEP">Septiembre</option>
+                                    <option value="OCT">Octubre</option>
+                                    <option value="NOV">Noviembre</option>
+                                    <option value="DIC">Diciembre</option>
                                 </select>
                             </div>
                             <div class="form-group my-4">
                                 <label for="year">Año</label>
                                 <select name="year" id="year">
-                                    <option value="22">2022</option>
-                                    <option value="23">2023</option>
-                                    <option value="24">2024</option>
-                                    <option value="25">2025</option>
-                                    <option value="26">2026</option>
-                                    <option value="27">2027</option>
-                                    <option value="28">2028</option>
-                                    <option value="29">2029</option>
-                                    <option value="30">2030</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2027">2027</option>
+                                    <option value="2028">2028</option>
+                                    <option value="2029">2029</option>
+                                    <option value="2030">2030</option>
                                 </select>
                             </div>
                             <div
@@ -49,7 +49,8 @@
                                 <div class="absolute">
                                     <div class="flex flex-col items-center mb-3"> <i
                                             class="fa fa-cloud-upload fa-3x text-gray-200"></i>
-                                        <span class="block text-gray-400 font-normal">Adjunta el .pdf con los modelos de imputación de costes del
+                                        <span class="block text-gray-400 font-normal">Adjunta el .pdf con los modelos de
+                                            imputación de costes del
                                             mes</span>
                                     </div>
                                 </div>

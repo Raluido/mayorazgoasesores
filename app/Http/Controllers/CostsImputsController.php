@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use setasign\Fpdi\Fpdi;
 use App\Models\CostsImput;
-use App\Models\User;
 use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
@@ -108,7 +107,7 @@ class CostsImputsController extends Controller
     {
         if ($month || $year != null) {
 
-            $files = DB::Table('costsimputs')->where('year', $year)->where('month', $month)->select('filename')->get()->toArray();
+            $files = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->select('filename')->get()->toArray();
 
             if ($files != null) {
 
@@ -157,7 +156,8 @@ class CostsImputsController extends Controller
     {
         $costsimput->delete();
 
-        $costsimputs = DB::Table('costsimputs')->where('year', $year)->where('month', $month)->get()->toArray();
+        $costsimputs = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->get()->toArray();
+        unlink(public_path('/storage/media/costsImputs/' . $year . '/' . $month . '/' . $costsimput->filename));
 
         return view('costsimputs.showForm', compact('costsimputs'));
     }
@@ -167,7 +167,7 @@ class CostsImputsController extends Controller
 
         DB::table('costs_imputs')->where('year', $year)->where('month', $month)->delete();
 
-        File::deleteDirectory(public_path('/storage/media/costsimputs/' . '20' . $year . '/' . $month));
+        File::deleteDirectory(public_path('/storage/media/costsImputs/' . $year . '/' . $month));
 
         return view('costsimputs.showForm');
     }

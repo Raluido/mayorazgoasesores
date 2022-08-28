@@ -1,13 +1,12 @@
 @extends('layouts.app-master')
 
 @section('content')
-    <div class="bg-light p-3 mt-5 rounded">
+    <div class="bg-light p-3 mt-2 rounded">
         @auth
             <div class="container">
                 <div class="row w-75 gy-4 mx-auto">
                     @role('asesor')
                         <h3>Área de administración</h3>
-                        <p>Sólo el supervisor puede acceder a éstas opciones</p>
                         <div class="border col-4" style="height: 160px">
                             <h5>Gestión de empresas</h5>
                             <a href="{{ route('users.addUsersAutoForm') }}" class="nav-link px-2 text-dark">Añadir empresas
@@ -38,7 +37,6 @@
                     @endrole
                     @role('admin')
                         <h3>Área de administración</h3>
-                        <p>Sólo el supervisor puede acceder a éstas opciones</p>
                         <div class="border py-4 col-4" style="height: 160pxpx">
                             <h5>Gestión de empresas</h5>
                             <a href="{{ route('users.addUsersAutoForm') }}" class="nav-link px-2 text-dark">Añadir empresas
@@ -59,7 +57,7 @@
                             <h5>Seguridad social</h5>
                             <a href="" class="nav-link px-2 text-dark">Notificaciones de Seguridad Social</a>
                         </div> --}}
-                        <div class="border py-4 col-4" style="height: 160px">
+                        <div class="border py-4 col-4" style="height: 230px">
                             <h5>Modelo de Imputación de Costes</h5>
                             <a href="{{ route('costsimputs.uploadForm') }}" class="nav-link px-2 text-dark"> Subir documentos de
                                 Imputación de costes
@@ -73,7 +71,7 @@
                         </div>
                         <div class="border py-4 col-4" style="height: 160px">
                             <h5>Otros documentos</h5>
-                            <a href="{{ route('othersdocuments.uploadForm') }}" class="nav-link px-2 text-dark">Documentos de
+                            <a href="{{ route('othersdocuments.uploadForm') }}" class="nav-link px-2 text-dark">Subir documentos de
                                 interés</a>
                             <a href="{{ route('othersdocuments.showForm') }}" class="nav-link px-2 text-dark">Listar documentos de
                                 interés</a>
