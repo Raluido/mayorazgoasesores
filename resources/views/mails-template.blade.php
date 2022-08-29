@@ -1,21 +1,27 @@
 <h4>Listado de empresas para acceder al area de clientes</h4>
 
-@if ($usersNifPass)
-    <table style="width:100%">
-        <tr>
-            <th>Nif</th>
-            <th>Contraseña</th>
-        </tr>
-        @foreach ($usersNifPass as $userNifPass)
-            <tr>
-                <td>{{ $userNifPass['nif'] }}</td>
-                <td>{{ $userNifPass['password'] }}</td>
-            </tr>
-        @endforeach
-    </table>
-@endif
+<div class="w-50 mx-auto mt-4">
+    @if ($usersNifPass)
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" width="15%">Nif</th>
+                    <th scope="col" width="15%">Contraseña</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($usersNifPass as $userNifPass)
+                    <tr>
+                        <td>{{ $userNifPass['nif'] }}</td>
+                        <td>{{ $userNifPass['password'] }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
+</div>
 
-<h5>Listado de empresas que han dado error</h5>
+<h4>Listado de empresas que han dado error</h4>
 
 @if ($uploadError)
     @foreach ($uploadError as $index)

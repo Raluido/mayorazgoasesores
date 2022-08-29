@@ -55,15 +55,16 @@ class CostsImputsController extends Controller
     {
         $month = null;
         $year = null;
+        $nif = null;
 
-        return view('costsimputs.downloadForm')->with('month', $month)->with('year', $year);
+        return view('costsimputs.downloadForm')->with('month', $month)->with('year', $year)->with('nif', $nif);
     }
 
     public function getData(Request $request)
     {
         $month = $request->input('month');
         $year = $request->input('year');
-        $year = $request->input('nif');
+        $nif = $request->input('nif');
 
         return view('costsimputs.downloadForm', compact('month', 'year', 'nif'));
     }
@@ -73,7 +74,7 @@ class CostsImputsController extends Controller
     {
         if ($month || $year != null) {
 
-            $files = DB::Table('costsimputs')->where('year', $year)->where('month', $month)->where('nif', $nif)->select('filename')->get()->toArray();
+            $files = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->where('nif', $nif)->select('filename')->get()->toArray();
 
             if ($files != null) {
 
@@ -147,7 +148,7 @@ class CostsImputsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $costsimputs = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->get()->toArray();
+        $costsimputs = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->paginate(10);
 
         return view('costsimputs.showCostsImputs', compact('costsimputs', 'month', 'year'));
     }

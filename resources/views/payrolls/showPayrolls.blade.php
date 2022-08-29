@@ -1,17 +1,20 @@
 @extends('layouts.app-master')
 
 @section('content')
-    <div class="d-flex justify-content-center mt-5">
-        <div class="bg-light p-5 rounded border">
-
-            <table class="table table-striped">
+    <div class="mt-5">
+        <h1>Nóminas</h1>
+        <div class="lead">
+            Gestión de nóminas
+        </div>
+        <div class="w-50 mx-auto mt-4">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th scope="col" width="15%">Nif</th>
-                        <th scope="col" width="10%">Dni</th>
+                        <th scope="col" width="30%">Nif</th>
+                        <th scope="col" width="30%">Dni</th>
                         <th scope="col" width="10%">Mes</th>
                         <th scope="col" width="10%">Año</th>
-                        <th scope="col" width="1%" colspan="3"></th>
+                        <th scope="col" width="5%" colspan="3">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,9 +37,13 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class=""><button class="btn btn-danger"><a class="text-decoration-none text-white"
-                        href="{{ url('payrolls/deleteAll/' . $month . '/' . $year) }}">Eliminar</a></button>
+            <div class="d-flex justify-content-center mt-4 mb-4"><button class="btn btn-danger"><a
+                        class="text-decoration-none text-white"
+                        href="{{ url('payrolls/deleteAll/' . $month . '/' . $year) }}">Eliminar todas</a></button>
             </div>
+        </div>
+        <div class="d-flex mb-5">
+            {!! $payrolls->links() !!}
         </div>
     </div>
 @endsection

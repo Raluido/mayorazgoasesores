@@ -1,11 +1,10 @@
 @extends('layouts.app-master')
 
 @section('content')
-
     <div class="bg-light p-4 rounded">
         <h1>Empresas</h1>
         <div class="lead">
-            <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm float-right">Add new user</a>
+            <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm float-right">Añadir nueva empresa</a>
         </div>
 
         <div class="mt-2">
@@ -44,6 +43,10 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div class="d-flex justify-content-center mt-4"><button class="btn btn-danger"><a
+                    class="text-decoration-none text-white" href="{{ url('users/deleteAll') }}">Eliminar todas</a></button>
+        </div>
 
         <div class="d-flex">
             {!! $users->links() !!}

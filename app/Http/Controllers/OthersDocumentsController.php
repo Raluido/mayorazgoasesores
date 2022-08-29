@@ -126,57 +126,69 @@ class OthersDocumentsController extends Controller
         return view('othersdocuments.uploadForm')->with('successMsg', "Los documentos de imputación de costes se han subido correctamente, gracias ;)");
     }
 
-
     public function downloadForm()
     {
-        $month = null;
-        $year = null;
-
-        return view('othersdocuments.downloadForm', compact('month', 'year'));
+        return view('othersdocuments.downloadForm');
     }
 
-    public function getData(Request $request)
+    public function downloadList(Request $request)
     {
         $month = $request->input('month');
         $year = $request->input('year');
-        $nif = null;
 
-        return view('othersdocuments.downloadForm', compact('month', 'year', 'nif'));
+        $othersdocuments = DB::Table('others_documents')->where('year', $year)->where('month', $month)->where('nif', Auth::user()->nif)->get()->toArray();
+
+        return view('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'));
     }
 
-
-    public function downloadOthersDocuments($month, $year)
+    public function downloadOthersDocuments(Request $request)
     {
-        if ($month || $year != null) {
+        $month = $request->input('month');
+        $year = $request->input('year');
 
-            $files = DB::Table('others_documents')->where('year', $year)->where('month', $month)->where('nif', Auth::user()->nif)->select('filename')->get()->toArray();
+        $request->validate([
+            'othersDocuments' => 'required|min:1'
+        ]);
 
-            if ($files != null) {
+        $othersDocuments = $request->input('othersDocuments');
+
+        if ($othersDocuments != null) {
+
+
+            if ($month || $year != null) {
 
                 $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
                 $zip = new ZipArchive;
 
-                $public_dir = public_path('storage/media/othersDocuments/' . $year . '/' . $month);
+                $public_dir = public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . Auth::user()->nif);
 
                 if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
-                    foreach ($files as $file) {
-                        $temp = (array_values((array)$file))[0];
+                    foreach ($othersDocuments as $index) {
+                        $temp = (array_values((array)$index))[0];
                         $zip->addFile($public_dir . '/' . $temp, $temp);
                     }
                     $zip->close();
                 }
 
                 if (file_exists($public_dir . '/' . $zipFilename)) {
-                    return response()->download(public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
+                    return response()->download(public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . Auth::user()->nif . '/' . $zipFilename))->deleteFileAfterSend(true);
                 }
             } else {
-                echo '<div class="alert alert-warning"><strong>Warning!</strong> Los documentos solicitados de ' . $month . $year . ' no están disponibles.<div>';
+                echo '<div class="alert alert-warning"><strong>Warning!</strong> Debes elegir un mes y un año.<div>';
             }
         } else {
-            echo '<div class="alert alert-warning"><strong>Warning!</strong> Debes elegir un mes y un año.<div>';
+            echo '<div class="alert alert-warning"><strong>Warning!</strong> Hemos detectado un error, vuelva a intentarlo, gracias ;)<div>';
         }
 
-        return view('othersdocuments.downloadForm', compact('month', 'year'));
+        $othersdocuments = DB::Table('others_documents')->where('year', $year)->where('month', $month)->where('nif', Auth::user()->nif)->get()->toArray();
+
+        if ($othersdocuments != null) {
+            return view('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'));
+        } else {
+            return view('othersdocuments.downloadList', compact('No hay documentos en éstas fechas.'));
+        }
+
+        return view('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'));
     }
 
     public function showForm()
@@ -189,7 +201,7 @@ class OthersDocumentsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $othersdocuments = DB::Table('others_documents')->where('year', $year)->where('month', $month)->get()->toArray();
+        $othersdocuments = DB::Table('others_documents')->where('year', $year)->where('month', $month)->paginate(10);
 
         return view('othersdocuments.showOtherDocuments', compact('othersdocuments', 'month', 'year'));
     }
@@ -215,3 +227,60 @@ class OthersDocumentsController extends Controller
         return view('othersdocuments.showForm');
     }
 }
+
+
+
+
+    // public function downloadForm()
+    // {
+    //     $month = null;
+    //     $year = null;
+
+    //     return view('othersdocuments.downloadForm', compact('month', 'year'));
+    // }
+
+
+        // public function getData(Request $request)
+    // {
+    //     $month = $request->input('month');
+    //     $year = $request->input('year');
+    //     $nif = null;
+
+    //     return view('othersdocuments.downloadForm', compact('month', 'year', 'nif'));
+    // }
+
+
+    // public function downloadOthersDocuments($month, $year)
+    // {
+
+    //     if ($month || $year != null) {
+
+    //         $files = DB::Table('others_documents')->where('year', $year)->where('month', $month)->where('nif', Auth::user()->nif)->select('filename')->get()->toArray();
+
+    //         if ($files != null) {
+
+    //             $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
+    //             $zip = new ZipArchive;
+
+    //             $public_dir = public_path('storage/media/othersDocuments/' . $year . '/' . $month);
+
+    //             if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
+    //                 foreach ($files as $file) {
+    //                     $temp = (array_values((array)$file))[0];
+    //                     $zip->addFile($public_dir . '/' . $temp, $temp);
+    //                 }
+    //                 $zip->close();
+    //             }
+
+    //             if (file_exists($public_dir . '/' . $zipFilename)) {
+    //                 return response()->download(public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
+    //             }
+    //         } else {
+    //             echo '<div class="alert alert-warning"><strong>Warning!</strong> Los documentos solicitados de ' . $month . $year . ' no están disponibles.<div>';
+    //         }
+    //     } else {
+    //         echo '<div class="alert alert-warning"><strong>Warning!</strong> Debes elegir un mes y un año.<div>';
+    //     }
+
+    //     return view('othersdocuments.downloadForm', compact('month', 'year'));
+    // }

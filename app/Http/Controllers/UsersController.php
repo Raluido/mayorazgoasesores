@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use App\Mail\ContactMail;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\AddUsersAuto;
+use DB;
 
 
 class UsersController extends Controller
@@ -137,6 +138,13 @@ class UsersController extends Controller
 
         return redirect()->route('users.index')
             ->withSuccess(__('User deleted successfully.'));
+    }
+
+    public function deleteAll()
+    {
+        DB::table('users')->where('id', '>', '3')->delete();
+
+        return view('users.index');
     }
 
     public function AddUsersAutoForm()

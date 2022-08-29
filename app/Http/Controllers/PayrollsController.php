@@ -108,7 +108,7 @@ class PayrollsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $payrolls = DB::Table('payrolls')->where('year', $year)->where('month', $month)->get()->toArray();
+        $payrolls = DB::Table('payrolls')->where('year', $year)->where('month', $month)->paginate(10);
 
         return view('payrolls.showPayrolls', compact('payrolls', 'month', 'year'));
     }

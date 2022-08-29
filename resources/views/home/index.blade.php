@@ -18,21 +18,12 @@
                             <a href="{{ route('payrolls.uploadForm') }}" class="nav-link px-2 text-dark">Subir nóminas</a>
                             <a href="{{ route('payrolls.showForm') }}" class="nav-link px-2 text-dark">Listar nóminas</a>
                         </div>
-                        {{-- <div class="border col-4" style="height: 110px">
-                            <h5>Modelos</h5>
-                            <a href="" class="nav-link px-2 text-dark">Modelo 111</a>
-                            <a href="" class="nav-link px-2 text-dark">Modelo 190</a>
-                        </div>
-                        <div class="border col-4" style="height: 110px">
-                            <h5>Seguridad social</h5>
-                            <a href="" class="nav-link px-2 text-dark">Notificaciones de Seguridad Social</a>
-                        </div> --}}
                         <div class="border col-4" style="height: 160px">
                             <h5>Modelo de Imputación de Costes</h5>
-                            <a href="{{ route('costsimputs.uploadForm') }}" class="nav-link px-2 text-dark">Imputaciones de costes y
-                                otras</a>
-                            <a href="{{ route('costsimputs.showForm') }}" class="nav-link px-2 text-dark">Imputaciones de costes y
-                                otras</a>
+                            <a href="{{ route('costsimputs.uploadForm') }}" class="nav-link px-2 text-dark">Subir imputaciones de
+                                costes</a>
+                            <a href="{{ route('costsimputs.showForm') }}" class="nav-link px-2 text-dark">Listar imputaciones de
+                                costes</a>
                         </div>
                     @endrole
                     @role('admin')
@@ -48,15 +39,6 @@
                             <a href="{{ route('payrolls.uploadForm') }}" class="nav-link px-2 text-dark">Subir nóminas</a>
                             <a href="{{ route('payrolls.showForm') }}" class="nav-link px-2 text-dark">Listar nóminas</a>
                         </div>
-                        {{-- <div class="border col-4" style="height: 110px">
-                            <h5>Modelos</h5>
-                            <a href="" class="nav-link px-2 text-dark">Modelo 111</a>
-                            <a href="" class="nav-link px-2 text-dark">Modelo 190</a>
-                        </div>
-                        <div class="border col-4" style="height: 110px">
-                            <h5>Seguridad social</h5>
-                            <a href="" class="nav-link px-2 text-dark">Notificaciones de Seguridad Social</a>
-                        </div> --}}
                         <div class="border py-4 col-4" style="height: 230px">
                             <h5>Modelo de Imputación de Costes</h5>
                             <a href="{{ route('costsimputs.uploadForm') }}" class="nav-link px-2 text-dark"> Subir documentos de
@@ -90,15 +72,6 @@
                             <a href="{{ route('othersdocuments.downloadForm') }}" class="nav-link px-2 text-dark">Otros
                                 documentos</a>
                         </div>
-                        {{-- <div class="border col-4" style="height: 110px">
-                            <h5>Modelos</h5>
-                            <a href="" class="nav-link px-2 text-dark">Modelo 111</a>
-                            <a href="" class="nav-link px-2 text-dark">Modelo 190</a>
-                        </div>
-                        <div class="border col-4" style="height: 110px">
-                            <h5>Seguridad social</h5>
-                            <a href="" class="nav-link px-2 text-dark">Notificaciones de Seguridad Social</a>
-                        </div> --}}
                     @endrole
                 </div>
                 <div class="row w-75 mt-3 gy-4 mx-auto">

@@ -50,6 +50,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/{user}/edit', 'UsersController@edit')->name('users.edit');
             Route::patch('/{user}/update', 'UsersController@update')->name('users.update');
             Route::delete('/{user}/delete', 'UsersController@destroy')->name('users.destroy');
+            Route::get('/deleteAll', 'UsersController@deleteAll')->name('users.deleteAll');
             Route::get('/createAutoForm', 'UsersController@addUsersAutoForm')->name('users.addUsersAutoForm');
             Route::post('/createAuto', 'UsersController@addUsersAuto')->name('users.addUsersAuto');
         });
@@ -86,8 +87,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/uploadForm', 'OthersDocumentsController@uploadForm')->name('othersdocuments.uploadForm');
             Route::post('/upload', 'OthersDocumentsController@uploadOthersDocuments')->name('othersdocuments.uploadOthersDocuments');
             Route::get('/downloadForm', 'OthersDocumentsController@downloadForm')->name('othersdocuments.downloadForm');
-            Route::post('/download', 'OthersDocumentsController@getData')->name('othersdocuments.getData');
-            Route::get('/download/{month}/{year}', 'OthersDocumentsController@downloadOthersDocuments')->name('othersdocuments.downloadOthersDocuments');
+            Route::post('/downloadList', 'OthersDocumentsController@downloadList')->name('othersdocuments.downloadList');
+            Route::post('/download', 'OthersDocumentsController@downloadOthersDocuments')->name('othersdocuments.downloadOthersDocuments');
             Route::get('/showForm', 'OthersDocumentsController@showForm')->name('othersdocuments.showForm');
             Route::post('/show', 'OthersDocumentsController@showOthersDocuments')->name('othersdocuments.showOthersDocuments');
             Route::delete('/delete/{otherdocument}/{month}/{year}', 'OthersDocumentsController@deleteOthersDocuments')->name('othersdocuments.deleteOthersDocuments');

@@ -48,15 +48,20 @@
             </form>
             <div class="mt-5">
                 @if ($month || $year != null)
-                    <a href="{{ url('/costsimputs/download/' . $month . '/' . $year . '/' . $nif) }}"
-                        class="btn btn-info">Descargar
-                        modelo imputación de costes
-                        de laempresa seleccionada
-                        {{ ' ' . $month . ' ' . $year }}</a>
-                    <a href="{{ url('/costsimputs/download/' . $month . '/' . $year) }}" class="btn btn-info">Descargar
-                        modelo imputación de costes
-                        de todas las empresas
-                        {{ ' ' . $month . ' ' . $year }}</a>
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="{{ url('/costsimputs/download/' . $month . '/' . $year . '/' . $nif) }}"
+                                class="btn btn-info">Descargar
+                                empresa seleccionada
+                                {{ ' ' . $month . ' ' . $year }}</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="{{ url('/costsimputs/download/' . $month . '/' . $year) }}"
+                                class="btn btn-info">Descargar
+                                todas las empresas
+                                {{ ' ' . $month . ' ' . $year }}</a>
+                        </div>
+                    </div>
                 @else
                     <p>Debes seleccionar un mes y un año.</p>
                 @endif

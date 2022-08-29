@@ -2,9 +2,8 @@
 
 @section('content')
     <div class="bg-light p-4 rounded">
-        <h1>Update role</h1>
         <div class="lead">
-            Edit role and manage permissions.
+            Editar roles y manejar permisos.
         </div>
 
         <div class="container mt-4">
@@ -24,7 +23,7 @@
                 @method('patch')
                 @csrf
                 <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
+                    <label for="name" class="form-label">Nombre</label>
                     <input value="{{ $role->name }}" type="text" class="form-control" name="name" placeholder="Name"
                         required>
                 </div>
