@@ -203,7 +203,11 @@ class OthersDocumentsController extends Controller
 
         $othersdocuments = DB::Table('others_documents')->where('year', $year)->where('month', $month)->paginate(10);
 
-        return view('othersdocuments.showOtherDocuments', compact('othersdocuments', 'month', 'year'));
+        if ($othersdocuments[0] != null) {
+            return view('othersdocuments.showOtherDocuments', compact('othersdocuments', 'month', 'year'));
+        } else {
+            echo '<div class="alert alert-warning">No hay documentos en ' . $month . $year . '<div>';
+        }
     }
 
     public function deleteOthersDocuments(OtherDocument $otherdocument, $month, $year)

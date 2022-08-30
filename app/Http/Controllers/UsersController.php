@@ -74,7 +74,7 @@ class UsersController extends Controller
         // $user->syncRoles($request->get('role'));
         $user->assignRole($request->input('role'));
 
-        return redirect()->route('users.index')->withSuccess(__('User created successfully.'));
+        return redirect()->route('users.index')->withSuccess(__('Empresa creada correctamente.'));
     }
 
     /**
@@ -137,14 +137,15 @@ class UsersController extends Controller
         $user->delete();
 
         return redirect()->route('users.index')
-            ->withSuccess(__('User deleted successfully.'));
+            ->withSuccess(__('Empresas eliminado correctamente.'));
     }
 
     public function deleteAll()
     {
         DB::table('users')->where('id', '>', '3')->delete();
 
-        return view('users.index');
+        return redirect()->route('users.index')
+            ->withSuccess(__('Se han eliminado correctamente todas las empresas.'));
     }
 
     public function AddUsersAutoForm()

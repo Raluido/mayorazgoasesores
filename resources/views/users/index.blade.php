@@ -16,6 +16,7 @@
                 <tr>
                     <th scope="col" width="1%">#</th>
                     <th scope="col" width="15%">Empresa</th>
+                    <th scope="col" width="15%">Nif</th>
                     <th scope="col" width="15%">Email</th>
                     <th scope="col" width="10%">Rol</th>
                     <th scope="col" width="1%" colspan="3"></th>
@@ -26,6 +27,7 @@
                     <tr>
                         <th scope="row">{{ $user->id }}</th>
                         <td>{{ $user->name }}</td>
+                        <td>{{ $user->nif }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
                             @foreach ($user->roles as $role)

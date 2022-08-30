@@ -29,6 +29,6 @@ class ContactMail extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Nuevo registro')->view('mail-template')->with('data', $this->data);
+        return $this->from('test@websiwebs.es')->subject('Nuevo registro')->view('mail-template')->with('data', $this->data);
     }
 }

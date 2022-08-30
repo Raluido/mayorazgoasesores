@@ -150,7 +150,11 @@ class CostsImputsController extends Controller
 
         $costsimputs = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->paginate(10);
 
-        return view('costsimputs.showCostsImputs', compact('costsimputs', 'month', 'year'));
+        if ($costsimputs[0] != null) {
+            return view('costsimputs.showCostsImputs', compact('costsimputs', 'month', 'year'));
+        } else {
+            echo '<div class="alert alert-warning">Aún no están disponibles las imputaciones de costes de ' . $month . $year . '<div>';
+        }
     }
 
     public function deleteCostsImputs(CostsImput $costsimput, $month, $year)

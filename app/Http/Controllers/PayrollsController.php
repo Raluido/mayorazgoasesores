@@ -110,17 +110,21 @@ class PayrollsController extends Controller
 
         $payrolls = DB::Table('payrolls')->where('year', $year)->where('month', $month)->paginate(10);
 
-        return view('payrolls.showPayrolls', compact('payrolls', 'month', 'year'));
+        if ($payrolls[0] != null) {
+            return view('payrolls.showPayrolls', compact('payrolls', 'month', 'year'));
+        } else {
+            echo '<div class="alert alert-warning"> Aún no están disponibles las nóminas de ' . $month . $year . '<div>';
+        }
     }
 
     public function deletePayrolls(Payroll $payroll, $month, $year)
     {
         $payroll->delete();
 
-        $payrolls = DB::Table('payrolls')->where('year', $year)->where('month', $month)->get()->toArray();
+        $payrolls = DB::Table('payrolls')->where('year', $year)->where('month', $month)->paginate(10);
         unlink(public_path('/storage/media/payrolls/' . $year . '/' . $month . '/' . $payroll->filename));
 
-        return view('payrolls.showForm', compact('payrolls'));
+        return redirect()->route('payrolls.showForm')->with('payrolls');
     }
 
     public function deleteAllPayrolls($month, $year)
@@ -129,6 +133,8 @@ class PayrollsController extends Controller
 
         File::deleteDirectory(public_path('/storage/media/payrolls/' . $year . '/' . $month));
 
-        return view('payrolls.showForm');
+        $payrolls = DB::Table('payrolls')->where('year', $year)->where('month', $month)->paginate(10);
+
+        return redirect()->route('payrolls.showForm')->with('payrolls');
     }
 }

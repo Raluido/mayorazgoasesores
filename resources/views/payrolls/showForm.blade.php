@@ -8,7 +8,6 @@
                     <input name="_token" type="hidden" value="{{ csrf_token() }}">
                     <label for="month">Selecciona un mes</label>
                     <select name="month" id="month">
-                        <option value="ENE"></option>
                         <option value="ENE">Enero</option>
                         <option value="FEB">Febrero</option>
                         <option value="MAR">Marzo</option>
