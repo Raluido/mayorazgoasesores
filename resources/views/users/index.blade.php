@@ -3,8 +3,15 @@
 @section('content')
     <div class="bg-light p-4 rounded">
         <h1>Empresas</h1>
-        <div class="lead">
-            <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm float-right">Añadir nueva empresa</a>
+        <div class="d-flex justify-content-end">
+            <div class="">
+                <button class="btn btn-primary me-5"><a href="{{ route('users.create') }}"
+                        class="text-decoration-none text-white">Añadir nueva empresa</a>
+            </div>
+            <div class=""><button class="btn btn-danger"><a class="text-decoration-none text-white"
+                        href="{{ url('users/deleteAll') }}">Eliminar
+                        todas</a></button>
+            </div>
         </div>
 
         <div class="mt-2">
@@ -45,11 +52,10 @@
                 @endforeach
             </tbody>
         </table>
-
-        <div class="d-flex justify-content-center mt-4"><button class="btn btn-danger"><a
-                    class="text-decoration-none text-white" href="{{ url('users/deleteAll') }}">Eliminar todas</a></button>
+        <div class="d-flex justify-content-center mt-5">
+            <button class="btn btn-secondary"><a href="{{ route('home.index') }}"
+                    class="text-decoration-none text-white">Volver</a></button>
         </div>
-
         <div class="d-flex">
             {!! $users->links() !!}
         </div>

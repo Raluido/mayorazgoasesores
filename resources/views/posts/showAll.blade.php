@@ -6,33 +6,22 @@
         <div class="lead mb-3">
             Ponte al día con las noticias que te interesan
         </div>
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Título</th>
-                            <th>Fecha de publicación</th>
-                            <th>Fecha de creación</th>
-                            <th colspan="2">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($posts as $post)
-                            <tr>
-                                <td>{{ $post->id }}</td>
-                                <td>{{ $post->title }}</td>
-                                <td>{{ date('Y-m-d', strtotime($post->published_at)) }}</td>
-                                <td>{{ date('Y-m-d', strtotime($post->created_at)) }}</td>
-                                <td class="d-flex justify-content-around">
-                                    <a href="post/{{ $post->id }}" class="btn btn-primary">Mostrar</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+        <div class="container mt-5">
+            @foreach ($posts as $post)
+                <div class="border-bottom mb-5">
+                    <h3>{{ $post->title }}</h3>
+                </div>
+                <div class="">
+                    <p>{{ $post->body }}</p>
+                </div>
+                <div class="border-top mt-5">
+                    <p>Publicado en fecha {{ date('d-m-Y', strtotime($post->published_at)) }}</p>
+                </div>
+            @endforeach
         </div>
+    </div>
+    <div class="d-flex justify-content-center mt-5">
+        <button class="btn btn-secondary"><a href="{{ route('home.index') }}"
+                class="text-decoration-none text-white">Volver</a></button>
     </div>
 @endsection

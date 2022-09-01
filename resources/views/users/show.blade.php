@@ -24,4 +24,8 @@
         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info">Edit</a>
         <a href="{{ route('users.index') }}" class="btn btn-default">Back</a>
     </div>
+    <div class="d-flex justify-content-center mt-5">
+        <button class="btn btn-secondary"><a href="{{ route('home.index') }}"
+                class="text-decoration-none text-white">Volver</a></button>
+    </div>
 @endsection

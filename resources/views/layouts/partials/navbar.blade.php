@@ -14,7 +14,7 @@
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item px-3"><a class="nav-link text-light fs-6"
                             href="{{ route('home.index') }}">Inicio</a></li>
-                    <li class="nav-item px-3"><a class="nav-link text-light fs-6" href="{{ route('posts.index') }}">Noticias</a></li>
+                    <li class="nav-item px-3"><a class="nav-link text-light fs-6" href="{{ route('posts.showAll') }}">Noticias</a></li>
                     <li class="nav-item px-3"><a class="nav-link text-light fs-6" href="#">Sobre nosotros</a></li>
                     <li class="nav-item px-3"><a class="nav-link text-light fs-6" href="#">Contacto</a></li>
                 </ul>

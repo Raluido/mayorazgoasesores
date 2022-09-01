@@ -44,4 +44,8 @@
             {!! $costsimputs->links() !!}
         </div>
     </div>
+    <div class="d-flex justify-content-center mt-5">
+        <button class="btn btn-secondary"><a href="{{ route('home.index') }}"
+                class="text-decoration-none text-white">Volver</a></button>
+    </div>
 @endsection
