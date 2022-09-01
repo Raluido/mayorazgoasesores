@@ -25,6 +25,10 @@
                             <a href="{{ route('costsimputs.showForm') }}" class="nav-link px-2 text-dark">Listar imputaciones de
                                 costes</a>
                         </div>
+                        <div class="border col-4" style="height: 160px">
+                            <h5>Gestionar blog</h5>
+                            <a href="{{ route('posts.index') }}" class="nav-link px-2 text-dark">Crear, editar y borrar</a>
+                        </div>
                     @endrole
                     @role('admin')
                         <h3>Área de administración</h3>
@@ -57,6 +61,10 @@
                                 interés</a>
                             <a href="{{ route('othersdocuments.showForm') }}" class="nav-link px-2 text-dark">Listar documentos de
                                 interés</a>
+                        </div>
+                        <div class="border col-4" style="height: 160px">
+                            <h5>Gestionar blog</h5>
+                            <a href="{{ route('posts.index') }}" class="nav-link px-2 text-dark">Crear, editar y borrar</a>
                         </div>
                     @endrole
                 </div>

@@ -22,6 +22,7 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         $users = User::latest()->paginate(10);

@@ -8,6 +8,7 @@
                     <input name="_token" type="hidden" value="{{ csrf_token() }}">
                     <label for="month">Selecciona un mes</label>
                     <select name="month" id="month">
+                        <option value=""></option>
                         <option value="ENE">Enero</option>
                         <option value="FEB">Febrero</option>
                         <option value="MAR">Marzo</option>
@@ -25,6 +26,7 @@
                 <div class="form-group my-4">
                     <label for="year">Selecciona un año</label>
                     <select name="year" id="year">
+                        <option value=""></option>
                         <option value="2022">2022</option>
                         <option value="2023">2023</option>
                         <option value="2024">2024</option>

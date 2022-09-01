@@ -19,21 +19,16 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
      */
     Route::get('/', 'HomeController@index')->name('home.index');
 
+    Route::get('/posts', 'PostsController@index')->name('posts.index');
+    Route::get('posts/{post}', 'PostsController@show')->name('posts.show');
+
     Route::group(['middleware' => ['guest']], function () {
-        /**
-         * Register Routes
-         */
-        Route::get('/register', 'RegisterController@show')->name('register.show');
-        Route::post('/register', 'RegisterController@register')->name('register.perform');
 
         /**
          * Login Routes
          */
         Route::get('/login', 'LoginController@show')->name('login.show');
         Route::post('/login', 'LoginController@login')->name('login.perform');
-
-        // Route::get('/index', 'PostsController@index')->name('posts.index');
-        Route::get('posts/{post}', 'PostsController@show')->name('posts.show');
     });
 
     Route::group(['middleware' => ['auth', 'permission']], function () {
@@ -41,19 +36,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
          * Logout Routes
          */
         Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
-
-        /**
-         * User Routes
-         */
-        Route::group(['prefix' => 'posts'], function () {
-            Route::get('/index', 'PostsController@index')->name('posts.index');
-            Route::get('/create', 'PostsController@create')->name('posts.create');
-            Route::post('/store', 'PostsController@store')->name('posts.store');
-            Route::get('/{post}/edit', 'PostsController@edit')->name('posts.edit');
-            Route::put('{post}', 'PostsController@update')->name('posts.update');
-            Route::delete('post/{post}', 'PostsController@destroy')->name('posts.destroy');
-        });
-
 
         Route::group(['prefix' => 'users'], function () {
             Route::get('/', 'UsersController@index')->name('users.index');
@@ -68,9 +50,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('/createAuto', 'UsersController@addUsersAuto')->name('users.addUsersAuto');
         });
 
-        /**
-         * User Routes
-         */
         Route::group(['prefix' => 'payrolls'], function () {
             Route::get('/uploadForm', 'PayrollsController@uploadForm')->name('payrolls.uploadForm');
             Route::post('/upload', 'PayrollsController@uploadPayrolls')->name('payrolls.uploadPayrolls');
@@ -106,6 +85,14 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('/show', 'OthersDocumentsController@showOthersDocuments')->name('othersdocuments.showOthersDocuments');
             Route::delete('/delete/{otherdocument}/{month}/{year}', 'OthersDocumentsController@deleteOthersDocuments')->name('othersdocuments.deleteOthersDocuments');
             Route::get('/deleteAll/{month}/{year}', 'OthersDocumentsController@deleteAllOtherDocuments')->name('othersdocuments.deleteAllOthersDocuments');
+        });
+
+        Route::group(['prefix' => 'posts'], function () {
+            Route::get('/create', 'PostsController@create')->name('posts.create');
+            Route::post('/store', 'PostsController@store')->name('posts.store');
+            Route::get('/{post}/edit', 'PostsController@edit')->name('posts.edit');
+            Route::put('/{post}', 'PostsController@update')->name('posts.update');
+            Route::delete('/{post}', 'PostsController@destroy')->name('posts.destroy');
         });
 
         Route::resource('roles', RolesController::class);
