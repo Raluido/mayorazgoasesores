@@ -17,8 +17,8 @@ class CreateCostsImputsTable extends Migration
             $table->id();
             $table->string('nif');
             $table->string('filename');
-            $table->string('month');
-            $table->string('year');
+            $table->string('month')->index();
+            $table->string('year')->index();
             $table->timestamps();
         });
     }

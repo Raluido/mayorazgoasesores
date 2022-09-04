@@ -18,8 +18,8 @@ class CreatePayrollsTable extends Migration
             $table->string('nif');
             $table->string('dni');
             $table->string('filename');
-            $table->string('month');
-            $table->string('year');
+            $table->string('month')->index();
+            $table->string('year')->index();
             $table->timestamps();
         });
     }

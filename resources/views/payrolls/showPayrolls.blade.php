@@ -37,17 +37,19 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="d-flex justify-content-center mt-4 mb-4"><button class="btn btn-danger"><a
-                        class="text-decoration-none text-white"
-                        href="{{ url('payrolls/deleteAll/' . $month . '/' . $year) }}">Eliminar todas</a></button>
+            <div class="d-flex justify-content-between mb-4">
+                <div class="">
+                    <button class="btn btn-secondary"><a href="{{ route('home.index') }}"
+                            class="text-decoration-none text-white">Volver</a></button>
+                </div>
+                <div class=""><button class="btn btn-danger"><a
+                            class="text-decoration-none text-white"
+                            href="{{ url('payrolls/deleteAll/' . $month . '/' . $year) }}">Eliminar todas</a></button>
+                </div>
             </div>
         </div>
         <div class="d-flex mb-5">
             {!! $payrolls->links() !!}
         </div>
-    </div>
-    <div class="d-flex justify-content-center mt-5">
-        <button class="btn btn-secondary"><a href="{{ route('home.index') }}"
-                class="text-decoration-none text-white">Volver</a></button>
     </div>
 @endsection

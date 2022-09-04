@@ -52,11 +52,11 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="d-flex justify-content-center mt-5">
+        <div class="d-flex justify-content-center mt-4">
             <button class="btn btn-secondary"><a href="{{ route('home.index') }}"
                     class="text-decoration-none text-white">Volver</a></button>
         </div>
-        <div class="d-flex">
+        <div class="d-flex mb-5">
             {!! $users->links() !!}
         </div>
 

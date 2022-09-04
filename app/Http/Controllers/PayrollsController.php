@@ -108,7 +108,7 @@ class PayrollsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $payrolls = DB::Table('payrolls')->where('year', $year)->where('month', $month)->paginate(10);
+        $payrolls = DB::Table('payrolls')->where('year', "LIKE", '%' . $year . '%')->where('month', "LIKE", '%' . $month . '%')->paginate(10);
 
         if ($payrolls[0] != null) {
             return view('payrolls.showPayrolls', compact('payrolls', 'month', 'year'));

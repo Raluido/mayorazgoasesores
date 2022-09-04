@@ -148,7 +148,7 @@ class CostsImputsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $costsimputs = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->paginate(10);
+        $costsimputs = DB::Table('costs_imputs')->where('year', "LIKE", '%' . $year . '%')->where('month', "LIKE", '%' . $month . '%')->groupBy('nif')->paginate(10);
 
         if ($costsimputs[0] != null) {
             return view('costsimputs.showCostsImputs', compact('costsimputs', 'month', 'year'));
@@ -159,10 +159,10 @@ class CostsImputsController extends Controller
 
     public function deleteCostsImputs(CostsImput $costsimput, $month, $year)
     {
-        $costsimput->delete();
 
-        $costsimputs = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->get()->toArray();
-        unlink(public_path('/storage/media/costsImputs/' . $year . '/' . $month . '/' . $costsimput->filename));
+        $costsimputs = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->where('nif', $costsimput->nif)->delete();
+        $mask = public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $costsimput->nif . '*.*');
+        array_map('unlink', glob($mask));
 
         return view('costsimputs.showForm', compact('costsimputs'));
     }
