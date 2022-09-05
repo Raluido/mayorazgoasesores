@@ -15,10 +15,10 @@ class CreateOthersDocumentsTable extends Migration
     {
         Schema::create('others_documents', function (Blueprint $table) {
             $table->id();
-            $table->string('nif');
+            $table->string('nif')->index();
             $table->string('filename');
-            $table->string('month')->index();
-            $table->string('year')->index();
+            $table->string('month');
+            $table->string('year');
             $table->timestamps();
         });
     }

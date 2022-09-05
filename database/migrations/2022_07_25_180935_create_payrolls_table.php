@@ -15,11 +15,11 @@ class CreatePayrollsTable extends Migration
     {
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
-            $table->string('nif');
+            $table->string('nif')->index();
             $table->string('dni');
             $table->string('filename');
-            $table->string('month')->index();
-            $table->string('year')->index();
+            $table->string('month');
+            $table->string('year');
             $table->timestamps();
         });
     }
