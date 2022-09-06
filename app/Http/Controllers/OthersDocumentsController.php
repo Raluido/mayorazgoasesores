@@ -28,7 +28,7 @@ class OthersDocumentsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
         $nif = $request->input('nif');
-        $userid = DB::Table('users')->where('nif', $nif)->select('id');
+        $userid = DB::Table('users')->where('nif', $nif)->value('id');
 
         if (User::where('nif', $nif)->exists()) {
 
@@ -61,6 +61,7 @@ class OthersDocumentsController extends Controller
                             $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
                             $otherDocument = new OtherDocument();
                             $otherDocument->user_id = $userid;
+                            $otherDocument->filename = $name;
                             $otherDocument->month = $month;
                             $otherDocument->year = $year;
                             $otherDocument->save();
@@ -69,6 +70,7 @@ class OthersDocumentsController extends Controller
                             $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
                             $otherDocument = new OtherDocument();
                             $otherDocument->user_id = $userid;
+                            $otherDocument->filename = $name;
                             $otherDocument->month = $month;
                             $otherDocument->year = $year;
                             $otherDocument->save();
@@ -89,6 +91,7 @@ class OthersDocumentsController extends Controller
                             $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
                             $otherDocument = new OtherDocument();
                             $otherDocument->user_id = $userid;
+                            $otherDocument->filename = $name;
                             $otherDocument->month = $month;
                             $otherDocument->year = $year;
                             $otherDocument->save();
@@ -104,6 +107,7 @@ class OthersDocumentsController extends Controller
                                 $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
                                 $otherDocument = new OtherDocument();
                                 $otherDocument->user_id = $userid;
+                                $otherDocument->filename = $name;
                                 $otherDocument->month = $month;
                                 $otherDocument->year = $year;
                                 $otherDocument->save();
@@ -117,6 +121,7 @@ class OthersDocumentsController extends Controller
                                 $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name . $extension);
                                 $otherDocument = new OtherDocument();
                                 $otherDocument->user_id = $userid;
+                                $otherDocument->filename = $name;
                                 $otherDocument->month = $month;
                                 $otherDocument->year = $year;
                                 $otherDocument->save();
@@ -226,8 +231,8 @@ class OthersDocumentsController extends Controller
         $othersdocuments = DB::Table('users')
             ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
             ->where('others_documents.year', '=', $year)
-            ->where('other_documents.month', '=', $month)
-            ->select('users.nif', 'others_documents.filename', 'others_documents.year', 'other_documents.month')
+            ->where('others_documents.month', '=', $month)
+            ->select('users.nif','others_documents.id', 'others_documents.filename', 'others_documents.year', 'others_documents.month')
             ->paginate(10);
 
         if ($othersdocuments[0] != null) {
