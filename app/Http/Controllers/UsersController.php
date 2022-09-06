@@ -71,8 +71,6 @@ class UsersController extends Controller
         Mail::to("raluido@gmail.com")->send(new ContactMail($data));
 
         $user->save();
-
-        // $user->syncRoles($request->get('role'));
         $user->assignRole($request->input('role'));
 
         return redirect()->route('users.index')->withSuccess(__('Empresa creada correctamente.'));

@@ -25,7 +25,7 @@
                             <td>
                                 {!! Form::open([
                                     'method' => 'DELETE',
-                                    'route' => ['costsimputs.deleteCostsImputs', $index->id, $index->month, $index->year],
+                                    'route' => ['costsimputs.deleteCostsImputs', $index->nif, $index->month, $index->year],
                                     'style' => 'display:inline',
                                 ]) !!}
                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}

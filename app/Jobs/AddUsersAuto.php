@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use setasign\Fpdi\Fpdi;
 use App\Models\Payroll;
 use App\Models\User;
+use App\Models\Employee;
 use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
@@ -68,7 +69,7 @@ class AddUsersAuto implements ShouldQueue
 
         $fileNameNoExt = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-        $usersNifNameAr = array();
+        $usersNifNameDniAr = array();
 
         for ($i = 1; $i <= $pageCount; $i++) {
             $path = public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf');
@@ -85,27 +86,40 @@ class AddUsersAuto implements ShouldQueue
             $pos2 = strpos($content, $findme2);
             $Name = substr($content, ($pos2 + 37), 31);
 
+            $findme1 = 'D.N.I.';
+            $pos1 = strpos($content, $findme1);
+            $Dni = substr($content, ($pos1 + 94), 11);
+            $DniFix = preg_replace('/\s+/', '', $Dni);
 
             // check if the nif format is correct
             $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
             $uploadError = array(null);
 
-            if (in_array($NifFix[0], $abc) || in_array($NifFix[8], $abc)) {
-                $usersNifName = array();
-                $usersNifName[] = $NifFix;
-                $usersNifName[] = $Name;
-                $usersNifNameAr[] = $usersNifName;
+            if (in_array($NifFix[0], $abc) || in_array($NifFix[8], $abc) && in_array($DniFix[8], $abc)) {
+                $usersNifNameDni = array();
+                $usersNifNameDni[] = $NifFix;
+                $usersNifNameDni[] = $Name;
+                $usersNifNameDni[] = $DniFix;
+                $usersNifNameDniAr[] = $usersNifNameDni;
             } else {
                 $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
             }
         }
 
-        $usersNifNameAr = array_map("unserialize", array_unique(array_map("serialize", $usersNifNameAr)));
+        $usersNifNameDniAr = array_map("unserialize", array_unique(array_map("serialize", $usersNifNameDniAr)));
         $usersNifPass = array();
 
-        foreach ($usersNifNameAr as $index) {
+        foreach ($usersNifNameDniAr as $index) {
 
             if (User::where('nif', '=', $index[0])->exists()) {
+                if (Employee::where('dni', '=', $index[2])->exists()) {
+                } else {
+                    $employee = new Employee();
+                    $userId = Db::Table('users')->where('nif', $index[0])->value('id');
+                    $employee->user_id = $userId;
+                    $employee->dni = $index[2];
+                    $employee->save();
+                }
             } else {
                 $user = new User();
                 $user->nif = $index[0];
@@ -122,11 +136,21 @@ class AddUsersAuto implements ShouldQueue
                 $usersNifPass[] = $data;
                 $user->save();
                 $user->assignRole('user');
+
+                if (Employee::where('dni', '=', $index[2])->exists()) {
+                } else {
+
+                    $employee = new Employee();
+                    $userId = Db::Table('users')->where('nif', $index[0])->value('id');
+                    $employee->user_id = $userId;
+                    $employee->dni = $index[2];
+                    $employee->save();
+                }
             }
         }
 
         if ($uploadError[0] == null) {
-            $uploadError[0] = 'Todos las empresas se han subido correctamente';
+            $uploadError[0] = 'Todos las empresas y trabajadores se han creado correctamente';
         }
 
         Mail::to("raluido@gmail.com")->send(new ContactMails($usersNifPass, $uploadError));

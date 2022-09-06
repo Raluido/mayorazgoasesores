@@ -11,10 +11,4 @@ class CostsImput extends Model
 
     protected $table = 'costs_imputs';
 
-    protected $fillable = [
-        'nif',
-        'filename',
-        'month',
-        'year',
-    ];
 }

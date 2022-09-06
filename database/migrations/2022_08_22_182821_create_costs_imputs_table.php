@@ -15,7 +15,7 @@ class CreateCostsImputsTable extends Migration
     {
         Schema::create('costs_imputs', function (Blueprint $table) {
             $table->id();
-            $table->string('nif')->index();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('filename');
             $table->string('month');
             $table->string('year');
@@ -31,6 +31,5 @@ class CreateCostsImputsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('costs_imputs');
-
     }
 }

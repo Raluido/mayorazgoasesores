@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use setasign\Fpdi\Fpdi;
 use App\Models\Payroll;
+use App\Models\Employee;
 use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
@@ -82,10 +83,12 @@ class UploadPayrolls implements ShouldQueue
             $findme = 'NIF. ';
             $pos = strpos($content, $findme);
             $Nif = substr($content, ($pos + 5), 9);
+            $NifFix = preg_replace('/\s+/', '', $Nif);
 
             $findme1 = 'D.N.I.';
             $pos1 = strpos($content, $findme1);
             $Dni = substr($content, ($pos1 + 94), 11);
+            $DniFix = preg_replace('/\s+/', '', $Dni);
 
             $findme2 = 'PERIODO';
             $pos2 = strpos($content, $findme2);
@@ -96,10 +99,10 @@ class UploadPayrolls implements ShouldQueue
             $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
             $uploadError = array(null);
 
-            if (in_array($Nif[0], $abc) || in_array($Nif[8], $abc) && in_array($Dni[8], $abc)) {
-                rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedPayrolls/' . $Nif . '_' . $Dni . '_' . $month . $year . '.pdf'));
+            if (in_array($NifFix[0], $abc) || in_array($NifFix[8], $abc) && in_array($DniFix[8], $abc)) {
+                rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedPayrolls/' . $NifFix . '_' . $DniFix . '_' . $month . $year . '.pdf'));
             } else {
-                $uploadError[] = 'El ' . $Nif . 'o' . $Dni . 'han dado error de forma, consule al administrador de sistema.';
+                $uploadError[] = 'El ' . $NifFix . 'o' . $DniFix . 'han dado error de forma, consulte al administrador de sistema.';
             }
         }
 
@@ -125,15 +128,30 @@ class UploadPayrolls implements ShouldQueue
             foreach ($files as $file) {
                 $filenamewithextension = basename($file);
                 $filenamewithoutextension = basename($file, ".pdf");
-                $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
+                // $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
                 $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-                if ($monthInput . $year == substr($filename, 22, 7)) {
-                    rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextensionTrm . '.pdf'));
+                // check if the employee is already created or not
+
+                if (Employee::where('dni', substr($filenamewithoutextension, 10, 9))->exists()) {
+                } else {
+                    try {
+                        $employee = new Employee();
+                        $userId = Db::Table('users')->where('nif', substr($filenamewithoutextension, 0, 9))->value('id');
+                        $employee->user_id = $userId;
+                        $employee->dni = substr($filenamewithoutextension, 10, 9);
+                        $employee->save();
+                    } catch (\Throwable $th) {
+                        $uploadError[] = "No se ha podido agregar la nómina de la empresa " . substr($filenamewithoutextension, 0, 9) . ", compruebe si no está creada aún.";
+                        break;
+                    }
+                }
+
+                if ($monthInput . $yearInput == substr($filename, 20, 7)) {
+                    rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextension . '.pdf'));
                     $payroll = new Payroll();
-                    $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
-                    $payroll->dni = substr($filenamewithoutextensionTrm, 10, 9);
-                    $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
+                    $payroll->employee_id = Db::Table('employees')->where('dni', substr($filenamewithoutextension, 10, 9))->value('id');
+                    $payroll->filename = $filenamewithoutextension . '.pdf';
                     $payroll->year = $year;
                     $payroll->month = $month;
                     $payroll->save();
@@ -152,26 +170,40 @@ class UploadPayrolls implements ShouldQueue
                 foreach ($files as $file) {
                     $filenamewithextension = basename($file);
                     $filenamewithoutextension = basename($file, ".pdf");
-                    $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
+                    // $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
                     $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-                    if ($monthInput . $year == substr($filename, 22, 7)) {
-                        if (File::exists($path . '/' . $filenamewithoutextensionTrm . '.pdf')) {
-                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextensionTrm . '.pdf'));
-                            Payroll::where('filename', $filenamewithoutextensionTrm . '.pdf')->delete();
+                    // check if the employee is already created or not
+
+                    if (Employee::where('dni', substr($filenamewithoutextension, 10, 9))->exists()) {
+                    } else {
+                        try {
+                            $employee = new Employee();
+                            $userId = Db::Table('users')->where('nif', substr($filenamewithoutextension, 0, 9))->value('id');
+                            $employee->user_id = $userId;
+                            $employee->dni = substr($filenamewithoutextension, 10, 9);
+                            $employee->save();
+                        } catch (\Throwable $th) {
+                            $uploadError[] = "No se ha podido agregar la nómina de la empresa " . substr($filenamewithoutextension, 0, 9) . ", compruebe si no está creada aún.";
+                            break;
+                        }
+                    }
+
+                    if ($monthInput . $yearInput == substr($filename, 20, 7)) {
+                        if (File::exists($path . '/' . $filenamewithoutextension . '.pdf')) {
+                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextension . '.pdf'));
+                            Payroll::where('filename', $filenamewithoutextension . '.pdf')->delete();
                             $payroll = new Payroll();
-                            $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
-                            $payroll->dni = substr($filenamewithoutextensionTrm, 10, 9);
-                            $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
+                            $payroll->employee_id = Db::Table('employees')->where('dni', substr($filenamewithoutextension, 10, 9))->value('id');
+                            $payroll->filename = $filenamewithoutextension . '.pdf';
                             $payroll->year = $year;
                             $payroll->month = $month;
                             $payroll->save();
                         } else {
-                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextensionTrm . '.pdf'));
+                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextension . '.pdf'));
                             $payroll = new Payroll();
-                            $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
-                            $payroll->dni = substr($filenamewithoutextensionTrm, 10, 9);
-                            $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
+                            $payroll->employee_id = Db::Table('employees')->where('dni', substr($filenamewithoutextension, 10, 9))->value('id');
+                            $payroll->filename = $filenamewithoutextension . '.pdf';
                             $payroll->year = $year;
                             $payroll->month = $month;
                             $payroll->save();
@@ -187,26 +219,39 @@ class UploadPayrolls implements ShouldQueue
                 foreach ($files as $file) {
                     $filenamewithextension = basename($file);
                     $filenamewithoutextension = basename($file, ".pdf");
-                    $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
                     $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-                    if ($monthInput . $year == substr($filename, 22, 7)) {
-                        if (File::exists($path . '/' . $filenamewithoutextensionTrm . '.pdf')) {
-                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextensionTrm . '.pdf'));
-                            Payroll::where('filename', $filenamewithoutextensionTrm . '.pdf')->delete();
+                    // check if the employee is already created or not
+
+                    if (Employee::where('dni', substr($filenamewithoutextension, 10, 9))->exists()) {
+                    } else {
+                        try {
+                            $employee = new Employee();
+                            $userId = Db::Table('users')->where('nif', substr($filenamewithoutextension, 0, 9))->value('id');
+                            $employee->user_id = $userId;
+                            $employee->dni = substr($filenamewithoutextension, 10, 9);
+                            $employee->save();
+                        } catch (\Throwable $th) {
+                            $uploadError[] = "No se ha podido agregar la nómina de la empresa " . substr($filenamewithoutextension, 0, 9) . ", compruebe si no está creada aún.";
+                            break;
+                        }
+                    }
+
+                    if ($monthInput . $yearInput == substr($filename, 20, 7)) {
+                        if (File::exists($path . '/' . $filenamewithoutextension . '.pdf')) {
+                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextension . '.pdf'));
+                            Payroll::where('filename', $filenamewithoutextension . '.pdf')->delete();
                             $payroll = new Payroll();
-                            $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
-                            $payroll->dni = substr($filenamewithoutextensionTrm, 10, 9);
-                            $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
+                            $payroll->employee_id = Db::Table('employees')->where('dni', substr($filenamewithoutextension, 10, 9))->value('id');
+                            $payroll->filename = $filenamewithoutextension . '.pdf';
                             $payroll->year = $year;
                             $payroll->month = $month;
                             $payroll->save();
                         } else {
-                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextensionTrm . '.pdf'));
+                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextension . '.pdf'));
                             $payroll = new Payroll();
-                            $payroll->nif = substr($filenamewithoutextensionTrm, 0, 9);
-                            $payroll->dni = substr($filenamewithoutextensionTrm, 10, 9);
-                            $payroll->filename = $filenamewithoutextensionTrm . '.pdf';
+                            $payroll->employee_id = Db::Table('employees')->where('dni', substr($filenamewithoutextension, 10, 9))->value('id');
+                            $payroll->filename = $filenamewithoutextension . '.pdf';
                             $payroll->year = $year;
                             $payroll->month = $month;
                             $payroll->save();

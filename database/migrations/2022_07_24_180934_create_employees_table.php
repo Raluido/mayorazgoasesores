@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOthersDocumentsTable extends Migration
+class CreateEmployeesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateOthersDocumentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('others_documents', function (Blueprint $table) {
-            $table->id();
+        Schema::create('employees', function (Blueprint $table) {
+            $table->id()->unsingned();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('filename');
-            $table->string('month');
-            $table->string('year');
+            $table->string('dni')->unique();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateOthersDocumentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('others_documents');
+        Schema::dropIfExists('employees');
     }
 }

@@ -68,7 +68,16 @@ class PayrollsController extends Controller
     {
         if ($month || $year != null) {
 
-            $files = DB::Table('payrolls')->where('year', $year)->where('month', $month)->where('nif', Auth::user()->nif)->select('filename')->get()->toArray();
+
+            $files = DB::Table('users')
+                ->join('employees', 'employees.user_id', '=', 'users.id')
+                ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
+                ->where('users.nif', '=', Auth::user()->nif)
+                ->where('payrolls.year', '=', $year)
+                ->where('payrolls.month', '=', $month)
+                ->select('payrolls.filename')
+                ->get()
+                ->toArray();
 
             if ($files != null) {
 
@@ -108,7 +117,11 @@ class PayrollsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $payrolls = DB::Table('payrolls')->where('year', "LIKE", '%' . $year . '%')->where('month', "LIKE", '%' . $month . '%')->paginate(10);
+        $payrolls = DB::Table('users')
+            ->join('employees', 'employees.user_id', '=', 'users.id')
+            ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
+            ->select('users.nif', 'employees.dni', 'payrolls.id', 'payrolls.month', 'payrolls.year')
+            ->paginate(10);
 
         if ($payrolls[0] != null) {
             return view('payrolls.showPayrolls', compact('payrolls', 'month', 'year'));

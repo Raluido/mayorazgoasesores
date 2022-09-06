@@ -28,102 +28,112 @@ class OthersDocumentsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
         $nif = $request->input('nif');
+        $userid = DB::Table('users')->where('nif', $nif)->select('id');
 
-        if ($request->hasFile('othersdocuments')) {
+        if (User::where('nif', $nif)->exists()) {
 
-            $path = public_path('/storage/media/othersDocuments/' . $year);
+            if ($request->hasFile('othersdocuments')) {
 
-            if (!File::exists($path)) {
-                File::makeDirectory($path, 0777, true);
-                $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
-                File::makeDirectory($path, 0777, true);
-                $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
-                File::makeDirectory($path, 0777, true);
-
-                $files = $request->file('othersdocuments');
-
-                foreach ($files as $index) {
-                    $check = DB::Table('others_documents')->where('year', $year)->where('month', $month)->where('nif', $nif)->where('filename', $index->filename)->exists();
-                    if ($check) {
-                        $name = $index->getClientOriginalName();
-                        $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
-                        $otherDocument = new OtherDocument();
-                        $otherDocument->nif = $nif;
-                        $otherDocument->filename = $name;
-                        $otherDocument->month = $month;
-                        $otherDocument->year = $year;
-                        $otherDocument->save();
-                    } else {
-                        $name = $index->getClientOriginalName();
-                        $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
-                        $otherDocument = new OtherDocument();
-                        $otherDocument->nif = $nif;
-                        $otherDocument->filename = $name;
-                        $otherDocument->month = $month;
-                        $otherDocument->year = $year;
-                        $otherDocument->save();
-                    }
-                }
-            } else {
-                $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
+                $path = public_path('/storage/media/othersDocuments/' . $year);
 
                 if (!File::exists($path)) {
+                    File::makeDirectory($path, 0777, true);
+                    $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
                     File::makeDirectory($path, 0777, true);
                     $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
                     File::makeDirectory($path, 0777, true);
 
                     $files = $request->file('othersdocuments');
 
+
                     foreach ($files as $index) {
-                        $name = $index->getClientOriginalName();
-                        $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
-                        $otherDocument = new OtherDocument();
-                        $otherDocument->nif = $nif;
-                        $otherDocument->filename = $name;
-                        $otherDocument->month = $month;
-                        $otherDocument->year = $year;
-                        $otherDocument->save();
+
+                        $check = DB::Table('users')
+                            ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
+                            ->where('others_documents.year', '=', $year)
+                            ->where('others_documents.month', '=', $month)
+                            ->where('users.nif', '=', $nif)
+                            ->select('others_documents.filename')
+                            ->exists();
+
+                        if ($check) {
+                            $name = $index->getClientOriginalName();
+                            $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
+                            $otherDocument = new OtherDocument();
+                            $otherDocument->user_id = $userid;
+                            $otherDocument->month = $month;
+                            $otherDocument->year = $year;
+                            $otherDocument->save();
+                        } else {
+                            $name = $index->getClientOriginalName();
+                            $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
+                            $otherDocument = new OtherDocument();
+                            $otherDocument->user_id = $userid;
+                            $otherDocument->month = $month;
+                            $otherDocument->year = $year;
+                            $otherDocument->save();
+                        }
                     }
                 } else {
-                    $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
+                    $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
+
                     if (!File::exists($path)) {
                         File::makeDirectory($path, 0777, true);
+                        $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
+                        File::makeDirectory($path, 0777, true);
+
                         $files = $request->file('othersdocuments');
 
                         foreach ($files as $index) {
                             $name = $index->getClientOriginalName();
                             $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
                             $otherDocument = new OtherDocument();
-                            $otherDocument->nif = $nif;
-                            $otherDocument->filename = $name;
+                            $otherDocument->user_id = $userid;
                             $otherDocument->month = $month;
                             $otherDocument->year = $year;
                             $otherDocument->save();
                         }
                     } else {
-                        $files = $request->file('othersdocuments');
+                        $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
+                        if (!File::exists($path)) {
+                            File::makeDirectory($path, 0777, true);
+                            $files = $request->file('othersdocuments');
 
-                        foreach ($files as $index) {
-                            $name = pathinfo($index, PATHINFO_FILENAME) . '+1';
-                            $extension = $index->getClientOriginalExtension();
-                            $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name . $extension);
-                            $otherDocument = new OtherDocument();
-                            $otherDocument->nif = $nif;
-                            $otherDocument->filename = $name;
-                            $otherDocument->month = $month;
-                            $otherDocument->year = $year;
-                            $otherDocument->save();
+                            foreach ($files as $index) {
+                                $name = $index->getClientOriginalName();
+                                $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
+                                $otherDocument = new OtherDocument();
+                                $otherDocument->user_id = $userid;
+                                $otherDocument->month = $month;
+                                $otherDocument->year = $year;
+                                $otherDocument->save();
+                            }
+                        } else {
+                            $files = $request->file('othersdocuments');
+
+                            foreach ($files as $index) {
+                                $name = pathinfo($index, PATHINFO_FILENAME) . '+1';
+                                $extension = $index->getClientOriginalExtension();
+                                $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name . $extension);
+                                $otherDocument = new OtherDocument();
+                                $otherDocument->user_id = $userid;
+                                $otherDocument->month = $month;
+                                $otherDocument->year = $year;
+                                $otherDocument->save();
+                            }
                         }
                     }
                 }
+            } else {
+                echo '<div class="alert alert-warning"><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
+
+                return view('othersdocuments.uploadForm');
             }
+
+            return view('othersdocuments.uploadForm')->with('successMsg', "Los documentos de imputación de costes se han subido correctamente, gracias ;)");
         } else {
-            echo '<div class="alert alert-warning"><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
-
-            return view('othersdocuments.uploadForm');
+            echo '<div class="alert alert-warning"><strong>Warning!</strong>El ' . $nif . 'corresponde a una empresa que no ha sido creada aún.</div>';
         }
-
-        return view('othersdocuments.uploadForm')->with('successMsg', "Los documentos de imputación de costes se han subido correctamente, gracias ;)");
     }
 
     public function downloadForm()
@@ -136,7 +146,13 @@ class OthersDocumentsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $othersdocuments = DB::Table('others_documents')->where('year', $year)->where('month', $month)->where('nif', Auth::user()->nif)->get()->toArray();
+        $othersdocuments = DB::Table('users')
+            ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
+            ->where('others_documents.year', '=', $year)
+            ->where('other_documents.month', '=', $month)
+            ->where('users.nif', '=', Auth::user()->nif)
+            ->get()
+            ->toArray();
 
         return view('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'));
     }
@@ -180,7 +196,13 @@ class OthersDocumentsController extends Controller
             echo '<div class="alert alert-warning"><strong>Warning!</strong> Hemos detectado un error, vuelva a intentarlo, gracias ;)<div>';
         }
 
-        $othersdocuments = DB::Table('others_documents')->where('year', $year)->where('month', $month)->where('nif', Auth::user()->nif)->get()->toArray();
+        $othersdocuments = DB::Table('users')
+            ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
+            ->where('others_documents.year', '=', $year)
+            ->where('other_documents.month', '=', $month)
+            ->where('users.nif', '=', Auth::user()->nif)
+            ->get()
+            ->toArray();
 
         if ($othersdocuments != null) {
             return view('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'));
@@ -201,7 +223,12 @@ class OthersDocumentsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $othersdocuments = DB::Table('others_documents')->where('year', $year)->where('month', $month)->paginate(10);
+        $othersdocuments = DB::Table('users')
+            ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
+            ->where('others_documents.year', '=', $year)
+            ->where('other_documents.month', '=', $month)
+            ->select('users.nif', 'others_documents.filename', 'others_documents.year', 'other_documents.month')
+            ->paginate(10);
 
         if ($othersdocuments[0] != null) {
             return view('othersdocuments.showOtherDocuments', compact('othersdocuments', 'month', 'year'));
@@ -231,60 +258,3 @@ class OthersDocumentsController extends Controller
         return view('othersdocuments.showForm');
     }
 }
-
-
-
-
-    // public function downloadForm()
-    // {
-    //     $month = null;
-    //     $year = null;
-
-    //     return view('othersdocuments.downloadForm', compact('month', 'year'));
-    // }
-
-
-        // public function getData(Request $request)
-    // {
-    //     $month = $request->input('month');
-    //     $year = $request->input('year');
-    //     $nif = null;
-
-    //     return view('othersdocuments.downloadForm', compact('month', 'year', 'nif'));
-    // }
-
-
-    // public function downloadOthersDocuments($month, $year)
-    // {
-
-    //     if ($month || $year != null) {
-
-    //         $files = DB::Table('others_documents')->where('year', $year)->where('month', $month)->where('nif', Auth::user()->nif)->select('filename')->get()->toArray();
-
-    //         if ($files != null) {
-
-    //             $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
-    //             $zip = new ZipArchive;
-
-    //             $public_dir = public_path('storage/media/othersDocuments/' . $year . '/' . $month);
-
-    //             if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
-    //                 foreach ($files as $file) {
-    //                     $temp = (array_values((array)$file))[0];
-    //                     $zip->addFile($public_dir . '/' . $temp, $temp);
-    //                 }
-    //                 $zip->close();
-    //             }
-
-    //             if (file_exists($public_dir . '/' . $zipFilename)) {
-    //                 return response()->download(public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
-    //             }
-    //         } else {
-    //             echo '<div class="alert alert-warning"><strong>Warning!</strong> Los documentos solicitados de ' . $month . $year . ' no están disponibles.<div>';
-    //         }
-    //     } else {
-    //         echo '<div class="alert alert-warning"><strong>Warning!</strong> Debes elegir un mes y un año.<div>';
-    //     }
-
-    //     return view('othersdocuments.downloadForm', compact('month', 'year'));
-    // }

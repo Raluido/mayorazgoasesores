@@ -11,11 +11,4 @@ class Payroll extends Model
 
     protected $table = 'payrolls';
 
-    protected $fillable = [
-        'nif',
-        'dni',
-        'filename',
-        'month',
-        'year',
-    ];
 }

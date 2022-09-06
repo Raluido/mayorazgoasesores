@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OtherDocument extends Model
+class Employee extends Model
 {
     use HasFactory;
 
-    protected $table = 'others_documents';
+    protected $table = 'employees';
 
 }

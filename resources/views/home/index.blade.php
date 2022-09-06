@@ -25,6 +25,13 @@
                             <a href="{{ route('costsimputs.showForm') }}" class="nav-link px-2 text-dark">Listar imputaciones de
                                 costes</a>
                         </div>
+                        <div class="border py-4 col-4" style="height: 160px">
+                            <h5>Otros documentos</h5>
+                            <a href="{{ route('othersdocuments.uploadForm') }}" class="nav-link px-2 text-dark">Subir documentos de
+                                interés</a>
+                            <a href="{{ route('othersdocuments.showForm') }}" class="nav-link px-2 text-dark">Listar documentos de
+                                interés</a>
+                        </div>
                         <div class="border col-4" style="height: 160px">
                             <h5>Gestionar blog</h5>
                             <a href="{{ route('posts.index') }}" class="nav-link px-2 text-dark">Crear, editar y borrar</a>

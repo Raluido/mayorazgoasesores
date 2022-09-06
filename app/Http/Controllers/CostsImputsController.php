@@ -74,7 +74,14 @@ class CostsImputsController extends Controller
     {
         if ($month || $year != null) {
 
-            $files = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->where('nif', $nif)->select('filename')->get()->toArray();
+            $files = DB::Table('users')
+                ->join('costs_imputs', 'costs_imputs.user_id', '=', 'users.id')
+                ->where('users.nif', '=', $nif)
+                ->where('costs_imputs.year', '=', $year)
+                ->where('costs_imputs.month', '=', $month)
+                ->select('costs_imputs.filename')
+                ->get()
+                ->toArray();
 
             if ($files != null) {
 
@@ -148,7 +155,11 @@ class CostsImputsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $costsimputs = DB::Table('costs_imputs')->where('year', "LIKE", '%' . $year . '%')->where('month', "LIKE", '%' . $month . '%')->groupBy('nif')->paginate(10);
+        $costsimputs = DB::Table('users')
+            ->join('costs_imputs', 'costs_imputs.user_id', '=', 'users.id')
+            ->select('users.nif', 'costs_imputs.id', 'costs_imputs.month', 'costs_imputs.year')
+            ->groupBy('users.nif')
+            ->paginate(10);
 
         if ($costsimputs[0] != null) {
             return view('costsimputs.showCostsImputs', compact('costsimputs', 'month', 'year'));
@@ -157,11 +168,16 @@ class CostsImputsController extends Controller
         }
     }
 
-    public function deleteCostsImputs(CostsImput $costsimput, $month, $year)
+    public function deleteCostsImputs($nif, $month, $year)
     {
+        $costsimputs = DB::Table('users')
+            ->join('costs_imputs', 'costs_imputs.user_id', '=', 'users.id')
+            ->where('costs_imputs.year', '=', $year)
+            ->where('costs_imputs.month', '=', $month)
+            ->where('users.nif', '=', $nif)
+            ->delete();
 
-        $costsimputs = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->where('nif', $costsimput->nif)->delete();
-        $mask = public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $costsimput->nif . '*.*');
+        $mask = public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $nif . '*.*');
         array_map('unlink', glob($mask));
 
         return view('costsimputs.showForm', compact('costsimputs'));
