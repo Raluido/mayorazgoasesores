@@ -1,10 +1,20 @@
-<h4>Bienvenido -- Estos son sus datos para loguearse</h4>
+<h4>Se ha creado una nueva empresa que no figuraba en la base de datos</h4>
 
-    @if ($data)
+<h5>Por favor edite los campos "nombre" y "email"</h5>
 
-    @foreach ( $data as $dataa )
-        <p>{{ $dataa }}</p>
-    @endforeach
-
-    @endif
-
+@if ($data)
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col" width="50%">Nif</th>
+                <th scope="col" width="50%">Contraseña</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ $data['nif'] }}</td>
+                <td>{{ $data['password'] }}</td>
+            </tr>
+        </tbody>
+    </table>
+@endif

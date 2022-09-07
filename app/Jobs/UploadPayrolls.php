@@ -123,12 +123,12 @@ class UploadPayrolls implements ShouldQueue
             File::makeDirectory($path, 0777, true);
             $path = public_path('/storage/media/payrolls/' . $year . '/' . $month);
             File::makeDirectory($path, 0777, true);
+
             $files = glob(public_path('storage/media/renamedPayrolls/*'));
 
             foreach ($files as $file) {
                 $filenamewithextension = basename($file);
                 $filenamewithoutextension = basename($file, ".pdf");
-                // $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
                 $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
                 // check if the employee is already created or not
@@ -142,7 +142,7 @@ class UploadPayrolls implements ShouldQueue
                         $employee->dni = substr($filenamewithoutextension, 10, 9);
                         $employee->save();
                     } catch (\Throwable $th) {
-                        $uploadError[] = "No se ha podido agregar la nómina de la empresa " . substr($filenamewithoutextension, 0, 9) . ", compruebe si no está creada aún.";
+                        $uploadError[] = "No se ha podido agregar la nómina de la empresa " . substr($filenamewithoutextension, 0, 9) . ", compruebe si la empresa no está creada aún.";
                         break;
                     }
                 }
@@ -170,7 +170,6 @@ class UploadPayrolls implements ShouldQueue
                 foreach ($files as $file) {
                     $filenamewithextension = basename($file);
                     $filenamewithoutextension = basename($file, ".pdf");
-                    // $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
                     $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
                     // check if the employee is already created or not
@@ -184,30 +183,19 @@ class UploadPayrolls implements ShouldQueue
                             $employee->dni = substr($filenamewithoutextension, 10, 9);
                             $employee->save();
                         } catch (\Throwable $th) {
-                            $uploadError[] = "No se ha podido agregar la nómina de la empresa " . substr($filenamewithoutextension, 0, 9) . ", compruebe si no está creada aún.";
+                            $uploadError[] = "No se ha podido agregar la nómina de la empresa " . substr($filenamewithoutextension, 0, 9) . ", compruebe si la empresa no está creada aún.";
                             break;
                         }
                     }
 
                     if ($monthInput . $yearInput == substr($filename, 20, 7)) {
-                        if (File::exists($path . '/' . $filenamewithoutextension . '.pdf')) {
-                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextension . '.pdf'));
-                            Payroll::where('filename', $filenamewithoutextension . '.pdf')->delete();
-                            $payroll = new Payroll();
-                            $payroll->employee_id = Db::Table('employees')->where('dni', substr($filenamewithoutextension, 10, 9))->value('id');
-                            $payroll->filename = $filenamewithoutextension . '.pdf';
-                            $payroll->year = $year;
-                            $payroll->month = $month;
-                            $payroll->save();
-                        } else {
-                            rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextension . '.pdf'));
-                            $payroll = new Payroll();
-                            $payroll->employee_id = Db::Table('employees')->where('dni', substr($filenamewithoutextension, 10, 9))->value('id');
-                            $payroll->filename = $filenamewithoutextension . '.pdf';
-                            $payroll->year = $year;
-                            $payroll->month = $month;
-                            $payroll->save();
-                        }
+                        rename(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filenamewithoutextension . '.pdf'));
+                        $payroll = new Payroll();
+                        $payroll->employee_id = Db::Table('employees')->where('dni', substr($filenamewithoutextension, 10, 9))->value('id');
+                        $payroll->filename = $filenamewithoutextension . '.pdf';
+                        $payroll->year = $year;
+                        $payroll->month = $month;
+                        $payroll->save();
                     } else {
                         unlink(public_path('storage/media/renamedPayrolls/' . $filename . '.pdf'));
                         $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;

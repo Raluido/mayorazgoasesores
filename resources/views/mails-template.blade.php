@@ -5,8 +5,8 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col" width="15%">Nif</th>
-                    <th scope="col" width="15%">Contraseña</th>
+                    <th scope="col" width="50%">Nif</th>
+                    <th scope="col" width="50%">Contraseña</th>
                 </tr>
             </thead>
             <tbody>

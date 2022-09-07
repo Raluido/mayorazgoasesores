@@ -199,7 +199,7 @@ class UploadCostsImputs implements ShouldQueue
                 if ($monthInput . $yearInput == substr($filename, 10, 7)) {
                     rename(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filenamewithoutextension . '.pdf'));
                     $costsImput = new CostsImput();
-                    $costsImput->user_id = Db::Table('users')->where('nif', substr($filenamewithoutextension, 0, 9))->value('id');
+                    $costsImput->user_id = Db::Table('users')->where('nif', $nif)->value('id');
                     $costsImput->filename = $filenamewithoutextension . '.pdf';
                     $costsImput->month = $month;
                     $costsImput->year = $year;
@@ -210,8 +210,8 @@ class UploadCostsImputs implements ShouldQueue
                 }
             }
         } else {
-
             $path = public_path('/storage/media/costsImputs/' . $year . '/' . $month);
+
             if (!File::exists($path)) {
                 File::makeDirectory($path, 0777, true);
 
@@ -220,13 +220,12 @@ class UploadCostsImputs implements ShouldQueue
                 foreach ($files as $file) {
                     $filenamewithextension = basename($file);
                     $filenamewithoutextension = basename($file, ".pdf");
-                    $filenamewithoutextensionTrm = preg_replace('/\s+/', '', $filenamewithoutextension);
                     $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
                     $nif = substr($filename, 0, 9);
 
                     // create user if it doesnt exist
 
-                    if (User::where('nif', substr($filename, 0, 9))->exists()) {
+                    if (User::where('nif', $nif)->exists()) {
                     } else {
                         $user = new User();
                         $user->nif = $nif;
@@ -247,24 +246,13 @@ class UploadCostsImputs implements ShouldQueue
                     }
 
                     if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                        if (File::exists($path . '/' . $filenamewithoutextensionTrm . '.pdf')) {
-                            rename(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filenamewithoutextension . '.pdf'));
-                            CostsImput::where('filename', $filenamewithoutextension . '.pdf')->delete();
-                            $costsImput = new CostsImput();
-                            $costsImput->user_id = Db::Table('users')->where('nif', substr($filenamewithoutextension, 0, 9))->value('id');
-                            $costsImput->filename = $filenamewithoutextension . '.pdf';
-                            $costsImput->month = $month;
-                            $costsImput->year = $year;
-                            $costsImput->save();
-                        } else {
-                            rename(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filenamewithoutextension . '.pdf'));
-                            $costsImput = new CostsImput();
-                            $costsImput->user_id = Db::Table('users')->where('nif', substr($filenamewithoutextension, 0, 9))->value('id');
-                            $costsImput->filename = $filenamewithoutextensionTrm . '.pdf';
-                            $costsImput->month = $month;
-                            $costsImput->year = $year;
-                            $costsImput->save();
-                        }
+                        rename(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filenamewithoutextension . '.pdf'));
+                        $costsImput = new CostsImput();
+                        $costsImput->user_id = Db::Table('users')->where('nif', $nif)->value('id');
+                        $costsImput->filename = $filenamewithoutextension . '.pdf';
+                        $costsImput->month = $month;
+                        $costsImput->year = $year;
+                        $costsImput->save();
                     } else {
                         unlink(public_path('storage/media/renamedCostsImputs/' . $filename . '.pdf'));
                         $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;

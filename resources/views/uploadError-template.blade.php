@@ -1,4 +1,4 @@
-<h4>Listado de nóminas</h4>
+<h4>Listado de nóminas con errores</h4>
 
 @if ($uploadError)
     @foreach ($uploadError as $index)

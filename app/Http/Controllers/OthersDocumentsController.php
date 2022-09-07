@@ -45,40 +45,19 @@ class OthersDocumentsController extends Controller
 
                     $files = $request->file('othersdocuments');
 
-
                     foreach ($files as $index) {
-
-                        $check = DB::Table('users')
-                            ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
-                            ->where('others_documents.year', '=', $year)
-                            ->where('others_documents.month', '=', $month)
-                            ->where('users.nif', '=', $nif)
-                            ->select('others_documents.filename')
-                            ->exists();
-
-                        if ($check) {
-                            $name = $index->getClientOriginalName();
-                            $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
-                            $otherDocument = new OtherDocument();
-                            $otherDocument->user_id = $userid;
-                            $otherDocument->filename = $name;
-                            $otherDocument->month = $month;
-                            $otherDocument->year = $year;
-                            $otherDocument->save();
-                        } else {
-                            $name = $index->getClientOriginalName();
-                            $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
-                            $otherDocument = new OtherDocument();
-                            $otherDocument->user_id = $userid;
-                            $otherDocument->filename = $name;
-                            $otherDocument->month = $month;
-                            $otherDocument->year = $year;
-                            $otherDocument->save();
-                        }
+                        $name = $index->getClientOriginalName();
+                        $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
+                        $otherDocument = new OtherDocument();
+                        $otherDocument->user_id = $userid;
+                        $otherDocument->filename = $name;
+                        $otherDocument->month = $month;
+                        $otherDocument->year = $year;
+                        $otherDocument->save();
                     }
                 } else {
+                    File::makeDirectory($path, 0777, true);
                     $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
-
                     if (!File::exists($path)) {
                         File::makeDirectory($path, 0777, true);
                         $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
@@ -113,18 +92,38 @@ class OthersDocumentsController extends Controller
                                 $otherDocument->save();
                             }
                         } else {
+
                             $files = $request->file('othersdocuments');
 
                             foreach ($files as $index) {
-                                $name = pathinfo($index, PATHINFO_FILENAME) . '+1';
-                                $extension = $index->getClientOriginalExtension();
-                                $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name . $extension);
-                                $otherDocument = new OtherDocument();
-                                $otherDocument->user_id = $userid;
-                                $otherDocument->filename = $name;
-                                $otherDocument->month = $month;
-                                $otherDocument->year = $year;
-                                $otherDocument->save();
+                                $check = DB::Table('users')
+                                    ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
+                                    ->where('others_documents.year', '=', $year)
+                                    ->where('others_documents.month', '=', $month)
+                                    ->where('users.nif', '=', $nif)
+                                    ->select('others_documents.filename')
+                                    ->exists();
+
+                                if ($check) {
+                                    $name = $index->getClientOriginalName();
+                                    OtherDocument::where('filename', $name)->delete();
+                                    $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
+                                    $otherDocument = new OtherDocument();
+                                    $otherDocument->user_id = $userid;
+                                    $otherDocument->filename = $name;
+                                    $otherDocument->month = $month;
+                                    $otherDocument->year = $year;
+                                    $otherDocument->save();
+                                } else {
+                                    $name = $index->getClientOriginalName();
+                                    $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
+                                    $otherDocument = new OtherDocument();
+                                    $otherDocument->user_id = $userid;
+                                    $otherDocument->filename = $name;
+                                    $otherDocument->month = $month;
+                                    $otherDocument->year = $year;
+                                    $otherDocument->save();
+                                }
                             }
                         }
                     }
@@ -232,7 +231,7 @@ class OthersDocumentsController extends Controller
             ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
             ->where('others_documents.year', '=', $year)
             ->where('others_documents.month', '=', $month)
-            ->select('users.nif','others_documents.id', 'others_documents.filename', 'others_documents.year', 'others_documents.month')
+            ->select('users.nif', 'others_documents.id', 'others_documents.filename', 'others_documents.year', 'others_documents.month')
             ->paginate(10);
 
         if ($othersdocuments[0] != null) {
