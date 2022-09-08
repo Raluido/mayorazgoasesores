@@ -7,19 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class UploadPayrollsNotification extends Mailable
+class AddUserNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $uploadError;
+    public $data;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($uploadError)
+    public function __construct($data)
     {
-        $this->uploadError = $uploadError;
+        $this->data = $data;
     }
 
     /**
@@ -29,6 +29,6 @@ class UploadPayrollsNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Proceso de envio de nóminas finalizado')->view('mails.mail-UploadPayrolls-template')->with('uploadError', $this->uploadError);
+        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Nuevo registro')->view('mails.mail-AddUser-template')->with('data', $this->data);
     }
 }

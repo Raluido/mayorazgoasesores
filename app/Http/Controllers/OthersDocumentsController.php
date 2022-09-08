@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Smalot\PdfParser\Parser;
-use Spatie\PdfToText\Pdf;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use setasign\Fpdi\Fpdi;
 use App\Models\OtherDocument;
@@ -50,7 +47,7 @@ class OthersDocumentsController extends Controller
                         $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
                         $otherDocument = new OtherDocument();
                         $otherDocument->user_id = $userid;
-                        $otherDocument->filename = $name;
+                        $otherDocument->filename = $path . $name;
                         $otherDocument->month = $month;
                         $otherDocument->year = $year;
                         $otherDocument->save();
@@ -70,7 +67,7 @@ class OthersDocumentsController extends Controller
                             $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
                             $otherDocument = new OtherDocument();
                             $otherDocument->user_id = $userid;
-                            $otherDocument->filename = $name;
+                            $otherDocument->filename = $path . $name;
                             $otherDocument->month = $month;
                             $otherDocument->year = $year;
                             $otherDocument->save();
@@ -86,12 +83,14 @@ class OthersDocumentsController extends Controller
                                 $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
                                 $otherDocument = new OtherDocument();
                                 $otherDocument->user_id = $userid;
-                                $otherDocument->filename = $name;
+                                $otherDocument->filename = $path . $name;
                                 $otherDocument->month = $month;
                                 $otherDocument->year = $year;
                                 $otherDocument->save();
                             }
                         } else {
+
+                            $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
 
                             $files = $request->file('othersdocuments');
 
@@ -110,7 +109,7 @@ class OthersDocumentsController extends Controller
                                     $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
                                     $otherDocument = new OtherDocument();
                                     $otherDocument->user_id = $userid;
-                                    $otherDocument->filename = $name;
+                                    $otherDocument->filename = $path . $name;
                                     $otherDocument->month = $month;
                                     $otherDocument->year = $year;
                                     $otherDocument->save();
@@ -119,7 +118,7 @@ class OthersDocumentsController extends Controller
                                     $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
                                     $otherDocument = new OtherDocument();
                                     $otherDocument->user_id = $userid;
-                                    $otherDocument->filename = $name;
+                                    $otherDocument->filename = $path . $name;
                                     $otherDocument->month = $month;
                                     $otherDocument->year = $year;
                                     $otherDocument->save();
@@ -170,10 +169,16 @@ class OthersDocumentsController extends Controller
             'othersDocuments' => 'required|min:1'
         ]);
 
-        $othersDocuments = $request->input('othersDocuments');
+        $othersDocuments = DB::Table('users')
+            ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
+            ->where('others_documents.year', '=', $year)
+            ->where('others_documents.month', '=', $month)
+            ->where('users.nif', '=', Auth::user()->nif)
+            ->select('others_documents.filename')
+            ->get()
+            ->toArray();
 
         if ($othersDocuments != null) {
-
 
             if ($month || $year != null) {
 
@@ -184,7 +189,8 @@ class OthersDocumentsController extends Controller
 
                 if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                     foreach ($othersDocuments as $index) {
-                        $temp = (array_values((array)$index))[0];
+                        $filename = basename($index);
+                        $temp = (array_values((array)$filename))[0];
                         $zip->addFile($public_dir . '/' . $temp, $temp);
                     }
                     $zip->close();
@@ -200,15 +206,15 @@ class OthersDocumentsController extends Controller
             echo '<div class="alert alert-warning"><strong>Warning!</strong> Hemos detectado un error, vuelva a intentarlo, gracias ;)<div>';
         }
 
-        $othersdocuments = DB::Table('users')
+        $othersDocuments = DB::Table('users')
             ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
             ->where('others_documents.year', '=', $year)
-            ->where('other_documents.month', '=', $month)
+            ->where('others_documents.month', '=', $month)
             ->where('users.nif', '=', Auth::user()->nif)
             ->get()
             ->toArray();
 
-        if ($othersdocuments != null) {
+        if ($othersDocuments != null) {
             return view('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'));
         } else {
             return view('othersdocuments.downloadList', compact('No hay documentos en éstas fechas.'));
@@ -245,8 +251,15 @@ class OthersDocumentsController extends Controller
     {
         $otherdocument->delete();
 
-        $othersdocuments = DB::Table('others_documents')->where('year', $year)->where('month', $month)->get()->toArray();
-        unlink(public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $otherdocument->nif . '/' . $otherdocument->filename));
+        $othersDocuments = DB::Table('users')
+            ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
+            ->where('others_documents.year', '=', $year)
+            ->where('others_documents.month', '=', $month)
+            ->where('users.nif', '=', Auth::user()->nif)
+            ->get()
+            ->toArray();
+
+        unlink($othersDocuments);
 
 
         return view('othersdocuments.showForm', compact('othersdocuments'));

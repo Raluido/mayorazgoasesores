@@ -92,7 +92,8 @@ class CostsImputsController extends Controller
 
                 if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                     foreach ($files as $file) {
-                        $temp = (array_values((array)$file))[0];
+                        $filename = basename($file);
+                        $temp = (array_values((array)$filename))[0];
                         $zip->addFile($public_dir . '/' . $temp, $temp);
                     }
                     $zip->close();
@@ -126,7 +127,8 @@ class CostsImputsController extends Controller
 
                 if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                     foreach ($files as $file) {
-                        $temp = (array_values((array)$file))[0];
+                        $filename = basename($file);
+                        $temp = (array_values((array)$filename))[0];
                         $zip->addFile($public_dir . '/' . $temp, $temp);
                     }
                     $zip->close();

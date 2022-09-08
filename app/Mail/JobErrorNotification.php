@@ -7,19 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ContactMail extends Mailable
+class JobErrorNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
+    public $jobError;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($jobError)
     {
-        $this->data = $data;
+        $this->jobError = $jobError;
     }
 
     /**
@@ -29,6 +29,6 @@ class ContactMail extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Nuevo registro')->view('mail-template')->with('data', $this->data);
+        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Error en el envío de la imputación de costes')->view('mails.mail-JobError-template')->with('jobError', $this->jobError);
     }
 }

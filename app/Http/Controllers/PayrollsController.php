@@ -88,7 +88,8 @@ class PayrollsController extends Controller
 
                 if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                     foreach ($files as $file) {
-                        $temp = (array_values((array)$file))[0];
+                        $filename = basename($file);
+                        $temp = (array_values((array)$filename))[0];
                         $zip->addFile($public_dir . '/' . $temp, $temp);
                     }
                     $zip->close();
@@ -135,7 +136,7 @@ class PayrollsController extends Controller
         $payroll->delete();
 
         $payrolls = DB::Table('payrolls')->where('year', $year)->where('month', $month)->paginate(10);
-        unlink(public_path('/storage/media/payrolls/' . $year . '/' . $month . '/' . $payroll->filename));
+        unlink($payroll->filename);
 
         return redirect()->route('payrolls.showForm')->with('payrolls');
     }

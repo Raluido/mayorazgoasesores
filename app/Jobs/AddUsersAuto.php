@@ -9,37 +9,34 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use setasign\Fpdi\Fpdi;
-use App\Models\Payroll;
 use App\Models\User;
 use App\Models\Employee;
 use DB;
 use ZipArchive;
-use Illuminate\Support\Facades\Auth;
-use Payrolls;
 use Smalot\PdfParser\Parser;
 use Spatie\PdfToText\Pdf;
-use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Mail\ContactMails;
+use App\Mail\AddUsers;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Mail\AddUsersNotification;
 
 
 class AddUsersAuto implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $filenamewithextension;
+    protected $filename;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($filenamewithextension)
+    public function __construct($filename)
     {
-        $this->filenamewithextension = $filenamewithextension;
+        $this->filename = $filename;
     }
 
     /**
@@ -49,17 +46,17 @@ class AddUsersAuto implements ShouldQueue
      */
     public function handle(Request $request)
     {
-        $filenamewithextension = $this->filenamewithextension;
+        $filename = $this->filename;
 
         $pdf = new Fpdi();
-        $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filenamewithextension));
-        $file = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+        $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
+        $file = pathinfo($filename, PATHINFO_FILENAME);
 
         // Split each page into a new PDF
         for ($i = 1; $i <= $pageCount; $i++) {
             $newPdf = new Fpdi();
             $newPdf->addPage();
-            $newPdf->setSourceFile(public_path('storage/media/' . $filenamewithextension));
+            $newPdf->setSourceFile(public_path('storage/media/' . $filename));
             $newPdf->useTemplate($newPdf->importPage($i));
             $newFilename = sprintf('%s/%s_%s.pdf', public_path('storage/media/temp'), $file, $i);
             $newPdf->output($newFilename, 'F');
@@ -67,7 +64,7 @@ class AddUsersAuto implements ShouldQueue
 
         // read each .pdf
 
-        $fileNameNoExt = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+        $fileNameNoExt = pathinfo($filename, PATHINFO_FILENAME);
 
         $usersNifNameDniAr = array();
 
@@ -153,9 +150,9 @@ class AddUsersAuto implements ShouldQueue
             $uploadError[0] = 'Todos las empresas y trabajadores se han creado correctamente';
         }
 
-        Mail::to("raluido@gmail.com")->send(new ContactMails($usersNifPass, $uploadError));
+        Mail::to("raluido@gmail.com")->send(new AddUsersNotification($usersNifPass, $uploadError));
 
-        unlink(public_path('storage/media/' . $filenamewithextension));
+        unlink(public_path('storage/media/' . $filename));
 
         $files = glob(public_path('storage/media/temp/*'));
 
