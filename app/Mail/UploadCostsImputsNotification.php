@@ -12,14 +12,16 @@ class UploadCostsImputsNotification extends Mailable
     use Queueable, SerializesModels;
 
     public $uploadError;
+    public $usersCreated;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($uploadError)
+    public function __construct($uploadError, $usersCreated)
     {
         $this->uploadError = $uploadError;
+        $this->usersCreated = $usersCreated;
     }
 
     /**
@@ -29,6 +31,6 @@ class UploadCostsImputsNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Proceso de envio de imputación de costes finalizado')->view('mails.mail-UploadCostsImputs-template')->with('uploadError', $this->uploadError);
+        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Proceso de envio de imputación de costes finalizado')->view('mails.mail-UploadCostsImputs-template')->with('uploadError', $this->uploadError)->with('usersCreated', $this->usersCreated);
     }
 }

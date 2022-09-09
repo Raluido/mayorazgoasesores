@@ -53,7 +53,6 @@ class OthersDocumentsController extends Controller
                         $otherDocument->save();
                     }
                 } else {
-                    File::makeDirectory($path, 0777, true);
                     $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
                     if (!File::exists($path)) {
                         File::makeDirectory($path, 0777, true);

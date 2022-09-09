@@ -95,14 +95,57 @@ class UploadPayrolls implements ShouldQueue
             $month = substr($content, ($pos2 + 79), 3);
             $year = '20' . substr($content, ($pos2 + 83), 2);
 
+
             // check if the nif format is correct
             $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+            $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
             $uploadError = array(null);
 
-            if (in_array($NifFix[0], $abc) || in_array($NifFix[8], $abc) && in_array($DniFix[8], $abc)) {
-                rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedPayrolls/' . $NifFix . '_' . $DniFix . '_' . $month . $year . '.pdf'));
+            $true = 0;
+
+            if (in_array($NifFix[0], $abc)) {
+                for ($i = 1; $i < 8; $i++) {
+                    if (in_array($NifFix[$i], $num)) {
+                        $true++;
+                    } else {
+                        $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+                        break;
+                    }
+                }
+                if (true == 8) {
+                    rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedCostsImputs/' . $NifFix . '_' . $month . $year . '_' . $i . '.pdf'));
+                }
+            } elseif (in_array($NifFix[8], $abc)) {
+                for ($i = 0; $i < 7; $i++) {
+                    if (in_array($NifFix[$i], $num)) {
+                        $true++;
+                    } else {
+                        $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+                        break;
+                    }
+                }
+                if (true == 8) {
+                    rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedCostsImputs/' . $NifFix . '_' . $month . $year . '_' . $i . '.pdf'));
+                }
             } else {
-                $uploadError[] = 'El ' . $NifFix . 'o' . $DniFix . 'han dado error de forma, consulte al administrador de sistema.';
+                $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+            }
+
+
+            if (in_array($DniFix[8], $abc)) {
+                for ($i = 0; $i < 7; $i++) {
+                    if (in_array($NifFix[$i], $num)) {
+                        $true++;
+                    } else {
+                        $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
+                        break;
+                    }
+                }
+                if (true == 8) {
+                    rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedCostsImputs/' . $NifFix . '_' . $month . $year . '_' . $i . '.pdf'));
+                }
+            } else {
+                $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
             }
         }
 

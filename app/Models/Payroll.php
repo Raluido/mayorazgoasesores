@@ -15,7 +15,7 @@ class Payroll extends Model
     public static function boot()
     {
         parent::boot();
-        Payroll::deleted(function ($payroll) {
+        static::deleting(function ($payroll) {
             $file = $payroll->filename;
             if (File::isFile($file)) {
                 File::delete($file);

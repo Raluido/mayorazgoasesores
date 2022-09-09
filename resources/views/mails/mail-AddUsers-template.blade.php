@@ -25,8 +25,6 @@
 
 @if ($uploadError)
     @foreach ($uploadError as $index)
-        <ul>
-            <li>{{ $index }}</li>
-        </ul>
+        <p>{{ $index }}</p>
     @endforeach
 @endif

@@ -20,6 +20,7 @@ use Illuminate\Support\Str;
 use App\Mail\UploadCostsImputsNotification;
 use App\Mail\JobErrorImputsNotification;
 use App\Mail\JobErrorNotification;
+use Exception;
 
 class UploadCostsImputs implements ShouldQueue
 {
@@ -135,10 +136,41 @@ class UploadCostsImputs implements ShouldQueue
 
             // check if the nif format is correct
             $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+            $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
             $uploadError = array(null);
 
-            if (in_array($NifFix[0], $abc) || in_array($NifFix[8], $abc)) {
-                rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedCostsImputs/' . $NifFix . '_' . $month . $year . '_' . $i . '.pdf'));
+            $true = 0;
+
+            if (in_array($NifFix[0], $abc)) {
+                for ($i = 1; $i < 8; $i++) {
+                    if (in_array($NifFix[$i], $num)) {
+                        $true++;
+                    } else {
+                        $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+                        break;
+                    }
+                }
+                if (true == 8) {
+                    rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedCostsImputs/' . $NifFix . '_' . $month . $year . '_' . $i . '.pdf'));
+                }
+            } else {
+                $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+            }
+
+            $true = 0;
+
+            if (in_array($NifFix[8], $abc)) {
+                for ($i = 0; $i < 7; $i++) {
+                    if (in_array($NifFix[$i], $num)) {
+                        $true++;
+                    } else {
+                        $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+                        break;
+                    }
+                }
+                if (true == 8) {
+                    rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedCostsImputs/' . $NifFix . '_' . $month . $year . '_' . $i . '.pdf'));
+                }
             } else {
                 $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
             }
@@ -155,6 +187,7 @@ class UploadCostsImputs implements ShouldQueue
 
         $path = public_path('/storage/media/costsImputs/' . $yearInput);
 
+        $usersCreated = array(null);
 
         if (!File::exists($path)) {
             File::makeDirectory($path, 0777, true);
@@ -183,7 +216,7 @@ class UploadCostsImputs implements ShouldQueue
                         'password' => $password,
                     );
 
-                    Mail::to("raluido@gmail.com")->send(new UploadCostsImputsNotification($data));
+                    $usersCreated[] = $data;
 
                     $user->save();
                     $user->assignRole('user');
@@ -230,7 +263,7 @@ class UploadCostsImputs implements ShouldQueue
                             'password' => $password,
                         );
 
-                        Mail::to("raluido@gmail.com")->send(new UploadCostsImputsNotification($data));
+                        $usersCreated[] = $data;
 
                         $user->save();
                         $user->assignRole('user');
@@ -276,7 +309,7 @@ class UploadCostsImputs implements ShouldQueue
                             'password' => $password,
                         );
 
-                        Mail::to("raluido@gmail.com")->send(new UploadCostsImputsNotification($data));
+                        $usersCreated[] = $data;
 
                         $user->save();
                         $user->assignRole('user');
@@ -313,18 +346,18 @@ class UploadCostsImputs implements ShouldQueue
             $uploadError[0] = 'Todos los modelos de imputación de costes se han subido correctamente';
         }
 
-        Mail::to("raluido@gmail.com")->send(new UploadCostsImputsNotification($uploadError));
+        Mail::to("raluido@gmail.com")->send(new UploadCostsImputsNotification($uploadError, $usersCreated));
     }
 
     /**
      * The job failed to process.
      *
-     * @param  Exception  $exception
+     * @param  Exception $exception
      * @return void
      */
-    public function failed(Exception $exception)
+    public function failed()
     {
-        $jobError = "Error en la carga de la Imputacaión de Costes, vuelva a intentarlo gracias ;)";
+        $jobError = "Error en la carga de Imputación de Costes, vuelva a intentarlo gracias ;)";
         Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError));
     }
 }

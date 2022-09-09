@@ -1,2 +1,3 @@
-<h4>Error en la carga de documentos, vuelva a intentarlo gracias</h4>
+<h4>Error en la carga de documentos</h4>
 
+<p>{{ $jobError }}</p>

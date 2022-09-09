@@ -17,7 +17,7 @@ class OtherDocument extends Model
     {
         parent::boot();
 
-        OtherDocument::deleted(function ($otherDocument) {
+        static::deleting(function ($otherDocument) {
             $file = $otherDocument->filename;
             if (File::isFile($file)) {
                 File::delete($file);

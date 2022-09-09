@@ -8,9 +8,10 @@
                 <button class="btn btn-primary me-5"><a href="{{ route('users.create') }}"
                         class="text-decoration-none text-white">Añadir nueva empresa</a>
             </div>
-            <div class=""><button class="btn btn-danger"><a class="text-decoration-none text-white"
-                        href="{{ url('users/deleteAll') }}">Eliminar
-                        todas</a></button>
+            <div class="">
+                <button class="btn btn-danger" onclick="confirmation()">Eliminar
+                    todas</button>
+                <a class="d-none" id="confirmationBtn" href="{{ url('users/deleteAll') }}"></a>
             </div>
         </div>
 
@@ -61,4 +62,7 @@
         </div>
 
     </div>
+@endsection
+@section('js')
+    <script src="{{ asset('js/confirmation.js') }}" defer></script>
 @endsection
