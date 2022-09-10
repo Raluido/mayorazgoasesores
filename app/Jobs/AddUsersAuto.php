@@ -21,6 +21,9 @@ use App\Mail\AddUsers;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Mail\AddUsersNotification;
+use Illuminate\Filesystem\Filesystem;
+use App\Mail\JobErrorNotification;
+use Exception;
 
 
 class AddUsersAuto implements ShouldQueue
@@ -58,20 +61,21 @@ class AddUsersAuto implements ShouldQueue
             $newPdf->addPage();
             $newPdf->setSourceFile(public_path('storage/media/' . $filename));
             $newPdf->useTemplate($newPdf->importPage($i));
-            $newFilename = sprintf('%s/%s_%s.pdf', public_path('storage/media/temp'), $file, $i);
+            $newFilename = sprintf('%s/%s_%s.pdf', public_path('storage/media/addUsersTemp'), $file, $i);
             $newPdf->output($newFilename, 'F');
         }
 
+        unlink(public_path('storage/media/' . $filename));
+
         // read each .pdf
 
-        $fileNameNoExt = pathinfo($filename, PATHINFO_FILENAME);
+        $files = glob(public_path('storage/media/addUsersTemp/*'));
 
         $usersNifNameDniAr = array();
 
-        for ($i = 1; $i <= $pageCount; $i++) {
-            $path = public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf');
+        foreach ($files as $index) {
             $pdfParser = new Parser();
-            $pdf = $pdfParser->parseFile($path);
+            $pdf = $pdfParser->parseFile($index);
             $content = $pdf->getText();
 
             $findme = 'NIF. ';
@@ -90,16 +94,47 @@ class AddUsersAuto implements ShouldQueue
 
             // check if the nif format is correct
             $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-            $uploadError = array(null);
+            $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+            $uploadError = array();
 
-            if (in_array($NifFix[0], $abc) || in_array($NifFix[8], $abc) && in_array($DniFix[8], $abc)) {
-                $usersNifNameDni = array();
-                $usersNifNameDni[] = $NifFix;
-                $usersNifNameDni[] = $Name;
-                $usersNifNameDni[] = $DniFix;
-                $usersNifNameDniAr[] = $usersNifNameDni;
+            $true = 0;
+
+            if (in_array($NifFix[0], $abc)) {
+                for ($i = 1; $i < 8; $i++) {
+                    if (in_array($NifFix[$i], $num)) {
+                        $true++;
+                    } else {
+                        $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+                        break;
+                    }
+                }
+                if (true == 8) {
+                    $usersNifNameDni = array();
+                    $usersNifNameDni[] = $NifFix;
+                    $usersNifNameDni[] = $Name;
+                    $usersNifNameDni[] = $DniFix;
+                    $usersNifNameDniAr[] = $usersNifNameDni;
+                }
             } else {
-                $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+                if (in_array($NifFix[8], $abc)) {
+                    for ($i = 0; $i < 7; $i++) {
+                        if (in_array($NifFix[$i], $num)) {
+                            $true++;
+                        } else {
+                            $uploadError[] = 'El ' . $NifFix . ' ha dado error de forma, consule al administrador de sistema.';
+                            break;
+                        }
+                    }
+                    if (true == 8) {
+                        $usersNifNameDni = array();
+                        $usersNifNameDni[] = $NifFix;
+                        $usersNifNameDni[] = $Name;
+                        $usersNifNameDni[] = $DniFix;
+                        $usersNifNameDniAr[] = $usersNifNameDni;
+                    }
+                } else {
+                    $uploadError[] = 'El ' . $NifFix . ' ha dado error de forma, consule al administrador de sistema.';
+                }
             }
         }
 
@@ -107,7 +142,6 @@ class AddUsersAuto implements ShouldQueue
         $usersNifPass = array();
 
         foreach ($usersNifNameDniAr as $index) {
-
             if (User::where('nif', '=', $index[0])->exists()) {
                 if (Employee::where('dni', '=', $index[2])->exists()) {
                 } else {
@@ -146,20 +180,28 @@ class AddUsersAuto implements ShouldQueue
             }
         }
 
-        if ($uploadError[0] == null) {
-            $uploadError[0] = 'Todos las empresas y trabajadores se han creado correctamente';
-        }
-
         Mail::to("raluido@gmail.com")->send(new AddUsersNotification($usersNifPass, $uploadError));
 
-        unlink(public_path('storage/media/' . $filename));
-
-        $files = glob(public_path('storage/media/temp/*'));
+        $files = glob(public_path('storage/media/addUsersTemp/*'));
 
         foreach ($files as $file) {
             if (is_file($file)) {
                 unlink($file);
             }
         }
+    }
+
+    /**
+     * The job failed to process.
+     *
+     * @param  Exception $exception
+     * @return void
+     */
+    public function failed()
+    {
+        $file = new Filesystem;
+        $file->cleanDirectory(public_path('storage/media/addUsersTemp/'));
+        $jobError = "Error en la creación de empresas, vuelva a intentarlo gracias ;)";
+        Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError));
     }
 }

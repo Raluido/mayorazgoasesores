@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 use App\Mail\ContactMail;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\AddUsersAuto;
+use App\Jobs\DestroyAll;
+use App\Mail\AddUserNotification;
 use DB;
 
 
@@ -68,7 +70,7 @@ class UsersController extends Controller
             'password'   =>   $password
         );
 
-        Mail::to("raluido@gmail.com")->send(new ContactMail($data));
+        Mail::to("raluido@gmail.com")->send(new AddUserNotification($data));
 
         $user->save();
         $user->assignRole($request->input('role'));
@@ -141,10 +143,10 @@ class UsersController extends Controller
 
     public function deleteAll()
     {
-        DB::table('users')->where('id', '>', '3')->delete();
+        DestroyAll::dispatch();
 
         return redirect()->route('users.index')
-            ->withSuccess(__('Se han eliminado correctamente todas las empresas.'));
+            ->withSuccess(__('Estamos eliminando TODOS los datos, en breve terminamos;)'));
     }
 
     public function AddUsersAutoForm()

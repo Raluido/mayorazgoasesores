@@ -1,6 +1,8 @@
 <h4>Listado de imputación de costes con errores</h4>
 
-@if ($uploadError)
+@if (empty($uploadError))
+    <p>No ha habido errores</p>
+@else
     @foreach ($uploadError as $index)
         <p>{{ $index }}</p>
     @endforeach
@@ -10,7 +12,7 @@
 <h4>Listado de empresas creadas</h4>
 
 <div class="w-50 mx-auto mt-4">
-    @if ($usersCreated[0] == null)
+    @if (empty($usersCreated))
         <p>No se creó ninguna empresa nueva</p>
     @else
         <table class="table table-bordered">

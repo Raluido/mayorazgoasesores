@@ -48,6 +48,16 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('/createAuto', 'UsersController@addUsersAuto')->name('users.addUsersAuto');
         });
 
+        Route::group(['prefix' => 'employees'], function () {
+            Route::get('/', 'EmployeesController@index')->name('employees.index');
+            Route::get('/create', 'EmployeesController@create')->name('employees.create');
+            Route::post('/create', 'EmployeesController@store')->name('employees.store');
+            Route::get('/{employee}/edit', 'EmployeesController@edit')->name('employees.edit');
+            Route::patch('/{employee}/update', 'EmployeesController@update')->name('employees.update');
+            Route::delete('/{employee}/delete', 'EmployeesController@destroy')->name('employees.destroy');
+            Route::get('/deleteAll', 'EmployeesController@deleteAll')->name('employees.deleteAll');
+        });
+
         Route::group(['prefix' => 'payrolls'], function () {
             Route::get('/uploadForm', 'PayrollsController@uploadForm')->name('payrolls.uploadForm');
             Route::post('/upload', 'PayrollsController@uploadPayrolls')->name('payrolls.uploadPayrolls');

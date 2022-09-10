@@ -13,15 +13,4 @@ class OtherDocument extends Model
 
     protected $table = 'others_documents';
 
-    public static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($otherDocument) {
-            $file = $otherDocument->filename;
-            if (File::isFile($file)) {
-                File::delete($file);
-            }
-        });
-    }
 }

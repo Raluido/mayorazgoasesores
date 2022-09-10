@@ -14,6 +14,7 @@ use App\Models\User;
 use DB;
 use Smalot\PdfParser\Parser;
 use Illuminate\Support\Facades\File;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -63,19 +64,20 @@ class UploadCostsImputs implements ShouldQueue
             $newPdf->addPage();
             $newPdf->setSourceFile(public_path('storage/media/' . $filename));
             $newPdf->useTemplate($newPdf->importPage($i));
-            $newFilename = sprintf('%s/%s_%s.pdf', public_path('storage/media/temp'), $file, $i);
+            $newFilename = sprintf('%s/%s_%s.pdf', public_path('storage/media/costsImputsTemp'), $file, $i);
             $newPdf->output($newFilename, 'F');
         }
 
         unlink(public_path('storage/media/' . $filename));
 
         // read and rename each .pdf
-        $fileNameNoExt = pathinfo($filename, PATHINFO_FILENAME);
+        $files = glob(public_path('storage/media/costsImputsTemp/*'));
+        $x = 0;
 
-        for ($i = 1; $i <= $pageCount; $i++) {
-            $path = public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf');
+        foreach ($files as $index) {
+            $x++;
             $pdfParser = new Parser();
-            $pdf = $pdfParser->parseFile($path);
+            $pdf = $pdfParser->parseFile($index);
             $content = $pdf->getText();
 
             $findme = 'N.I.F.';
@@ -137,9 +139,10 @@ class UploadCostsImputs implements ShouldQueue
             // check if the nif format is correct
             $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
             $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-            $uploadError = array(null);
+            $uploadError = array();
 
             $true = 0;
+            $oldFilename = basename($index);
 
             if (in_array($NifFix[0], $abc)) {
                 for ($i = 1; $i < 8; $i++) {
@@ -151,50 +154,48 @@ class UploadCostsImputs implements ShouldQueue
                     }
                 }
                 if (true == 8) {
-                    rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedCostsImputs/' . $NifFix . '_' . $month . $year . '_' . $i . '.pdf'));
+                    rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $NifFix . '_' . $month . $year . '_' . $x . '.pdf'));
                 }
             } else {
-                $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
-            }
-
-            $true = 0;
-
-            if (in_array($NifFix[8], $abc)) {
-                for ($i = 0; $i < 7; $i++) {
-                    if (in_array($NifFix[$i], $num)) {
-                        $true++;
-                    } else {
-                        $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
-                        break;
+                if (in_array($NifFix[8], $abc)) {
+                    for ($i = 0; $i < 7; $i++) {
+                        if (in_array($NifFix[$i], $num)) {
+                            $true++;
+                        } else {
+                            $uploadError[] = 'El ' . $NifFix . ' ha dado error de forma, consule al administrador de sistema.';
+                            break;
+                        }
                     }
+                    if (true == 8) {
+                        rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $NifFix . '_' . $month . $year . '_' . $x . '.pdf'));
+                    }
+                } else {
+                    $uploadError[] = 'El ' . $NifFix . ' ha dado error de forma, consule al administrador de sistema.';
                 }
-                if (true == 8) {
-                    rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedCostsImputs/' . $NifFix . '_' . $month . $year . '_' . $i . '.pdf'));
-                }
-            } else {
-                $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
             }
+
+            // end check if the nif format is correct
         }
 
-        $files = glob(public_path('storage/media/temp/*'));
+        $files = glob(public_path('storage/media/costsImputsTemp/' . $filename . '_' . '*.*'));
         foreach ($files as $file) {
             if (is_file($file)) {
                 unlink($file);
             }
         }
 
-        // move to month and year folder
+        // move to month/year folder
 
         $path = public_path('/storage/media/costsImputs/' . $yearInput);
 
-        $usersCreated = array(null);
+        $usersCreated = array();
 
         if (!File::exists($path)) {
             File::makeDirectory($path, 0777, true);
             $path = public_path('/storage/media/costsImputs/' . $yearInput . '/' . $monthInput);
             File::makeDirectory($path, 0777, true);
 
-            $files = glob(public_path('storage/media/renamedCostsImputs/*'));
+            $files = glob(public_path('storage/media/costsImputsTemp/*'));
 
             foreach ($files as $file) {
                 $filename = basename($file);
@@ -202,7 +203,19 @@ class UploadCostsImputs implements ShouldQueue
 
                 // create user if it doesnt exist
 
-                if (User::where('nif', $nif)->exists()) {
+                if (User::where('nif', '=', $nif)->exists()) {
+                    if ($monthInput . $yearInput == substr($filename, 10, 7)) {
+                        rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
+                        $costsImput = new CostsImput();
+                        $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
+                        $costsImput->filename = $path . $filename;
+                        $costsImput->month = $month;
+                        $costsImput->year = $year;
+                        $costsImput->save();
+                    } else {
+                        unlink(public_path('storage/media/costsImputsTemp/' . $filename));
+                        $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                    }
                 } else {
                     $user = new User();
                     $user->nif = $nif;
@@ -220,19 +233,19 @@ class UploadCostsImputs implements ShouldQueue
 
                     $user->save();
                     $user->assignRole('user');
-                }
 
-                if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                    rename(public_path('storage/media/renamedCostsImputs/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
-                    $costsImput = new CostsImput();
-                    $costsImput->user_id = Db::Table('users')->where('nif', $nif)->value('id');
-                    $costsImput->filename = $path . $filename;
-                    $costsImput->month = $month;
-                    $costsImput->year = $year;
-                    $costsImput->save();
-                } else {
-                    unlink(public_path('storage/media/renamedCostsImputs/' . $filename));
-                    $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                    if ($monthInput . $yearInput == substr($filename, 10, 7)) {
+                        rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
+                        $costsImput = new CostsImput();
+                        $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
+                        $costsImput->filename = $path . $filename;
+                        $costsImput->month = $month;
+                        $costsImput->year = $year;
+                        $costsImput->save();
+                    } else {
+                        unlink(public_path('storage/media/costsImputsTemp/' . $filename));
+                        $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                    }
                 }
             }
         } else {
@@ -241,7 +254,7 @@ class UploadCostsImputs implements ShouldQueue
             if (!File::exists($path)) {
                 File::makeDirectory($path, 0777, true);
 
-                $files = glob(public_path('storage/media/renamedCostsImputs/*'));
+                $files = glob(public_path('storage/media/costsImputsTemp/*'));
 
                 foreach ($files as $file) {
                     $filename = basename($file);
@@ -249,7 +262,19 @@ class UploadCostsImputs implements ShouldQueue
 
                     // create user if it doesnt exist
 
-                    if (User::where('nif', $nif)->exists()) {
+                    if (User::where('nif', '=', $nif)->exists()) {
+                        if ($monthInput . $yearInput == substr($filename, 10, 7)) {
+                            rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
+                            $costsImput = new CostsImput();
+                            $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
+                            $costsImput->filename = $path . $filename;
+                            $costsImput->month = $month;
+                            $costsImput->year = $year;
+                            $costsImput->save();
+                        } else {
+                            unlink(public_path('storage/media/costsImputsTemp/' . $filename));
+                            $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                        }
                     } else {
                         $user = new User();
                         $user->nif = $nif;
@@ -259,7 +284,7 @@ class UploadCostsImputs implements ShouldQueue
                         $user->password = $password;
 
                         $data = array(
-                            'nif' => $NifFix,
+                            'nif' => $nif,
                             'password' => $password,
                         );
 
@@ -267,35 +292,46 @@ class UploadCostsImputs implements ShouldQueue
 
                         $user->save();
                         $user->assignRole('user');
-                    }
 
-                    if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                        rename(public_path('storage/media/renamedCostsImputs/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
-                        $costsImput = new CostsImput();
-                        $costsImput->user_id = Db::Table('users')->where('nif', $nif)->value('id');
-                        $costsImput->filename = $path . $filename;
-                        $costsImput->month = $month;
-                        $costsImput->year = $year;
-                        $costsImput->save();
-                    } else {
-                        unlink(public_path('storage/media/renamedCostsImputs/' . $filename));
-                        $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                        if ($monthInput . $yearInput == substr($filename, 10, 7)) {
+                            rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
+                            $costsImput = new CostsImput();
+                            $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
+                            $costsImput->filename = $path . $filename;
+                            $costsImput->month = $month;
+                            $costsImput->year = $year;
+                            $costsImput->save();
+                        } else {
+                            unlink(public_path('storage/media/costsImputsTemp/' . $filename));
+                            $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                        }
                     }
                 }
             } else {
 
                 $path = public_path('/storage/media/costsImputs/' . $year . '/' . $month);
 
-                $files = glob(public_path('storage/media/renamedCostsImputs/*'));
+                $files = glob(public_path('storage/media/costsImputsTemp/*'));
 
                 foreach ($files as $file) {
                     $filename = basename($file);
                     $nif = substr($filename, 0, 9);
 
-
                     // create user if it doesnt exist
 
-                    if (User::where('nif', substr($filename, 0, 9))->exists()) {
+                    if (User::where('nif', '=', $nif)->exists()) {
+                        if ($monthInput . $yearInput == substr($filename, 10, 7)) {
+                            rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
+                            $costsImput = new CostsImput();
+                            $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
+                            $costsImput->filename = $path . $filename;
+                            $costsImput->month = $month;
+                            $costsImput->year = $year;
+                            $costsImput->save();
+                        } else {
+                            unlink(public_path('storage/media/costsImputsTemp/' . $filename));
+                            $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                        }
                     } else {
                         $user = new User();
                         $user->nif = $nif;
@@ -305,7 +341,7 @@ class UploadCostsImputs implements ShouldQueue
                         $user->password = $password;
 
                         $data = array(
-                            'nif' => $NifFix,
+                            'nif' => $nif,
                             'password' => $password,
                         );
 
@@ -313,40 +349,27 @@ class UploadCostsImputs implements ShouldQueue
 
                         $user->save();
                         $user->assignRole('user');
-                    }
 
-                    if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                        if (File::exists($path . '/' . $filename)) {
-                            rename(public_path('storage/media/renamedCostsImputs/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
-                            CostsImput::where('filename', $filename)->delete();
+                        if ($monthInput . $yearInput == substr($filename, 10, 7)) {
+                            rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
                             $costsImput = new CostsImput();
-                            $costsImput->user_id = Db::Table('users')->where('nif', $nif)->value('id');
+                            $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
                             $costsImput->filename = $path . $filename;
                             $costsImput->month = $month;
                             $costsImput->year = $year;
                             $costsImput->save();
                         } else {
-                            rename(public_path('storage/media/renamedCostsImputs/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
-                            $costsImput = new CostsImput();
-                            $costsImput->user_id = Db::Table('users')->where('nif', $nif)->value('id');
-                            $costsImput->filename = $path . $filename;
-                            $costsImput->month = $month;
-                            $costsImput->year = $year;
-                            $costsImput->save();
+                            unlink(public_path('storage/media/costsImputsTemp/' . $filename));
+                            $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
                         }
-                    } else {
-                        unlink(public_path('storage/media/renamedCostsImputs/' . $filename));
-                        $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
                     }
                 }
             }
         }
 
-        if ($uploadError[0] == null) {
-            $uploadError[0] = 'Todos los modelos de imputación de costes se han subido correctamente';
-        }
-
         Mail::to("raluido@gmail.com")->send(new UploadCostsImputsNotification($uploadError, $usersCreated));
+
+        array_map('unlink', glob(public_path('storage/media/costsImputsTemp/' . '*.*')));
     }
 
     /**
@@ -357,6 +380,8 @@ class UploadCostsImputs implements ShouldQueue
      */
     public function failed()
     {
+        array_map('unlink', glob(public_path('storage/media/costsImputsTemp/' . '*.*')));
+
         $jobError = "Error en la carga de Imputación de Costes, vuelva a intentarlo gracias ;)";
         Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError));
     }

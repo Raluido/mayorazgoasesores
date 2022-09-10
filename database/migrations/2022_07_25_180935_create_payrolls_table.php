@@ -15,7 +15,7 @@ class CreatePayrollsTable extends Migration
     {
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
+            $table->foreignId('employee_id')->constrained('employees');
             $table->string('filename');
             $table->string('month');
             $table->string('year');

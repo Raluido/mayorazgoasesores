@@ -15,7 +15,7 @@ class CreateOthersDocumentsTable extends Migration
     {
         Schema::create('others_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users');
             $table->string('filename');
             $table->string('month');
             $table->string('year');

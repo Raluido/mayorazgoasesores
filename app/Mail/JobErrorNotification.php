@@ -29,6 +29,6 @@ class JobErrorNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Error en el envío de la imputación de costes')->view('mails.mail-JobError-template')->with('jobError', $this->jobError);
+        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Error en el envío')->view('mails.mail-JobError-template')->with('jobError', $this->jobError);
     }
 }

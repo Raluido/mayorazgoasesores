@@ -12,14 +12,4 @@ class Payroll extends Model
 
     protected $table = 'payrolls';
 
-    public static function boot()
-    {
-        parent::boot();
-        static::deleting(function ($payroll) {
-            $file = $payroll->filename;
-            if (File::isFile($file)) {
-                File::delete($file);
-            }
-        });
-    }
 }

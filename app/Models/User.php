@@ -7,7 +7,10 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Log;
+
 
 class User extends Authenticatable
 {
@@ -53,5 +56,43 @@ class User extends Authenticatable
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        parent::boot();
+
+        static::deleted(function ($user) {
+            log::info("softdeleted");
+            $user->costsimputs()->delete();
+        });
+
+        static::deleted(function ($user) {
+            $user->employees()->delete();
+        });
+
+        static::deleted(function ($user) {
+            $user->othersdocuments()->delete();
+        });
+    }
+
+    public function costsimputs()
+    {
+        return $this->hasMany('App\CostsImput');
+    }
+
+    public function employees()
+    {
+        return $this->hasMany('App\Employee');
+    }
+
+    public function othersdocuments()
+    {
+        return $this->hasMany('App\OtherDocument');
     }
 }

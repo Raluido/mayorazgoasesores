@@ -16,7 +16,7 @@ class CreateCostsImputsTable extends Migration
     {
         Schema::create('costs_imputs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users');
             $table->string('filename');
             $table->string('month');
             $table->string('year');

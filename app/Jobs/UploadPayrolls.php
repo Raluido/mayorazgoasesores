@@ -17,10 +17,13 @@ use Illuminate\Support\Facades\Auth;
 use Smalot\PdfParser\Parser;
 use Spatie\PdfToText\Pdf;
 use Illuminate\Support\Facades\File;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Mail\UploadPayrollsNotification;
+use App\Mail\JobErrorNotification;
 use Illuminate\Support\Facades\Mail;
+use Exception;
 
 
 class UploadPayrolls implements ShouldQueue
@@ -65,19 +68,20 @@ class UploadPayrolls implements ShouldQueue
             $newPdf->addPage();
             $newPdf->setSourceFile(public_path('storage/media/' . $filename));
             $newPdf->useTemplate($newPdf->importPage($i));
-            $newFilename = sprintf('%s/%s_%s.pdf', public_path('storage/media/temp'), $file, $i);
+            $newFilename = sprintf('%s/%s_%s.pdf', public_path('storage/media/payrollsTemp'), $file, $i);
             $newPdf->output($newFilename, 'F');
         }
 
         unlink(public_path('storage/media/' . $filename));
 
         // read and rename each .pdf
-        $fileNameNoExt = pathinfo($filename, PATHINFO_FILENAME);
+        $files = glob(public_path('storage/media/payrollsTemp/*'));
+        $x = 0;
 
-        for ($i = 1; $i <= $pageCount; $i++) {
-            $path = public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf');
+        foreach ($files as $index) {
+            $x++;
             $pdfParser = new Parser();
-            $pdf = $pdfParser->parseFile($path);
+            $pdf = $pdfParser->parseFile($index);
             $content = $pdf->getText();
 
             $findme = 'NIF. ';
@@ -99,9 +103,10 @@ class UploadPayrolls implements ShouldQueue
             // check if the nif format is correct
             $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
             $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-            $uploadError = array(null);
+            $uploadError = array();
 
             $true = 0;
+            $oldFilename = basename($index);
 
             if (in_array($NifFix[0], $abc)) {
                 for ($i = 1; $i < 8; $i++) {
@@ -113,7 +118,22 @@ class UploadPayrolls implements ShouldQueue
                     }
                 }
                 if (true == 8) {
-                    rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedCostsImputs/' . $NifFix . '_' . $month . $year . '_' . $i . '.pdf'));
+                    $true = 0;
+                    if (in_array($DniFix[8], $abc)) {
+                        for ($i = 0; $i < 7; $i++) {
+                            if (in_array($NifFix[$i], $num)) {
+                                $true++;
+                            } else {
+                                $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
+                                break;
+                            }
+                        }
+                        if (true == 8) {
+                            rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $NifFix . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
+                        }
+                    } else {
+                        $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
+                    }
                 }
             } elseif (in_array($NifFix[8], $abc)) {
                 for ($i = 0; $i < 7; $i++) {
@@ -125,31 +145,29 @@ class UploadPayrolls implements ShouldQueue
                     }
                 }
                 if (true == 8) {
-                    rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedCostsImputs/' . $NifFix . '_' . $month . $year . '_' . $i . '.pdf'));
+                    $true = 0;
+                    if (in_array($DniFix[8], $abc)) {
+                        for ($i = 0; $i < 7; $i++) {
+                            if (in_array($NifFix[$i], $num)) {
+                                $true++;
+                            } else {
+                                $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
+                                break;
+                            }
+                        }
+                        if (true == 8) {
+                            rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $NifFix . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
+                        }
+                    } else {
+                        $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
+                    }
                 }
             } else {
                 $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
             }
-
-
-            if (in_array($DniFix[8], $abc)) {
-                for ($i = 0; $i < 7; $i++) {
-                    if (in_array($NifFix[$i], $num)) {
-                        $true++;
-                    } else {
-                        $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
-                        break;
-                    }
-                }
-                if (true == 8) {
-                    rename(public_path('storage/media/temp/' . $fileNameNoExt . '_' . $i . '.pdf'), public_path('storage/media/renamedCostsImputs/' . $NifFix . '_' . $month . $year . '_' . $i . '.pdf'));
-                }
-            } else {
-                $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
-            }
         }
 
-        $files = glob(public_path('storage/media/temp/*'));
+        $files = glob(public_path('storage/media/payrollsTemp/' . $filename . '_' . '*.*'));
         foreach ($files as $file) {
             if (is_file($file)) {
                 unlink($file);
@@ -159,15 +177,13 @@ class UploadPayrolls implements ShouldQueue
         // move to month and year folder
 
         $path = public_path('/storage/media/payrolls/' . $year);
-
-        $uploadError = array(null);
+        $files = glob(public_path('storage/media/payrollsTemp/*'));
+        $uploadError = array();
 
         if (!File::exists($path)) {
             File::makeDirectory($path, 0777, true);
             $path = public_path('/storage/media/payrolls/' . $year . '/' . $month);
             File::makeDirectory($path, 0777, true);
-
-            $files = glob(public_path('storage/media/renamedPayrolls/*'));
 
             foreach ($files as $file) {
                 $filename = basename($file);
@@ -176,39 +192,49 @@ class UploadPayrolls implements ShouldQueue
 
                 // check if the employee is already created or not
 
-                if (Employee::where('dni', $nif)->exists()) {
+                if (Employee::where('dni', '=', $dni)->exists()) {
+                    if ($monthInput . $yearInput == substr($filename, 20, 7)) {
+                        rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
+                        $payroll = new Payroll();
+                        $payroll->employee_id = Db::Table('employees')->where('dni', '=',  $dni)->value('id');
+                        $payroll->filename = $path . $filename;
+                        $payroll->year = $year;
+                        $payroll->month = $month;
+                        $payroll->save();
+                    } else {
+                        unlink(public_path('storage/media/payrollsTemp/' . $filename));
+                        $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                    }
                 } else {
                     try {
                         $employee = new Employee();
-                        $userId = Db::Table('users')->where('nif', $nif)->value('id');
+                        $userId = Db::Table('users')->where('nif', '=',  $nif)->value('id');
                         $employee->user_id = $userId;
                         $employee->dni = $dni;
                         $employee->save();
+
+                        if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
+                            rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
+                            $payroll = new Payroll();
+                            $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
+                            $payroll->filename = $path . $filename;
+                            $payroll->year = $year;
+                            $payroll->month = $month;
+                            $payroll->save();
+                        } else {
+                            unlink(public_path('storage/media/payrollsTemp/' . $filename));
+                            $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                        }
                     } catch (\Throwable $th) {
                         $uploadError[] = "No se ha podido agregar la nómina de la empresa " . $nif . ", compruebe si la empresa no está creada aún.";
-                        break;
+                        continue;
                     }
-                }
-
-                if ($monthInput . $yearInput == substr($filename, 20, 7)) {
-                    rename(public_path('storage/media/renamedPayrolls/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
-                    $payroll = new Payroll();
-                    $payroll->employee_id = Db::Table('employees')->where('dni',)->value('id');
-                    $payroll->filename = $path . $filename;
-                    $payroll->year = $year;
-                    $payroll->month = $month;
-                    $payroll->save();
-                } else {
-                    unlink(public_path('storage/media/renamedPayrolls/' . $filename));
-                    $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
                 }
             }
         } else {
             $path = public_path('/storage/media/payrolls/' . $year . '/' . $month);
             if (!File::exists($path)) {
                 File::makeDirectory($path, 0777, true);
-
-                $files = glob(public_path('storage/media/renamedPayrolls/*'));
 
                 foreach ($files as $file) {
                     $filename = basename($file);
@@ -217,36 +243,46 @@ class UploadPayrolls implements ShouldQueue
 
                     // check if the employee is already created or not
 
-                    if (Employee::where('dni', $dni)->exists()) {
+                    if (Employee::where('dni', '=', $dni)->exists()) {
+                        if ($monthInput . $yearInput == substr($filename, 20, 7)) {
+                            rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
+                            $payroll = new Payroll();
+                            $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
+                            $payroll->filename = $path . $filename;
+                            $payroll->year = $year;
+                            $payroll->month = $month;
+                            $payroll->save();
+                        } else {
+                            unlink(public_path('storage/media/payrollsTemp/' . $filename));
+                            $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                        }
                     } else {
                         try {
                             $employee = new Employee();
-                            $userId = Db::Table('users')->where('nif', $nif)->value('id');
+                            $userId = Db::Table('users')->where('nif', '=', $nif)->value('id');
                             $employee->user_id = $userId;
                             $employee->dni = $dni;
                             $employee->save();
+
+                            if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
+                                rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
+                                $payroll = new Payroll();
+                                $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
+                                $payroll->filename = $path . $filename;
+                                $payroll->year = $year;
+                                $payroll->month = $month;
+                                $payroll->save();
+                            } else {
+                                unlink(public_path('storage/media/payrollsTemp/' . $filename));
+                                $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                            }
                         } catch (\Throwable $th) {
                             $uploadError[] = "No se ha podido agregar la nómina de la empresa " . $nif . ", compruebe si la empresa no está creada aún.";
-                            break;
+                            continue;
                         }
-                    }
-
-                    if ($monthInput . $yearInput == substr($filename, 20, 7)) {
-                        rename(public_path('storage/media/renamedPayrolls/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
-                        $payroll = new Payroll();
-                        $payroll->employee_id = Db::Table('employees')->where('dni', $dni)->value('id');
-                        $payroll->filename = $path . $filename;
-                        $payroll->year = $year;
-                        $payroll->month = $month;
-                        $payroll->save();
-                    } else {
-                        unlink(public_path('storage/media/renamedPayrolls/' . $filename));
-                        $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
                     }
                 }
             } else {
-                $files = glob(public_path('storage/media/renamedPayrolls/*'));
-
                 $path = public_path('/storage/media/payrolls/' . $year . '/' . $month);
 
                 foreach ($files as $file) {
@@ -256,51 +292,64 @@ class UploadPayrolls implements ShouldQueue
 
                     // check if the employee is already created or not
 
-                    if (Employee::where('dni', $dni)->exists()) {
-                    } else {
-                        try {
-                            $employee = new Employee();
-                            $userId = Db::Table('users')->where('nif', $nif)->value('id');
-                            $employee->user_id = $userId;
-                            $employee->dni = $dni;
-                            $employee->save();
-                        } catch (\Throwable $th) {
-                            $uploadError[] = "No se ha podido agregar la nómina de la empresa " . $nif . ", compruebe si no está creada aún.";
-                            break;
-                        }
-                    }
-
-                    if ($monthInput . $yearInput == substr($filename, 20, 7)) {
-                        if (File::exists($path . '/' . $filename)) {
-                            rename(public_path('storage/media/renamedPayrolls/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
-                            Payroll::where('filename', $filename)->delete();
+                    if (Employee::where('dni', '=', $dni)->exists()) {
+                        if ($monthInput . $yearInput == substr($filename, 20, 7)) {
+                            rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
                             $payroll = new Payroll();
-                            $payroll->employee_id = Db::Table('employees')->where('dni', $dni)->value('id');
+                            $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
                             $payroll->filename = $path . $filename;
                             $payroll->year = $year;
                             $payroll->month = $month;
                             $payroll->save();
                         } else {
-                            rename(public_path('storage/media/renamedPayrolls/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
-                            $payroll = new Payroll();
-                            $payroll->employee_id = Db::Table('employees')->where('dni', $dni)->value('id');
-                            $payroll->filename = $path . $filename;
-                            $payroll->year = $year;
-                            $payroll->month = $month;
-                            $payroll->save();
+                            unlink(public_path('storage/media/payrollsTemp/' . $filename));
+                            $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
                         }
                     } else {
-                        unlink(public_path('storage/media/renamedPayrolls/' . $filename));
-                        $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                        try {
+                            $employee = new Employee();
+                            $userId = Db::Table('users')->where('nif', '=', $nif)->value('id');
+                            $employee->user_id = $userId;
+                            $employee->dni = $dni;
+                            $employee->save();
+
+                            if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
+                                rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
+                                $payroll = new Payroll();
+                                $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
+                                $payroll->filename = $path . $filename;
+                                $payroll->year = $year;
+                                $payroll->month = $month;
+                                $payroll->save();
+                            } else {
+                                unlink(public_path('storage/media/payrollsTemp/' . $filename));
+                                $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                            }
+                        } catch (\Throwable $th) {
+                            $uploadError[] = "No se ha podido agregar la nómina de la empresa " . $nif . ", compruebe si la empresa no está creada aún.";
+                            continue;
+                        }
                     }
                 }
             }
         }
 
-        if ($uploadError[0] == null) {
-            $uploadError[0] = 'Todas las nóminas se han subido correctamente';
-        }
-
         Mail::to("raluido@gmail.com")->send(new UploadPayrollsNotification($uploadError));
+
+        array_map('unlink', glob(public_path('storage/media/payrollsTemp/' . '*.*')));
+    }
+
+    /**
+     * The job failed to process.
+     *
+     * @param  Exception $exception
+     * @return void
+     */
+    public function failed()
+    {
+        array_map('unlink', glob(public_path('storage/media/payrollsTemp/' . '*.*')));
+
+        $jobError = "Error en la carga de Nóminas, vuelva a intentarlo gracias ;)";
+        Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError));
     }
 }

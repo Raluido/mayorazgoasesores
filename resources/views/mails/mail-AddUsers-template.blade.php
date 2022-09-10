@@ -1,7 +1,7 @@
 <h4>Listado de empresas para acceder al area de clientes</h4>
 
 <div class="w-50 mx-auto mt-4">
-    @if ($usersNifPass)
+    @if (!empty($usersNifPass))
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -23,8 +23,6 @@
 
 <h4>Listado de empresas que han dado error</h4>
 
-@if ($uploadError)
-    @foreach ($uploadError as $index)
-        <p>{{ $index }}</p>
-    @endforeach
+@if (empty($uploadError))
+    <p>No han habido errores</p>
 @endif
