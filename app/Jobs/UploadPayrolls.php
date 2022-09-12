@@ -198,7 +198,7 @@ class UploadPayrolls implements ShouldQueue
                         rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
                         $payroll = new Payroll();
                         $payroll->employee_id = Db::Table('employees')->where('dni', '=',  $dni)->value('id');
-                        $payroll->filename = $path . $filename;
+                        $payroll->filename = $path . '/' . $filename;
                         $payroll->year = $year;
                         $payroll->month = $month;
                         $payroll->save();
@@ -219,7 +219,7 @@ class UploadPayrolls implements ShouldQueue
                             rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
                             $payroll = new Payroll();
                             $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
-                            $payroll->filename = $path . $filename;
+                            $payroll->filename = $path . '/' . $filename;
                             $payroll->year = $year;
                             $payroll->month = $month;
                             $payroll->save();
@@ -250,7 +250,7 @@ class UploadPayrolls implements ShouldQueue
                             rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
                             $payroll = new Payroll();
                             $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
-                            $payroll->filename = $path . $filename;
+                            $payroll->filename = $path . '/' . $filename;
                             $payroll->year = $year;
                             $payroll->month = $month;
                             $payroll->save();
@@ -271,7 +271,7 @@ class UploadPayrolls implements ShouldQueue
                                 rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
                                 $payroll = new Payroll();
                                 $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
-                                $payroll->filename = $path . $filename;
+                                $payroll->filename = $path . '/' . $filename;
                                 $payroll->year = $year;
                                 $payroll->month = $month;
                                 $payroll->save();
@@ -300,7 +300,7 @@ class UploadPayrolls implements ShouldQueue
                             rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
                             $payroll = new Payroll();
                             $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
-                            $payroll->filename = $path . $filename;
+                            $payroll->filename = $path . '/' . $filename;
                             $payroll->year = $year;
                             $payroll->month = $month;
                             $payroll->save();
@@ -321,7 +321,7 @@ class UploadPayrolls implements ShouldQueue
                                 rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
                                 $payroll = new Payroll();
                                 $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
-                                $payroll->filename = $path . $filename;
+                                $payroll->filename = $path . '/' . $filename;
                                 $payroll->year = $year;
                                 $payroll->month = $month;
                                 $payroll->save();

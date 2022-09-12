@@ -131,23 +131,22 @@ class PayrollsController extends Controller
         }
     }
 
-    public function deletePayrolls(Payroll $payroll, $month, $year)
+    public function deletePayrolls(Payroll $payroll)
     {
-        $payroll->delete();
+        $payrollId = DB::Table('payrolls')->where('id', '=', $payroll->id)->value('filename');
+        unlink($payrollId);
 
-        $payrolls = DB::Table('payrolls')->where('year', $year)->where('month', $month)->paginate(10);
-        unlink($payroll->filename);
+        $payroll->delete();
 
         return redirect()->route('payrolls.showForm')->with('payrolls');
     }
 
-    public function deleteAllPayrolls($month, $year)
+    public function deleteAllPayrolls()
     {
-        DB::table('payrolls')->where('year', $year)->where('month', $month)->delete();
-
-        File::deleteDirectory(public_path('/storage/media/payrolls/' . $year . '/' . $month));
-
-        $payrolls = DB::Table('payrolls')->where('year', $year)->where('month', $month)->paginate(10);
+        File::deleteDirectory(public_path('/storage/media/payrolls'));
+        $path = public_path('/storage/media/payrolls');
+        File::makeDirectory($path, 0777, true);
+        DB::table('payrolls')->delete();
 
         return redirect()->route('payrolls.showForm')->with('payrolls');
     }

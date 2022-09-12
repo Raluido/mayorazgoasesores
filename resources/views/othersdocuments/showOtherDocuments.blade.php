@@ -27,7 +27,7 @@
                             <td>
                                 {!! Form::open([
                                     'method' => 'DELETE',
-                                    'route' => ['othersdocuments.deleteOthersDocuments', $index->id, $index->month, $index->year],
+                                    'route' => ['othersdocuments.deleteOthersDocuments', $index->id],
                                     'style' => 'display:inline',
                                 ]) !!}
                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}

@@ -10,6 +10,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th scope="col" width="1%">id</th>
                         <th scope="col" width="5%">Nif</th>
                         <th scope="col" width="5%">Mes</th>
                         <th scope="col" width="5%">Año</th>
@@ -19,13 +20,14 @@
                 <tbody>
                     @foreach ($costsimputs as $index)
                         <tr>
+                            <td>{{ $index->id }}</td>
                             <td>{{ $index->nif }}</td>
                             <td>{{ $index->month }}</td>
                             <td>{{ $index->year }}</td>
                             <td>
                                 {!! Form::open([
                                     'method' => 'DELETE',
-                                    'route' => ['costsimputs.deleteCostsImputs', $index->nif, $index->month, $index->year],
+                                    'route' => ['costsimputs.deleteCostsImputs', $index->id],
                                     'style' => 'display:inline',
                                 ]) !!}
                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
@@ -41,7 +43,7 @@
                             class="text-decoration-none text-white">Volver</a></button>
                 </div>
                 <div class=""><button class="btn btn-danger"><a class="text-decoration-none text-white"
-                            href="{{ url('costsimputs/deleteAll/' . $month . '/' . $year) }}">Eliminar todos</a></button>
+                            href="{{ url('costsimputs/deleteAll') }}">Eliminar todos</a></button>
                 </div>
             </div>
         </div>

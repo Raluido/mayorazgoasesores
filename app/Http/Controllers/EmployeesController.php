@@ -124,6 +124,10 @@ class EmployeesController extends Controller
      */
     public function destroy(Employee $employee)
     {
+        $payrolls = Db::Table('payrolls')->where('employee_id', '=', $employee->id)->select('filename')->get();
+        foreach ($payrolls as $index) {
+            unlink($index);
+        }
         $employee->delete();
 
         return redirect()->route('employees.index')

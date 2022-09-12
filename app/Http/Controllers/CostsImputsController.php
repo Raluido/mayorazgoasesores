@@ -170,27 +170,29 @@ class CostsImputsController extends Controller
         }
     }
 
-    public function deleteCostsImputs($nif, $month, $year)
+    /**
+     * Delete costsimputs data
+     *
+     * @param CostsImput $costsImput
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteCostsImputs(CostsImput $costsImput)
     {
-        $costsimputs = DB::Table('users')
-            ->join('costs_imputs', 'costs_imputs.user_id', '=', 'users.id')
-            ->where('costs_imputs.year', '=', $year)
-            ->where('costs_imputs.month', '=', $month)
-            ->where('users.nif', '=', $nif)
-            ->delete();
+        $costsimputId = DB::Table('costs_imputs')->where('id', '=', $costsImput->id)->value('filename');
+        unlink($costsimputId);
 
-        $mask = public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $nif . '*.*');
-        array_map('unlink', glob($mask));
+        $costsImput->delete();
 
         return view('costsimputs.showForm', compact('costsimputs'));
     }
 
-    public function deleteAllCostsImputs($month, $year)
+    public function deleteAllCostsImputs()
     {
-
-        DB::table('costs_imputs')->where('year', $year)->where('month', $month)->delete();
-
-        File::deleteDirectory(public_path('/storage/media/costsImputs/' . $year . '/' . $month));
+        File::deleteDirectory(public_path('/storage/media/costsImputs'));
+        $path = public_path('/storage/media/costsImputs');
+        File::makeDirectory($path, 0777, true);
+        DB::table('costs_imputs')->delete();
 
         return view('costsimputs.showForm');
     }

@@ -27,7 +27,7 @@
                             <td>
                                 {!! Form::open([
                                     'method' => 'DELETE',
-                                    'route' => ['payrolls.deletePayrolls', $index->id, $index->month, $index->year],
+                                    'route' => ['payrolls.deletePayrolls', $index->id],
                                     'style' => 'display:inline',
                                 ]) !!}
                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
@@ -42,9 +42,8 @@
                     <button class="btn btn-secondary"><a href="{{ route('home.index') }}"
                             class="text-decoration-none text-white">Volver</a></button>
                 </div>
-                <div class=""><button class="btn btn-danger"><a
-                            class="text-decoration-none text-white"
-                            href="{{ url('payrolls/deleteAll/' . $month . '/' . $year) }}">Eliminar todas</a></button>
+                <div class=""><button class="btn btn-danger"><a class="text-decoration-none text-white"
+                            href="{{ url('payrolls/deleteAll') }}">Eliminar todas</a></button>
                 </div>
             </div>
         </div>

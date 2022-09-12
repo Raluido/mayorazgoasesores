@@ -85,8 +85,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/download/{month}/{year}', 'PayrollsController@downloadPayrolls')->name('payrolls.downloadPayrolls');
             Route::get('/showForm', 'PayrollsController@showForm')->name('payrolls.showForm');
             Route::get('/show', 'PayrollsController@showPayrolls')->name('payrolls.showPayrolls');
-            Route::delete('/delete/{payroll}/{month}/{year}', 'PayrollsController@deletePayrolls')->name('payrolls.deletePayrolls');
-            Route::get('/deleteAll/{month}/{year}', 'PayrollsController@deleteAllPayrolls')->name('payrolls.deleteAllPayrolls');
+            Route::delete('/delete/{payroll}', 'PayrollsController@deletePayrolls')->name('payrolls.deletePayrolls');
+            Route::get('/deleteAll', 'PayrollsController@deleteAllPayrolls')->name('payrolls.deleteAllPayrolls');
         });
 
         Route::group(['prefix' => 'costsimputs'], function () {
@@ -98,8 +98,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/download/{month}/{year}', 'CostsImputsController@downloadAllCostsImputs')->name('costsimputs.downloadAllCostsImputs');
             Route::get('/showForm', 'CostsImputsController@showForm')->name('costsimputs.showForm');
             Route::get('/show', 'CostsImputsController@showCostsImputs')->name('costsimputs.showCostsImputs');
-            Route::delete('/delete/{costsimput}/{month}/{year}', 'CostsImputsController@deleteCostsImputs')->name('costsimputs.deleteCostsImputs');
-            Route::get('/deleteAll/{month}/{year}', 'CostsImputsController@deleteAllCostsImputs')->name('costsimputs.deleteAllCostsImputs');
+            Route::delete('/delete/{costsimput}', 'CostsImputsController@deleteCostsImputs')->name('costsimputs.deleteCostsImputs');
+            Route::get('/deleteAll', 'CostsImputsController@deleteAllCostsImputs')->name('costsimputs.deleteAllCostsImputs');
         });
 
         Route::group(['prefix' => 'othersdocuments'], function () {
@@ -110,8 +110,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('/download', 'OthersDocumentsController@downloadOthersDocuments')->name('othersdocuments.downloadOthersDocuments');
             Route::get('/showForm', 'OthersDocumentsController@showForm')->name('othersdocuments.showForm');
             Route::post('/show', 'OthersDocumentsController@showOthersDocuments')->name('othersdocuments.showOthersDocuments');
-            Route::delete('/delete/{otherdocument}/{month}/{year}', 'OthersDocumentsController@deleteOthersDocuments')->name('othersdocuments.deleteOthersDocuments');
-            Route::get('/deleteAll/{month}/{year}', 'OthersDocumentsController@deleteAllOtherDocuments')->name('othersdocuments.deleteAllOthersDocuments');
+            Route::delete('/delete/{otherdocument}', 'OthersDocumentsController@deleteOthersDocuments')->name('othersdocuments.deleteOthersDocuments');
+            Route::get('/deleteAll', 'OthersDocumentsController@deleteAllOtherDocuments')->name('othersdocuments.deleteAllOthersDocuments');
         });
 
         Route::group(['prefix' => 'posts'], function () {
