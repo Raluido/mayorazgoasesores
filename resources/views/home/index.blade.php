@@ -12,6 +12,7 @@
                             <a href="{{ route('users.addUsersAutoForm') }}" class="nav-link px-2 text-dark">Añadir empresas
                                 automaticamente</a>
                             <a class="nav-link px-2 text-dark" href="{{ route('users.index') }}">Listar empresas</a>
+                            <a class="nav-link px-2 text-dark" href="{{ route('employees.index') }}">Listar empleados</a>
                         </div>
                         <div class="border col-4" style="height: 160px">
                             <h5>Nóminas</h5>

@@ -85,7 +85,7 @@ class AddUsersAuto implements ShouldQueue
 
             $findme2 = 'EMPRESA';
             $pos2 = strpos($content, $findme2);
-            $Name = substr($content, ($pos2 + 37), 31);
+            $Name = substr($content, ($pos2 + 37), 33);
 
             $findme1 = 'D.N.I.';
             $pos1 = strpos($content, $findme1);

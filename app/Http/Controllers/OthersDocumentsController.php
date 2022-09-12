@@ -134,7 +134,7 @@ class OthersDocumentsController extends Controller
 
             return view('othersdocuments.uploadForm')->with('successMsg', "Los documentos de imputación de costes se han subido correctamente, gracias ;)");
         } else {
-            echo '<div class="alert alert-warning"><strong>Warning!</strong>El ' . $nif . 'corresponde a una empresa que no ha sido creada aún.</div>';
+            echo '<div class="alert alert-warning"><strong>Warning!</strong>El ' . $nif . ' corresponde a una empresa que no ha sido creada aún.</div>';
         }
     }
 

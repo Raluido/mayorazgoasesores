@@ -2,11 +2,11 @@
 
 @section('content')
     <div class="bg-light p-4 rounded">
-        <h1>Emploados</h1>
+        <h1>Empleados</h1>
         <div class="d-flex justify-content-end">
             <div class="">
-                <button class="btn btn-primary me-5"><a href="{{ route('users.create') }}"
-                        class="text-decoration-none text-white">Añadir nueva empleado</a>
+                <button class="btn btn-primary me-5"><a href="{{ route('employees.create') }}"
+                        class="text-decoration-none text-white">Añadir nuevo empleado</a>
             </div>
             <div class="">
                 <button class="btn btn-danger" onclick="confirmation()">Eliminar
@@ -23,9 +23,10 @@
             <thead>
                 <tr>
                     <th scope="col" width="1%">#</th>
-                    <th scope="col" width="15%">Empresa</th>
-                    <th scope="col" width="15%">Nif</th>
-                    <th scope="col" width="15%">Dni</th>
+                    <th scope="col" width="10%">Empresa</th>
+                    <th scope="col" width="8%">Nif</th>
+                    <th scope="col" width="8%">Dni</th>
+                    <th scope="col" width="10%">Empleado</th>
                     <th scope="col" width="1%" colspan="3"></th>
                 </tr>
             </thead>
@@ -36,6 +37,7 @@
                         <td>{{ $index->name }}</td>
                         <td>{{ $index->nif }}</td>
                         <td>{{ $index->dni }}</td>
+                        <td>{{ $index->employeeName }}</td>
                         <td><a href="{{ route('employees.show', $index->id) }}" class="btn btn-warning btn-sm">Mostrar</a>
                         </td>
                         <td><a href="{{ route('employees.edit', $index->id) }}" class="btn btn-info btn-sm">Editar</a>
@@ -58,7 +60,7 @@
                     class="text-decoration-none text-white">Volver</a></button>
         </div>
         <div class="d-flex mb-5">
-            {!! $users->links() !!}
+            {!! $employees->links() !!}
         </div>
 
     </div>

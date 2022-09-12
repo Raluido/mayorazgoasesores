@@ -18,6 +18,8 @@
                 @endforeach
             </tbody>
         </table>
+    @else
+        <p>No se ha creado ninguna empresa nueva</p>
     @endif
 </div>
 

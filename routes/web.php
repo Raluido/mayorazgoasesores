@@ -29,6 +29,17 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('/login', 'LoginController@login')->name('login.perform');
     });
 
+    /**
+     * Reset password routes
+     */
+
+    Route::group(['prefix' => 'forget-password'], function () {
+        Route::get('/', 'ForgotPasswordController@showForgetPasswordForm')->name('forget.password.get');
+        Route::post('/', 'ForgotPasswordController@submitForgetPasswordForm')->name('forget.password.post');
+        Route::get('/{token}', 'ForgotPasswordController@showResetPasswordForm')->name('reset.password.get');
+        Route::post('reset-password', 'ForgotPasswordController@submitResetPasswordForm')->name('reset.password.post');
+    });
+
     Route::group(['middleware' => ['auth', 'permission']], function () {
         /**
          * Logout Routes
@@ -48,10 +59,18 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('/createAuto', 'UsersController@addUsersAuto')->name('users.addUsersAuto');
         });
 
+        Route::group(['prefix' => 'user'], function () {
+            Route::get('/editData', 'UserController@editData')->name('user.editData');
+            Route::post('/updateData', 'UserController@updateData')->name('user.updateData');
+            Route::get('/editPassword', 'UsersController@editPassword')->name('user.editPassword');
+            Route::post('/updatePassword', 'UsersController@updatePassword')->name('user.updatePassword');
+        });
+
         Route::group(['prefix' => 'employees'], function () {
             Route::get('/', 'EmployeesController@index')->name('employees.index');
             Route::get('/create', 'EmployeesController@create')->name('employees.create');
             Route::post('/create', 'EmployeesController@store')->name('employees.store');
+            Route::post('/create', 'EmployeesController@show')->name('employees.show');
             Route::get('/{employee}/edit', 'EmployeesController@edit')->name('employees.edit');
             Route::patch('/{employee}/update', 'EmployeesController@update')->name('employees.update');
             Route::delete('/{employee}/delete', 'EmployeesController@destroy')->name('employees.destroy');

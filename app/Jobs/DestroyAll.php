@@ -24,6 +24,7 @@ use App\Mail\AddUsersNotification;
 use Illuminate\Filesystem\Filesystem;
 use App\Mail\JobErrorNotification;
 use Exception;
+use Illuminate\Support\Facades\File;
 
 
 class DestroyAll implements ShouldQueue
@@ -53,8 +54,10 @@ class DestroyAll implements ShouldQueue
 
         Db::Table('employees')->delete();
 
+        File::deleteDirectory(public_path('/storage/media/costsImputs'));
         Db::Table('costs_imputs')->delete();
 
+        File::deleteDirectory(public_path('/storage/media/othersDocuments'));
         Db::Table('others_documents')->delete();
 
         Db::Table('users')->where('id', '>', '3')->delete();

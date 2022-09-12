@@ -17,6 +17,7 @@ class CreateEmployeesTable extends Migration
             $table->id()->unsingned();
             $table->foreignId('user_id')->constrained('users');
             $table->string('dni')->unique();
+            $table->string('name');
             $table->timestamps();
         });
     }

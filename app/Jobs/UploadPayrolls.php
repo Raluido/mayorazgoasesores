@@ -99,6 +99,7 @@ class UploadPayrolls implements ShouldQueue
             $month = substr($content, ($pos2 + 79), 3);
             $year = '20' . substr($content, ($pos2 + 83), 2);
 
+            $employeeName = substr($content, 0, 50);
 
             // check if the nif format is correct
             $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -211,6 +212,7 @@ class UploadPayrolls implements ShouldQueue
                         $userId = Db::Table('users')->where('nif', '=',  $nif)->value('id');
                         $employee->user_id = $userId;
                         $employee->dni = $dni;
+                        $employee->name = $employeeName;
                         $employee->save();
 
                         if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
@@ -262,6 +264,7 @@ class UploadPayrolls implements ShouldQueue
                             $userId = Db::Table('users')->where('nif', '=', $nif)->value('id');
                             $employee->user_id = $userId;
                             $employee->dni = $dni;
+                            $employee->name = $employeeName;
                             $employee->save();
 
                             if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
@@ -311,6 +314,7 @@ class UploadPayrolls implements ShouldQueue
                             $userId = Db::Table('users')->where('nif', '=', $nif)->value('id');
                             $employee->user_id = $userId;
                             $employee->dni = $dni;
+                            $employee->name = $employeeName;
                             $employee->save();
 
                             if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {

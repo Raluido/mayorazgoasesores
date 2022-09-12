@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UpdateUserPassword;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Mail\ContactMail;
@@ -178,5 +179,38 @@ class UsersController extends Controller
         }
 
         return view('users.addUsersAutoForm')->with('successMsg', "Estamos añadiendo las empresas, tardaremos unos minutos, gracias ;)");
+    }
+
+    public function editPassword()
+    {
+        $user = auth()->user();
+
+        return view('user.editPassword')->with('user', $user);
+    }
+
+    public function updatePassword(Request $request, UpdateUserPassword $updateRequest)
+    {
+        $user = User::find(auth()->user()->id);
+
+        $user->password = $request->input('password');
+        $user->update($updateRequest->validated());
+
+        return redirect()->route('user.editPassword')->with('user', $user)->withSuccess(__('Se ha editado con éxito'));
+    }
+
+    public function editData()
+    {
+        $user = auth()->user();
+        return view('user.editData')->with('user', $user);
+    }
+
+    public function updateData(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->update();
+
+        return redirect()->route('user.editData')->with('user', $user)->withSuccess(__('Se ha editado con éxito'));
     }
 }

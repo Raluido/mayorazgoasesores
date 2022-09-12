@@ -15,7 +15,7 @@ use App\Jobs\DestroyAllEmployees;
 use DB;
 
 
-class UsersController extends Controller
+class EmployeesController extends Controller
 {
     /**
      * Display all users
@@ -27,11 +27,10 @@ class UsersController extends Controller
     {
         $employees = Db::Table('users')
             ->join('employees', 'employees.user_id', '=', 'users.id')
-            ->select('users.name', 'users.nif', 'employees.dni', 'employees.id')
-            ->get()
-            ->toArray();
+            ->select('users.name', 'users.nif', 'employees.dni', 'employees.id', 'employees.name as employeeName')
+            ->paginate(10);
 
-        return view('employee.index', compact('employees'));
+        return view('employees.index', compact('employees'));
     }
 
     /**
@@ -52,15 +51,19 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validated();
+        $userId = Db::Table('users')->where('nif', '=', $request->input('nif'))->select('id')->exists();
 
-        $employee = new Employee();
-        $userId = Db::Table('users')->where('nif', '=', $request->input('nif'))->value('users.id')->get();
-        $employee->user_id = $userId;
-        $employee->dni = $request->input('dni');
-        $employee->save();
+        if ($userId) {
+            $employee = new Employee();
+            $userId = Db::Table('users')->where('nif', '=', $request->input('nif'))->value('users.id')->get();
+            $employee->user_id = $userId;
+            $employee->dni = $request->input('dni');
+            $employee->save($request->validated());
 
-        return redirect()->route('employees.index')->withSuccess(__('Empleado creado correctamente.'));
+            return redirect()->route('employees.index')->withSuccess(__('Empleado creado correctamente.'));
+        } else {
+            return redirect()->route('employees.index')->withErrors(__('No existe una empresa asociada a ese nif en nuestra base de datos, para crear un empleado, primero tendrá que crearla.'));
+        }
     }
 
     public function show(Employee $employee)

@@ -72,10 +72,8 @@ class UploadCostsImputs implements ShouldQueue
 
         // read and rename each .pdf
         $files = glob(public_path('storage/media/costsImputsTemp/*'));
-        $x = 0;
 
         foreach ($files as $index) {
-            $x++;
             $pdfParser = new Parser();
             $pdf = $pdfParser->parseFile($index);
             $content = $pdf->getText();
@@ -143,6 +141,8 @@ class UploadCostsImputs implements ShouldQueue
 
             $true = 0;
             $oldFilename = basename($index);
+            $x = 0;
+            $oldNif = " ";
 
             if (in_array($NifFix[0], $abc)) {
                 for ($i = 1; $i < 8; $i++) {
@@ -154,6 +154,12 @@ class UploadCostsImputs implements ShouldQueue
                     }
                 }
                 if (true == 8) {
+                    if ($oldNif != $NifFix) {
+                        $x = 0;
+                    } else {
+                        $x++;
+                    }
+                    $oldNif = $index;
                     rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $NifFix . '_' . $month . $year . '_' . $x . '.pdf'));
                 }
             } else {
@@ -167,6 +173,12 @@ class UploadCostsImputs implements ShouldQueue
                         }
                     }
                     if (true == 8) {
+                        if ($oldNif != $NifFix) {
+                            $x = 0;
+                        } else {
+                            $x++;
+                        }
+                        $oldNif = $index;
                         rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $NifFix . '_' . $month . $year . '_' . $x . '.pdf'));
                     }
                 } else {

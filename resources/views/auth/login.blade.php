@@ -14,8 +14,8 @@
                 @include('layouts.partials.messages')
 
                 <div class="form-group form-floating mb-3">
-                    <input type="text" class="form-control" name="nif" value="{{ old('nif') }}"
-                        placeholder="Nif" required="required" autofocus>
+                    <input type="text" class="form-control" name="nif" value="{{ old('nif') }}" placeholder="Nif"
+                        required="required" autofocus>
                     <label for="floatingName">Email o Nif</label>
                     @if ($errors->has('nif'))
                         <span class="text-danger text-left">{{ $errors->first('nif') }}</span>
@@ -25,13 +25,20 @@
                 <div class="form-group form-floating mb-3">
                     <input type="password" class="form-control" name="password" value="{{ old('password') }}"
                         placeholder="Password" required="required">
-                    <label for="floatingPassword">Password</label>
+                    <label for="floatingPassword">Contraseña</label>
                     @if ($errors->has('password'))
                         <span class="text-danger text-left">{{ $errors->first('password') }}</span>
                     @endif
                 </div>
-
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+                <div class="d-flex justify-content-start mt-3">
+                    <button class="btn btn-lg btn-primary" type="submit">Login</button>
+                    <div class="checkbox d-flex align-items-center ms-3">
+                        <label>
+                            <a class="text-decoration-none text-primary" href="{{ route('forget.password.get') }}">Olvidé la
+                                contraseña</a>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
         @include('auth.partials.copy')
