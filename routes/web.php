@@ -60,8 +60,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         });
 
         Route::group(['prefix' => 'user'], function () {
-            Route::get('/editData', 'UserController@editData')->name('user.editData');
-            Route::post('/updateData', 'UserController@updateData')->name('user.updateData');
+            Route::get('/editData', 'UsersController@editData')->name('user.editData');
+            Route::post('/updateData', 'UsersController@updateData')->name('user.updateData');
             Route::get('/editPassword', 'UsersController@editPassword')->name('user.editPassword');
             Route::post('/updatePassword', 'UsersController@updatePassword')->name('user.updatePassword');
         });

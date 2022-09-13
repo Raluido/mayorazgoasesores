@@ -75,8 +75,7 @@ class PayrollsController extends Controller
                 ->where('payrolls.year', '=', $year)
                 ->where('payrolls.month', '=', $month)
                 ->select('payrolls.filename')
-                ->get()
-                ->toArray();
+                ->get();
 
             if ($files != null) {
 
@@ -87,7 +86,7 @@ class PayrollsController extends Controller
 
                 if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                     foreach ($files as $file) {
-                        $filename = basename($file);
+                        $filename = basename((array_values((array)$file))[0]);
                         $temp = (array_values((array)$filename))[0];
                         $zip->addFile($public_dir . '/' . $temp, $temp);
                     }

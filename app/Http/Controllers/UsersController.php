@@ -136,90 +136,55 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        $check = DB::Table('users')
+        $payrollsId = DB::Table('users')
             ->join('employees', 'employees.user_id', '=', 'users.id')
             ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
             ->where('user_id', '=', $user->id)
-            ->select('payrolls.id')
-            ->exists();
+            ->select('payrolls.filename')
+            ->get();
 
-        $check1 = Db::Table('employees')->where('user_id', '=', $user->id)->exists();
-        $check2 = Db::Table('costs_imputs')->where('user_id', '=', $user->id)->exists();
-        $check3 = Db::Table('others_documents')->where('user_id', '=', $user->id)->exists();
-
-        if ($check) {
-            $payrollFilename = DB::Table('users')
-                ->join('employees', 'employees.user_id', '=', 'users.id')
-                ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
-                ->where('user_id', '=', $user->id)
-                ->value('payrolls.filename');
-            foreach ($payrollFilename as $index) {
-                unlink($index);
+        if ($payrollsId != array()) {
+            foreach ($payrollsId as $index) {
+                unlink((array_values((array)$index))[0]);
+                Db::Table('payrolls')
+                    ->where('filename', '=', (array_values((array)$index))[0])
+                    ->delete();
             }
-            $payrollsId = DB::Table('users')
-                ->join('employees', 'employees.user_id', '=', 'users.id')
-                ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
-                ->where('user_id', '=', $user->id)
-                ->value('payrolls.id');
-
-            Db::Table('payrolls')->whereIn('id', '=', $payrollsId)->delete();
-
-
-            $check = Db::Table('employees')->where('user_id', '=', $user->id)->exists();
-
-            if ($check) {
-                Db::Table('employees')->where('user_id', '=', $user->id)->delete();
-            }
-
-            $check = Db::Table('costs_imputs')->where('user_id', '=', $user->id)->exists();
-
-            if ($check) {
-                $costsimputsId = Db::Table('costs_imputs')->where('user_id', '=', $user->id)->value('filename');
-                foreach ($costsimputsId as $index) {
-                    unlink($index);
-                }
-                Db::Table('costs_imputs')->where('user_id', '=', $user->id)->delete();
-            }
-
-            $check = Db::Table('others_documents')->where('user_id', '=', $user->id)->exists();
-
-            if ($check) {
-                $othersdocumentsId = Db::Table('others_documents')->where('user_id', '=', $user->id)->value('filename');
-                foreach ($othersdocumentsId as $index) {
-                    unlink($index);
-                }
-                Db::Table('others_documents')->where('user_id', '=', $user->id)->delete();
-            }
-
-            $user->delete();
-        } elseif ($check1 || $check2 || $check3) {
-
-            if ($check1) {
-                Db::Table('employees')->where('user_id', '=', $user->id)->delete();
-            }
-
-
-            if ($check2) {
-                $costsimputsId = Db::Table('costs_imputs')->where('user_id', '=', $user->id)->value('filename');
-                foreach ($costsimputsId as $index) {
-                    unlink($index);
-                }
-                Db::Table('costs_imputs')->where('user_id', '=', $user->id)->delete();
-            }
-
-
-            if ($check3) {
-                $othersdocumentsId = Db::Table('others_documents')->where('user_id', '=', $user->id)->value('filename');
-                foreach ($othersdocumentsId as $index) {
-                    unlink($index);
-                }
-                Db::Table('others_documents')->where('user_id', '=', $user->id)->delete();
-            }
-
-            $user->delete();
-        } else {
-            $user->delete();
         }
+
+        DB::Table('employees')
+            ->where('user_id', '=', $user->id)
+            ->delete();
+
+        $costsimputsId = DB::Table('costs_imputs')
+            ->where('user_id', '=', $user->id)
+            ->select('filename')
+            ->get();
+
+        if ($costsimputsId != array()) {
+            foreach ($costsimputsId as $index) {
+                unlink((array_values((array)$index))[0]);
+                Db::Table('costs_imputs')
+                    ->where('filename', '=', (array_values((array)$index))[0])
+                    ->delete();
+            }
+        }
+
+        $othersdocumentsId = DB::Table('others_documents')
+            ->where('user_id', '=', $user->id)
+            ->select('filename')
+            ->get();
+
+        if ($othersdocumentsId != array()) {
+            foreach ($othersdocumentsId as $index) {
+                unlink((array_values((array)$index))[0]);
+                Db::Table('others_documents')
+                    ->where('filename', '=', (array_values((array)$index))[0])
+                    ->delete();
+            }
+        }
+
+        $user->delete();
 
         return redirect()->route('users.index')
             ->withSuccess(__('Empresas eliminado correctamente.'));
@@ -271,14 +236,22 @@ class UsersController extends Controller
         return view('user.editPassword')->with('user', $user);
     }
 
-    public function updatePassword(Request $request, UpdateUserPassword $updateRequest)
+
+    /**
+     * Update user password
+     *
+     * @param UpdateUserPassword $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(UpdateUserPassword $request)
     {
         $user = User::find(auth()->user()->id);
 
         $user->password = $request->input('password');
-        $user->update($updateRequest->validated());
+        $user->update($request->validated());
 
-        return redirect()->route('user.editPassword')->with('user', $user)->withSuccess(__('Se ha editado con éxito'));
+        return redirect()->route('user.editPassword')->with('user', $user)->with('successMsg', 'Se ha editado con éxito');
     }
 
     public function editData()

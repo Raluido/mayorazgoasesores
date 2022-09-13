@@ -117,19 +117,24 @@ class EmployeesController extends Controller
 
     public function destroy($id)
     {
-        $check = Db::Table('payrolls')->where('employee_id', '=', $id)->count();
-        $payrolls = Db::Table('payrolls')->where('employee_id', '=', $id)->value('filename');
+        $payrollsId = DB::Table('employees')
+            ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
+            ->where('employee_id', '=', $id)
+            ->select('payrolls.filename')
+            ->get();
 
-        if ($check <= 1) {
-            unlink($payrolls);
-        } else {
-            foreach ($payrolls as $index) {
-                unlink($index);
+        if ($payrollsId != array()) {
+            foreach ($payrollsId as $index) {
+                unlink((array_values((array)$index))[0]);
+                Db::Table('payrolls')
+                    ->where('filename', '=', (array_values((array)$index))[0])
+                    ->delete();
             }
         }
-        Db::Table('payrolls')->where('employee_id', '=', $id)->delete();
 
-        Db::Table('employees')->where('id', '=', $id)->delete();
+        DB::Table('employees')
+            ->where('id', '=', $id)
+            ->delete();
 
         return redirect()->route('employees.index')
             ->withSuccess(__('Empleado eliminado correctamente.'));

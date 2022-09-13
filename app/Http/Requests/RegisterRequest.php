@@ -31,4 +31,12 @@ class RegisterRequest extends FormRequest
             'password_confirmation' => 'required|same:password'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'password.required' => 'La contraseña debe contener al menos una letra mayúscula, una minúscula, un caracter espacial, un número y una longitud de al menos 10 dígitos',
+            'password.min' => 'La contraseña debe contener al menos una letra mayúscula, una minúscula, un caracter espacial, un número y una longitud de al menos 10 dígitos',
+        ];
+    }
 }

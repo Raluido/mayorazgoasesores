@@ -10,6 +10,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th scope="col" width="1%">#</th>
                         <th scope="col" width="30%">Nif</th>
                         <th scope="col" width="30%">Dni</th>
                         <th scope="col" width="10%">Mes</th>
@@ -20,6 +21,7 @@
                 <tbody>
                     @foreach ($payrolls as $index)
                         <tr>
+                            <th scope="row">{{ $index->id }}</th>
                             <td>{{ basename($index->nif) }}</td>
                             <td>{{ basename($index->dni) }}</td>
                             <td>{{ basename($index->month) }}</td>

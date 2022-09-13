@@ -10,6 +10,7 @@ use Mail;
 use Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ForgotPasswordController extends Controller
 {
@@ -20,25 +21,29 @@ class ForgotPasswordController extends Controller
 
     public function submitForgetPasswordForm(Request $request)
     {
-        if ($request->input('email') == Db::Table('users')->where(Auth::user()->email)) {
+        $request->validate(
+            [
+                'email' => 'required|email|exists:users',
+            ],
+            [
+                'email.exists' => 'El email introducido no consta en nuestra base de datos'
+            ]
+        );
 
-            $token = Str::random(64);
+        $token = Str::random(64);
 
-            DB::table('password_resets')->insert([
-                'email' => $request->email,
-                'token' => $token,
-                'created_at' => Carbon::now()
-            ]);
+        DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => Carbon::now()
+        ]);
 
-            Mail::send('mails.mail-ForgetPassword-template', ['token' => $token], function ($message) use ($request) {
-                $message->to($request->email);
-                $message->subject('Resetear Contraseña');
-            });
+        Mail::send('mails.mail-ForgetPassword-template', ['token' => $token], function ($message) use ($request) {
+            $message->to($request->email);
+            $message->subject('Resetear Contraseña');
+        });
 
-            return back()->with('message', 'Te hemos enviado un link para recuperar tu contraseña!');
-        } else {
-            echo 'El email introducido no coincide con el que consta en nuestra base de datos';
-        }
+        return back()->with('message', 'Te hemos enviado un link para recuperar tu contraseña!');
     }
     /**
      * Write code on Method

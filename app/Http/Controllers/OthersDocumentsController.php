@@ -151,7 +151,7 @@ class OthersDocumentsController extends Controller
         $othersdocuments = DB::Table('users')
             ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
             ->where('others_documents.year', '=', $year)
-            ->where('other_documents.month', '=', $month)
+            ->where('others_documents.month', '=', $month)
             ->where('users.nif', '=', Auth::user()->nif)
             ->get()
             ->toArray();
@@ -188,7 +188,7 @@ class OthersDocumentsController extends Controller
 
                 if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                     foreach ($othersDocuments as $index) {
-                        $filename = basename($index);
+                        $filename = basename((array_values((array)$index))[0]);
                         $temp = (array_values((array)$filename))[0];
                         $zip->addFile($public_dir . '/' . $temp, $temp);
                     }

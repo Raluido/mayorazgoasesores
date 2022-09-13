@@ -92,7 +92,7 @@ class CostsImputsController extends Controller
 
                 if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                     foreach ($files as $file) {
-                        $filename = basename($file);
+                        $filename = basename((array_values((array)$file))[0]);
                         $temp = (array_values((array)$filename))[0];
                         $zip->addFile($public_dir . '/' . $temp, $temp);
                     }
@@ -116,7 +116,13 @@ class CostsImputsController extends Controller
     {
         if ($month || $year != null) {
 
-            $files = DB::Table('costs_imputs')->where('year', $year)->where('month', $month)->select('filename')->get()->toArray();
+            $files = DB::Table('users')
+                ->join('costs_imputs', 'costs_imputs.user_id', '=', 'users.id')
+                ->where('costs_imputs.year', '=', $year)
+                ->where('costs_imputs.month', '=', $month)
+                ->select('costs_imputs.filename')
+                ->get()
+                ->toArray();
 
             if ($files != null) {
 
@@ -127,7 +133,7 @@ class CostsImputsController extends Controller
 
                 if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                     foreach ($files as $file) {
-                        $filename = basename($file);
+                        $filename = basename((array_values((array)$file))[0]);
                         $temp = (array_values((array)$filename))[0];
                         $zip->addFile($public_dir . '/' . $temp, $temp);
                     }
