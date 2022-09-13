@@ -159,7 +159,7 @@ class CostsImputsController extends Controller
 
         $costsimputs = DB::Table('users')
             ->join('costs_imputs', 'costs_imputs.user_id', '=', 'users.id')
-            ->select('users.nif', 'costs_imputs.id', 'costs_imputs.month', 'costs_imputs.year')
+            ->select('users.nif', 'costs_imputs.month', 'costs_imputs.year', 'costs_imputs.user_id')
             ->groupBy('users.nif')
             ->paginate(10);
 
@@ -170,21 +170,35 @@ class CostsImputsController extends Controller
         }
     }
 
-    /**
-     * Delete costsimputs data
-     *
-     * @param CostsImput $costsImput
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function deleteCostsImputs(CostsImput $costsImput)
+
+    public function deleteCostsImputs($id, $year, $month)
     {
-        $costsimputId = DB::Table('costs_imputs')->where('id', '=', $costsImput->id)->value('filename');
-        unlink($costsimputId);
+        $check = DB::Table('costs_imputs')
+            ->where('year', '=', $year)
+            ->where('month', '=', $month)
+            ->where('user_id', '=', $id)
+            ->count();
 
-        $costsImput->delete();
+        $costsimputId = DB::Table('costs_imputs')
+            ->where('year', '=', $year)
+            ->where('month', '=', $month)
+            ->where('user_id', '=', $id)
+            ->select('filename')
+            ->get()
+            ->toArray();
 
-        return view('costsimputs.showForm', compact('costsimputs'));
+
+        foreach ($costsimputId as $index) {
+            unlink((array_values((array)$index))[0]);
+        }
+
+        DB::Table('costs_imputs')
+            ->where('year', '=', $year)
+            ->where('month', '=', $month)
+            ->where('user_id', '=', $id)
+            ->delete();
+
+        return view('costsimputs.showForm');
     }
 
     public function deleteAllCostsImputs()

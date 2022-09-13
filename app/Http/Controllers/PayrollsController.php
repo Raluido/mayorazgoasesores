@@ -68,7 +68,6 @@ class PayrollsController extends Controller
     {
         if ($month || $year != null) {
 
-
             $files = DB::Table('users')
                 ->join('employees', 'employees.user_id', '=', 'users.id')
                 ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
@@ -131,12 +130,12 @@ class PayrollsController extends Controller
         }
     }
 
-    public function deletePayrolls(Payroll $payroll)
+    public function deletePayrolls($id)
     {
-        $payrollId = DB::Table('payrolls')->where('id', '=', $payroll->id)->value('filename');
+        $payrollId = DB::Table('payrolls')->where('id', '=', $id)->value('filename');
         unlink($payrollId);
 
-        $payroll->delete();
+        DB::Table('payrolls')->where('id', '=', $id)->delete();
 
         return redirect()->route('payrolls.showForm')->with('payrolls');
     }

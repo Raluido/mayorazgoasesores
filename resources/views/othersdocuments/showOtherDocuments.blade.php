@@ -20,10 +20,10 @@
                 <tbody>
                     @foreach ($othersdocuments as $index)
                         <tr>
-                            <td>{{ $index->nif }}</td>
-                            <td>{{ $index->filename }}</td>
-                            <td>{{ $index->month }}</td>
-                            <td>{{ $index->year }}</td>
+                            <td>{{ basename($index->nif) }}</td>
+                            <td>{{ basename($index->filename) }}</td>
+                            <td>{{ basename($index->month) }}</td>
+                            <td>{{ basename($index->year) }}</td>
                             <td>
                                 {!! Form::open([
                                     'method' => 'DELETE',
@@ -38,8 +38,8 @@
                 </tbody>
             </table>
             <div class="mt-3 d-flex justify-content-end"><button class="btn btn-danger"><a
-                        class="text-decoration-none text-white"
-                        href="{{ url('othersdocuments/downloadList/' . $month . '/' . $year) }}">Eliminar todos</a></button>
+                        class="text-decoration-none text-white" href="{{ url('othersdocuments/deleteAll') }}">Eliminar
+                        todos</a></button>
             </div>
         </div>
         <div class="d-flex mb-5">

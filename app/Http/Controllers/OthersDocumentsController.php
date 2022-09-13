@@ -246,17 +246,17 @@ class OthersDocumentsController extends Controller
         }
     }
 
-    public function deleteOthersDocuments(OtherDocument $otherdocument)
+    public function deleteOthersDocuments($id)
     {
-        $otherdocumentId = DB::Table('payrolls')->where('id', '=', $otherdocument->id)->value('filename');
+        $otherdocumentId = DB::Table('others_documents')->where('id', '=', $id)->value('filename');
         unlink($otherdocumentId);
 
-        $otherdocument->delete();
+        DB::Table('others_documents')->where('id', '=', $id)->delete();
 
-        return view('othersdocuments.showForm', compact('othersdocuments'));
+        return view('othersdocuments.showForm');
     }
 
-    public function deleteAllOtherDocuments($month, $year)
+    public function deleteAllOtherDocuments()
     {
 
         File::deleteDirectory(public_path('/storage/media/othersDocuments'));

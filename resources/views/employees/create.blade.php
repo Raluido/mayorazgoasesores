@@ -4,7 +4,7 @@
     <div class="bg-light p-4 rounded">
         <h1>Añadir nuevo empleado</h1>
 
-        <div class="container mt-4">
+        <div class="container mt-5 w-50">
             <form method="POST" action="">
                 @csrf
                 <div class="mb-3">
@@ -22,8 +22,10 @@
                         <span class="text-danger text-left">{{ $errors->first('dni') }}</span>
                     @endif
                 </div>
-                <button type="submit" class="btn btn-primary">Guardar empleado</button>
-                <a href="{{ route('users.index') }}" class="btn btn-default">Volver</a>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Guardar empleado</button>
+                    <a href="{{ route('employees.index') }}" class="btn btn-secondary ms-3">Volver</a>
+                </div>
             </form>
         </div>
     </div>

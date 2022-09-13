@@ -11,22 +11,4 @@ class Employee extends Model
     use HasFactory;
 
     protected $table = 'employees';
-
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
-    {
-        static::deleted(function ($employee) {
-            log::info("softdeleted");
-            $employee->payrolls()->delete();
-        });
-    }
-
-    public function payrolls()
-    {
-        return $this->hasMany('App\Payroll');
-    }
 }

@@ -10,7 +10,7 @@
             </div>
             <div class="">
                 <button class="btn btn-danger" onclick="confirmation()">Eliminar
-                    todas</button>
+                    todos</button>
                 <a class="d-none" id="confirmationBtn" href="{{ url('employees/deleteAll') }}"></a>
             </div>
         </div>
@@ -26,7 +26,6 @@
                     <th scope="col" width="10%">Empresa</th>
                     <th scope="col" width="8%">Nif</th>
                     <th scope="col" width="8%">Dni</th>
-                    <th scope="col" width="10%">Empleado</th>
                     <th scope="col" width="1%" colspan="3"></th>
                 </tr>
             </thead>
@@ -37,7 +36,6 @@
                         <td>{{ $index->name }}</td>
                         <td>{{ $index->nif }}</td>
                         <td>{{ $index->dni }}</td>
-                        <td>{{ $index->employeeName }}</td>
                         <td><a href="{{ route('employees.show', $index->id) }}" class="btn btn-warning btn-sm">Mostrar</a>
                         </td>
                         <td><a href="{{ route('employees.edit', $index->id) }}" class="btn btn-info btn-sm">Editar</a>

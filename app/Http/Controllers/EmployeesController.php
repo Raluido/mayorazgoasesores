@@ -27,7 +27,7 @@ class EmployeesController extends Controller
     {
         $employees = Db::Table('users')
             ->join('employees', 'employees.user_id', '=', 'users.id')
-            ->select('users.name', 'users.nif', 'employees.dni', 'employees.id', 'employees.name as employeeName')
+            ->select('users.name', 'users.nif', 'employees.dni', 'employees.id')
             ->paginate(10);
 
         return view('employees.index', compact('employees'));
@@ -115,20 +115,21 @@ class EmployeesController extends Controller
         return redirect()->route('employees.index')->withSuccess(__('Empleado modificado correctamente.'));
     }
 
-    /**
-     * Delete employee data
-     *
-     * @param Employee $employee
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Employee $employee)
+    public function destroy($id)
     {
-        $payrolls = Db::Table('payrolls')->where('employee_id', '=', $employee->id)->select('filename')->get();
-        foreach ($payrolls as $index) {
-            unlink($index);
+        $check = Db::Table('payrolls')->where('employee_id', '=', $id)->count();
+        $payrolls = Db::Table('payrolls')->where('employee_id', '=', $id)->value('filename');
+
+        if ($check <= 1) {
+            unlink($payrolls);
+        } else {
+            foreach ($payrolls as $index) {
+                unlink($index);
+            }
         }
-        $employee->delete();
+        Db::Table('payrolls')->where('employee_id', '=', $id)->delete();
+
+        Db::Table('employees')->where('id', '=', $id)->delete();
 
         return redirect()->route('employees.index')
             ->withSuccess(__('Empleado eliminado correctamente.'));

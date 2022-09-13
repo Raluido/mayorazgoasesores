@@ -10,7 +10,6 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col" width="1%">id</th>
                         <th scope="col" width="5%">Nif</th>
                         <th scope="col" width="5%">Mes</th>
                         <th scope="col" width="5%">Año</th>
@@ -20,14 +19,13 @@
                 <tbody>
                     @foreach ($costsimputs as $index)
                         <tr>
-                            <td>{{ $index->id }}</td>
-                            <td>{{ $index->nif }}</td>
-                            <td>{{ $index->month }}</td>
-                            <td>{{ $index->year }}</td>
+                            <td>{{ basename($index->nif) }}</td>
+                            <td>{{ basename($index->month) }}</td>
+                            <td>{{ basename($index->year) }}</td>
                             <td>
                                 {!! Form::open([
                                     'method' => 'DELETE',
-                                    'route' => ['costsimputs.deleteCostsImputs', $index->id],
+                                    'route' => ['costsimputs.deleteCostsImputs', $index->user_id, $index->year, $index->month],
                                     'style' => 'display:inline',
                                 ]) !!}
                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}

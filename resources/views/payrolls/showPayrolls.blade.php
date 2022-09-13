@@ -20,10 +20,10 @@
                 <tbody>
                     @foreach ($payrolls as $index)
                         <tr>
-                            <td>{{ $index->nif }}</td>
-                            <td>{{ $index->dni }}</td>
-                            <td>{{ $index->month }}</td>
-                            <td>{{ $index->year }}</td>
+                            <td>{{ basename($index->nif) }}</td>
+                            <td>{{ basename($index->dni) }}</td>
+                            <td>{{ basename($index->month) }}</td>
+                            <td>{{ basename($index->year) }}</td>
                             <td>
                                 {!! Form::open([
                                     'method' => 'DELETE',
