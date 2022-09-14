@@ -5,6 +5,9 @@
         <div class="">
             <h2>Usuario</h2>
         </div>
+        <div class="lead">
+            Aqui puedes modificar tus datos de usuario y la contraseña
+        </div>
 
         <div class="container mt-4">
             <div class="row">
@@ -52,13 +55,13 @@
                             <div class=''>
                                 <input type='hidden' value='{{ $user->password }}'>
                             </div>
-                            <div class="d-flex">
+                            <div class="d-flex justify-content-center">
                                 <div class=''>
                                     <button class="btn btn-secondary mt-5" type='submit'>Editar</button>
                                 </div>
                                 <div class="ms-5 mt-5">
-                                    <button type="button"><a href="{{ route('home.index') }}"
-                                            class="btn btn-light text-decoration-none text-dark">Volver</a></button>
+                                    <a href="{{ route('home.index') }}"
+                                        class="btn btn-light text-decoration-none text-dark">Volver</a>
                                 </div>
                             </div>
                         </form>

@@ -7,7 +7,7 @@
             No olvide seleccionar el rol que éste usuario tendrá en la web
         </div>
 
-        <div class="container mt-4">
+        <div class="container mt-4 w-50">
             <form method="POST" action="">
                 @csrf
                 <div class="mb-3">
@@ -48,8 +48,10 @@
                         <span class="text-danger text-left">{{ $errors->first('role') }}</span>
                     @endif
                 </div>
-                <button type="submit" class="btn btn-primary">Guardar usuario</button>
-                <a href="{{ route('users.index') }}" class="btn btn-default">Volver</a>
+                <div class="d-flex justify-content-around mt-4">
+                    <div class=""><button type="submit" class="btn btn-primary">Guardar usuario</button></div>
+                    <div class=""><a href="{{ route('users.index') }}" class="btn btn-secondary">Volver</a></div>
+                </div>
             </form>
         </div>
 

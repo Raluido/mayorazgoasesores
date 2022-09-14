@@ -56,9 +56,6 @@ class UsersController extends Controller
      */
     public function store(User $user, StoreUserRequest $request)
     {
-
-        $validated = $request->validated();
-
         $user = new User();
         $user->name = $request->input('name');
         $user->nif = $request->input('nif');
@@ -71,10 +68,10 @@ class UsersController extends Controller
             'password'   =>   $password
         );
 
-        Mail::to("raluido@gmail.com")->send(new AddUserNotification($data));
-
-        $user->save();
+        $user->save($request->validated());
         $user->assignRole($request->input('role'));
+
+        Mail::to("raluido@gmail.com")->send(new AddUserNotification($data));
 
         return redirect()->route('users.index')->withSuccess(__('Empresa creada correctamente.'));
     }

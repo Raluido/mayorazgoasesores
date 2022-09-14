@@ -30,4 +30,14 @@ class StoreUserRequest extends FormRequest
             'role' => 'required'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'role.required' => 'Has olvidado seleccionar un rol',
+            'name.unique' => 'Una empresa con éste nombre ya consta en nuestra base de datos',
+            'email.unique' => 'Una empresa con éste email ya consta en nuestra base de datos',
+            'nif.unique' => 'Una empresa con éste nif ya consta en nuestra base de datos',
+        ];
+    }
 }
