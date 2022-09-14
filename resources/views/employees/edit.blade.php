@@ -7,13 +7,13 @@
 
         </div>
 
-        <div class="container mt-4">
-            <form method="post" action="{{ route('employees.update', $employeeFix->id) }}">
+        <div class="container mt-5 w-25">
+            <form method="post" action="{{ route('employees.update', $employeeFix[0]->id) }}">
                 @method('patch')
                 @csrf
                 <div class="mb-3">
                     <label for="nif" class="form-label">Nif</label>
-                    <input value="{{ $employeeFix->nif }}" type="text" class="form-control" name="nif"
+                    <input value="{{ $employeeFix[0]->nif }}" type="text" class="form-control" name="nif"
                         placeholder="Nif" required>
 
                     @if ($errors->has('nif'))
@@ -22,14 +22,14 @@
                 </div>
                 <div class="mb-3">
                     <label for="dni" class="form-label">Dni</label>
-                    <input value="{{ $employeeFix->dni }}" type="text" class="form-control" name="dni"
+                    <input value="{{ $employeeFix[0]->dni }}" type="text" class="form-control" name="dni"
                         placeholder="Dni" required>
                     @if ($errors->has('dni'))
                         <span class="text-danger text-left">{{ $errors->first('dni') }}</span>
                     @endif
                 </div>
                 <button type="submit" class="btn btn-primary">Actualizar</button>
-                <a href="{{ route('users.index') }}" class="btn btn-default">Cancelar</button>
+                <a href="{{ route('employees.index') }}" class="btn btn-default">Cancelar</button>
             </form>
         </div>
 

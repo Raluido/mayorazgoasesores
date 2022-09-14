@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -30,6 +30,10 @@ class EmployeesController extends Controller
             ->select('users.name', 'users.nif', 'employees.dni', 'employees.id')
             ->paginate(10);
 
+        if ($employees[0] == null) {
+            echo '<div class="alert alert-warning"><strong>Warning!</strong> No hay empleados en nuestra base de datos aún, se añadiran automaticamente cuando cargues alguna nómina ;) </div>';
+        }
+
         return view('employees.index', compact('employees'));
     }
 
@@ -46,19 +50,23 @@ class EmployeesController extends Controller
     /**
      * Store a newly created employee
      *
-     *
+     * @param Employee $employee
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEmployeeRequest $request)
     {
-        $userId = Db::Table('users')->where('nif', '=', $request->input('nif'))->select('id')->exists();
 
-        if ($userId) {
+        $userId = Db::Table('users')
+            ->where('nif', '=', $request->input('nif'))
+            ->value('id');
+
+
+        if ($userId != null) {
             $employee = new Employee();
-            $userId = Db::Table('users')->where('nif', '=', $request->input('nif'))->value('users.id')->get();
             $employee->user_id = $userId;
             $employee->dni = $request->input('dni');
             $employee->save($request->validated());
+
 
             return redirect()->route('employees.index')->withSuccess(__('Empleado creado correctamente.'));
         } else {
@@ -66,30 +74,35 @@ class EmployeesController extends Controller
         }
     }
 
-    public function show(Employee $employee)
+    public function show($id)
     {
-        return view('employees.show', [
-            'employee' => $employee
-        ]);
+        $employeeData = Db::Table('users')
+            ->join('employees', 'employees.user_id', '=', 'users.id')
+            ->where('employees.id', '=', $id)
+            ->select('users.name', 'users.nif', 'employees.dni', 'employees.id')
+            ->get()
+            ->toArray();
+
+        return view('employees.show', compact('employeeData'));
     }
 
     /**
      * Edit user data
      *
-     * @param User $user
+     * @param Employee $employee
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(Employee $employee)
+    public function edit($id)
     {
         $employeeFix = Db::Table('users')
             ->join('employees', 'employees.user_id', '=', 'users.id')
-            ->where('employees.id', '=', $employee->id)
+            ->where('employees.id', '=', $id)
             ->select('users.name', 'users.nif', 'employees.dni', 'employees.id')
             ->get()
             ->toArray();
 
-        return view('employees.edit', compact('employeeFix'));
+        return view('employees.edit',compact('employeeFix'));
     }
 
     /**
@@ -100,14 +113,9 @@ class EmployeesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Employee $employee, Request $request)
+    public function update($id, Request $request)
     {
-        $this->validate($request, [
-            'dni' => 'required|size:9,unique:employees,dni',
-            'nif' => 'required|size:9,unique:users,nif',
-        ]);
-
-        $employee = Employee::find($employee->id);
+        $employee = Employee::find($id);
         $userId = Db::Table('users')->where('nif', '=', $request->input('nif'))->value('users.id')->get();
         $employee->user_id = $userId;
         $employee->dni = $request->input('dni');

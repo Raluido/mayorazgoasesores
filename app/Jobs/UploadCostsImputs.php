@@ -392,11 +392,11 @@ class UploadCostsImputs implements ShouldQueue
      * @param  Exception $exception
      * @return void
      */
-    public function failed()
+    public function failed(Exception $exception)
     {
         array_map('unlink', glob(public_path('storage/media/costsImputsTemp/' . '*.*')));
 
         $jobError = "Error en la carga de Imputación de Costes, vuelva a intentarlo gracias ;)";
-        Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError));
+        Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError, $exception));
     }
 }

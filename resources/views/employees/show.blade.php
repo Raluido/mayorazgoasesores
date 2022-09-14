@@ -8,20 +8,19 @@
         </div>
 
         <div class="container mt-4">
-            <div>
-                Empresa: {{ $employee->name }}
-            </div>
-            <div>
-                Nif: {{ $employee->nif }}
-            </div>
-            <div>
-                Dni: {{ $employee->dni }}
-            </div>
+                <div>
+                    Empresa: {{ $employeeData[0]->name }}
+                </div>
+                <div>
+                    Nif: {{ $employeeData[0]->nif }}
+                </div>
+                <div>
+                    Dni: {{ $employeeData[0]->dni }}
+                </div>
         </div>
-
     </div>
     <div class="mt-4">
-        <a href="{{ route('employees.edit', $user->id) }}" class="btn btn-info">Editar</a>
+        <a href="{{ route('employees.edit', $employeeData[0]->id) }}" class="btn btn-info">Editar</a>
         <a href="{{ route('employees.index') }}" class="btn btn-default">Volver</a>
     </div>
 @endsection

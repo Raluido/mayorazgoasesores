@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="bg-light p-4 rounded">
-        <h1>Update user</h1>
+        <h1>Modificar empresa</h1>
         <div class="lead">
 
         </div>
@@ -12,8 +12,8 @@
                 @method('patch')
                 @csrf
                 <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input value="{{ $user->name }}" type="text" class="form-control" name="name" placeholder="Name"
+                    <label for="name" class="form-label">Empresa</label>
+                    <input value="{{ $user->name }}" type="text" class="form-control" name="name" placeholder="Empresa"
                         required>
 
                     @if ($errors->has('name'))
@@ -29,7 +29,7 @@
                     @endif
                 </div>
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label">Nombre empresa</label>
                     <input value="{{ $user->username }}" type="text" class="form-control" name="username"
                         placeholder="Username" required>
                     @if ($errors->has('username'))
@@ -50,8 +50,8 @@
                     @endif
                 </div>
 
-                <button type="submit" class="btn btn-primary">Update user</button>
-                <a href="{{ route('users.index') }}" class="btn btn-default">Cancel</button>
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                <a href="{{ route('users.index') }}" class="btn btn-default">Cancelar</button>
             </form>
         </div>
 

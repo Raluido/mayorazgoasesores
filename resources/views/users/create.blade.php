@@ -2,17 +2,17 @@
 
 @section('content')
     <div class="bg-light p-4 rounded">
-        <h1>Add new user</h1>
+        <h1>Añadir nueva empresa</h1>
         <div class="lead">
-            Add new user and assign role.
+            No olvide seleccionar el rol que éste usuario tendrá en la web
         </div>
 
         <div class="container mt-4">
             <form method="POST" action="">
                 @csrf
                 <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input value="{{ old('name') }}" type="text" class="form-control" name="name" placeholder="Name"
+                    <label for="name" class="form-label">Nombre</label>
+                    <input value="{{ old('name') }}" type="text" class="form-control" name="name" placeholder="Nombre"
                         required>
 
                     @if ($errors->has('name'))
@@ -22,7 +22,7 @@
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input value="{{ old('email') }}" type="email" class="form-control" name="email"
-                        placeholder="Email address" required>
+                        placeholder="Email" required>
                     @if ($errors->has('email'))
                         <span class="text-danger text-left">{{ $errors->first('email') }}</span>
                     @endif
@@ -48,8 +48,8 @@
                         <span class="text-danger text-left">{{ $errors->first('role') }}</span>
                     @endif
                 </div>
-                <button type="submit" class="btn btn-primary">Save user</button>
-                <a href="{{ route('users.index') }}" class="btn btn-default">Back</a>
+                <button type="submit" class="btn btn-primary">Guardar usuario</button>
+                <a href="{{ route('users.index') }}" class="btn btn-default">Volver</a>
             </form>
         </div>
 

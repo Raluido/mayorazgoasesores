@@ -239,11 +239,11 @@ class OthersDocumentsController extends Controller
             ->select('users.nif', 'others_documents.id', 'others_documents.filename', 'others_documents.year', 'others_documents.month')
             ->paginate(10);
 
-        if ($othersdocuments[0] != null) {
-            return view('othersdocuments.showOtherDocuments', compact('othersdocuments', 'month', 'year'));
-        } else {
+        if ($othersdocuments[0] == null) {
             echo '<div class="alert alert-warning">No hay documentos en ' . $month . $year . '<div>';
         }
+
+        return view('othersdocuments.showOtherDocuments', compact('othersdocuments', 'month', 'year'));
     }
 
     public function deleteOthersDocuments($id)

@@ -73,9 +73,9 @@ class DestroyAll implements ShouldQueue
      * @param  Exception $exception
      * @return void
      */
-    public function failed()
+    public function failed(Exception $exception)
     {
         $jobError = "Error en la eliminando TODOS los datos, vuelva a intentarlo gracias ;)";
-        Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError));
+        Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError, $exception));
     }
 }

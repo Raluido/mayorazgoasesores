@@ -66,41 +66,37 @@ class PayrollsController extends Controller
 
     public function downloadPayrolls($month, $year)
     {
-        if ($month || $year != null) {
+        $files = DB::Table('users')
+            ->join('employees', 'employees.user_id', '=', 'users.id')
+            ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
+            ->where('users.nif', '=', Auth::user()->nif)
+            ->where('payrolls.year', '=', $year)
+            ->where('payrolls.month', '=', $month)
+            ->select('payrolls.filename')
+            ->get()
+            ->toArray();
 
-            $files = DB::Table('users')
-                ->join('employees', 'employees.user_id', '=', 'users.id')
-                ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
-                ->where('users.nif', '=', Auth::user()->nif)
-                ->where('payrolls.year', '=', $year)
-                ->where('payrolls.month', '=', $month)
-                ->select('payrolls.filename')
-                ->get();
+        if ($files != null) {
 
-            if ($files != null) {
+            $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
+            $zip = new ZipArchive;
 
-                $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
-                $zip = new ZipArchive;
+            $public_dir = public_path('storage/media/payrolls/' . $year . '/' . $month);
 
-                $public_dir = public_path('storage/media/payrolls/' . $year . '/' . $month);
-
-                if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
-                    foreach ($files as $file) {
-                        $filename = basename((array_values((array)$file))[0]);
-                        $temp = (array_values((array)$filename))[0];
-                        $zip->addFile($public_dir . '/' . $temp, $temp);
-                    }
-                    $zip->close();
+            if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
+                foreach ($files as $file) {
+                    $filename = basename((array_values((array)$file))[0]);
+                    $temp = (array_values((array)$filename))[0];
+                    $zip->addFile($public_dir . '/' . $temp, $temp);
                 }
+                $zip->close();
+            }
 
-                if (file_exists($public_dir . '/' . $zipFilename)) {
-                    return response()->download(public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
-                }
-            } else {
-                echo '<div class="alert alert-warning"><strong>Warning!</strong> Las nóminas de ' . $month . $year . ' no están disponibles.<div>';
+            if (file_exists($public_dir . '/' . $zipFilename)) {
+                return response()->download(public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
             }
         } else {
-            echo '<div class="alert alert-warning"><strong>Warning!</strong> Debes elegir un mes y un año.<div>';
+            echo '<div class="alert alert-warning"><strong>Warning!</strong> Las nóminas de ' . $month . $year . ' no están disponibles.<div>';
         }
 
         return view('payrolls.downloadForm')->with('month', $month)->with('year', $year);
@@ -119,14 +115,15 @@ class PayrollsController extends Controller
         $payrolls = DB::Table('users')
             ->join('employees', 'employees.user_id', '=', 'users.id')
             ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
+            ->where('payrolls.year', '=', $year)
+            ->where('payrolls.month', '=', $month)
             ->select('users.nif', 'employees.dni', 'payrolls.id', 'payrolls.month', 'payrolls.year')
             ->paginate(10);
 
-        if ($payrolls[0] != null) {
-            return view('payrolls.showPayrolls', compact('payrolls', 'month', 'year'));
-        } else {
+        if ($payrolls[0] == null) {
             echo '<div class="alert alert-warning"> Aún no están disponibles las nóminas de ' . $month . $year . '<div>';
         }
+        return view('payrolls.showPayrolls', compact('payrolls', 'month', 'year'));
     }
 
     public function deletePayrolls($id)

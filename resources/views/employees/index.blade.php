@@ -36,7 +36,8 @@
                         <td>{{ $index->name }}</td>
                         <td>{{ $index->nif }}</td>
                         <td>{{ $index->dni }}</td>
-                        <td><a href="{{ route('employees.show', $index->id) }}" class="btn btn-warning btn-sm">Mostrar</a>
+                        <td><a href="{{ route('employees.show', $index->id) }}"
+                                class="btn btn-warning btn-sm">Mostrar</a>
                         </td>
                         <td><a href="{{ route('employees.edit', $index->id) }}" class="btn btn-info btn-sm">Editar</a>
                         </td>

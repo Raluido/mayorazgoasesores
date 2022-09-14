@@ -12,14 +12,16 @@ class JobErrorNotification extends Mailable
     use Queueable, SerializesModels;
 
     public $jobError;
+    public $exception;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($jobError)
+    public function __construct($jobError, $exception)
     {
         $this->jobError = $jobError;
+        $this->exception = $exception;
     }
 
     /**
@@ -29,6 +31,10 @@ class JobErrorNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Error en el envío')->view('mails.mail-JobError-template')->with('jobError', $this->jobError);
+        return $this->from('mayorazgoasesores.info@gmail.com')
+            ->subject('Error en el envío')
+            ->view('mails.mail-JobError-template')
+            ->with('jobError', $this->jobError)
+            ->with('exception', $this->exception);
     }
 }

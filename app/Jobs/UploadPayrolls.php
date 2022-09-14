@@ -345,11 +345,11 @@ class UploadPayrolls implements ShouldQueue
      * @param  Exception $exception
      * @return void
      */
-    public function failed()
+    public function failed(Exception $exception)
     {
         array_map('unlink', glob(public_path('storage/media/payrollsTemp/' . '*.*')));
 
         $jobError = "Error en la carga de Nóminas, vuelva a intentarlo gracias ;)";
-        Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError));
+        Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError, $exception));
     }
 }

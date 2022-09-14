@@ -28,8 +28,17 @@ class UpdateUserRequest extends FormRequest
 
         return [
             'nif' => 'required|size:9,unique:users,nif',
+            'dni' => 'required|size:9,unique:employees,nif',
             'name' => 'required|unique:users,name',
             'email' => 'required|email:rfc,dns|unique:users,email,' . $user->id,
+        ];
+
+    }
+
+    public function messages() {
+        return [
+            'nif.size' => 'El nif debe estar compuesto por 9 elementos',
+            'dni.size' => 'El dni debe estar compuesto por 9 elementos',
         ];
     }
 }
