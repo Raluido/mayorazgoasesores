@@ -156,6 +156,9 @@ class OthersDocumentsController extends Controller
             ->get()
             ->toArray();
 
+        if ($othersdocuments == null) {
+            echo '<div class="alert alert-warning"><strong>Warning!</strong> Los documentos de ' . $month . $year . ' no están disponibles aún.</div>';
+        }
         return view('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'));
     }
 
