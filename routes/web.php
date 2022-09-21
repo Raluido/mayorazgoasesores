@@ -94,8 +94,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('/upload', 'CostsImputsController@uploadCostsImputs')->name('costsimputs.uploadCostsImputs');
             Route::get('/downloadForm', 'CostsImputsController@downloadForm')->name('costsimputs.downloadForm');
             Route::post('/download', 'CostsImputsController@getData')->name('costsimputs.getData');
-            Route::get('/download/{month}/{year}/{nif}', 'CostsImputsController@downloadCostsImputs')->name('costsimputs.downloadCostsImputs');
-            Route::get('/download/{month}/{year}', 'CostsImputsController@downloadAllCostsImputs')->name('costsimputs.downloadAllCostsImputs');
+            Route::get('/download/{month}/{year}', 'CostsImputsController@downloadCostsImputs')->name('costsimputs.downloadCostsImputs');
             Route::get('/showForm', 'CostsImputsController@showForm')->name('costsimputs.showForm');
             Route::get('/show', 'CostsImputsController@showCostsImputs')->name('costsimputs.showCostsImputs');
             Route::delete('/delete/{id}/{year}/{month}', 'CostsImputsController@deleteCostsImputs')->name('costsimputs.deleteCostsImputs');

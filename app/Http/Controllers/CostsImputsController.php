@@ -54,96 +54,59 @@ class CostsImputsController extends Controller
     {
         $month = null;
         $year = null;
-        $nif = null;
 
-        return view('costsimputs.downloadForm')->with('month', $month)->with('year', $year)->with('nif', $nif);
+        return view('costsimputs.downloadForm')->with('month', $month)->with('year', $year);
     }
 
     public function getData(Request $request)
     {
         $month = $request->input('month');
         $year = $request->input('year');
-        $nif = $request->input('nif');
 
-        return view('costsimputs.downloadForm', compact('month', 'year', 'nif'));
+        return view('costsimputs.downloadForm', compact('month', 'year'));
     }
 
 
-    public function downloadCostsImputs($month, $year, $nif)
+    public function downloadCostsImputs($month, $year)
     {
 
         $files = DB::Table('users')
             ->join('costs_imputs', 'costs_imputs.user_id', '=', 'users.id')
-            ->where('users.nif', '=', $nif)
+            ->where('users.nif', '=', Auth::user()->nif)
             ->where('costs_imputs.year', '=', $year)
             ->where('costs_imputs.month', '=', $month)
             ->select('costs_imputs.filename')
             ->get()
             ->toArray();
 
+
         if ($files != null) {
 
-            $zipFilename = $nif . $month . $year . '.zip';
+            $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
             $zip = new ZipArchive;
 
-            $public_dir = public_path('storage/media/costsimputs/' . $year . '/' . $month);
+            $public_dir = public_path('storage/media/costsImputs/' . $year . '/' . $month);
 
             if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($files as $file) {
                     $filename = basename((array_values((array)$file))[0]);
                     $temp = (array_values((array)$filename))[0];
+                    log::info($temp);
                     $zip->addFile($public_dir . '/' . $temp, $temp);
                 }
                 $zip->close();
             }
 
             if (file_exists($public_dir . '/' . $zipFilename)) {
-                return response()->download(public_path('storage/media/costsimputs/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
+                return response()->download(public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
             }
         } else {
             echo '<div class="alert alert-warning"><strong>Warning!</strong> Las modelos de imputación de costes de ' . $month . $year . ' no están disponibles.<div>';
         }
 
-        return view('costsimputs.downloadForm')->with('month', $month)->with('year', $year)->with('nif', $nif);
+        return view('costsimputs.downloadForm')->with('month', $month)->with('year', $year);
     }
 
-    public function downloadAllCostsImputs($month, $year)
-    {
-        $nif = null;
-
-        $files = DB::Table('users')
-            ->join('costs_imputs', 'costs_imputs.user_id', '=', 'users.id')
-            ->where('costs_imputs.year', '=', $year)
-            ->where('costs_imputs.month', '=', $month)
-            ->select('costs_imputs.filename')
-            ->get()
-            ->toArray();
-
-        if ($files != null) {
-
-            $zipFilename = $month . $year . '.zip';
-            $zip = new ZipArchive;
-
-            $public_dir = public_path('storage/media/costsimputs/' . $year . '/' . $month);
-
-            if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
-                foreach ($files as $file) {
-                    $filename = basename((array_values((array)$file))[0]);
-                    $temp = (array_values((array)$filename))[0];
-                    $zip->addFile($public_dir . '/' . $temp, $temp);
-                }
-                $zip->close();
-            }
-
-            if (file_exists($public_dir . '/' . $zipFilename)) {
-                return response()->download(public_path('storage/media/costsimputs/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
-            }
-        } else {
-            echo '<div class="alert alert-warning"><strong>Warning!</strong> Los modelos de imputación de costes de ' . $month . $year . ' no están disponibles.<div>';
-        }
-
-        return view('costsimputs.downloadForm')->with('month', $month)->with('year', $year)->with('nif', $nif);
-    }
 
     public function showForm()
     {
