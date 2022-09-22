@@ -86,7 +86,7 @@ class UploadCostsImputs implements ShouldQueue
             $Nif = substr($content, ($pos - 39), 9);
 
             // check for white spaces, some nif are in different position
-            if (ctype_space($Nif[1])) {
+            if (ctype_space($Nif)) {
                 $Nif = substr($content, ($pos - 37), 9);
             }
 
