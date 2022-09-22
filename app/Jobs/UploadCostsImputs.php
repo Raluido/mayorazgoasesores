@@ -85,12 +85,21 @@ class UploadCostsImputs implements ShouldQueue
             $pos = strpos($content, $findme);
             $Nif = substr($content, ($pos - 39), 9);
 
-            // check for white spaces, some nif are in different position
-            if (ctype_space($Nif)) {
-                $Nif = substr($content, ($pos - 37), 9);
+            // fix nif
+
+            $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+            $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+            try {
+                if (ctype_space($Nif[0]) || ctype_space($Nif[1])) {
+                    $Nif = substr($content, ($pos - 37), 9);
+                }
+            } catch (\Throwable $th) {
+                log::info($Nif);
+                break;
             }
 
-            $NifFix = preg_replace('/\s+/', '', $Nif);
+            // en fix nif
 
             $findme2 = 'PERIODO';
             $pos2 = strpos($content, $findme2);
@@ -145,46 +154,46 @@ class UploadCostsImputs implements ShouldQueue
             $true = 0;
             $oldFilename = basename($index);
 
-            if (in_array($NifFix[0], $abc)) {
+            if (in_array($Nif[0], $abc)) {
                 for ($i = 1; $i < 8; $i++) {
-                    if (in_array($NifFix[$i], $num)) {
+                    if (in_array($Nif[$i], $num)) {
                         $true++;
                     } else {
-                        $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+                        $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
                         break;
                     }
                 }
                 if (true == 8) {
-                    if ($oldNif != $NifFix) {
+                    if ($oldNif != $Nif) {
                         $x = 0;
                     } else {
                         $x++;
                     }
-                    $oldNif = $NifFix;
-                    rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $NifFix . '_' . $month . $year . '_' . $x . '.pdf'));
+                    $oldNif = $Nif;
+                    rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $Nif . '_' . $month . $year . '_' . $x . '.pdf'));
                 }
             } else {
-                if (in_array($NifFix[8], $abc)) {
+                if (in_array($Nif[8], $abc)) {
                     for ($i = 0; $i < 7; $i++) {
-                        if (in_array($NifFix[$i], $num)) {
+                        if (in_array($Nif[$i], $num)) {
                             $true++;
                         } else {
-                            $uploadError[] = 'El ' . $NifFix . ' ha dado error de forma, consule al administrador de sistema.';
+                            $uploadError[] = 'El ' . $Nif . ' ha dado error de forma, consule al administrador de sistema.';
                             break;
                         }
                     }
                     if (true == 8) {
-                        if ($oldNif != $NifFix) {
+                        if ($oldNif != $Nif) {
                             $x = 0;
                         } else {
                             $x = 0;
                             $x++;
                         }
-                        $oldNif = $NifFix;
-                        rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $NifFix . '_' . $month . $year . '_' . $x . '.pdf'));
+                        $oldNif = $Nif;
+                        rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $Nif . '_' . $month . $year . '_' . $x . '.pdf'));
                     }
                 } else {
-                    $uploadError[] = 'El ' . $NifFix . ' ha dado error de forma, consule al administrador de sistema.';
+                    $uploadError[] = 'El ' . $Nif . ' ha dado error de forma, consule al administrador de sistema.';
                 }
             }
 

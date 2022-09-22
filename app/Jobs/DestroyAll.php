@@ -64,7 +64,7 @@ class DestroyAll implements ShouldQueue
         File::makeDirectory($path, 0777, true);
         Db::Table('others_documents')->delete();
 
-        Db::Table('users')->where('id', '>', '3')->delete();
+        Db::Table('users')->where('id', '>', '2')->delete();
     }
 
     /**
