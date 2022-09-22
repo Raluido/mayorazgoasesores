@@ -90,16 +90,19 @@ class UploadCostsImputs implements ShouldQueue
             $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
             $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
+            $uploadError = array();
+
             try {
                 if (ctype_space($Nif[0]) || ctype_space($Nif[1])) {
                     $Nif = substr($content, ($pos - 37), 9);
                 }
             } catch (\Throwable $th) {
-                log::info($Nif);
+                $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
                 break;
             }
 
-            // en fix nif
+
+            // end fix nif
 
             $findme2 = 'PERIODO';
             $pos2 = strpos($content, $findme2);
@@ -149,7 +152,6 @@ class UploadCostsImputs implements ShouldQueue
             // check if the nif format is correct
             $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
             $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-            $uploadError = array();
 
             $true = 0;
             $oldFilename = basename($index);

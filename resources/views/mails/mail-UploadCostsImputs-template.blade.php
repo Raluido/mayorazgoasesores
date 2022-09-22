@@ -1,4 +1,4 @@
-<h4>Listado de imputación de costes de {{ $monthInput }} {{ $yearInput }} con errores</h4>
+<h4>Listado de imputación de costes de {{ $monthInput }} {{ $yearInput }}</h4>
 
 @if (empty($uploadError))
 <p>No ha habido errores</p>

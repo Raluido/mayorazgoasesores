@@ -25,8 +25,8 @@ class UploadCostsImputsNotification extends Mailable
     {
         $this->uploadError = $uploadError;
         $this->usersCreated = $usersCreated;
-        $this->month = $monthInput;
-        $this->year = $yearInput;
+        $this->monthInput = $monthInput;
+        $this->yearInput = $yearInput;
     }
 
     /**

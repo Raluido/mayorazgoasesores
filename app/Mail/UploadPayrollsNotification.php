@@ -22,8 +22,8 @@ class UploadPayrollsNotification extends Mailable
     public function __construct($uploadError, $monthInput, $yearInput)
     {
         $this->uploadError = $uploadError;
-        $this->month = $monthInput;
-        $this->year = $yearInput;
+        $this->monthInput = $monthInput;
+        $this->yearInput = $yearInput;
     }
 
     /**

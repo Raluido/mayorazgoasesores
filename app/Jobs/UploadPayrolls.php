@@ -86,7 +86,6 @@ class UploadPayrolls implements ShouldQueue
             $findme = 'NIF. ';
             $pos = strpos($content, $findme);
             $Nif = substr($content, ($pos + 5), 9);
-            $NifFix = preg_replace('/\s+/', '', $Nif);
 
             $findme1 = 'D.N.I.';
             $pos1 = strpos($content, $findme1);
@@ -106,12 +105,12 @@ class UploadPayrolls implements ShouldQueue
             $true = 0;
             $oldFilename = basename($index);
 
-            if (in_array($NifFix[0], $abc)) {
+            if (in_array($Nif[0], $abc)) {
                 for ($i = 1; $i < 8; $i++) {
-                    if (in_array($NifFix[$i], $num)) {
+                    if (in_array($Nif[$i], $num)) {
                         $true++;
                     } else {
-                        $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+                        $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
                         break;
                     }
                 }
@@ -119,7 +118,7 @@ class UploadPayrolls implements ShouldQueue
                     $true = 0;
                     if (in_array($DniFix[8], $abc)) {
                         for ($i = 0; $i < 7; $i++) {
-                            if (in_array($NifFix[$i], $num)) {
+                            if (in_array($Nif[$i], $num)) {
                                 $true++;
                             } else {
                                 $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
@@ -127,18 +126,18 @@ class UploadPayrolls implements ShouldQueue
                             }
                         }
                         if (true == 8) {
-                            rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $NifFix . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
+                            rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $Nif . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
                         }
                     } else {
                         $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
                     }
                 }
-            } elseif (in_array($NifFix[8], $abc)) {
+            } elseif (in_array($Nif[8], $abc)) {
                 for ($i = 0; $i < 7; $i++) {
-                    if (in_array($NifFix[$i], $num)) {
+                    if (in_array($Nif[$i], $num)) {
                         $true++;
                     } else {
-                        $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+                        $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
                         break;
                     }
                 }
@@ -146,7 +145,7 @@ class UploadPayrolls implements ShouldQueue
                     $true = 0;
                     if (in_array($DniFix[8], $abc)) {
                         for ($i = 0; $i < 7; $i++) {
-                            if (in_array($NifFix[$i], $num)) {
+                            if (in_array($Nif[$i], $num)) {
                                 $true++;
                             } else {
                                 $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
@@ -154,14 +153,14 @@ class UploadPayrolls implements ShouldQueue
                             }
                         }
                         if (true == 8) {
-                            rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $NifFix . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
+                            rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $Nif . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
                         }
                     } else {
                         $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
                     }
                 }
             } else {
-                $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
+                $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
             }
         }
 
