@@ -53,6 +53,9 @@ class UploadCostsImputs implements ShouldQueue
         $filename = $this->filename;
         $monthInput = $this->month;
         $yearInput = $this->year;
+        $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+        $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        $uploadError = array();
 
         $pdf = new Fpdi();
         $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
@@ -86,11 +89,6 @@ class UploadCostsImputs implements ShouldQueue
             $Nif = substr($content, ($pos - 39), 9);
 
             // fix nif
-
-            $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-            $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
-            $uploadError = array();
 
             try {
                 if (ctype_space($Nif[0]) || ctype_space($Nif[1])) {
@@ -150,8 +148,6 @@ class UploadCostsImputs implements ShouldQueue
             $year = '20' . substr($content, ($pos2 + 18), 2);
 
             // check if the nif format is correct
-            $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-            $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
             $true = 0;
             $oldFilename = basename($index);
@@ -230,12 +226,12 @@ class UploadCostsImputs implements ShouldQueue
 
                 if (User::where('nif', '=', $nif)->exists()) {
                     if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                        rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
+                        rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
                         $costsImput = new CostsImput();
                         $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
                         $costsImput->filename = $path . '/' . $filename;
-                        $costsImput->month = $month;
-                        $costsImput->year = $year;
+                        $costsImput->month = $monthInput;
+                        $costsImput->year = $yearInput;
                         $costsImput->save();
                     } else {
                         unlink(public_path('storage/media/costsImputsTemp/' . $filename));
@@ -260,12 +256,12 @@ class UploadCostsImputs implements ShouldQueue
                     $user->assignRole('user');
 
                     if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                        rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
+                        rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
                         $costsImput = new CostsImput();
                         $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
                         $costsImput->filename = $path . '/' . $filename;
-                        $costsImput->month = $month;
-                        $costsImput->year = $year;
+                        $costsImput->month = $monthInput;
+                        $costsImput->year = $yearInput;
                         $costsImput->save();
                     } else {
                         unlink(public_path('storage/media/costsImputsTemp/' . $filename));
@@ -274,7 +270,7 @@ class UploadCostsImputs implements ShouldQueue
                 }
             }
         } else {
-            $path = public_path('/storage/media/costsImputs/' . $year . '/' . $month);
+            $path = public_path('/storage/media/costsImputs/' . $yearInput . '/' . $monthInput);
 
             if (!File::exists($path)) {
                 File::makeDirectory($path, 0777, true);
@@ -289,12 +285,12 @@ class UploadCostsImputs implements ShouldQueue
 
                     if (User::where('nif', '=', $nif)->exists()) {
                         if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                            rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
+                            rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
                             $costsImput = new CostsImput();
                             $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
                             $costsImput->filename = $path . '/' . $filename;
-                            $costsImput->month = $month;
-                            $costsImput->year = $year;
+                            $costsImput->month = $monthInput;
+                            $costsImput->year = $yearInput;
                             $costsImput->save();
                         } else {
                             unlink(public_path('storage/media/costsImputsTemp/' . $filename));
@@ -319,12 +315,12 @@ class UploadCostsImputs implements ShouldQueue
                         $user->assignRole('user');
 
                         if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                            rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
+                            rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
                             $costsImput = new CostsImput();
                             $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
                             $costsImput->filename = $path . '/' . $filename;
-                            $costsImput->month = $month;
-                            $costsImput->year = $year;
+                            $costsImput->month = $monthInput;
+                            $costsImput->year = $yearInput;
                             $costsImput->save();
                         } else {
                             unlink(public_path('storage/media/costsImputsTemp/' . $filename));
@@ -334,7 +330,7 @@ class UploadCostsImputs implements ShouldQueue
                 }
             } else {
 
-                $path = public_path('/storage/media/costsImputs/' . $year . '/' . $month);
+                $path = public_path('/storage/media/costsImputs/' . $yearInput . '/' . $monthInput);
 
                 $files = glob(public_path('storage/media/costsImputsTemp/*'));
 
@@ -346,12 +342,12 @@ class UploadCostsImputs implements ShouldQueue
 
                     if (User::where('nif', '=', $nif)->exists()) {
                         if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                            rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
+                            rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
                             $costsImput = new CostsImput();
                             $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
                             $costsImput->filename = $path . '/' . $filename;
-                            $costsImput->month = $month;
-                            $costsImput->year = $year;
+                            $costsImput->month = $monthInput;
+                            $costsImput->year = $yearInput;
                             $costsImput->save();
                         } else {
                             unlink(public_path('storage/media/costsImputsTemp/' . $filename));
@@ -376,12 +372,12 @@ class UploadCostsImputs implements ShouldQueue
                         $user->assignRole('user');
 
                         if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                            rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $filename));
+                            rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
                             $costsImput = new CostsImput();
                             $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
                             $costsImput->filename = $path . '/' . $filename;
-                            $costsImput->month = $month;
-                            $costsImput->year = $year;
+                            $costsImput->month = $monthInput;
+                            $costsImput->year = $yearInput;
                             $costsImput->save();
                         } else {
                             unlink(public_path('storage/media/costsImputsTemp/' . $filename));

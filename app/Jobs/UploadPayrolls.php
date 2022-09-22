@@ -57,6 +57,9 @@ class UploadPayrolls implements ShouldQueue
         $filename = $this->filename;
         $monthInput = $this->month;
         $yearInput = $this->year;
+        $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+        $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        $uploadError = array();
 
         $pdf = new Fpdi();
         $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
@@ -98,9 +101,6 @@ class UploadPayrolls implements ShouldQueue
             $year = '20' . substr($content, ($pos2 + 83), 2);
 
             // check if the nif format is correct
-            $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-            $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-            $uploadError = array();
 
             $true = 0;
             $oldFilename = basename($index);
@@ -173,13 +173,13 @@ class UploadPayrolls implements ShouldQueue
 
         // move to month and year folder
 
-        $path = public_path('/storage/media/payrolls/' . $year);
+        $path = public_path('/storage/media/payrolls/' . $yearInput);
         $files = glob(public_path('storage/media/payrollsTemp/*'));
         $uploadError = array();
 
         if (!File::exists($path)) {
             File::makeDirectory($path, 0777, true);
-            $path = public_path('/storage/media/payrolls/' . $year . '/' . $month);
+            $path = public_path('/storage/media/payrolls/' . $yearInput . '/' . $monthInput);
             File::makeDirectory($path, 0777, true);
 
             foreach ($files as $file) {
@@ -191,12 +191,12 @@ class UploadPayrolls implements ShouldQueue
 
                 if (Employee::where('dni', '=', $dni)->exists()) {
                     if ($monthInput . $yearInput == substr($filename, 20, 7)) {
-                        rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
+                        rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                         $payroll = new Payroll();
                         $payroll->employee_id = Db::Table('employees')->where('dni', '=',  $dni)->value('id');
                         $payroll->filename = $path . '/' . $filename;
-                        $payroll->year = $year;
-                        $payroll->month = $month;
+                        $payroll->year = $yearInput;
+                        $payroll->month = $monthInput;
                         $payroll->save();
                     } else {
                         unlink(public_path('storage/media/payrollsTemp/' . $filename));
@@ -211,12 +211,12 @@ class UploadPayrolls implements ShouldQueue
                         $employee->save();
 
                         if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
-                            rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
+                            rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                             $payroll = new Payroll();
                             $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
                             $payroll->filename = $path . '/' . $filename;
-                            $payroll->year = $year;
-                            $payroll->month = $month;
+                            $payroll->year = $yearInput;
+                            $payroll->month = $monthInput;
                             $payroll->save();
                         } else {
                             unlink(public_path('storage/media/payrollsTemp/' . $filename));
@@ -229,7 +229,7 @@ class UploadPayrolls implements ShouldQueue
                 }
             }
         } else {
-            $path = public_path('/storage/media/payrolls/' . $year . '/' . $month);
+            $path = public_path('/storage/media/payrolls/' . $yearInput . '/' . $monthInput);
             if (!File::exists($path)) {
                 File::makeDirectory($path, 0777, true);
 
@@ -244,12 +244,12 @@ class UploadPayrolls implements ShouldQueue
 
                     if (Employee::where('dni', '=', $dni)->exists()) {
                         if ($monthInput . $yearInput == substr($filename, 20, 7)) {
-                            rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
+                            rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                             $payroll = new Payroll();
                             $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
                             $payroll->filename = $path . '/' . $filename;
-                            $payroll->year = $year;
-                            $payroll->month = $month;
+                            $payroll->year = $yearInput;
+                            $payroll->month = $monthInput;
                             $payroll->save();
                         } else {
                             unlink(public_path('storage/media/payrollsTemp/' . $filename));
@@ -264,12 +264,12 @@ class UploadPayrolls implements ShouldQueue
                             $employee->save();
 
                             if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
-                                rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
+                                rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                                 $payroll = new Payroll();
                                 $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
                                 $payroll->filename = $path . '/' . $filename;
-                                $payroll->year = $year;
-                                $payroll->month = $month;
+                                $payroll->year = $yearInput;
+                                $payroll->month = $monthInput;
                                 $payroll->save();
                             } else {
                                 unlink(public_path('storage/media/payrollsTemp/' . $filename));
@@ -282,7 +282,7 @@ class UploadPayrolls implements ShouldQueue
                     }
                 }
             } else {
-                $path = public_path('/storage/media/payrolls/' . $year . '/' . $month);
+                $path = public_path('/storage/media/payrolls/' . $yearInput . '/' . $monthInput);
 
                 foreach ($files as $file) {
                     $filename = basename($file);
@@ -293,12 +293,12 @@ class UploadPayrolls implements ShouldQueue
 
                     if (Employee::where('dni', '=', $dni)->exists()) {
                         if ($monthInput . $yearInput == substr($filename, 20, 7)) {
-                            rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
+                            rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                             $payroll = new Payroll();
                             $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
                             $payroll->filename = $path . '/' . $filename;
-                            $payroll->year = $year;
-                            $payroll->month = $month;
+                            $payroll->year = $yearInput;
+                            $payroll->month = $monthInput;
                             $payroll->save();
                         } else {
                             unlink(public_path('storage/media/payrollsTemp/' . $filename));
@@ -313,12 +313,12 @@ class UploadPayrolls implements ShouldQueue
                             $employee->save();
 
                             if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
-                                rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $filename));
+                                rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                                 $payroll = new Payroll();
                                 $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
                                 $payroll->filename = $path . '/' . $filename;
-                                $payroll->year = $year;
-                                $payroll->month = $month;
+                                $payroll->year = $yearInput;
+                                $payroll->month = $monthInput;
                                 $payroll->save();
                             } else {
                                 unlink(public_path('storage/media/payrollsTemp/' . $filename));

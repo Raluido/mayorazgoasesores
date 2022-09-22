@@ -31,6 +31,10 @@ class AddUsersNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Nuevos registros de empresas')->view('mails.mail-AddUsers-template')->with('usersNifPass', $this->usersNifPass)->with('uploadError', $this->uploadError);
+        return $this->from('mayorazgoasesores.info@gmail.com')
+            ->subject('Nuevos registros de empresas')
+            ->view('mails.mail-AddUsers-template')
+            ->with('usersNifPass', $this->usersNifPass)
+            ->with('uploadError', $this->uploadError);
     }
 }
