@@ -334,7 +334,7 @@ class UploadPayrolls implements ShouldQueue
             }
         }
 
-        Mail::to("raluido@gmail.com")->send(new UploadPayrollsNotification($uploadError));
+        Mail::to("raluido@gmail.com")->send(new UploadPayrollsNotification($uploadError, $monthInput, $yearInput));
 
         array_map('unlink', glob(public_path('storage/media/payrollsTemp/' . '*.*')));
     }

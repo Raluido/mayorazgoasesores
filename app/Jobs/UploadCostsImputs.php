@@ -381,7 +381,8 @@ class UploadCostsImputs implements ShouldQueue
             }
         }
 
-        Mail::to("raluido@gmail.com")->send(new UploadCostsImputsNotification($uploadError, $usersCreated));
+
+        Mail::to("raluido@gmail.com")->send(new UploadCostsImputsNotification($uploadError, $usersCreated, $monthInput, $yearInput));
 
         array_map('unlink', glob(public_path('storage/media/costsImputsTemp/' . '*.*')));
     }

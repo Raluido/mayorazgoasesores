@@ -31,7 +31,7 @@ class CostsImputsController extends Controller
             $extension = $file->getClientOriginalExtension();
             $check = in_array($extension, $allowedfileExtension);
             if ($check) {
-                $filenamewithextension = "addCostsImputs.pdf";
+                $filenamewithextension = date('d-m-Y h:i:s a', time()) . ".pdf";
                 $file->storeAs('storage/media/',  $filenamewithextension);
                 $month = $request->input('month');
                 $year = $request->input('year');

@@ -18,7 +18,7 @@ class AddUsersNotification extends Mailable
      *
      * @return void
      */
-    public function __construct($usersNifPass,$uploadError)
+    public function __construct($usersNifPass, $uploadError)
     {
         $this->usersNifPass = $usersNifPass;
         $this->uploadError = $uploadError;

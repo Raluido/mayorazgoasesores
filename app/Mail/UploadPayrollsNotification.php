@@ -12,14 +12,18 @@ class UploadPayrollsNotification extends Mailable
     use Queueable, SerializesModels;
 
     public $uploadError;
+    public $monthInput;
+    public $yearInput;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($uploadError)
+    public function __construct($uploadError, $monthInput, $yearInput)
     {
         $this->uploadError = $uploadError;
+        $this->month = $monthInput;
+        $this->year = $yearInput;
     }
 
     /**
@@ -29,6 +33,11 @@ class UploadPayrollsNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')->subject('Proceso de envio de nóminas finalizado')->view('mails.mail-UploadPayrolls-template')->with('uploadError', $this->uploadError);
+        return $this->from('mayorazgoasesores.info@gmail.com')
+            ->subject('Proceso de envio de nóminas finalizado')
+            ->view('mails.mail-UploadPayrolls-template')
+            ->with('uploadError', $this->uploadError)
+            ->with('monthInput', $this->monthInput)
+            ->with('yearInput', $this->yearInput);
     }
 }
