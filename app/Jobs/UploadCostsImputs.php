@@ -90,12 +90,13 @@ class UploadCostsImputs implements ShouldQueue
 
             // fix nif
 
+
             try {
                 if (ctype_space($Nif[0]) || ctype_space($Nif[1])) {
                     $Nif = substr($content, ($pos - 37), 9);
                 }
             } catch (\Throwable $th) {
-                $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
+                log::info('El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.');
                 break;
             }
 

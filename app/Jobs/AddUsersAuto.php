@@ -99,29 +99,14 @@ class AddUsersAuto implements ShouldQueue
 
             $true = 0;
 
-            if (in_array($NifFix[0], $abc)) {
-                for ($i = 1; $i < 8; $i++) {
-                    if (in_array($NifFix[$i], $num)) {
-                        $true++;
-                    } else {
-                        $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
-                        break;
-                    }
-                }
-                if (true == 8) {
-                    $usersNifNameDni = array();
-                    $usersNifNameDni[] = $NifFix;
-                    $usersNifNameDni[] = $Name;
-                    $usersNifNameDni[] = $DniFix;
-                    $usersNifNameDniAr[] = $usersNifNameDni;
-                }
-            } else {
-                if (in_array($NifFix[8], $abc)) {
-                    for ($i = 0; $i < 7; $i++) {
+
+            try {
+                if (in_array($NifFix[0], $abc)) {
+                    for ($i = 1; $i < 8; $i++) {
                         if (in_array($NifFix[$i], $num)) {
                             $true++;
                         } else {
-                            $uploadError[] = 'El ' . $NifFix . ' ha dado error de forma, consule al administrador de sistema.';
+                            $uploadError[] = 'El ' . $NifFix . 'ha dado error de forma, consule al administrador de sistema.';
                             break;
                         }
                     }
@@ -133,8 +118,28 @@ class AddUsersAuto implements ShouldQueue
                         $usersNifNameDniAr[] = $usersNifNameDni;
                     }
                 } else {
-                    $uploadError[] = 'El ' . $NifFix . ' ha dado error de forma, consule al administrador de sistema.';
+                    if (in_array($NifFix[8], $abc)) {
+                        for ($i = 0; $i < 7; $i++) {
+                            if (in_array($NifFix[$i], $num)) {
+                                $true++;
+                            } else {
+                                $uploadError[] = 'El ' . $NifFix . ' ha dado error de forma, consule al administrador de sistema.';
+                                break;
+                            }
+                        }
+                        if (true == 8) {
+                            $usersNifNameDni = array();
+                            $usersNifNameDni[] = $NifFix;
+                            $usersNifNameDni[] = $Name;
+                            $usersNifNameDni[] = $DniFix;
+                            $usersNifNameDniAr[] = $usersNifNameDni;
+                        }
+                    } else {
+                        $uploadError[] = 'El ' . $NifFix . ' ha dado error de forma, consule al administrador de sistema.';
+                    }
                 }
+            } catch (\Throwable $th) {
+                $uploadError[] = 'El ' . $NifFix . ' ha dado error de forma, consule al administrador de sistema.';
             }
         }
 
