@@ -106,6 +106,7 @@ class UploadCostsImputs implements ShouldQueue
             $pos2 = strpos($content, $findme2);
             $month = substr($content, ($pos2 + 15), 2);
 
+
             switch ($month) {
                 case '01':
                     $month = 'ENE';

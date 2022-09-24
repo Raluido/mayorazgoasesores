@@ -105,61 +105,65 @@ class UploadPayrolls implements ShouldQueue
             $true = 0;
             $oldFilename = basename($index);
 
-            if (in_array($Nif[0], $abc)) {
-                for ($i = 1; $i < 8; $i++) {
-                    if (in_array($Nif[$i], $num)) {
-                        $true++;
-                    } else {
-                        $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
-                        break;
+            try {
+                if (in_array($Nif[0], $abc)) {
+                    for ($i = 1; $i < 8; $i++) {
+                        if (in_array($Nif[$i], $num)) {
+                            $true++;
+                        } else {
+                            $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
+                            break;
+                        }
                     }
-                }
-                if (true == 8) {
-                    $true = 0;
-                    if (in_array($DniFix[8], $abc)) {
-                        for ($i = 0; $i < 7; $i++) {
-                            if (in_array($Nif[$i], $num)) {
-                                $true++;
-                            } else {
-                                $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
-                                break;
+                    if (true == 8) {
+                        $true = 0;
+                        if (in_array($DniFix[8], $abc)) {
+                            for ($i = 0; $i < 7; $i++) {
+                                if (in_array($Nif[$i], $num)) {
+                                    $true++;
+                                } else {
+                                    $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
+                                    break;
+                                }
                             }
-                        }
-                        if (true == 8) {
-                            rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $Nif . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
-                        }
-                    } else {
-                        $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
-                    }
-                }
-            } elseif (in_array($Nif[8], $abc)) {
-                for ($i = 0; $i < 7; $i++) {
-                    if (in_array($Nif[$i], $num)) {
-                        $true++;
-                    } else {
-                        $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
-                        break;
-                    }
-                }
-                if (true == 8) {
-                    $true = 0;
-                    if (in_array($DniFix[8], $abc)) {
-                        for ($i = 0; $i < 7; $i++) {
-                            if (in_array($Nif[$i], $num)) {
-                                $true++;
-                            } else {
-                                $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
-                                break;
+                            if (true == 8) {
+                                rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $Nif . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
                             }
+                        } else {
+                            $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
                         }
-                        if (true == 8) {
-                            rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $Nif . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
-                        }
-                    } else {
-                        $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
                     }
+                } elseif (in_array($Nif[8], $abc)) {
+                    for ($i = 0; $i < 7; $i++) {
+                        if (in_array($Nif[$i], $num)) {
+                            $true++;
+                        } else {
+                            $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
+                            break;
+                        }
+                    }
+                    if (true == 8) {
+                        $true = 0;
+                        if (in_array($DniFix[8], $abc)) {
+                            for ($i = 0; $i < 7; $i++) {
+                                if (in_array($Nif[$i], $num)) {
+                                    $true++;
+                                } else {
+                                    $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
+                                    break;
+                                }
+                            }
+                            if (true == 8) {
+                                rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $Nif . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
+                            }
+                        } else {
+                            $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
+                        }
+                    }
+                } else {
+                    $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
                 }
-            } else {
+            } catch (\Throwable $th) {
                 $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
             }
         }
