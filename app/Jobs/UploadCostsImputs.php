@@ -200,7 +200,7 @@ class UploadCostsImputs implements ShouldQueue
             // end check if the nif format is correct
         }
 
-        $files = glob(public_path('storage/media/costsImputsTemp/' . $filename . '_' . '*.*'));
+        $files = glob(public_path('storage/media/costsImputsTemp/' . basename($filename, '.pdf') . '_*.*'));
         foreach ($files as $file) {
             if (is_file($file)) {
                 unlink($file);

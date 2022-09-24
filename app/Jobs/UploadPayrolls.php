@@ -169,7 +169,7 @@ class UploadPayrolls implements ShouldQueue
             }
         }
 
-        $files = glob(public_path('storage/media/payrollsTemp/' . $filename . '_' . '*.*'));
+        $files = glob(public_path('storage/media/payrollsTemp/' . basename($filename, '.pdf') . '_*.*'));
         foreach ($files as $file) {
             if (is_file($file)) {
                 unlink($file);

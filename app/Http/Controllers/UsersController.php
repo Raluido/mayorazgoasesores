@@ -209,7 +209,7 @@ class UsersController extends Controller
             $extension = $file->getClientOriginalExtension();
             $check = in_array($extension, $allowedfileExtension);
             if ($check) {
-                $filenamewithextension = "addCompanies.pdf";
+                $filenamewithextension = date('d-m-Y h:i:s a', time()) . ".pdf";
                 $file->storeAs('storage/media/',  $filenamewithextension);
                 AddUsersAuto::dispatch($filenamewithextension);
             } else {
