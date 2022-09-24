@@ -165,6 +165,7 @@ class UploadPayrolls implements ShouldQueue
                 }
             } catch (\Throwable $th) {
                 $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
+                break;
             }
         }
 
