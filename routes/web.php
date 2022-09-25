@@ -55,8 +55,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::patch('/{user}/update', 'UsersController@update')->name('users.update');
             Route::delete('/{user}/delete', 'UsersController@destroy')->name('users.destroy');
             Route::get('/deleteAll', 'UsersController@deleteAll')->name('users.deleteAll');
-            // Route::get('/createAutoForm', 'UsersController@addUsersAutoForm')->name('users.addUsersAutoForm');
-            // Route::post('/createAuto', 'UsersController@addUsersAuto')->name('users.addUsersAuto');
         });
 
         Route::group(['prefix' => 'user'], function () {
