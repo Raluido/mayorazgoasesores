@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Mail\UploadCostsImputsNotification;
-use App\Mail\JobErrorImputsNotification;
 use App\Mail\JobErrorNotification;
 use Exception;
 
@@ -57,11 +56,12 @@ class UploadCostsImputs implements ShouldQueue
         $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         $uploadError = array();
 
+        // Split each page into a new PDF
+
         $pdf = new Fpdi();
         $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
         $file = pathinfo($filename, PATHINFO_FILENAME);
 
-        // Split each page into a new PDF
         for ($i = 1; $i <= $pageCount; $i++) {
             $newPdf = new Fpdi();
             $newPdf->addPage();
@@ -71,10 +71,14 @@ class UploadCostsImputs implements ShouldQueue
             $newPdf->output($newFilename, 'F');
         }
 
+        // End
+
         unlink(public_path('storage/media/' . $filename));
 
-        // read and rename each .pdf
+
         $files = glob(public_path('storage/media/costsImputsTemp/*'));
+
+        // read and rename each .pdf
 
         $oldNif = " ";
         $x = 0;
@@ -90,16 +94,14 @@ class UploadCostsImputs implements ShouldQueue
 
             // fix nif
 
-
             try {
                 if (ctype_space($Nif[0]) || ctype_space($Nif[1])) {
                     $Nif = substr($content, ($pos - 37), 9);
                 }
             } catch (\Throwable $th) {
-                log::info('El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.');
+                $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
                 break;
             }
-
 
             // end fix nif
 
@@ -171,30 +173,32 @@ class UploadCostsImputs implements ShouldQueue
                     }
                     $oldNif = $Nif;
                     rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $Nif . '_' . $month . $year . '_' . $x . '.pdf'));
-                }
-            } else {
-                if (in_array($Nif[8], $abc)) {
-                    for ($i = 0; $i < 7; $i++) {
-                        if (in_array($Nif[$i], $num)) {
-                            $true++;
-                        } else {
-                            $uploadError[] = 'El ' . $Nif . ' ha dado error de forma, consule al administrador de sistema.';
-                            break;
-                        }
-                    }
-                    if (true == 8) {
-                        if ($oldNif != $Nif) {
-                            $x = 0;
-                        } else {
-                            $x = 0;
-                            $x++;
-                        }
-                        $oldNif = $Nif;
-                        rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $Nif . '_' . $month . $year . '_' . $x . '.pdf'));
-                    }
                 } else {
-                    $uploadError[] = 'El ' . $Nif . ' ha dado error de forma, consule al administrador de sistema.';
+                    $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
                 }
+            } elseif (in_array($Nif[8], $abc)) {
+                for ($i = 0; $i < 7; $i++) {
+                    if (in_array($Nif[$i], $num)) {
+                        $true++;
+                    } else {
+                        $uploadError[] = 'El ' . $Nif . ' ha dado error de forma, consule al administrador de sistema.';
+                        break;
+                    }
+                }
+                if (true == 8) {
+                    if ($oldNif != $Nif) {
+                        $x = 0;
+                    } else {
+                        $x = 0;
+                        $x++;
+                    }
+                    $oldNif = $Nif;
+                    rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $Nif . '_' . $month . $year . '_' . $x . '.pdf'));
+                } else {
+                    $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
+                }
+            } elseif (!in_array($Nif[8], $abc) || !in_array($Nif[0], $abc)) {
+                $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
             }
 
             // end check if the nif format is correct

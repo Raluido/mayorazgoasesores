@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 use App\Mail\AddUsers;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use App\Mail\AddUsersNotification;
+use App\Mail\DeleteNotification;
 use Illuminate\Filesystem\Filesystem;
 use App\Mail\JobErrorNotification;
 use Exception;
@@ -65,6 +65,11 @@ class DestroyAll implements ShouldQueue
         Db::Table('others_documents')->delete();
 
         Db::Table('users')->where('id', '>', '2')->delete();
+
+        $passed = "El proceso de eliminación de toda la base de datos ha finalizado con éxito";
+
+
+        Mail::to("raluido@gmail.com")->send(new DeleteNotification($passed));
     }
 
     /**

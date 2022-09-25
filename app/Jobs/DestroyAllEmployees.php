@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\JobErrorNotification;
 use Illuminate\Support\Facades\File;
 use Exception;
+use App\Mail\DeleteNotification;
 
 
 class DestroyAllEmployees implements ShouldQueue
@@ -43,6 +44,11 @@ class DestroyAllEmployees implements ShouldQueue
         Db::Table('payrolls')->delete();
 
         Db::Table('employees')->delete();
+
+        $passed = "El proceso de eliminación de todos los trabajadores ha finalizado con éxito";
+
+
+        Mail::to("raluido@gmail.com")->send(new DeleteNotification($passed));
     }
 
     /**

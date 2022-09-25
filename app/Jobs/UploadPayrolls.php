@@ -61,11 +61,13 @@ class UploadPayrolls implements ShouldQueue
         $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         $uploadError = array();
 
+
+        // Split each page into a new PDF
+
         $pdf = new Fpdi();
         $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
         $file = pathinfo($filename, PATHINFO_FILENAME);
 
-        // Split each page into a new PDF
         for ($i = 1; $i <= $pageCount; $i++) {
             $newPdf = new Fpdi();
             $newPdf->addPage();
@@ -75,11 +77,13 @@ class UploadPayrolls implements ShouldQueue
             $newPdf->output($newFilename, 'F');
         }
 
+        // end
+
         unlink(public_path('storage/media/' . $filename));
 
         // read and rename each .pdf
-        $files = glob(public_path('storage/media/payrollsTemp/*'));
 
+        $files = glob(public_path('storage/media/payrollsTemp/*'));
 
         foreach ($files as $index) {
             $pdfParser = new Parser();
@@ -92,15 +96,16 @@ class UploadPayrolls implements ShouldQueue
 
             $findme1 = 'D.N.I.';
             $pos1 = strpos($content, $findme1);
-            $Dni = substr($content, ($pos1 + 94), 11);
-            $DniFix = preg_replace('/\s+/', '', $Dni);
+            $Dni = substr($content, ($pos1 + 94), 11);      // Porque algunos no estan en la misma posicion
+            $DniFix = preg_replace('/\s+/', '', $Dni);      // Eliminamos espacios en blanco
 
             $findme2 = 'PERIODO';
             $pos2 = strpos($content, $findme2);
             $month = substr($content, ($pos2 + 79), 3);
             $year = '20' . substr($content, ($pos2 + 83), 2);
 
-            // check if the nif format is correct
+
+            // check if the nif/dni format is correct
 
             $true = 0;
             $oldFilename = basename($index);
@@ -128,10 +133,14 @@ class UploadPayrolls implements ShouldQueue
                             }
                             if (true == 8) {
                                 rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $Nif . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
+                            } else {
+                                $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
                             }
                         } else {
                             $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
                         }
+                    } else {
+                        $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
                     }
                 } elseif (in_array($Nif[8], $abc)) {
                     for ($i = 0; $i < 7; $i++) {
@@ -155,19 +164,27 @@ class UploadPayrolls implements ShouldQueue
                             }
                             if (true == 8) {
                                 rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $Nif . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
+                            } else {
+                                $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
                             }
                         } else {
                             $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
                         }
+                    } else {
+                        $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
                     }
-                } else {
+                } elseif (!in_array($Nif[8], $abc) || !in_array($Nif[0], $abc)) {
                     $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
                 }
             } catch (\Throwable $th) {
-                $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
+                $uploadError[] = 'El ' . $Nif . 'o el ' . $DniFix . 'han dado error de forma, consule al administrador de sistema.';
                 break;
             }
         }
+
+        // End check
+
+        // delete temp files
 
         $files = glob(public_path('storage/media/payrollsTemp/' . basename($filename, '.pdf') . '_*.*'));
         foreach ($files as $file) {
@@ -175,6 +192,8 @@ class UploadPayrolls implements ShouldQueue
                 unlink($file);
             }
         }
+
+        // End
 
         // move to month and year folder
 
@@ -237,8 +256,6 @@ class UploadPayrolls implements ShouldQueue
             $path = public_path('/storage/media/payrolls/' . $yearInput . '/' . $monthInput);
             if (!File::exists($path)) {
                 File::makeDirectory($path, 0777, true);
-
-                $i = 0;
 
                 foreach ($files as $file) {
                     $filename = basename($file);
