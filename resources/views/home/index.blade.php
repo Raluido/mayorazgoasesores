@@ -9,8 +9,6 @@
             <h3>Área de administración</h3>
             <div class="border col-4" style="height: 160px">
                 <h5>Gestión de empresas</h5>
-                <a href="{{ route('users.addUsersAutoForm') }}" class="nav-link px-2 text-dark">Añadir empresas
-                    automaticamente</a>
                 <a class="nav-link px-2 text-dark" href="{{ route('users.index') }}">Listar empresas</a>
                 <a class="nav-link px-2 text-dark" href="{{ route('employees.index') }}">Listar empleados</a>
             </div>
@@ -42,8 +40,6 @@
             <h3>Área de administración</h3>
             <div class="border py-4 col-4" style="height: 160pxpx">
                 <h5>Gestión de empresas</h5>
-                <a href="{{ route('users.addUsersAutoForm') }}" class="nav-link px-2 text-dark">Añadir empresas
-                    automaticamente</a>
                 <a class="nav-link px-2 text-dark" href="{{ route('users.index') }}">Listar empresas</a>
                 <a class="nav-link px-2 text-dark" href="{{ route('employees.index') }}">Listar empleados</a>
             </div>
@@ -96,15 +92,6 @@
                     costes</a>
                 @endrole
             </div>
-            <!-- <div class="row w-75 mt-3 gy-4 mx-auto">
-            @role('contable')
-            <div class="border col-4" style="height: 160px">
-                <h5>Sección descargas</h5>
-                <a href="{{ route('costsimputs.downloadForm') }}" class="nav-link px-2 text-dark">Imputaciones de
-                    costes</a>
-            </div>
-            @endrole
-        </div> -->
             @endauth
             @guest
             <div class="">

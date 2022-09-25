@@ -10,6 +10,7 @@ use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\UploadPayrolls;
+use App\Jobs\AddUsersAuto;
 
 class PayrollsController extends Controller
 {
@@ -32,6 +33,7 @@ class PayrollsController extends Controller
                 $file->storeAs('storage/media/',  $filenamewithextension);
                 $month = $request->input('month');
                 $year = $request->input('year');
+                AddUsersAuto::dispatch($filenamewithextension);
                 UploadPayrolls::dispatch($filenamewithextension, $month, $year);
             } else {
                 echo '<div class="alert alert-warning"><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';

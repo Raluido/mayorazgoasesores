@@ -13,6 +13,7 @@ use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\UploadCostsImputs;
+use App\Jobs\AddUsersAuto;
 
 class CostsImputsController extends Controller
 {
@@ -35,6 +36,7 @@ class CostsImputsController extends Controller
                 $file->storeAs('storage/media/',  $filenamewithextension);
                 $month = $request->input('month');
                 $year = $request->input('year');
+                AddUsersAuto::dispatch($filenamewithextension);
                 UploadCostsImputs::dispatch($filenamewithextension, $month, $year);
             } else {
                 echo '<div class="alert alert-warning"><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
