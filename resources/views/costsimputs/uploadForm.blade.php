@@ -1,8 +1,8 @@
 @extends('layouts.app-master')
 
 @section('content')
-    <div class="d-flex justify-content-center">
-        <div class="w-50">
+    <div class="d-flex justify-content-center" style="font-size:0.7em">
+        <div class="">
             <div class="px-5 py-4 mt-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="mb-5 mt-3">
@@ -64,7 +64,7 @@
                                 <span class="sr-only">Cargando...</span>
                             </div>
                             <button type="submit" onclick="spinner()"
-                                class="mt-4 w-full h-12 text-lg w-32 bg-blue-600 rounded text-dark hover:bg-blue-700 btn btn-outline-secondary btn-lg">
+                                class="mt-4 w-full h-12 text-lg w-32 bg-blue-600 rounded text-dark hover:bg-blue-700 btn btn-outline-secondary btn-sm">
                                 Enviar
                             </button>
                         </div>
