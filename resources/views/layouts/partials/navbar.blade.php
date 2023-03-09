@@ -1,24 +1,28 @@
 <header class="">
-    <nav class="navbar navbar-expand-lg navbar-light bg-color text-white p-3">
-        <div class="" style="width:100%">
-            <div class="d-flex justify-content-around">
-                <a href="{{ route('home.index') }}" class="nav-link px-2 text-white"><span class="fs-5 fw-bold">mayorazgo</span> <br> <span class="fs-4 fw-bold">asesores</span></a>
-                <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+    <nav class="">
+        <div class="innerNav" style="width:100%">
+            <div class="logo">
+                <a href="{{ route('home.index') }}" class="innerLogo">
+                    <img src="{{ Storage::url('design/logo.png') }}" alt="" class="">
+                    <h3 class="">mayorago<br>asesores</h3>
+                </a>
+                <button class="" type="button">
+                    <span class=""></span>
                 </button>
             </div>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="menu">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item px-3"><a class="nav-link text-light fs-6" href="{{ route('home.index') }}">Inicio</a></li>
-                    <li class="nav-item px-3"><a class="nav-link text-light fs-6" href="{{ route('posts.showAll') }}">Noticias</a></li>
-                    <li class="nav-item px-3"><a class="nav-link text-light fs-6" href="#">Sobre nosotros</a></li>
-                    <li class="nav-item px-3"><a class="nav-link text-light fs-6" href="#">Contacto</a></li>
+                    <li class=""><a class="" href="{{ route('home.index') }}">Inicio</a></li>
+                    <li class=""><a class="" href="">Equipo</a></li>
+                    <li class=""><a class="" href="">Servicios</a></li>
+                    <li class=""><a class="" href="{{ route('posts.showAll') }}">Noticias</a></li>
+                    <li class=""><a class="" href="#">Contacto</a></li>
                 </ul>
                 <div class="">
                     @auth
                     @role('admin')
-                    <div class="nav-item dropdown">
-                        <button class="btn text-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="">
+                        <button class="" type="button" id="dropdownMenuButton1">
                             Bienvenido {{ auth()->user()->name }}
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -33,7 +37,7 @@
                     @endrole
                     @role('user')
                     <div class="nav-item dropdown">
-                        <button class="btn text-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="" type="button" id="dropdownMenuButton1">
                             Bienvenido {{ auth()->user()->name }}
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">

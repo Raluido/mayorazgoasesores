@@ -16,10 +16,11 @@ ol {
 
 a {
     text-decoration: none;
+    color: black;
 }
 
 html {
-    font-family: "SF UI Text", "Helvetica Neue", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
 }
@@ -34,12 +35,42 @@ body {
     -webkit-font-smoothing: inherit;
 }
 
-.bd-placeholder-img {
-    font-size: 1.125rem;
-    text-anchor: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
+header .innerNav {
+    display: flex;
+    justify-content: space-between;
+    margin: 1em 0 1em 0;
+}
+
+header nav .innerLogo {
+    width: 14em;
+    display: flex;
+    align-items: center;
+}
+
+header nav .innerLogo img {
+    width: 100%;
+    margin-right: 2em;
+}
+
+header .menu ul {
+    display: flex;
+}
+
+header .menu ul li {
+    margin-right: 1em;
+}
+
+header .logo {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+}
+
+header .menu {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media (min-width: 768px) {
@@ -50,8 +81,4 @@ body {
 
 .float-right {
     float: right;
-}
-
-.bg-color {
-    background-color: #739900;
 }
