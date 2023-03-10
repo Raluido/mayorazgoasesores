@@ -7,8 +7,6 @@
     <meta name="description" content="">
     <meta name="author" content="Websiwebs">
     <title>mayorazgo asesores</title>
-
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
 </head>
@@ -17,7 +15,7 @@
 
     @include('layouts.partials.navbar')
 
-    <main class="container mt-1">
+    <main class="">
         @yield('content')
     </main>
 
