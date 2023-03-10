@@ -35,20 +35,43 @@ body {
     -webkit-font-smoothing: inherit;
 }
 
+header {
+    height: 10vh;
+    /* position: fixed; */
+}
+
 header .innerNav {
     display: grid;
-    margin: .5em 0;
-    height: 6em;
+    grid-template-columns: [first] 15% [second] 60% [third] 15%;
+    margin: .5em 0 .5em 0;
+}
+
+header .innerNav .logoMenu {
+    grid-column: second / third;
+    display: flex;
+    justify-content: space-around;
+}
+
+header .innerNav .intranet {
+    grid-column: third / end;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header .innerNav .mobileMenu {
+    display: none;
 }
 
 header nav .innerLogo {
-    width: 13em;
+    width: 14em;
     display: flex;
     align-items: center;
 }
 
 header nav .innerLogo h3 {
     font-size: 1.4em;
+    line-height: 0.9;
 }
 
 header nav .innerLogo img {
@@ -61,18 +84,11 @@ header .menu ul {
 }
 
 header .menu ul li {
-    margin-right: 1em;
-    font-weight: 600;
-}
-
-header .logo {
-    width: 32%;
-    display: flex;
-    justify-content: start;
+    margin-right: 2em;
+    font-weight: 400;
 }
 
 header .menu {
-    width: 70%;
     display: flex;
     justify-content: end;
     align-items: center;
@@ -80,22 +96,64 @@ header .menu {
 
 /* home */
 
-.bienvenidos .top {
-    width: 100vw;
-    height: 15em;
+/* bienvenidos */
+
+.bienvenidos {
+    height: 90vh;
 }
 
+.bienvenidos .top,
 .bienvenidos .top img {
     width: 100%;
-    height: 15em;
+    height: auto;
+}
+
+.bienvenidos .bottom {
+    margin-top: 8em;
 }
 
 .bienvenidos .bottom p {
-    padding: 1em 7em;
+    padding: 0 7em;
     line-height: 1.5;
     font-size: 1.2em;
     text-align: center;
     font-weight: 500;
+}
+
+/* end */
+
+/* equipo */
+
+.equipo {
+    height: 90vh;
+}
+
+.equipo .top,
+.equipo .top img {
+    width: 100%;
+    height: auto;
+}
+
+.equipo .bottom {
+    margin-top: 6em;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3em;
+}
+
+.equipo .bottom .innerBottom {
+    width: 20%;
+    height: auto;
+    text-align: center;
+}
+
+.equipo .bottom .innerBottom h3 {
+    margin-bottom: -1em;
+}
+
+.equipo .bottom .innerBottom img {
+    width: 100%;
 }
 
 /* end */

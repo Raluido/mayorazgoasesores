@@ -1,25 +1,27 @@
 <header class="">
     <nav class="">
         <div class="innerNav">
-            <div class="logo">
-                <a href="{{ route('home.index') }}" class="innerLogo">
-                    <img src="{{ Storage::url('design/logo.png') }}" alt="" class="">
-                    <h3 class="">mayorago<br>asesores</h3>
-                </a>
-                <button class="" type="button">
-                    <span class=""></span>
-                </button>
+            <div class="logoMenu">
+                <div class="logo">
+                    <a href="{{ route('home.index') }}" class="innerLogo">
+                        <img src="{{ Storage::url('design/logo.png') }}" alt="" class="">
+                        <h3 class="">mayorago<br><span style="font-size: 1.3em">asesores</span></h3>
+                    </a>
+                </div>
+                <div class="menu">
+                    <ul class="navbar-nav mx-auto">
+                        <li class=""><a class="" href="{{ route('home.index') }}">Inicio</a></li>
+                        <li class=""><a class="" href="">Equipo</a></li>
+                        <li class=""><a class="" href="">Servicios</a></li>
+                        <li class=""><a class="" href="{{ route('posts.showAll') }}">Noticias</a></li>
+                        <li class=""><a class="" href="#">Contacto</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="menu">
-                <ul class="navbar-nav mx-auto">
-                    <li class=""><a class="" href="{{ route('home.index') }}">Inicio</a></li>
-                    <li class=""><a class="" href="">Equipo</a></li>
-                    <li class=""><a class="" href="">Servicios</a></li>
-                    <li class=""><a class="" href="{{ route('posts.showAll') }}">Noticias</a></li>
-                    <li class=""><a class="" href="#">Contacto</a></li>
-                </ul>
+            <div class="mobileMenu">
+                <img src="{{ Storage::url('design/mobileMenu.png') }}" alt="" class=""><button class="innerMobileMenu" type="button"></button></>
             </div>
-            <div class="">
+            <div class="intranet">
                 @auth
                 @role('admin')
                 <div class="">
@@ -51,7 +53,7 @@
                 @endrole
                 @role('asesor')
                 <div class="nav-item dropdown">
-                    <button class="btn text-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="" type="button" id="dropdownMenuButton1">
                         Bienvenido {{ auth()->user()->name }}
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -62,7 +64,7 @@
                 @endrole
                 @role('contable')
                 <div class="nav-item dropdown">
-                    <button class="btn text-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="" type="button" id="dropdownMenuButton1">
                         Bienvenido {{ auth()->user()->name }}
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
