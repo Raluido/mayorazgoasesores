@@ -4,7 +4,7 @@
             <div class="logoMenu">
                 <div class="logo">
                     <a href="{{ route('home.index') }}" class="innerLogo">
-                        <img src="{{ Storage::url('design/logo.png') }}" alt="" class="">
+                        <img src="{{ Storage::url('design/logoFixed.jpg') }}" alt="" class="">
                         <h3 class="">mayorago<br><span style="font-size: 1.3em">asesores</span></h3>
                     </a>
                 </div>

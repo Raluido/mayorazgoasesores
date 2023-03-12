@@ -35,10 +35,16 @@ body {
     -webkit-font-smoothing: inherit;
 }
 
+
+
 header {
     height: 10vh;
-    /* position: fixed; */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background-color: white;
 }
+
 
 header .innerNav {
     display: grid;
@@ -64,7 +70,7 @@ header .innerNav .mobileMenu {
 }
 
 header nav .innerLogo {
-    width: 14em;
+    width: 15em;
     display: flex;
     align-items: center;
 }
@@ -76,7 +82,7 @@ header nav .innerLogo h3 {
 
 header nav .innerLogo img {
     width: 100%;
-    margin-right: 2em;
+    margin-right: 1em;
 }
 
 header .menu ul {
@@ -100,6 +106,7 @@ header .menu {
 
 .bienvenidos {
     height: 90vh;
+    margin-top: 10vh;
 }
 
 .bienvenidos .top,
