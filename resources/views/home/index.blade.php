@@ -8,36 +8,40 @@
     </div>
     <div class="bottom">
         <p class="">
-            <span style="font-weight:bold">Mayorazgo Asesores</span> es una <span style="font-weight:bold">Asesoría Jurídica-Laboral</span> con mas de 20 años de experiencia en el sector, con un objetivo claro, dar <span style="font-style:bold">tranquilidad y soluciones</span> día a día a nuestros clientes.<br>
-            Nuestro gran aval es el compromiso con nuestros clientes, la rápida respuesta y el aprendizaje continuo, siendo en todo momento nuestros servicios gestionados por <span style="font-weight:bold">profesionales colegiados en cada materia.</span><br>
-            Colaboramos estrechamente con asesorías fiscales y contables, sumando así garantías de profesionalidad para nuestros clientes, ya que esas es sin duda nuestra misión cada día: ayudarles y darles una solución rápida y profesional.
+            <span style="font-weight:bold">Mayorazgo Asesores</span> es una <span style="font-weight:bold">Asesoría Jurídica-Laboral</span> con mas de 20 años de experiencia en el sector,<br> con un objetivo claro, dar <span style="font-style:bold">tranquilidad y soluciones</span> día a día a nuestros clientes.<br>
+            Nuestro gran aval es el compromiso con nuestros clientes, la rápida respuesta y el aprendizaje continuo,<br> siendo en todo momento nuestros servicios gestionados por <span style="font-weight:bold">profesionales colegiados en cada materia.</span><br>
+            Colaboramos estrechamente con asesorías fiscales y contables, sumando así garantías de profesionalidad,<br> ya que esa es sin duda nuestra misión cada día: ayudar y dar al cliente una solución rápida y profesional.
         </p>
     </div>
 </section>
 <section class="equipo">
-    <div class="top">
-        <img src="{{ Storage::url('design/equipo.jpg') }}" alt="" class="">
-    </div>
-    <div class="bottom">
-        <div class="innerBottom">
-            <img src="{{ Storage::url('design/equipo/Fran.jpg') }}" alt="" class="">
-            <h3 class="">Fran Luis</h3>
-            <h4 class="">Graduado Social</h4>
+    <div class="innerEquipo">
+        <div class="top">
+            <img src="{{ Storage::url('design/equipo.jpg') }}" alt="" class="">
         </div>
-        <div class="innerBottom">
-            <img src="{{ Storage::url('design/equipo/Cande.jpg') }}" alt="" class="">
-            <h3 class="">Cande Rguez.</h3>
-            <h4 class="">Experta en Gestión Laboral</h4>
-        </div>
-        <div class="innerBottom">
-            <img src="{{ Storage::url('design/equipo/Nieves.jpg') }}" alt="" class="">
-            <h3 class="">Nieves Moleiro</h3>
-            <h4 class="">Administrativa Laboral</h4>
-        </div>
-        <div class="innerBottom">
-            <img src="{{ Storage::url('design/equipo/Ana.jpg') }}" alt="" class="">
-            <h3 class="">Ana Ledesma</h3>
-            <h4 class="">Abogada Civil y Penal</h4>
+        <div class="bottom">
+            <div class="innerBottom">
+                <div class="">
+                    <img src="{{ Storage::url('design/equipo/Fran.jpg') }}" alt="" class="">
+                    <h3 class="">Fran Luis</h3>
+                    <h4 class="">Graduado Social</h4>
+                </div>
+                <div class="">
+                    <img src="{{ Storage::url('design/equipo/Cande.jpg') }}" alt="" class="">
+                    <h3 class="">Cande Rguez.</h3>
+                    <h4 class="">Experta en Gestión Laboral</h4>
+                </div>
+                <div class="">
+                    <img src="{{ Storage::url('design/equipo/Nieves.jpg') }}" alt="" class="">
+                    <h3 class="">Nieves Moleiro</h3>
+                    <h4 class="">Administrativa Laboral</h4>
+                </div>
+                <div class="">
+                    <img src="{{ Storage::url('design/equipo/Ana.jpg') }}" alt="" class="">
+                    <h3 class="">Ana Ledesma</h3>
+                    <h4 class="">Abogada Civil y Penal</h4>
+                </div>
+            </div>
         </div>
     </div>
 </section>

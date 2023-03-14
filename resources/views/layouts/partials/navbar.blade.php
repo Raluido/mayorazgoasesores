@@ -9,7 +9,7 @@
                     </a>
                 </div>
                 <div class="menu">
-                    <ul class="navbar-nav mx-auto">
+                    <ul class="">
                         <li class=""><a class="" href="{{ route('home.index') }}">Inicio</a></li>
                         <li class=""><a class="" href="">Equipo</a></li>
                         <li class=""><a class="" href="">Servicios</a></li>
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="mobileMenu">
-                <img src="{{ Storage::url('design/mobileMenu.png') }}" alt="" class=""><button class="innerMobileMenu" type="button"></button></>
+                <button class="innerMobileMenu" onclick="openMenu()" type="button"><img src="{{ Storage::url('design/mobileMenu.png') }}" alt="" class=""></button>
             </div>
             <div class="intranet">
                 @auth
@@ -79,7 +79,7 @@
 
                 @guest
                 <div class="text-end">
-                    <a href="{{ route('login.perform') }}" class="btn btn-outline-light me-2">Área de clientes</a>
+                    <a href="{{ route('login.perform') }}" class="btn btn-outline-light me-2">Intranet</a>
                     @role('admin')
                     <a href="{{ route('register.perform') }}" class="btn btn-warning">Sign-up</a>
                     @endrole

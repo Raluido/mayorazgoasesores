@@ -8,6 +8,7 @@
     <meta name="author" content="Websiwebs">
     <title>mayorazgo asesores</title>
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('storage/design/myriadFont/style.css') }}" />
 
 </head>
 
@@ -20,7 +21,7 @@
     </main>
 
 
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/mobileMenu.js') }}" defer></script>
     @section('scripts')
     @show
     @yield('js')
