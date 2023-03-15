@@ -5,7 +5,7 @@
                 <div class="logo">
                     <a href="{{ route('home.index') }}" class="innerLogo">
                         <img src="{{ Storage::url('design/logoFixed.jpg') }}" alt="" class="">
-                        <h3 class="">mayorago<br><span style="font-size: 1.3em">asesores</span></h3>
+                        <h3 class="">mayorago<br><span>asesores</span></h3>
                     </a>
                 </div>
                 <div class="menu">
@@ -20,68 +20,53 @@
             </div>
             <div class="mobileMenu">
                 <button class="innerMobileMenu" onclick="openMenu()" type="button"><img src="{{ Storage::url('design/mobileMenu.png') }}" alt="" class=""></button>
-            </div>
-            <div class="intranet">
                 @auth
                 @role('admin')
-                <div class="">
+                <div class="dropdown" id="myDropdown">
                     <button class="" type="button" id="dropdownMenuButton1">
                         Bienvenido {{ auth()->user()->name }}
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a></li>
-                        <li><a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a></li>
-                        <li><a class="dropdown-item" href="{{ route('permissions.index') }}">Permisos</a>
-                        </li>
-                        <li><a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
-                        </li>
+                    <a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>
+                    <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
+                    <a class="dropdown-item" href="{{ route('permissions.index') }}">Permisos</a>
+                    <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
+
                     </ul>
                 </div>
                 @endrole
                 @role('user')
-                <div class="nav-item dropdown">
+                <div class="dropdown" id="myDropdown">
                     <button class="" type="button" id="dropdownMenuButton1">
                         Bienvenido {{ auth()->user()->name }}
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li> <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
-                        </li>
-                        <li><a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
-                        </li>
-                    </ul>
+                    <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
+                    <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                 </div>
                 @endrole
                 @role('asesor')
-                <div class="nav-item dropdown">
+                <div class="dropdown" id="myDropdown">
                     <button class="" type="button" id="dropdownMenuButton1">
                         Bienvenido {{ auth()->user()->name }}
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
-                        </li>
-                    </ul>
+                    <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                 </div>
                 @endrole
                 @role('contable')
-                <div class="nav-item dropdown">
+                <div class="dropdown" id="myDropdown">
                     <button class="" type="button" id="dropdownMenuButton1">
                         Bienvenido {{ auth()->user()->name }}
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
-                        </li>
-                    </ul>
+                    <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                 </div>
                 @endrole
-
 
                 @endauth
 
                 @guest
-                <div class="text-end">
+                <div class="dropdown" id="myDropdown">
                     <a href="{{ route('login.perform') }}" class="btn btn-outline-light me-2">Intranet</a>
                     @role('admin')
-                    <a href="{{ route('register.perform') }}" class="btn btn-warning">Sign-up</a>
+                    <a href="{{ route('register.perform') }}" class="btn btn-warning">Registrar</a>
                     @endrole
                 </div>
                 @endguest
