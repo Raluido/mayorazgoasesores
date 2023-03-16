@@ -64,6 +64,28 @@ header .innerNav .intranet {
     align-items: center;
 }
 
+header .innerNav .menu .intranet {
+    position: relative;
+}
+
+header .innerNav .menu .intranet .dropdown {
+    position: absolute;
+    display: none;
+    z-index: 1;
+    padding: 1em 2em;
+    background-color: white;
+}
+
+header .innerNav .menu .intranet .dropdown a {
+    display: block;
+    margin-bottom: 1em;
+    cursor: pointer;
+}
+
+.showMenu {
+    display: block !important;
+}
+
 header .innerNav .mobileMenu {
     display: none;
 }
@@ -225,6 +247,16 @@ header .intranet a {
     font-family: 'Myriad Pro Regular';
 }
 
+.servicios .innerServicios .bottom .innerBottom>div ul.dashed>li {
+    margin-left: 15px;
+}
+
+/* Prevent nested li's from getting messed up */
+.servicios .innerServicios .bottom .innerBottom>div ul.dashed>li::before {
+    content: "-";
+    margin-left: -15px;
+}
+
 .servicios .innerServicios .bottom .innerBottom>div ul li {
     font-family: 'Myriad Pro Regular';
 }
@@ -328,6 +360,31 @@ header .intranet a {
     margin-right: 1em;
 }
 
+
+/* end */
+
+/* login */
+
+
+
+.form-signin .login {
+    display: flex;
+    justify-content: center;
+    margin-top: 20vh;
+}
+
+.form-signin .login form {
+    padding: 2em 3em;
+    border: 1px solid gray;
+}
+
+.form-signin .login form .inputDiv:nth-child(-n+2) {
+    margin-bottom: 1.5em;
+}
+
+.form-signin .login form .inputDiv .forgetPass {
+    margin-top: 0.5em;
+}
 
 /* end */
 
@@ -498,28 +555,33 @@ header .intranet a {
     }
 
     header .innerNav .mobileMenu {
-        display: block;
+        display: flex;
         align-items: center;
         position: relative;
     }
 
-    header .innerNav .mobileMenu .innerMobileMenu {
+    header .innerNav .mobileMenu .mobileMenuBtn {
         background-color: transparent;
         border: 1px solid transparent;
     }
 
     header .innerNav .mobileMenu .innerMobileMenu img {
         width: 2em;
+        cursor: pointer;
     }
 
     header .innerNav .mobileMenu .dropdown {
         position: absolute;
         display: none;
         z-index: 1;
+        padding: 1em 2em;
+        background-color: white;
     }
 
     header .innerNav .mobileMenu .dropdown a {
         display: block;
+        margin-bottom: 1em;
+        cursor: pointer;
     }
 
     .showMenu {

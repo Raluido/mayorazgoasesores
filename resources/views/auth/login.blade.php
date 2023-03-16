@@ -1,46 +1,45 @@
 @extends('layouts.auth-master')
 
 @section('content')
+<section class="login">
     <form method="post" action="{{ route('login.perform') }}">
 
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-        {{-- <img class="mb-4" src="{!! url('images/bootstrap-logo.svg') !!}" alt="" width="72" height="57"> --}}
 
-        <h1 class="h3 mb-3 fw-normal mt-5">Login</h1>
+        <h1 class="">Login</h1>
 
-        <div class="d-flex justify-content-center">
-            <div class="w-25 mt-5">
+        <div class="">
+            <div class="">
 
                 @include('layouts.partials.messages')
 
-                <div class="form-group form-floating mb-3">
-                    <input type="text" class="form-control" name="nif" value="{{ old('nif') }}" placeholder="Nif"
-                        required="required" autofocus>
+                <div class="inputDiv">
+                    <input type="text" class="" name="nif" value="{{ old('nif') }}" placeholder="Nif" required="required" autofocus>
                     <label for="floatingName">Email o Nif</label>
                     @if ($errors->has('nif'))
-                        <span class="text-danger text-left">{{ $errors->first('nif') }}</span>
+                    <span class="">{{ $errors->first('nif') }}</span>
                     @endif
                 </div>
 
-                <div class="form-group form-floating mb-3">
-                    <input type="password" class="form-control" name="password" value="{{ old('password') }}"
-                        placeholder="Password" required="required">
+                <div class="inputDiv">
+                    <input type="password" class="" name="password" value="{{ old('password') }}" placeholder="Password" required="required">
                     <label for="floatingPassword">Contraseña</label>
                     @if ($errors->has('password'))
-                        <span class="text-danger text-left">{{ $errors->first('password') }}</span>
+                    <span class="">{{ $errors->first('password') }}</span>
                     @endif
                 </div>
-                <div class="d-flex justify-content-start mt-3">
-                    <button class="btn btn-lg btn-primary" type="submit">Login</button>
-                    <div class="checkbox d-flex align-items-center ms-3">
-                        <label>
-                            <a class="text-decoration-none text-primary" href="{{ route('forget.password.get') }}">Olvidé la
+                <div class="inputDiv">
+                    <button class="" type="submit">Login</button>
+                    <div class="forgetPass">
+                        <label class="">
+                            <a class="" href="{{ route('forget.password.get') }}">Olvidé la
                                 contraseña</a>
                         </label>
                     </div>
                 </div>
             </div>
         </div>
-        @include('auth.partials.copy')
+        <!-- @include('auth.partials.copy') -->
     </form>
+</section>
 @endsection

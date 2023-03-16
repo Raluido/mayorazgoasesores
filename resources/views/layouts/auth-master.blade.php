@@ -7,13 +7,11 @@
     <meta name="description" content="">
     <meta name="author" content="Websiwebs">
     <title>mayorazgo asesores</title>
-
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
 </head>
 
-<body class="text-center">
+<body class="">
 
     <main class="form-signin">
 
@@ -21,7 +19,6 @@
 
     </main>
 
-    <script src="{{ asset('js/app.js') }}" defer></script>
 </body>
 
 </html>

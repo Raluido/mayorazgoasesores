@@ -60,7 +60,7 @@
                             <h4 class="">Asesoría Laboral</h4>
                         </div>
                     </div>
-                    <ul class="">
+                    <ul class="dashed">
                         <li class="">
                             Asesoramiento continuado y atención a consultas de carácter laboral y de prevención de riesgos laborales.
                         </li>
@@ -100,7 +100,7 @@
                             <h4 class="">Asesoría Jurídica</h4>
                         </div>
                     </div>
-                    <ul class="">
+                    <ul class="dashed">
                         <li class="">
                             Litigiosidad Laboral y Seguridad Social, incluyendo la asistencia jurídica ante órganos administrativos y representación procesal ante los órganos jurisdiccionales.
                         </li>
@@ -122,7 +122,7 @@
                             <h4 class="">Asesoría Fiscal</h4>
                         </div>
                     </div>
-                    <ul class="">
+                    <ul class="dashed">
                         <li class="">
                             Declaración modelo 100 del IRPF (Renta).
                         </li>
