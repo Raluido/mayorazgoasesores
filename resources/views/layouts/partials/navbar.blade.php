@@ -11,10 +11,10 @@
                 <div class="menu">
                     <ul class="">
                         <li class=""><a class="" href="{{ route('home.index') }}">Inicio</a></li>
-                        <li class=""><a class="" href="">Equipo</a></li>
-                        <li class=""><a class="" href="">Servicios</a></li>
-                        <li class=""><a class="" href="{{ route('posts.showAll') }}">Noticias</a></li>
-                        <li class=""><a class="" href="#">Contacto</a></li>
+                        <li class=""><a class="" href="#equipo">Equipo</a></li>
+                        <li class=""><a class="" href="#servicios">Servicios</a></li>
+                        <li class=""><a class="" href="#noticias">Noticias</a></li>
+                        <li class=""><a class="" href="#contacto">Contacto</a></li>
                     </ul>
                 </div>
                 <div class="intranet">
@@ -23,9 +23,8 @@
                         @auth
                         @role('admin')
                         <div class="dropdownIntranet" id="myDropdownIntranet">
-                            <button class="" type="button" id="dropdownMenuButton1">
-                                Bienvenido {{ auth()->user()->name }}
-                            </button>
+                            <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
+                            <hr>
                             <a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>
                             <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
                             <a class="dropdown-item" href="{{ route('permissions.index') }}">Permisos</a>
@@ -34,26 +33,23 @@
                         @endrole
                         @role('user')
                         <div class="dropdownIntranet" id="myDropdownIntranet">
-                            <button class="" type="button" id="dropdownMenuButton1">
-                                Bienvenido {{ auth()->user()->name }}
-                            </button>
+                            <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
+                            <hr>
                             <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
                             <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                         </div>
                         @endrole
                         @role('asesor')
                         <div class="dropdownIntranet" id="myDropdownIntranet">
-                            <button class="" type="button" id="dropdownMenuButton1">
-                                Bienvenido {{ auth()->user()->name }}
-                            </button>
+                            <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
+                            <hr>
                             <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                         </div>
                         @endrole
                         @role('contable')
                         <div class="dropdownIntranet" id="myDropdownIntranet">
-                            <button class="" type="button" id="dropdownMenuButton1">
-                                Bienvenido {{ auth()->user()->name }}
-                            </button>
+                            <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
+                            <hr>
                             <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                         </div>
                         @endrole
@@ -77,59 +73,53 @@
                     @auth
                     @role('admin')
                     <div class="dropdown" id="myDropdown">
-                        <button class="" type="button" id="dropdownMenuButton1">
-                            Bienvenido {{ auth()->user()->name }}
-                        </button>
+                        <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
+                        <hr>
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
-                        <a class="" href="">Equipo</a>
-                        <a class="" href="">Servicios</a>
-                        <a class="" href="{{ route('posts.showAll') }}">Noticias</a>
-                        <a class="" href="#">Contacto</a>
+                        <a class="" href="#equipo">Equipo</a>
+                        <a class="" href="#servicios">Servicios</a>
+                        <a class="" href="#noticias">Noticias</a>
+                        <a class="" href="#contacto">Contacto</a>
                         <a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>
                         <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
                         <a class="dropdown-item" href="{{ route('permissions.index') }}">Permisos</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
-
-                        </ul>
                     </div>
                     @endrole
                     @role('user')
                     <div class="dropdown" id="myDropdown">
+                        <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
+                        <hr>
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
-                        <a class="" href="">Equipo</a>
-                        <a class="" href="">Servicios</a>
-                        <a class="" href="{{ route('posts.showAll') }}">Noticias</a>
-                        <a class="" href="#">Contacto</a>
-                        <button class="" type="button" id="dropdownMenuButton1">
-                            Bienvenido {{ auth()->user()->name }}
-                        </button>
+                        <a class="" href="#equipo">Equipo</a>
+                        <a class="" href="#servicios">Servicios</a>
+                        <a class="" href="#noticias">Noticias</a>
+                        <a class="" href="#contacto">Contacto</a>
                         <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                     </div>
                     @endrole
                     @role('asesor')
                     <div class="dropdown" id="myDropdown">
+                        <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
+                        <hr>
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
-                        <a class="" href="">Equipo</a>
-                        <a class="" href="">Servicios</a>
-                        <a class="" href="{{ route('posts.showAll') }}">Noticias</a>
-                        <a class="" href="#">Contacto</a>
-                        <button class="" type="button" id="dropdownMenuButton1">
-                            Bienvenido {{ auth()->user()->name }}
-                        </button>
+                        <a class="" href="#equipo">Equipo</a>
+                        <a class="" href="#servicios">Servicios</a>
+                        <a class="" href="#noticias">Noticias</a>
+                        <a class="" href="#contacto">Contacto</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                     </div>
                     @endrole
                     @role('contable')
                     <div class="dropdown" id="myDropdown">
+                        <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
+                        <hr>
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
-                        <a class="" href="">Equipo</a>
-                        <a class="" href="">Servicios</a>
-                        <a class="" href="{{ route('posts.showAll') }}">Noticias</a>
-                        <a class="" href="#">Contacto</a>
-                        <button class="" type="button" id="dropdownMenuButton1">
-                            Bienvenido {{ auth()->user()->name }}
-                        </button>
+                        <a class="" href="#equipo">Equipo</a>
+                        <a class="" href="#servicios">Servicios</a>
+                        <a class="" href="#noticias">Noticias</a>
+                        <a class="" href="#contacto">Contacto</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                     </div>
                     @endrole
@@ -139,11 +129,11 @@
                     @guest
                     <div class="dropdown" id="myDropdown">
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
-                        <a class="" href="">Equipo</a>
-                        <a class="" href="">Servicios</a>
-                        <a class="" href="{{ route('posts.showAll') }}">Noticias</a>
-                        <a class="" href="#">Contacto</a>
-                        <a href="{{ route('login.perform') }}" class="btn btn-outline-light me-2">Intranet</a>
+                        <a class="" href="#equipo">Equipo</a>
+                        <a class="" href="#servicios">Servicios</a>
+                        <a class="" href="#noticias">Noticias</a>
+                        <a class="" href="#contacto">Contacto</a>
+                        <a href="{{ route('login.perform') }}" class="btn btn-outline-light me-2">Login</a>
                         @role('admin')
                         <a href="{{ route('register.perform') }}" class="btn btn-warning">Registrar</a>
                         @endrole

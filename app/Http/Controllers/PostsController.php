@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\DB;
 
 class PostsController extends Controller
 {
@@ -35,9 +36,14 @@ class PostsController extends Controller
         $post->title = $request->title;
         $post->body = $request->body;
         $post->published_at = $request->published_at;
-
         $post->save();
-        return redirect('/posts')->with('éxito', 'Se ha creado correctamente!');
+
+        $posts = DB::table('posts')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+            return view('home.index', compact('posts'));
     }
 
     public function show(Post $post)

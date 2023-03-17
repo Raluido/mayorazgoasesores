@@ -14,7 +14,7 @@
         </p>
     </div>
 </section>
-<section class="equipo">
+<section class="equipo" id="equipo">
     <div class="innerEquipo">
         <div class="top">
             <img src="{{ Storage::url('design/equipo.jpg') }}" alt="" class="">
@@ -46,7 +46,7 @@
     </div>
 </section>
 
-<section class="servicios">
+<section class="servicios" id="servicios">
     <div class="innerServicios">
         <div class="top">
             <img src="{{ Storage::url('design/servicios.jpg') }}" alt="" class="">
@@ -136,7 +136,7 @@
     </div>
 </section>
 
-<section class="noticias">
+<section class="noticias" id="noticias">
     <div class="innerNoticias">
         <div class="top">
             <img src="{{ Storage::url('design/noticias.jpg') }}" alt="" class="">
@@ -147,14 +147,58 @@
                 <div class="">
                     Ponte al día con las noticias que te interesan
                 </div>
+                @guest
+                @if(empty($posts[0]))
+                <p>Por ahora no hay noticias subidas, pronto tendremos la actualidad!!</p>
+                @else
                 @foreach ($posts as $post)
-                <h3>{{ $post->title }}</h3>
-                <hr>
-                <h5>{{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
-                <br>
-                <p>{{ $post->body }}</p>
-                <button class=""><a href="{{ route('posts.show') }}" class="">Ir a noticia</a></button>
+                <div class="">
+                    <h3>{{ $post->title }}</h3>
+                    <hr>
+                    <h5>{{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
+                    <br>
+                    <p>{{ $post->body }}</p>
+                    <button class=""><a href="{{ route('posts.show', $post->id) }}" class="">Ir a noticia</a></button>
+                </div>
                 @endforeach
+                @endif
+                @endguest
+                @role('asesor')
+                <div class="">
+                    <a href="{{ route('posts.create') }}" class="btn btn-primary">Crear noticia</a>
+                    <br>
+                </div>
+                <table class="">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Título</th>
+                            <th>Fecha de publicación</th>
+                            <th>Fecha de creación</th>
+                            <th colspan="2">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($posts as $post)
+                        <tr>
+                            <td>{{ $post->id }}</td>
+                            <td>{{ $post->title }}</td>
+                            <td>{{ date('Y-m-d', strtotime($post->published_at)) }}</td>
+                            <td>{{ date('Y-m-d', strtotime($post->created_at)) }}</td>
+                            <td class="">
+                                <a href="posts/{{ $post->id }}" class="">Mostrar</a>
+                                <a href="posts/{{ $post->id }}/edit" class="">Editar</a>
+                                <form action="posts/{{ $post->id }}" method="post" class="">
+                                    {{ csrf_field() }}
+                                    @method('DELETE')
+                                    <button class="" type="submit">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @endrole
             </div>
             <div class="">
                 <button class=""><a href="{{ route('posts.showAll') }}" class="">Mostrar todas</a></button>
@@ -165,7 +209,7 @@
         </div>
 </section>
 
-<section class="contacto">
+<section class="contacto" id="contacto">
     <div class="innerContacto">
         <div class="top">
             <img src="{{ Storage::url('design/contacto.jpg') }}" alt="" class="">

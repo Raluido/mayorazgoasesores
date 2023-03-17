@@ -288,6 +288,10 @@ header .intranet a {
 
 /* noticias */
 
+.noticias {
+    min-height: 100vh;
+}
+
 .noticias .top,
 .noticias .top img {
     width: 100%;
@@ -517,7 +521,6 @@ header .intranet a {
     }
 
     .noticias {
-        min-height: 100vh;
         display: flex;
         flex-direction: column;
     }
@@ -557,7 +560,8 @@ header .intranet a {
         justify-content: space-around;
     }
 
-    header .innerNav .logoMenu .menu {
+    header .innerNav .logoMenu .menu,
+    header .innerNav .intranet {
         display: none;
     }
 
