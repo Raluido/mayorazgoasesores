@@ -64,11 +64,12 @@ header .innerNav .intranet {
     align-items: center;
 }
 
-header .innerNav .menu .intranet {
+header .innerNav .intranet .innerIntranet {
     position: relative;
+    display: inline-block;
 }
 
-header .innerNav .menu .intranet .dropdown {
+header .innerNav .intranet .dropdownIntranet {
     position: absolute;
     display: none;
     z-index: 1;
@@ -76,9 +77,15 @@ header .innerNav .menu .intranet .dropdown {
     background-color: white;
 }
 
-header .innerNav .menu .intranet .dropdown a {
+header .innerNav .intranet .dropdown a {
     display: block;
     margin-bottom: 1em;
+    cursor: pointer;
+}
+
+header .innerNav .intranet .intranetMenuBtn {
+    background-color: transparent;
+    border: 1px solid transparent;
     cursor: pointer;
 }
 

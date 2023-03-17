@@ -14,4 +14,22 @@ window.onclick = function (event) {
             }
         }
     }
-} 
+}
+
+function openMenuIntranet() {
+    document.getElementById('myDropdownIntranet').classList.toggle('showMenu');
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function (event) {
+    if (!document.getElementsByClassName('intranetMenuBtn')[0].contains(event.target)) {
+        var dropdowns = document.getElementsByClassName("dropdownIntranet");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('showMenu')) {
+                openDropdown.classList.remove('showMenu');
+            }
+        }
+    }
+}

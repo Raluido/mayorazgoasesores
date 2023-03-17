@@ -112,9 +112,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         });
 
         Route::group(['prefix' => 'posts'], function () {
-            Route::get('/', 'PostsController@index')->name('posts.index');
+            // Route::get('/', 'PostsController@index')->name('posts.index');
             Route::get('/create', 'PostsController@create')->name('posts.create');
             Route::get('/{post}', 'PostsController@show')->name('posts.show');
+            Route::get('/showAll', 'PostsController@showAll')->name('posts.showAll');
             Route::post('/store', 'PostsController@store')->name('posts.store');
             Route::get('/{post}/edit', 'PostsController@edit')->name('posts.edit');
             Route::put('/{post}', 'PostsController@update')->name('posts.update');

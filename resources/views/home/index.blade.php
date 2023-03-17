@@ -105,10 +105,10 @@
                             Litigiosidad Laboral y Seguridad Social, incluyendo la asistencia jurídica ante órganos administrativos y representación procesal ante los órganos jurisdiccionales.
                         </li>
                         <li class="">
-                            eclamaciones frente a las Administraciones Públicas, particularmente frente a las resoluciones de la Administración Tributaria, Seguridad Social o SEPE.
+                            Reclamaciones frente a las Administraciones Públicas, particularmente frente a las resoluciones de la Administración Tributaria, Seguridad Social o SEPE.
                         </li>
                         <li class="">
-                            erecho Civil y de Familia, especialmente en asesoramiento de gestión patrimonial familiar y representación en procedimientos de Sucesiones y Donaciones, así como en reclamaciones procesales de impagos.
+                            Derecho Civil y de Familia, especialmente en asesoramiento de gestión patrimonial familiar y representación en procedimientos de Sucesiones y Donaciones, así como en reclamaciones procesales de impagos.
                         </li>
                         <li class="">
                             Defensa en el Orden Penal.
@@ -142,52 +142,27 @@
             <img src="{{ Storage::url('design/noticias.jpg') }}" alt="" class="">
         </div>
         <div class="bottom">
-            <div class="post">
-                <p class="date">
-                    5 NOV 2022
-                </p>
-                <h4 class="headline">
-                    LOREN IPSUM LOREN IPSUM LOREN IPSUM LOREN
-                </h4>
-                <p class="content">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley...
-                </p>
+            <div class="">
+                <h1>Noticias</h1>
+                <div class="">
+                    Ponte al día con las noticias que te interesan
+                </div>
+                @foreach ($posts as $post)
+                <h3>{{ $post->title }}</h3>
+                <hr>
+                <h5>{{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
+                <br>
+                <p>{{ $post->body }}</p>
+                <button class=""><a href="{{ route('posts.show') }}" class="">Ir a noticia</a></button>
+                @endforeach
             </div>
-            <div class="post">
-                <p class="date">
-                    5 NOV 2022
-                </p>
-                <h4 class="headline">
-                    LOREN IPSUM LOREN IPSUM LOREN IPSUM LOREN
-                </h4>
-                <p class="content">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley...
-                </p>
+            <div class="">
+                <button class=""><a href="{{ route('posts.showAll') }}" class="">Mostrar todas</a></button>
             </div>
-            <div class="post">
-                <p class="date">
-                    5 NOV 2022
-                </p>
-                <h4 class="headline">
-                    LOREN IPSUM LOREN IPSUM LOREN IPSUM LOREN
-                </h4>
-                <p class="content">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley...
-                </p>
-            </div>
-            <div class="post">
-                <p class="date">
-                    5 NOV 2022
-                </p>
-                <h4 class="headline">
-                    LOREN IPSUM LOREN IPSUM LOREN IPSUM LOREN
-                </h4>
-                <p class="content">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley...
-                </p>
+            <div class="">
+                <button class=""><a href="{{ route('home.index') }}" class="">Volver</a></button>
             </div>
         </div>
-
 </section>
 
 <section class="contacto">
