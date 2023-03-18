@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\DB;
 class PostsController extends Controller
 {
 
-    // public function index()
-    // {
-    //     $posts = Post::all();
-    //     return view('posts.index', compact('posts'));
-    // }
+    public function index()
+    {
+        $posts = Post::all();
+        return view('posts.index', compact('posts'));
+    }
 
     public function showAll()
     {
@@ -43,7 +43,7 @@ class PostsController extends Controller
             ->limit(5)
             ->get();
 
-            return view('home.index', compact('posts'));
+        return view('home.index', compact('posts'));
     }
 
     public function show(Post $post)

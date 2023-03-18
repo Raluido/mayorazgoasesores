@@ -30,28 +30,14 @@ class LoginController extends Controller
     {
         $credentials = $request->getCredentials();
 
-        if (!Auth::validate($credentials)) :
-            return redirect()->to('login')
-                ->withErrors(trans('auth.failed'));
-        endif;
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
-        $user = Auth::getProvider()->retrieveByCredentials($credentials);
+            return redirect()->route('intranet.index');
+        }
 
-        Auth::login($user);
-
-        return $this->authenticated($request, $user);
-    }
-
-    /**
-     * Handle response after user authenticated
-     *
-     * @param Request $request
-     * @param Auth $user
-     *
-     * @return \Illuminate\Http\Response
-     */
-    protected function authenticated(Request $request, $user)
-    {
-        return redirect()->route('intranet.index');
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 }

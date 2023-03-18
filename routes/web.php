@@ -20,6 +20,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::group(['middleware' => ['guest']], function () {
         Route::get('/', 'HomeController@index')->name('home.index');
         Route::get('/posts/showAll', 'PostsController@showAll')->name('posts.showAll');
+        Route::get('/posts/{post}', 'PostsController@show')->name('posts.show');
         /**
          * Login Routes
          */
@@ -44,7 +45,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
          */
         Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
 
-        Route::get('/intranet', 'HomeController@index')->name('intranet.index');
+        Route::get('/intranet', 'IntranetController@index')->name('intranet.index');
 
         Route::group(['prefix' => 'users'], function () {
             Route::get('/', 'UsersController@index')->name('users.index');
@@ -112,9 +113,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         });
 
         Route::group(['prefix' => 'posts'], function () {
-            // Route::get('/', 'PostsController@index')->name('posts.index');
+            Route::get('/', 'PostsController@index')->name('posts.index');
             Route::get('/create', 'PostsController@create')->name('posts.create');
-            Route::get('/{post}', 'PostsController@show')->name('posts.show');
             Route::get('/showAll', 'PostsController@showAll')->name('posts.showAll');
             Route::post('/store', 'PostsController@store')->name('posts.store');
             Route::get('/{post}/edit', 'PostsController@edit')->name('posts.edit');
