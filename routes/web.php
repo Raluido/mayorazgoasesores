@@ -14,13 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
+
     /**
      * Home Routes
      */
+    Route::get('/', 'HomeController@index')->name('home.index');
+    Route::get('/posts/showAll', 'PostsController@showAll')->name('posts.showAll');
+    Route::get('/posts/{post}', 'PostsController@show')->name('posts.show');
+
     Route::group(['middleware' => ['guest']], function () {
-        Route::get('/', 'HomeController@index')->name('home.index');
-        Route::get('/posts/showAll', 'PostsController@showAll')->name('posts.showAll');
-        Route::get('/posts/{post}', 'PostsController@show')->name('posts.show');
+
         /**
          * Login Routes
          */
@@ -113,7 +116,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         });
 
         Route::group(['prefix' => 'posts'], function () {
-            Route::get('/', 'PostsController@index')->name('posts.index');
+            // Route::get('/', 'PostsController@index')->name('posts.index');
             Route::get('/create', 'PostsController@create')->name('posts.create');
             Route::get('/showAll', 'PostsController@showAll')->name('posts.showAll');
             Route::post('/store', 'PostsController@store')->name('posts.store');

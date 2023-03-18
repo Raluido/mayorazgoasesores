@@ -33,7 +33,7 @@
             </div>
             <div class="border col-12" style="height: fit-content">
                 <h5>Gestionar blog</h5>
-                <a href="{{ route('posts.index') }}" class="nav-link px-2 text-dark">Crear, editar y borrar</a>
+                <a href="{{ route('home.index') }}" class="nav-link px-2 text-dark">Crear, editar y borrar</a>
             </div>
             @endrole
             @role('admin')
@@ -69,7 +69,7 @@
             </div>
             <div class="border col-12" style="fit-content">
                 <h5>Gestionar blog</h5>
-                <a href="{{ route('posts.index') }}" class="nav-link px-2 text-dark">Crear, editar y borrar</a>
+                <a href="{{ route('home.index') }}" class="nav-link px-2 text-dark">Crear, editar y borrar</a>
             </div>
             @endrole
         </div>

@@ -165,7 +165,7 @@
                 @endguest
                 @role('asesor')
                 <div class="">
-                    <a href="{{ route('posts.create') }}" class="btn btn-primary">Crear noticia</a>
+                    <button class="create"><a href="{{ route('posts.create') }}" class="">Crear noticia</a></button>
                     <br>
                 </div>
                 <table class="">
@@ -181,17 +181,17 @@
                     <tbody>
                         @foreach ($posts as $post)
                         <tr>
-                            <td>{{ $post->id }}</td>
-                            <td>{{ $post->title }}</td>
-                            <td>{{ date('Y-m-d', strtotime($post->published_at)) }}</td>
-                            <td>{{ date('Y-m-d', strtotime($post->created_at)) }}</td>
+                            <td class="">{{ $post->id }}</td>
+                            <td class="">{{ $post->title }}</td>
+                            <td class="">{{ date('Y-m-d', strtotime($post->published_at)) }}</td>
+                            <td class="">{{ date('Y-m-d', strtotime($post->created_at)) }}</td>
                             <td class="">
-                                <a href="posts/{{ $post->id }}" class="">Mostrar</a>
-                                <a href="posts/{{ $post->id }}/edit" class="">Editar</a>
-                                <form action="posts/{{ $post->id }}" method="post" class="">
+                                <button class="show"><a href="posts/{{ $post->id }}">Mostrar</a></button>
+                                <button class="edit"><a href="posts/{{ $post->id }}/edit">Editar</a></button>
+                                <form action="posts/{{ $post->id }}" method="post">
                                     {{ csrf_field() }}
                                     @method('DELETE')
-                                    <button class="" type="submit">Eliminar</button>
+                                    <button class="delete" type="submit">Eliminar</button>
                                 </form>
                             </td>
                         </tr>
@@ -200,10 +200,8 @@
                 </table>
                 @endrole
             </div>
-            <div class="">
+            <div class="bottomNav">
                 <button class=""><a href="{{ route('posts.showAll') }}" class="">Mostrar todas</a></button>
-            </div>
-            <div class="">
                 <button class=""><a href="{{ route('home.index') }}" class="">Volver</a></button>
             </div>
         </div>

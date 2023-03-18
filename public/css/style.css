@@ -304,7 +304,69 @@ header .intranet a {
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-grow: 1;
 }
+
+.noticias .innerNoticias .bottom>div div:nth-child(3) {
+    display: flex;
+    justify-content: end;
+    margin-top: 2em;
+}
+
+.noticias .innerNoticias .bottom .create {
+    background-color: green;
+}
+
+.noticias .innerNoticias .bottom .create a {
+    color: white;
+}
+
+.noticias .innerNoticias .bottom table {
+    margin-top: 2em;
+}
+
+.noticias .innerNoticias .bottom table tr,
+.noticias .innerNoticias .bottom table th,
+.noticias .innerNoticias .bottom table td {
+    border: 1px solid gray;
+}
+
+.noticias .innerNoticias .bottom table tr th {
+    padding: .5em;
+}
+
+.noticias .innerNoticias .bottom table tr td:nth-child(1) {
+    text-align: center;
+}
+
+.noticias .innerNoticias .bottom table tr td:nth-child(n+3) {
+    text-align: center;
+}
+
+.noticias .innerNoticias .bottom table tr td:nth-last-child(-n+1) {
+    padding: 1em;
+}
+
+.noticias .innerNoticias .bottom table .show {
+    background-color: green;
+}
+
+.noticias .innerNoticias .bottom table .show a,
+.noticias .innerNoticias .bottom table .edit a {
+    color: white;
+}
+
+.noticias .innerNoticias .bottom table .edit {
+    background-color: blue;
+}
+
+.noticias .innerNoticias .bottom table .delete {
+    background-color: red;
+    margin-top: .5em;
+    color: white;
+}
+
+
 
 .noticias .innerNoticias .bottom p {
     font-family: 'Myriad Pro Regular';
