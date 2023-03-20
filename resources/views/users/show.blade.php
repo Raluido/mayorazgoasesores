@@ -1,27 +1,28 @@
 @extends('layouts.app-master')
 
 @section('content')
-    <div class="bg-light p-4 rounded">
-        <h1>Empresa</h1>
-        <div class="lead">
-
+<div class="usersShow">
+    <div class="innerUsersShow">
+        <div class="top">
+            <h1>Empresa</h1>
         </div>
-
-        <div class="container mt-4">
-            <div>
-                Empresa: {{ $user->name }}
-            </div>
-            <div>
-                Email: {{ $user->email }}
-            </div>
-            <div>
-                Nombre empresa: {{ $user->username }}
+        <div class="bottom">
+            <div class="innerBottom">
+                <div>
+                    Empresa: {{ $user->name }}
+                </div>
+                <div>
+                    Email: {{ $user->email }}
+                </div>
+                <div>
+                    Nombre empresa: {{ $user->username }}
+                </div>
             </div>
         </div>
-
+        <div class="buttonsNav">
+            <button class="stylingButtons blue"><a href="{{ route('users.index') }}" class="buttonTextWt">Volver</a></button>
+            <button class="stylingButtons green"><a href="{{ route('users.edit', $user->id) }}" class="buttonTextWt">Editar</a></button>
+        </div>
     </div>
-    <div class="mt-4">
-        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info">Editar</a>
-        <a href="{{ route('users.index') }}" class="btn btn-default">Volver</a>
-    </div>
+</div>
 @endsection

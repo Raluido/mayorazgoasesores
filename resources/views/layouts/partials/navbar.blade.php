@@ -24,18 +24,19 @@
                         @role('admin')
                         <div class="dropdownIntranet" id="myDropdownIntranet">
                             <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
-                            <hr>
+                            <hr><br>
                             <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
+                            <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
+                            <!-- <hr><br>
                             <a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>
                             <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
-                            <a class="dropdown-item" href="{{ route('permissions.index') }}">Permisos</a>
-                            <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
+                            <a class="dropdown-item" href="{{ route('permissions.index') }}">Permisos</a> -->
                         </div>
                         @endrole
                         @role('user')
                         <div class="dropdownIntranet" id="myDropdownIntranet">
                             <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
-                            <hr>
+                            <hr><br>
                             <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
                             <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
                             <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
@@ -44,7 +45,7 @@
                         @role('asesor')
                         <div class="dropdownIntranet" id="myDropdownIntranet">
                             <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
-                            <hr>
+                            <hr><br>
                             <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
                             <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                         </div>
@@ -52,7 +53,7 @@
                         @role('contable')
                         <div class="dropdownIntranet" id="myDropdownIntranet">
                             <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
-                            <hr>
+                            <hr><br>
                             <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
                             <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                         </div>
@@ -75,39 +76,43 @@
                     @role('admin')
                     <div class="dropdown" id="myDropdown">
                         <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
+                        <hr><br>
                         <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
-                        <hr>
+                        <hr><br>
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
                         <a class="" href="/#noticias">Noticias</a>
                         <a class="" href="/#contacto">Contacto</a>
+                        <!-- <hr><br>
                         <a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>
                         <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
-                        <a class="dropdown-item" href="{{ route('permissions.index') }}">Permisos</a>
+                        <a class="dropdown-item" href="{{ route('permissions.index') }}">Permisos</a> -->
                     </div>
                     @endrole
                     @role('user')
                     <div class="dropdown" id="myDropdown">
                         <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
+                        <hr><br>
                         <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
+                        <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
-                        <hr>
+                        <hr><br>
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
                         <a class="" href="/#noticias">Noticias</a>
                         <a class="" href="/#contacto">Contacto</a>
-                        <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
                     </div>
                     @endrole
                     @role('asesor')
                     <div class="dropdown" id="myDropdown">
                         <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
+                        <hr><br>
                         <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
-                        <hr>
+                        <hr><br>
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
@@ -118,9 +123,10 @@
                     @role('contable')
                     <div class="dropdown" id="myDropdown">
                         <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
+                        <hr><br>
                         <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
-                        <hr>
+                        <hr><br>
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
@@ -134,7 +140,7 @@
                     @guest
                     <div class="dropdown" id="myDropdown">
                         <a href="{{ route('login.perform') }}" class="btn btn-outline-light me-2">Login</a>
-                        <hr>
+                        <hr><br>
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>

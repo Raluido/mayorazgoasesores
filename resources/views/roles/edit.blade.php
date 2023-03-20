@@ -1,36 +1,33 @@
 @extends('layouts.app-master')
 
 @section('content')
-    <div class="bg-light p-4 rounded">
-        <div class="lead">
-            Editar roles y manejar permisos.
+<section class="editRoles">
+    <div class="innerEditRoles">
+        <div class="top">
+            <h1 class="">Asignar permisos</h1>
+            <h3 class="">Editar roles y manejar permisos</h3>
         </div>
-
-        <div class="container mt-4">
-
+        <div class="bottom">
             @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="alert alert-danger">
+                <strong>Whoops!</strong>Hubo algún problema con el input.<br><br>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
 
             <form method="POST" action="{{ route('roles.update', $role->id) }}">
                 @method('patch')
                 @csrf
-                <div class="mb-3">
-                    <label for="name" class="form-label">Nombre</label>
-                    <input value="{{ $role->name }}" type="text" class="form-control" name="name" placeholder="Name"
-                        required>
+                <div class="">
+                    <label for="name" class="" style="margin-right:2em;">Nombre</label>
+                    <input value="{{ $role->name }}" type="text" class="" name="name" placeholder="Name" required>
                 </div>
 
-                <label for="permissions" class="form-label">Assign Permissions</label>
-
-                <table class="table table-striped">
+                <table class="t">
                     <thead>
                         <th scope="col" width="1%"><input type="checkbox" name="all_permission"></th>
                         <th scope="col" width="20%">Name</th>
@@ -38,27 +35,25 @@
                     </thead>
 
                     @foreach ($permissions as $permission)
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="permission[{{ $permission->name }}]"
-                                    value="{{ $permission->name }}" class='permission'
-                                    {{ in_array($permission->name, $rolePermissions) ? 'checked' : '' }}>
-                            </td>
-                            <td>{{ $permission->name }}</td>
-                            <td>{{ $permission->guard_name }}</td>
-                        </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="permission[{{ $permission->name }}]" value="{{ $permission->name }}" class='permission' {{ in_array($permission->name, $rolePermissions) ? 'checked' : '' }}>
+                        </td>
+                        <td>{{ $permission->name }}</td>
+                        <td>{{ $permission->guard_name }}</td>
+                    </tr>
                     @endforeach
                 </table>
-
-                <button type="submit" class="btn btn-primary">Save changes</button>
-                <a href="{{ route('roles.index') }}" class="btn btn-default">Back</a>
+                <div class="buttonsNav">
+                    <button class="stylingButtons blue"><a href="{{ route('roles.index') }}" class="buttonTextWt">Volver</a></button>
+                    <button type="submit" class="stylingButtons green buttonTextWt">Guardar cambios</button>
+                </div>
             </form>
         </div>
-
     </div>
-@endsection
+    @endsection
 
-@section('scripts')
+    @section('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
             $('[name="all_permission"]').on('click', function() {
@@ -76,4 +71,5 @@
             });
         });
     </script>
-@endsection
+    @endsection
+</section>

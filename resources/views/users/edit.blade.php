@@ -1,59 +1,57 @@
 @extends('layouts.app-master')
 
 @section('content')
-    <div class="bg-light p-4 rounded">
-        <h1>Modificar empresa</h1>
-        <div class="lead">
-
+<div class="editUsers">
+    <div class="innerEditUsers">
+        <div class="top">
+            <h1>Modificar empresa</h1>
         </div>
-
-        <div class="container mt-4">
+        <div class="bottom">
             <form method="post" action="{{ route('users.update', $user->id) }}">
                 @method('patch')
                 @csrf
-                <div class="mb-3">
-                    <label for="name" class="form-label">Empresa</label>
-                    <input value="{{ $user->name }}" type="text" class="form-control" name="name" placeholder="Empresa"
-                        required>
+                <div class="inputDiv">
+                    <label for="name" class="">Empresa</label>
+                    <input value="{{ $user->name }}" type="text" class="" name="name" placeholder="Empresa" required>
 
                     @if ($errors->has('name'))
-                        <span class="text-danger text-left">{{ $errors->first('name') }}</span>
+                    <span class="">{{ $errors->first('name') }}</span>
                     @endif
                 </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input value="{{ $user->email }}" type="email" class="form-control" name="email"
-                        placeholder="Email address" required>
+                <div class="inputDiv">
+                    <label for="email" class="">Email</label>
+                    <input value="{{ $user->email }}" type="email" class="" name="email" placeholder="Email address" required>
                     @if ($errors->has('email'))
-                        <span class="text-danger text-left">{{ $errors->first('email') }}</span>
+                    <span class="">{{ $errors->first('email') }}</span>
                     @endif
                 </div>
-                <div class="mb-3">
-                    <label for="username" class="form-label">Nombre empresa</label>
-                    <input value="{{ $user->username }}" type="text" class="form-control" name="username"
-                        placeholder="Username" required>
+                <div class="inputDiv">
+                    <label for="username" class="">Nombre empresa</label>
+                    <input value="{{ $user->username }}" type="text" class="form-control" name="username" placeholder="Username" required>
                     @if ($errors->has('username'))
-                        <span class="text-danger text-left">{{ $errors->first('username') }}</span>
+                    <span class="text-danger text-left">{{ $errors->first('username') }}</span>
                     @endif
                 </div>
-                <div class="mb-3">
-                    <label for="role" class="form-label">Role</label>
+                <div class="inputDiv">
+                    <label for="role" class="">Role</label>
                     <select class="form-control" name="role" required>
                         <option value="">Select role</option>
                         @foreach ($roles as $role)
-                            <option value="{{ $role->id }}" {{ in_array($role->name, $userRole) ? 'selected' : '' }}>
-                                {{ $role->name }}</option>
+                        <option value="{{ $role->id }}" {{ in_array($role->name, $userRole) ? 'selected' : '' }}>
+                            {{ $role->name }}
+                        </option>
                         @endforeach
                     </select>
                     @if ($errors->has('role'))
-                        <span class="text-danger text-left">{{ $errors->first('role') }}</span>
+                    <span class="">{{ $errors->first('role') }}</span>
                     @endif
                 </div>
-
-                <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                <a href="{{ route('users.index') }}" class="btn btn-default">Cancelar</button>
             </form>
         </div>
-
+        <div class="buttonsNav">
+            <button class="stylingButtons blue"><a href="{{ route('users.index') }}" class="buttonTextWt">Volver</button>
+            <button type="submit" class="stylingButtons green buttonTextWt">Guardar cambios</button>
+        </div>
     </div>
+</div>
 @endsection

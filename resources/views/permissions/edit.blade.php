@@ -1,31 +1,30 @@
 @extends('layouts.app-master')
 
 @section('content')
-    <div class="bg-light p-4 rounded">
-        <h2>Edit permission</h2>
-        <div class="lead">
-            Editing permission.
+<div class="editPermissions">
+    <div class="innerEditPermissions">
+        <div class="top">
+            <h1>Editar permisos</h1>
+            <h3 class="">Edición de permisos</h3>
         </div>
-
-        <div class="container mt-4">
-
+        <div class="bottom">
             <form method="POST" action="{{ route('permissions.update', $permission->id) }}">
                 @method('patch')
                 @csrf
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input value="{{ $permission->name }}" type="text" class="form-control" name="name"
-                        placeholder="Name" required>
+                <div class="">
+                    <label for="name" class="" style="margin-right:3em;">Nombre</label>
+                    <input value="{{ $permission->name }}" type="text" class="" name="name" placeholder="Name" required>
 
                     @if ($errors->has('name'))
-                        <span class="text-danger text-left">{{ $errors->first('name') }}</span>
+                    <span class="">{{ $errors->first('name') }}</span>
                     @endif
                 </div>
-
-                <button type="submit" class="btn btn-primary">Save permission</button>
-                <a href="{{ route('permissions.index') }}" class="btn btn-default">Back</a>
             </form>
+            <div class="buttonsNav">
+                <button class="stylingButtons blue"><a href="{{ route('permissions.index') }}" class="buttonTextWt">Volver</a></button>
+                <button type="submit" class="stylingButtons green buttonTextWt">Guardar permisos</button>
+            </div>
         </div>
-
     </div>
+</div>
 @endsection

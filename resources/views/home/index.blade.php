@@ -163,7 +163,6 @@
                 @endforeach
                 @endif
                 <div class="bottomNav">
-                    <button class="stylingButtons green"><a href="{{ route('home.index') }}" class="">Volver</a></button>
                     <button class="stylingButtons blue"><a href="{{ route('posts.showAll') }}" class="">Mostrar todas</a></button>
                 </div>
             </div>

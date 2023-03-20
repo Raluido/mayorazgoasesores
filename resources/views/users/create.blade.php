@@ -48,9 +48,9 @@
                         <span class="text-danger text-left">{{ $errors->first('role') }}</span>
                     @endif
                 </div>
-                <div class="d-flex justify-content-around mt-4">
-                    <div class=""><button type="submit" class="btn btn-primary">Guardar usuario</button></div>
-                    <div class=""><a href="{{ route('users.index') }}" class="btn btn-secondary">Volver</a></div>
+                <div class="buttonsNav">
+                    <div class="stylingButtons blue"><a href="{{ route('users.index') }}" class="buttonTextWt">Volver</a></div>
+                    <div class="stylingButtons green"><button type="submit" class="buttonTextWt">Guardar usuario</button></div>
                 </div>
             </form>
         </div>

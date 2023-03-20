@@ -1,19 +1,20 @@
 @extends('layouts.app-master')
 
 @section('content')
-    <div class="bg-light p-4 rounded">
-        <h1>Permisos</h1>
-        <div class="lead">
+<section class="permissions">
+    <div class="innerPermissions">
+        <div class="top">
+            <h1>Permisos</h1>
             Gestión de permisos
+            <div class="mt-2">
+                @include('layouts.partials.messages')
+            </div>
         </div>
-
-        <div class="mt-2">
-            @include('layouts.partials.messages')
-        </div>
-
-        <div class="w-50 mx-auto mt-4">
-            <a href="{{ route('permissions.create') }}" class="btn btn-primary btn-sm float-right mb-3">Añadir permisos</a>
-            <table class="table table-bordered">
+        <div class="bottom">
+            <div class="addPermission">
+                <button class="stylingButtons green"><a href="{{ route('permissions.create') }}" class="buttonTextWt">Añadir permisos</a></button>
+            </div>
+            <table class="">
                 <thead>
                     <tr>
                         <th scope="col" width="10%">Nombre</th>
@@ -23,25 +24,27 @@
                 </thead>
                 <tbody>
                     @foreach ($permissions as $permission)
-                        <tr>
-                            <td>{{ $permission->name }}</td>
-                            <td>{{ $permission->guard_name }}</td>
-                            <td><a href="{{ route('permissions.edit', $permission->id) }}"
-                                    class="btn btn-info btn-sm">Edit</a>
-                            </td>
-                            <td>
-                                {!! Form::open([
-                                    'method' => 'DELETE',
-                                    'route' => ['permissions.destroy', $permission->id],
-                                    'style' => 'display:inline',
-                                ]) !!}
-                                {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
-                                {!! Form::close() !!}
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>{{ $permission->name }}</td>
+                        <td>{{ $permission->guard_name }}</td>
+                        <td><button class="stylingButtons green"><a href="{{ route('permissions.edit', $permission->id) }}" class="buttonTextWt">Editar</a></button>
+                        </td>
+                        <td>
+                            {!! Form::open([
+                            'method' => 'DELETE',
+                            'route' => ['permissions.destroy', $permission->id],
+                            'style' => 'display:inline',
+                            ]) !!}
+                            {!! Form::submit('Borrar', ['class' => 'buttonTextWt stylingButtons red']) !!}
+                            {!! Form::close() !!}
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
+        <div class="buttonsNav">
+            <button class="stylingButtons blue"><a href="{{ route('intranet.index') }}" class="buttonTextWt">Volver</a></button>
+        </div>
     </div>
-@endsection
+    @endsection

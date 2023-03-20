@@ -719,7 +719,7 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.290.1",
+            "version": "v0.291.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
@@ -757,7 +757,7 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.290.1"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.291.0"
             },
             "time": "2023-03-13T21:05:11+00:00"
         },
@@ -3685,17 +3685,21 @@
         },
         {
             "name": "setasign/fpdf",
-            "version": "1.8.2",
+            "version": "1.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Setasign/FPDF.git",
-                "reference": "d77904018090c17dc9f3ab6e944679a7a47e710a"
+                "reference": "f4104a04c9a3f95c4c26a0a0531abebcc980987a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Setasign/FPDF/zipball/d77904018090c17dc9f3ab6e944679a7a47e710a",
-                "reference": "d77904018090c17dc9f3ab6e944679a7a47e710a",
+                "url": "https://api.github.com/repos/Setasign/FPDF/zipball/f4104a04c9a3f95c4c26a0a0531abebcc980987a",
+                "reference": "f4104a04c9a3f95c4c26a0a0531abebcc980987a",
                 "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "ext-zlib": "*"
             },
             "type": "library",
             "autoload": {
@@ -3721,9 +3725,9 @@
                 "pdf"
             ],
             "support": {
-                "source": "https://github.com/Setasign/FPDF/tree/1.8.2"
+                "source": "https://github.com/Setasign/FPDF/tree/1.8.5"
             },
-            "time": "2019-12-08T10:32:10+00:00"
+            "time": "2022-11-18T07:02:00+00:00"
         },
         {
             "name": "setasign/fpdi",
@@ -3799,16 +3803,16 @@
         },
         {
             "name": "smalot/pdfparser",
-            "version": "v2.3.0",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smalot/pdfparser.git",
-                "reference": "70433d171a86dc881fc8c68fd6af4d60acb8313e"
+                "reference": "43a1c145b91d83f6b9c6fb4e5c2e6b274d2a0a17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/70433d171a86dc881fc8c68fd6af4d60acb8313e",
-                "reference": "70433d171a86dc881fc8c68fd6af4d60acb8313e",
+                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/43a1c145b91d83f6b9c6fb4e5c2e6b274d2a0a17",
+                "reference": "43a1c145b91d83f6b9c6fb4e5c2e6b274d2a0a17",
                 "shasum": ""
             },
             "require": {
@@ -3844,9 +3848,9 @@
             ],
             "support": {
                 "issues": "https://github.com/smalot/pdfparser/issues",
-                "source": "https://github.com/smalot/pdfparser/tree/v2.3.0"
+                "source": "https://github.com/smalot/pdfparser/tree/v2.4.0"
             },
-            "time": "2022-12-21T16:52:55+00:00"
+            "time": "2023-03-14T08:13:58+00:00"
         },
         {
             "name": "spatie/db-dumper",

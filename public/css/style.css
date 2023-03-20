@@ -25,6 +25,22 @@ a {
     font-size: .9em;
 }
 
+.blue {
+    background-color: #008CBA;
+}
+
+.green {
+    background-color: #4CAF50;
+}
+
+.red {
+    background-color: #f44336;
+}
+
+.buttonTextWt {
+    color: white;
+}
+
 html {
     font-family: 'Times New Roman', Times, serif;
     -webkit-text-size-adjust: 100%;
@@ -338,16 +354,6 @@ header .intranetMenu a {
     margin-top: 5em;
 }
 
-.noticias .innerNoticias .innerBottom .bottomNav .blue {
-    background-color: #008CBA;
-}
-
-.noticias .innerNoticias .innerBottom .bottomNav .green {
-    background-color: #4CAF50;
-    margin-right: 3em;
-
-}
-
 .noticias .innerNoticias .innerBottom .bottomNav a {
     color: white;
 }
@@ -423,6 +429,435 @@ header .intranetMenu a {
 .form-signin .login form .inputDiv .forgetPass {
     margin-top: 0.5em;
 }
+
+/* end */
+
+/* intranet index */
+
+.intranet .innerIntranet {
+    padding: 5em 4em;
+}
+
+.intranet .innerIntranet h3 {
+    margin-bottom: 3em;
+}
+
+.intranet .innerIntranet .areasIntranet {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+}
+
+.intranet .innerIntranet .areasIntranet>div {
+    width: 20%;
+    border: 1px solid lightgray;
+    padding: 0 1em 2em 1em;
+}
+
+/* end */
+
+/* intranet roles */
+
+.roles .innerRoles {
+    padding: 5em 4em;
+}
+
+.roles .innerRoles .bottom {
+    margin-top: 2em;
+}
+
+.roles .innerRoles .bottom .addRol {
+    display: flex;
+    justify-content: end;
+}
+
+.roles .innerRoles .bottom table {
+    margin-top: 2em;
+}
+
+.roles .innerRoles .bottom table tr,
+.roles .innerRoles .bottom table th,
+.roles .innerRoles .bottom table td {
+    border: 1px solid gray;
+}
+
+.roles .innerRoles .bottom table tr th {
+    padding: .5em;
+}
+
+.roles .innerRoles .bottom table tr td:nth-child(1) {
+    text-align: center;
+}
+
+.roles .innerRoles .bottom table tr td:nth-child(n+4) {
+    text-align: center;
+}
+
+.roles .innerRoles .bottom table tr td:nth-last-child(-n+3) {
+    padding: 1em;
+}
+
+.roles .innerRoles .backButton {
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+}
+
+/* create roles */
+
+.createRoles .createInnerRoles {
+    padding: 5em 4em;
+}
+
+.createRoles .createInnerRoles .bottom {
+    margin-top: 4em;
+    display: flex;
+    justify-content: center;
+}
+
+.createRoles .createInnerRoles form {
+    width: 90%;
+}
+
+.createRoles .createInnerRoles .bottom .addRol {
+    display: flex;
+    justify-content: end;
+}
+
+.createRoles .createInnerRoles .bottom table {
+    margin-top: 2em;
+}
+
+.createRoles .createInnerRoles .bottom table tr,
+.createRoles .createInnerRoles .bottom table th,
+.createRoles .createInnerRoles .bottom table td {
+    border: 1px solid gray;
+}
+
+.createRoles .createInnerRoles .bottom table tr th {
+    padding: .5em;
+}
+
+.createRoles .createInnerRoles .bottom table tr td:nth-child(1) {
+    text-align: center;
+}
+
+.createRoles .createInnerRoles .bottom table tr td:nth-child(n+3) {
+    text-align: center;
+}
+
+.createRoles .createInnerRoles .bottom table tr td {
+    padding: 1em;
+}
+
+.createRoles .createInnerRoles .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* show roles */
+
+.showRoles .innerShowRoles {
+    padding: 5em 4em;
+}
+
+.showRoles .innerShowRoles .bottom {
+    margin-top: 4em;
+    display: flex;
+    justify-content: center;
+}
+
+.showRoles .innerShowRoles .bottom .addRol {
+    display: flex;
+    justify-content: end;
+}
+
+.showRoles .innerShowRoles .bottom table {
+    margin-top: 2em;
+}
+
+.showRoles .innerShowRoles .bottom table tr,
+.showRoles .innerShowRoles .bottom table th,
+.showRoles .innerShowRoles .bottom table td {
+    border: 1px solid gray;
+}
+
+.showRoles .innerShowRoles .bottom table tr th {
+    padding: .5em;
+}
+
+.showRoles .innerShowRoles .bottom table tr td:nth-child(2) {
+    text-align: center;
+}
+
+.showRoles .innerShowRoles .bottom table tr td {
+    padding: 1em;
+}
+
+.showRoles .innerShowRoles .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* edit roles */
+
+.editRoles .innerEditRoles {
+    padding: 5em 4em;
+}
+
+.editRoles .innerEditRoles .bottom {
+    margin-top: 4em;
+    display: flex;
+    justify-content: center;
+}
+
+.editRoles .innerEditRoles .bottom .addRol {
+    display: flex;
+    justify-content: end;
+}
+
+.editRoles .innerEditRoles .bottom table {
+    margin-top: 2em;
+}
+
+.editRoles .innerEditRoles .bottom table tr,
+.editRoles .innerEditRoles .bottom table th,
+.editRoles .innerEditRoles .bottom table td {
+    border: 1px solid gray;
+}
+
+.editRoles .innerEditRoles .bottom table tr th {
+    padding: .5em;
+}
+
+.editRoles .innerEditRoles .bottom table tr td:nth-child(2) {
+    text-align: center;
+}
+
+.editRoles .innerEditRoles .bottom table tr td {
+    padding: 1em;
+}
+
+.editRoles .innerEditRoles .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* permissions roles */
+
+.permissions .innerPermissions {
+    padding: 5em 4em;
+}
+
+.permissions .innerPermissions .bottom {
+    margin-top: 4em;
+}
+
+.permissions .innerPermissions .bottom .addPermission {
+    display: flex;
+    justify-content: end;
+}
+
+.permissions .innerPermissions .bottom table {
+    margin-top: 2em;
+}
+
+.permissions .innerPermissions .bottom table tr,
+.permissions .innerPermissions .bottom table th,
+.permissions .innerPermissions .bottom table td {
+    border: 1px solid gray;
+}
+
+.permissions .innerPermissions .bottom table tr th {
+    padding: .5em;
+}
+
+.permissions .innerPermissions .bottom table tr td:nth-child(2) {
+    text-align: center;
+}
+
+.permissions .innerPermissions .bottom table tr td {
+    padding: 1em;
+}
+
+.permissions .innerPermissions .buttonsNav {
+    display: flex;
+    justify-content: center;
+    margin-top: 4em;
+}
+
+/* edit permissions roles */
+
+.editPermissions .innerEditPermissions {
+    padding: 5em 4em;
+}
+
+.editPermissions .innerEditPermissions .bottom form {
+    margin-top: 6em;
+    display: flex;
+    justify-content: center;
+}
+
+
+.editPermissions .innerEditPermissions .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* users */
+
+.users .innerUsers {
+    padding: 5em 4em;
+}
+
+.users .innerUsers .bottom .addDelButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.users .innerUsers .bottom table {
+    margin-top: 2em;
+}
+
+.users .innerUsers .bottom table tr,
+.users .innerUsers .bottom table th,
+.users .innerUsers .bottom table td {
+    border: 1px solid gray;
+}
+
+.users .innerUsers .bottom table tr th {
+    padding: .5em;
+}
+
+.users .innerUsers .bottom table tr td:nth-child(2) {
+    text-align: center;
+}
+
+.users .innerUsers .bottom table tr td {
+    padding: 1em;
+}
+
+
+.users .innerUsers .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* users show */
+
+.usersShow .innerUsersShow {
+    padding: 5em 4em;
+}
+
+.usersShow .innerUsersShow .bottom {
+    display: flex;
+    justify-content: center;
+}
+
+.usersShow .innerUsersShow .bottom .innerBottom {
+    border: 1px solid lightgray;
+    margin-top: 2em;
+    padding: 1em;
+    line-height: 1.8;
+    display: inline;
+}
+
+.usersShow .innerUsersShow .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* edit users */
+
+.editUsers .innerEditUsers {
+    padding: 5em 4em;
+}
+
+.editUsers .innerEditUsers .bottom {
+    margin-top: 4em;
+    display: flex;
+    justify-content: center;
+}
+
+.editUsers .innerEditUsers .bottom form .inputDiv {
+    margin: 2em 0;
+}
+
+.editUsers .innerEditUsers .bottom form .inputDiv label {
+    margin-right: 2em;
+}
+
+.editUsers .innerEditUsers .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 3em;
+}
+
+/* employees */
+
+.employees .innerEmployees {
+    padding: 5em 4em;
+}
+
+.employees .innerEmployees .bottom .addDelButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.employees .innerEmployees .bottom table {
+    margin-top: 2em;
+}
+
+.employees .innerEmployees .bottom table tr,
+.employees .innerEmployees .bottom table th,
+.employees .innerEmployees .bottom table td {
+    border: 1px solid gray;
+}
+
+.employees .innerEmployees .bottom table tr th {
+    padding: .5em;
+}
+
+.employees .innerEmployees .bottom table tr td:nth-child(2) {
+    text-align: center;
+}
+
+.employees .innerEmployees .bottom table tr td {
+    padding: 1em;
+}
+
+
+.employees .innerEmployees .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* employees create */
+
+.employeesCreate .innerEmployeesCreate {
+    padding: 5em 4em;
+}
+
+.employeesCreate .innerEmployeesCreate .bottom form {
+    margin-top: 6em;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+.employeesCreate .innerEmployeesCreate .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
 
 /* end */
 
@@ -538,9 +973,6 @@ header .intranetMenu a {
     }
 }
 
-
-@media (min-width: 581px) {}
-
 @media (min-width: 667px) and (max-height: 428px) and (orientation: landscape) {
     /*MOBILES*/
 
@@ -563,10 +995,6 @@ header .intranetMenu a {
 
 
 }
-
-@media (max-width: 700px) {}
-
-@media (min-width: 701px) {}
 
 @media (min-width: 581px) and (max-width: 1023px) {
     .bienvenidos .bottom p {
@@ -637,7 +1065,7 @@ header .intranetMenu a {
 
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1200px) {
 
     header .innerNav {
         display: flex;
