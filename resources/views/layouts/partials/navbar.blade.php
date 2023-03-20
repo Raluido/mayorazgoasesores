@@ -17,8 +17,8 @@
                         <li class=""><a class="" href="/#contacto">Contacto</a></li>
                     </ul>
                 </div>
-                <div class="intranet">
-                    <div class="innerIntranet">
+                <div class="intranetMenu">
+                    <div class="innerIntranetMenu">
                         <button class="intranetMenuBtn" onclick="openMenuIntranet()" type="button">Intranet</button>
                         @auth
                         @role('admin')

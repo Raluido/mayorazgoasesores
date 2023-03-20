@@ -142,16 +142,17 @@
             <img src="{{ Storage::url('design/noticias.jpg') }}" alt="" class="">
         </div>
         <div class="bottom">
-            <div class="">
-                <h1>Noticias</h1>
-                <div class="">
-                    Ponte al día con las noticias que te interesan
+            <div class="innerBottom">
+                <div class="subtitle">
+                    <h3>Ponte al día con las noticias que te interesan</h3>
                 </div>
                 @if(empty($posts[0]))
-                <p>Por ahora no hay noticias subidas, pronto tendremos la actualidad!!</p>
+                <div class="noNews">
+                    <p>Por ahora no hay noticias subidas, pronto tendremos la actualidad!!</p>
+                </div>
                 @else
                 @foreach ($posts as $post)
-                <div class="">
+                <div class="news">
                     <h3>{{ $post->title }}</h3>
                     <hr>
                     <h5>{{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
@@ -161,10 +162,10 @@
                 </div>
                 @endforeach
                 @endif
-            </div>
-            <div class="bottomNav">
-                <button class=""><a href="{{ route('posts.showAll') }}" class="">Mostrar todas</a></button>
-                <button class=""><a href="{{ route('home.index') }}" class="">Volver</a></button>
+                <div class="bottomNav">
+                    <button class="stylingButtons green"><a href="{{ route('home.index') }}" class="">Volver</a></button>
+                    <button class="stylingButtons blue"><a href="{{ route('posts.showAll') }}" class="">Mostrar todas</a></button>
+                </div>
             </div>
         </div>
 </section>
