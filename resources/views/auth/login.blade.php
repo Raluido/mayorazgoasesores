@@ -14,7 +14,7 @@
                 <!-- @include('layouts.partials.messages') -->
 
                 <div class="inputDiv">
-                    <input type="text" class="" name="nif" value="{{ old('nif') }}" placeholder="Nif" required="required" autofocus>
+                    <input type="text" class="" name="nif" value="{{ old('nif') }}" placeholder="Email o nif" required="required" autofocus>
                     <label for="floatingName">Email o Nif</label>
                     @if ($errors->has('nif'))
                     <span class="red" style="display:block;">{{ $errors->first('nif') }}</span>

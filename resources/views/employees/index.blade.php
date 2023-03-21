@@ -9,9 +9,9 @@
         <div class="bottom">
             <div class="addDelButtons">
                 <button class="stylingButtons green"><a href="{{ route('employees.create') }}" class="buttonTextWt">Añadir nuevo empleado</a>
+                    <a class="d-none" id="confirmationBtn" href="{{ url('employees/deleteAll') }}"></a>
                     <button class="stylingButtons red buttonTextWt" onclick="confirmation()">Eliminar
                         todos</button>
-                    <a class="d-none" id="confirmationBtn" href="{{ url('employees/deleteAll') }}"></a>
             </div>
             <div class="">
                 @include('layouts.partials.messages')

@@ -57,20 +57,20 @@
                         <div id="loaderIcon" class="spinner-border text-primary" style="display:none" role="status">
                             <span class="sr-only">Cargando...</span>
                         </div>
-                        <button type="submit" onclick="spinner()" class="">
-                            Enviar
-                        </button>
+                        <div class="buttonsNav">
+                            <button class="stylingButtons blue"><a href="{{ route('intranet.index') }}" class="buttonTextWt">Volver</a></button>
+                            <button type="submit" onclick="spinner()" class="stylingButtons green buttonTextWt">
+                                Enviar
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <div class="buttonsNav">
-        <button class="stylingButtons blue"><a href="{{ route('home.index') }}" class="buttonTextWt">Volver</a></button>
-    </div>
 </div>
 @if (!empty($successMsg))
-<div class=""> {{ $successMsg }}</div>
+<div class="messages green"> {{ $successMsg }}</div>
 @endif
 </div>
 @endsection

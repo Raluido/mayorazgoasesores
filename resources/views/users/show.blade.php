@@ -5,6 +5,7 @@
     <div class="innerUsersShow">
         <div class="top">
             <h1>Empresa</h1>
+            <h3 class="">Los datos de la empresa seleccionada.</h3>
         </div>
         <div class="bottom">
             <div class="innerBottom">

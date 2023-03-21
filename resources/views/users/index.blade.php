@@ -8,10 +8,10 @@
         </div>
         <div class="bottom">
             <div class="addDelButtons">
-                <button class="stylingButtons green"><a href="{{ route('users.create') }}" class="buttonTextWt">Añadir nueva empresa</a>
-                    <button class="stylingButtons red buttonTextWt" onclick="confirmation()">Eliminar
-                        todas</button>
-                    <a class="" id="confirmationBtn" href="{{ url('users/deleteAll') }}"></a>
+                <button class="stylingButtons green"><a href="{{ route('users.create') }}" class="buttonTextWt">Añadir nueva empresa</a></button>
+                <a class="" id="confirmationBtn" href="{{ url('users/deleteAll') }}"></a>
+                <button class="stylingButtons red buttonTextWt" onclick="confirmation()">Eliminar
+                    todas</button>
             </div>
             <div class="">
                 @include('layouts.partials.messages')

@@ -1,27 +1,37 @@
 @extends('layouts.app-master')
 
 @section('content')
-    <div class="mt-5">
-        <h1>Noticias</h1>
-        <div class="lead mb-3">
-            Ponte al día con las noticias que te interesan
+<section class="noticiasAll">
+    <div class="innerNoticias">
+        <div class="top">
+            <img src="{{ Storage::url('design/noticias.jpg') }}" alt="" class="">
         </div>
-        <div class="container mt-5">
-            @foreach ($posts as $post)
-                <div class="border-bottom mb-5">
+        <div class="bottom">
+            <div class="innerBottom">
+                <div class="subtitle">
+                    <h3>Ponte al día con las noticias que te interesan</h3>
+                </div>
+                @if(empty($posts[0]))
+                <div class="noNews">
+                    <p>Por ahora no hay noticias subidas, pronto tendremos la actualidad!!</p>
+                </div>
+                @else
+                @foreach ($posts as $post)
+                <div class="news">
                     <h3>{{ $post->title }}</h3>
-                </div>
-                <div class="">
+                    <hr>
+                    <h5>{{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
+                    <br>
                     <p>{{ $post->body }}</p>
+                    <button class=""><a href="{{ route('posts.show', $post->id) }}" class="">Ir a noticia</a></button>
                 </div>
-                <div class="border-top mt-5">
-                    <p>Publicado en fecha {{ date('d-m-Y', strtotime($post->published_at)) }}</p>
+                @endforeach
+                @endif
+                <div class="bottomNav">
+                    <button class="stylingButtons blue"><a href="{{ route('home.index') }}" class="buttonTextWt">Volver</a></button>
                 </div>
-            @endforeach
+            </div>
         </div>
     </div>
-    <div class="d-flex justify-content-center my-5">
-        <button class="btn btn-secondary"><a href="{{ route('home.index') }}"
-                class="text-decoration-none text-white">Volver</a></button>
-    </div>
+</section>
 @endsection

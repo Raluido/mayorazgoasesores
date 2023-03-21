@@ -29,6 +29,10 @@ a {
     background-color: #008CBA;
 }
 
+.gray {
+    background-color: gray;
+}
+
 .green {
     background-color: #4CAF50;
 }
@@ -39,6 +43,10 @@ a {
 
 .buttonTextWt {
     color: white;
+}
+
+.messages {
+    padding-left: 5em;
 }
 
 html {
@@ -339,13 +347,24 @@ header .intranetMenu a {
 
 .noticias .innerNoticias .bottom .innerBottom .news,
 .noticias .innerNoticias .bottom .innerBottom .noNews {
-    margin: 2em 0;
+    margin: 1em 0;
     padding: 1em;
 }
 
 .noticias .innerNoticias .bottom p,
 .noticias .innerNoticias .bottom h4 {
     font-family: 'Myriad Pro Regular';
+}
+
+.noticias .innerNoticias .bottom h5 {
+    margin-top: -.2em;
+    color: gray;
+}
+
+.noticias .innerNoticias .innerBottom .gotoNoticia {
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
 }
 
 .noticias .innerNoticias .innerBottom .bottomNav {
@@ -357,6 +376,83 @@ header .intranetMenu a {
 .noticias .innerNoticias .innerBottom .bottomNav a {
     color: white;
 }
+
+/* noticias All */
+
+.noticiasAll {
+    min-height: 100vh;
+}
+
+.noticiasAll .top,
+.noticiasAll .top img {
+    width: 100%;
+    height: auto;
+}
+
+.noticiasAll .innerNoticias .bottom {
+    margin: 3em 0;
+    padding: 0 4em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.noticiasAll .innerNoticias .bottom .innerBottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    width: 100%;
+    margin: 2em 0;
+}
+
+.noticiasAll .innerNoticias .bottom .innerBottom .news,
+.noticiasAll .innerNoticias .bottom .innerBottom .noNews {
+    margin: 2em 0;
+    padding: 1em;
+}
+
+.noticiasAll .innerNoticias .bottom p,
+.noticiasAll .innerNoticias .bottom h4 {
+    font-family: 'Myriad Pro Regular';
+}
+
+.noticiasAll .innerNoticias .innerBottom .bottomNav {
+    display: flex;
+    justify-content: center;
+    margin-top: 5em;
+}
+
+.noticiasAll .innerNoticias .innerBottom .bottomNav a {
+    color: white;
+}
+
+/* show noticia */
+
+.showNoticia {
+    min-height: 100vh;
+    padding: 5em 4em;
+}
+
+.showNoticia .innerShowNoticia .bottom {
+    margin-top: 4em;
+}
+
+.showNoticia .innerShowNoticia .bottom .body {
+    margin-top: 2em;
+}
+
+.showNoticia .innerShowNoticia .bottom .date {
+    display: flex;
+    justify-content: end;
+}
+
+.showNoticia .innerShowNoticia .buttonsNav {
+    display: flex;
+    justify-content: center;
+    margin-top: 4em;
+}
+
 
 
 /* end */
@@ -761,7 +857,7 @@ header .intranetMenu a {
 
 .usersShow .innerUsersShow .bottom .innerBottom {
     border: 1px solid lightgray;
-    margin-top: 2em;
+    margin-top: 5em;
     padding: 1em;
     line-height: 1.8;
     display: inline;
@@ -794,6 +890,32 @@ header .intranetMenu a {
 }
 
 .editUsers .innerEditUsers .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 3em;
+}
+
+/* create users */
+
+.createUsers .innerCreateUsers {
+    padding: 5em 4em;
+}
+
+.createUsers .innerCreateUsers .bottom {
+    margin-top: 4em;
+    display: flex;
+    justify-content: center;
+}
+
+.createUsers .innerCreateUsers .bottom form .inputDiv {
+    margin: 2em 0;
+}
+
+.createUsers .innerCreateUsers .bottom form .inputDiv label {
+    margin-right: 2em;
+}
+
+.createUsers .innerCreateUsers .buttonsNav {
     display: flex;
     justify-content: space-evenly;
     margin-top: 3em;
@@ -874,15 +996,229 @@ header .intranetMenu a {
     margin: 2em 0;
 }
 
-.payrollsUpload .innerPayrollsUpload .bottom form .inputForm:nth-child(1) {
+.payrollsUpload .innerPayrollsUpload .bottom form .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* form payrolls */
+
+.payrollsForm .innerPayrollsForm {
+    padding: 5em 4em;
+}
+
+.payrollsForm .innerPayrollsForm .bottom .innerBottom {
     display: flex;
     justify-content: center;
+    margin-top: 6em;
+}
+
+.payrollsForm .innerPayrollsForm .bottom form .inputForm {
+    margin: 2em 0;
+}
+
+.payrollsForm .innerPayrollsForm .bottom form .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* payrolls show */
+
+.payrollsShow .innerPayrollsShow {
+    padding: 5em 4em;
+}
+
+.payrollsShow .innerPayrollsShow .bottom .addDelButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.payrollsShow .innerPayrollsShow .bottom table {
+    margin-top: 2em;
+}
+
+.payrollsShow .innerPayrollsShow .bottom table tr,
+.payrollsShow .innerPayrollsShow .bottom table th,
+.payrollsShow .innerPayrollsShow .bottom table td {
+    border: 1px solid gray;
+}
+
+.payrollsShow .innerPayrollsShow .bottom table tr th {
+    padding: .5em;
+}
+
+.payrollsShow .innerPayrollsShow .bottom table tr td:nth-child(2) {
+    text-align: center;
+}
+
+.payrollsShow .innerPayrollsShow .bottom table tr td {
+    padding: 1em;
 }
 
 
-.payrollsUpload .innerPayrollsUpload .buttonsNav {
+.payrollsShow .innerPayrollsShow .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* upload costs inputs */
+
+.costsImputsUpload .innerCostsImputsUpload {
+    padding: 5em 4em;
+}
+
+.costsImputsUpload .innerCostsImputsUpload .bottom .innerBottom {
     display: flex;
     justify-content: center;
+    margin-top: 6em;
+}
+
+.costsImputsUpload .innerCostsImputsUpload .bottom form .inputForm {
+    margin: 2em 0;
+}
+
+.costsImputsUpload .innerCostsImputsUpload .bottom form .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* form costs inputs */
+
+.costsImputsForm .innerCostsImputsForm {
+    padding: 5em 4em;
+}
+
+.costsImputsForm .innerCostsImputsForm .bottom .innerBottom {
+    display: flex;
+    justify-content: center;
+    margin-top: 6em;
+}
+
+.costsImputsForm .innerCostsImputsForm .bottom form .inputForm {
+    margin: 2em 0;
+}
+
+.costsImputsForm .innerCostsImputsForm .bottom form .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* show costs inputs */
+
+.costsImputsShow .innerCostsImputsShow {
+    padding: 5em 4em;
+}
+
+.costsImputsShow .innerCostsImputsShow .bottom table {
+    margin-top: 2em;
+}
+
+.costsImputsShow .innerCostsImputsShow .bottom table tr,
+.costsImputsShow .innerCostsImputsShow .bottom table th,
+.costsImputsShow .innerCostsImputsShow .bottom table td {
+    border: 1px solid gray;
+}
+
+.costsImputsShow .innerCostsImputsShow .bottom table tr th {
+    padding: .5em;
+}
+
+.costsImputsShow .innerCostsImputsShow .bottom table tr td:nth-child(2) {
+    text-align: center;
+}
+
+.costsImputsShow .innerCostsImputsShow .bottom table tr td {
+    padding: 1em;
+}
+
+
+.costsImputsShow .innerCostsImputsShow .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* others Documents upload */
+
+.othersDocumentsUpload .innerOthersDocumentsUpload {
+    padding: 5em 4em;
+}
+
+.othersDocumentsUpload .innerOthersDocumentsUpload .bottom .innerBottom {
+    display: flex;
+    justify-content: center;
+    margin-top: 6em;
+}
+
+.othersDocumentsUpload .innerOthersDocumentsUpload .bottom form .inputForm {
+    margin: 2em 0;
+}
+
+.othersDocumentsUpload .innerOthersDocumentsUpload .bottom form .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* form others Documents */
+
+.othersDocumentsForm .innerOthersDocumentsForm {
+    padding: 5em 4em;
+}
+
+.othersDocumentsForm .innerOthersDocumentsForm .bottom .innerBottom {
+    display: flex;
+    justify-content: center;
+    margin-top: 6em;
+}
+
+.othersDocumentsForm .innerOthersDocumentsForm .bottom form .inputForm {
+    margin: 2em 0;
+}
+
+.othersDocumentsForm .innerOthersDocumentsForm .bottom form .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* show others documents */
+
+.othersDocumentsShow .innerOthersDocumentsShow {
+    padding: 5em 4em;
+}
+
+.othersDocumentsShow .innerOthersDocumentsShow .bottom table {
+    margin-top: 2em;
+}
+
+.othersDocumentsShow .innerOthersDocumentsShow .bottom table tr,
+.othersDocumentsShow .innerOthersDocumentsShow .bottom table th,
+.othersDocumentsShow .innerOthersDocumentsShow .bottom table td {
+    border: 1px solid gray;
+}
+
+.othersDocumentsShow .innerOthersDocumentsShow .bottom table tr th {
+    padding: .5em;
+}
+
+.othersDocumentsShow .innerOthersDocumentsShow .bottom table tr td:nth-child(2) {
+    text-align: center;
+}
+
+.othersDocumentsShow .innerOthersDocumentsShow .bottom table tr td {
+    padding: 1em;
+}
+
+
+.othersDocumentsShow .innerOthersDocumentsShow .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
     margin-top: 4em;
 }
 
@@ -890,57 +1226,68 @@ header .intranetMenu a {
 
 /* intranet noticias */
 
-.noticias .innerNoticias .bottom .create {
-    background-color: green;
+.noticiasIntranet .innerNoticiasIntranet {
+    padding: 5em 4em;
 }
 
-.noticias .innerNoticias .bottom .create a {
-    color: white;
+.noticiasIntranet .innerNoticiasIntranet .bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.noticias .innerNoticias .bottom table {
-    margin-top: 2em;
+.noticiasIntranet .innerNoticiasIntranet .bottom .createNoticia {
+    margin: 4em 0;
 }
 
-.noticias .innerNoticias .bottom table tr,
-.noticias .innerNoticias .bottom table th,
-.noticias .innerNoticias .bottom table td {
+.noticiasIntranet .innerNoticiasIntranet .bottom table tr,
+.noticiasIntranet .innerNoticiasIntranet .bottom table th,
+.noticiasIntranet .innerNoticiasIntranet .bottom table td {
     border: 1px solid gray;
 }
 
-.noticias .innerNoticias .bottom table tr th {
+.noticiasIntranet .innerNoticiasIntranet .bottom table tr th {
     padding: .5em;
 }
 
-.noticias .innerNoticias .bottom table tr td:nth-child(1) {
+.noticiasIntranet .innerNoticiasIntranet .bottom table tr td:nth-child(1) {
     text-align: center;
 }
 
-.noticias .innerNoticias .bottom table tr td:nth-child(n+3) {
+.noticiasIntranet .innerNoticiasIntranet .bottom table tr td:nth-child(n+3) {
     text-align: center;
 }
 
-.noticias .innerNoticias .bottom table tr td:nth-last-child(-n+1) {
+.noticiasIntranet .innerNoticiasIntranet .bottom table tr td:last-child {
     padding: 1em;
 }
 
-.noticias .innerNoticias .bottom table .show {
-    background-color: green;
+.noticiasIntranet .innerNoticiasIntranet .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
 }
 
-.noticias .innerNoticias .bottom table .show a,
-.noticias .innerNoticias .bottom table .edit a {
-    color: white;
+/* intranet edit noticias */
+
+.noticiasIntranetEdit .innerNoticiasIntranetEdit {
+    padding: 5em 4em;
 }
 
-.noticias .innerNoticias .bottom table .edit {
-    background-color: blue;
+.noticiasIntranetEdit .innerNoticiasIntranetEdit .bottom .innerBottom {
+    display: flex;
+    justify-content: center;
+    margin-top: 6em;
 }
 
-.noticias .innerNoticias .bottom table .delete {
-    background-color: red;
-    margin-top: .5em;
-    color: white;
+.noticiasIntranetEdit .innerNoticiasIntranetEdit .bottom form .inputForm {
+    margin: 2em 0;
+}
+
+.noticiasIntranetEdit .innerNoticiasIntranetEdit .bottom form .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
 }
 
 /* end */
