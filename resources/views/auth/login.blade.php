@@ -11,13 +11,13 @@
         <div class="">
             <div class="">
 
-                @include('layouts.partials.messages')
+                <!-- @include('layouts.partials.messages') -->
 
                 <div class="inputDiv">
                     <input type="text" class="" name="nif" value="{{ old('nif') }}" placeholder="Nif" required="required" autofocus>
                     <label for="floatingName">Email o Nif</label>
                     @if ($errors->has('nif'))
-                    <span class="">{{ $errors->first('nif') }}</span>
+                    <span class="red" style="display:block;">{{ $errors->first('nif') }}</span>
                     @endif
                 </div>
 
@@ -25,7 +25,7 @@
                     <input type="password" class="" name="password" value="{{ old('password') }}" placeholder="Password" required="required">
                     <label for="floatingPassword">Contraseña</label>
                     @if ($errors->has('password'))
-                    <span class="">{{ $errors->first('password') }}</span>
+                    <span class="red" style="display:block;">{{ $errors->first('password') }}</span>
                     @endif
                 </div>
                 <div class="inputDiv">

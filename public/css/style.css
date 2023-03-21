@@ -858,6 +858,33 @@ header .intranetMenu a {
     margin-top: 4em;
 }
 
+/* upload payrolls */
+
+.payrollsUpload .innerPayrollsUpload {
+    padding: 5em 4em;
+}
+
+.payrollsUpload .innerPayrollsUpload .bottom .innerBottom {
+    display: flex;
+    justify-content: center;
+    margin-top: 6em;
+}
+
+.payrollsUpload .innerPayrollsUpload .bottom form .inputForm {
+    margin: 2em 0;
+}
+
+.payrollsUpload .innerPayrollsUpload .bottom form .inputForm:nth-child(1) {
+    display: flex;
+    justify-content: center;
+}
+
+
+.payrollsUpload .innerPayrollsUpload .buttonsNav {
+    display: flex;
+    justify-content: center;
+    margin-top: 4em;
+}
 
 /* end */
 

@@ -38,8 +38,8 @@ class LoginRequest extends FormRequest
      */
     public function getCredentials()
     {
-        // The form field for providing username or password
-        // have name of "username", however, in order to support
+        // The form field for providing nif or password
+        // have name of "nif", however, in order to support
         // logging users in with both (username and email)
         // we have to check if user has entered one or another
         $nif = $this->get('nif');
