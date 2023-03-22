@@ -486,22 +486,34 @@ header .intranetMenu a {
 
 .contacto .innerContacto .bottom .innerBottom {
     display: flex;
+    justify-content: space-evenly;
 }
 
-.contacto .logo {
-    margin-right: 5em;
+.contacto .innerContacto .bottom .innerBottom .logo {
+    width: 25%;
+    height: auto;
 }
 
-.contacto .innerLogo {
-    width: 15em;
+
+.contacto .innerContacto .bottom .innerBottom .innerLogo div {
+    display: flex;
+}
+
+.contacto .innerContacto .bottom .innerBottom .logo img {
+    width: 100%;
+    height: auto;
+}
+
+.contacto .innerContacto .bottom .innerBottom .logo .innerLogo {
     display: flex;
     align-items: center;
 }
 
-.contacto .innerLogo img {
-    width: 100%;
-    margin-right: 1em;
+.contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 span {
+    font-size: 1.2em;
 }
+
+
 
 /* end */
 
@@ -1294,6 +1306,11 @@ header .intranetMenu a {
 
 
 @media (max-width: 767px) {
+
+    table {
+        font-size: 0.7em;
+    }
+
     .bienvenidos .bottom {
         padding: 0 1.2em;
     }
@@ -1328,6 +1345,7 @@ header .intranetMenu a {
 
     .contacto .innerContacto .bottom .innerBottom {
         flex-direction: column;
+        align-items: center;
     }
 
     .contacto .innerContacto .bottom .innerBottom .contactData {
@@ -1335,15 +1353,21 @@ header .intranetMenu a {
     }
 
     .contacto .innerContacto .bottom .innerBottom .logo {
-        font-size: 1.4em;
+        width: 50%;
+        height: auto;
     }
 
-    .contacto .innerContacto .bottom .innerBottom .contactData h5 {
-        font-size: 1em;
+    .contacto .innerContacto .bottom .innerBottom .logo h1 {
+        font-size: 1.5em;
+    }
+
+    .contacto .innerContacto .bottom .innerBottom .logo span {
+        font-size: 1.6em;
     }
 
     .contacto .logo {
         margin-right: unset;
+        margin-bottom: 2em;
     }
 }
 
@@ -1367,6 +1391,10 @@ header .intranetMenu a {
         margin: 4em 0;
     }
 
+    .contacto .innerContacto .bottom .innerBottom .logo {
+        width: 30%;
+        height: auto;
+    }
 
 }
 
@@ -1419,20 +1447,22 @@ header .intranetMenu a {
         justify-content: center;
     }
 
-    .contacto .innerContacto .bottom .logo {
+    .contacto .innerContacto .bottom .innerBottom .logo {
         display: flex;
         align-items: center;
+        width: 35%;
+        height: auto;
     }
 
-    .contacto .innerContacto .bottom .logo a {
-        width: 20em;
+    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 {
+        font-size: 1.6rem;
     }
 
-    .contacto .innerContacto .bottom .logo h3 {
-        font-size: 1.8em;
+    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 span {
+        font-size: 1.1em;
     }
 
-    .contacto .innerContacto .contactData h5 {
+    .contacto .innerContacto .contactData h4 {
         font-size: 1.3em;
     }
 
@@ -1459,11 +1489,19 @@ header .intranetMenu a {
 
     header .innerNav .mobileMenu .mobileMenuBtn {
         background-color: transparent;
-        border: 1px solid transparent;
+        border: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    header .innerNav .mobileMenu .innerMobileMenu {
+        width: 2.2em;
+        height: auto;
     }
 
     header .innerNav .mobileMenu .innerMobileMenu img {
-        width: 2em;
+        width: 100%;
+        height: 100%;
         cursor: pointer;
     }
 

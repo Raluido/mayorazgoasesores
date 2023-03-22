@@ -180,14 +180,14 @@
             <div class="innerBottom">
                 <div class="logo">
                     <a href="{{ route('home.index') }}" class="innerLogo">
-                        <img src="{{ Storage::url('design/logoFixed.jpg') }}" alt="" class="">
-                        <h3 class="">mayorago<br><span style="font-size: 1.3em">asesores</span></h3>
+                        <div class=""><img src="{{ Storage::url('design/logoFixed.jpg') }}" alt="" class=""></div>
+                        <h1 class="">mayorago<br><span>asesores</span></h1>
                     </a>
                 </div>
                 <div class="contactData">
-                    <h5 class="">
+                    <h4 class="">
                         C/ Pilar Monteverde, 32<br>Urbanización El Mayorazgo<br>38300 La Orotava, Tenerife.<br><br>Tfno. 922 33 00 25<br>info@mayorazgoasesores.es
-                    </h5>
+                    </h4>
                 </div>
             </div>
         </div>
