@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="users">
-    <div class="innerUsers">
+    <div class="innerUsers paddingFix">
         <div class="top">
             <h1>Empresas</h1>
         </div>
@@ -31,7 +31,7 @@
                 <tbody>
                     @foreach ($users as $user)
                     <tr>
-                        <th scope="row">{{ $user->id }}</th>
+                        <td scope="row">{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->nif }}</td>
                         <td>{{ $user->email }}</td>
@@ -40,9 +40,8 @@
                             <span class="">{{ $role->name }}</span>
                             @endforeach
                         </td>
-                        <td><button class="stylingButtons blue"><a href="{{ route('users.show', $user->id) }}" class="buttonTextWt">Mostrar</a></button></td>
-                        <td><button class="stylingButtons green"><a href="{{ route('users.edit', $user->id) }}" class="buttonTextWt">Editar</a></td></button>
-                        <td>
+                        <td><button class="stylingButtons blue"><a href="{{ route('users.show', $user->id) }}" class="buttonTextWt">Mostrar</a></button>
+                            <button class="stylingButtons green"><a href="{{ route('users.edit', $user->id) }}" class="buttonTextWt">Editar</a></button>
                             {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id], 'style' => 'display:inline']) !!}
                             {!! Form::submit('Eliminar', ['class' => 'stylingButtons red buttonTextWt']) !!}
                             {!! Form::close() !!}

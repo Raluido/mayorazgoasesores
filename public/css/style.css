@@ -973,6 +973,31 @@ header .intranetMenu a {
     margin-top: 4em;
 }
 
+/* employees show */
+
+.employeesShow .innerEmployeesShow {
+    padding: 5em 4em;
+}
+
+.employeesShow .innerEmployeesShow .bottom {
+    display: flex;
+    justify-content: center;
+}
+
+.employeesShow .innerEmployeesShow .bottom .innerBottom {
+    border: 1px solid lightgray;
+    margin-top: 5em;
+    padding: 1em;
+    line-height: 1.8;
+    display: inline;
+}
+
+.employeesShow .innerEmployeesShow .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
 /* employees create */
 
 .employeesCreate .innerEmployeesCreate {
@@ -987,6 +1012,30 @@ header .intranetMenu a {
 
 
 .employeesCreate .innerEmployeesCreate .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* employees edit */
+
+.employeesEdit .innerEmployeesEdit {
+    padding: 5em 4em;
+}
+
+.employeesEdit .innerEmployeesEdit .bottom form {
+    margin-top: 4em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.employeesEdit .innerEmployeesEdit .bottom form .inputForm {
+    margin: 1em 0;
+}
+
+.employeesEdit .innerEmployeesEdit .bottom form .buttonsNav {
+    width: 100%;
     display: flex;
     justify-content: space-evenly;
     margin-top: 4em;
@@ -1309,6 +1358,28 @@ header .intranetMenu a {
 
     table {
         font-size: 0.7em;
+    }
+
+    th,
+    td {
+        padding: 0 !important;
+    }
+
+    .paddingFix {
+        padding: 5em 0 !important;
+    }
+
+    .intranet .innerIntranet .areasIntranet>div {
+        width: unset;
+    }
+
+    textarea {
+        width: 30em;
+    }
+
+    header .innerNav .mobileMenu .dropdown {
+        right: 0;
+        top: 6em;
     }
 
     .bienvenidos .bottom {

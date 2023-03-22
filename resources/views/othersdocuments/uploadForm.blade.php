@@ -10,6 +10,7 @@
         <div class="bottom">
             <div class="innerBottom">
                 <form action="/othersdocuments/upload" enctype="multipart/form-data" method="POST">
+                    @csrf
                     <div class="inputForm">
                         <label for="nif">Nif</label>
                         <input type="text" class="" name="nif" id="nif" />
