@@ -23,7 +23,9 @@
                     <h5>{{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
                     <br>
                     <p>{{ $post->body }}</p>
-                    <button class=""><a href="{{ route('posts.show', $post->id) }}" class="">Ir a noticia</a></button>
+                    <div class="gotoNoticia">
+                        <button class="gray stylingButtons"><a href="{{ route('posts.show', $post->id) }}" class="buttonTextWt">Ir a noticia</a></button>
+                    </div>
                 </div>
                 @endforeach
                 @endif

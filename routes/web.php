@@ -19,8 +19,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
      * Home Routes
      */
     Route::get('/', 'HomeController@index')->name('home.index');
-    Route::get('/posts/showAll', 'PostsController@showAll')->name('posts.showAll');
-    Route::get('/posts/{post}', 'PostsController@show')->name('posts.show');
 
     Route::group(['middleware' => ['guest']], function () {
 
@@ -128,4 +126,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::resource('roles', RolesController::class);
         Route::resource('permissions', PermissionsController::class);
     });
+
+    Route::get('/posts/showAll', 'PostsController@showAll')->name('posts.showAll');
+    Route::get('/posts/{post}', 'PostsController@show')->name('posts.show');
 });

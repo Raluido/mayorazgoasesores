@@ -43,7 +43,7 @@ class PostsController extends Controller
             ->limit(5)
             ->get();
 
-        return view('home.index', compact('posts'));
+        return view('posts.index', compact('posts'));
     }
 
     public function show(Post $post)

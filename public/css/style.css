@@ -427,6 +427,12 @@ header .intranetMenu a {
     color: white;
 }
 
+.noticiasAll .innerNoticias .innerBottom .gotoNoticia {
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+}
+
 /* show noticia */
 
 .showNoticia {
@@ -1349,6 +1355,32 @@ header .intranetMenu a {
     display: flex;
     justify-content: space-evenly;
     margin-top: 4em;
+}
+
+/* create noticias */
+
+.createNoticia .innerCreateNoticia {
+    padding: 5em 4em;
+}
+
+.createNoticia .innerCreateNoticia .bottom {
+    margin-top: 4em;
+    display: flex;
+    justify-content: center;
+}
+
+.createNoticia .innerCreateNoticia .bottom form .inputForm {
+    margin: 2em 0;
+}
+
+.createNoticia .innerCreateNoticia .bottom form .inputForm label {
+    margin-right: 2em;
+}
+
+.createNoticia .innerCreateNoticia .bottom .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 3em;
 }
 
 /* end */
