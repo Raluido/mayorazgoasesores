@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="noticiasIntranet">
-    <div class="innerNoticiasIntranet">
+    <div class="innerNoticiasIntranet paddingFix">
         <div class="top">
             <h1>Noticias</h1>
             <h3 class="">Ponte al día con las noticias que te interesan</h3>

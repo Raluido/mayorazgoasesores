@@ -348,7 +348,6 @@ header .intranetMenu a {
 .noticias .innerNoticias .bottom .innerBottom .news,
 .noticias .innerNoticias .bottom .innerBottom .noNews {
     margin: 1em 0;
-    padding: 1em;
 }
 
 .noticias .innerNoticias .bottom p,
@@ -437,7 +436,10 @@ header .intranetMenu a {
 
 .showNoticia {
     min-height: 100vh;
-    padding: 5em 4em;
+}
+
+.showNoticia .innerShowNoticia {
+    padding: 5em 2em;
 }
 
 .showNoticia .innerShowNoticia .bottom {
@@ -1395,18 +1397,23 @@ header .intranetMenu a {
     th,
     td {
         padding: 0 !important;
+        margin: 0 !important;
     }
 
     .paddingFix {
-        padding: 5em 0 !important;
+        padding: 5em 1em !important;
     }
 
     .intranet .innerIntranet .areasIntranet>div {
         width: unset;
     }
 
+    .intranet .innerIntranet {
+        padding: 5em 2em;
+    }
+
     textarea {
-        width: 30em;
+        width: 25em;
     }
 
     header .innerNav .mobileMenu .dropdown {

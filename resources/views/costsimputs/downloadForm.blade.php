@@ -27,15 +27,9 @@
                 <label for="year">Selecciona un año</label>
                 <select name="year" id="year" onChange="Visibility1()">
                     <option value=""></option>
-                    <option value="2022">2022</option>
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
-                    <option value="2025">2025</option>
-                    <option value="2026">2026</option>
-                    <option value="2027">2027</option>
-                    <option value="2028">2028</option>
-                    <option value="2029">2029</option>
-                    <option value="2030">2030</option>
+                    @for($i = $presentYear; $i > ($presentYear-5); $i--)
+                    <option value="{{ $i }}">{{ $i }}</option>
+                    @endfor
                 </select>
             </div>
             <button type="submit" id="form_execute" class="d-none">

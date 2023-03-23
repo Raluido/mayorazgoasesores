@@ -17,7 +17,9 @@ class PayrollsController extends Controller
 
     public function uploadForm()
     {
-        return view('payrolls.uploadForm');
+        $presentYear = date("Y");
+
+        return view('payrolls.uploadForm')->with('presentYear', $presentYear);
     }
 
     public function uploadPayrolls(Request $request)
@@ -106,7 +108,9 @@ class PayrollsController extends Controller
 
     public function showForm()
     {
-        return view('payrolls.showForm');
+        $presentYear = date("Y");
+
+        return view('payrolls.showForm')->with('presentYear', $presentYear);
     }
 
     public function showPayrolls(Request $request)

@@ -19,17 +19,20 @@
                     @method('PUT')
                     <div class="inputForm">
                         <label for="">Título</label>
-                        <input type="text" name="title" class="form-control" value="{{ $post->title }}">
+                        <input type="text" name="title" value="{{ $post->title }}">
                     </div>
-
+                    <div class="inputForm">
+                        <label for="">Subtítulo</label>
+                        <input type="text" name="subtitle" value="{{ $post->subtitle }}">
+                    </div>
                     <div class="inputForm">
                         <label for="">Cuerpo</label>
-                        <textarea name="body" id="" cols="70" rows="15" class="form-control">{{ $post->body }}</textarea>
+                        <textarea name="body" id="" cols="70" rows="15">{{ $post->body }}</textarea>
                     </div>
 
                     <div class="inputForm">
                         <label for="">Publicado en fecha</label>
-                        <input type="date" name="published_at" class="form-control" value="{{ date('Y-m-d', strtotime($post->published_at)) }}">
+                        <input type="date" name="published_at" value="{{ date('Y-m-d', strtotime($post->published_at)) }}">
                     </div>
                     <div class="buttonsNav">
                         <button class="stylingButtons blue"><a href="{{ route('intranet.index') }}" class="buttonTextWt">Volver</a></button>

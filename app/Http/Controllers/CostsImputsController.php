@@ -20,7 +20,9 @@ class CostsImputsController extends Controller
 
     public function uploadForm()
     {
-        return view('costsimputs.uploadForm');
+        $presentYear = date("Y");
+
+        return view('costsimputs.uploadForm')->with('presentYear', $presentYear);
     }
 
     public function uploadCostsImputs(Request $request)
@@ -57,7 +59,9 @@ class CostsImputsController extends Controller
         $month = null;
         $year = null;
 
-        return view('costsimputs.downloadForm')->with('month', $month)->with('year', $year);
+        $presentYear = date("Y");
+
+        return view('costsimputs.downloadForm')->with('month', $month)->with('year', $year)->with('presentYear', $presentYear);
     }
 
     public function getData(Request $request)
@@ -112,7 +116,9 @@ class CostsImputsController extends Controller
 
     public function showForm()
     {
-        return view('costsimputs.showForm');
+        $presentYear = date("Y");
+
+        return view('costsimputs.showForm')->with('presentYear', $presentYear);
     }
 
     public function showCostsImputs(Request $request)

@@ -30,10 +30,12 @@ class PostsController extends Controller
     {
         $request->validate([
             'title' => 'required',
+            'subtitle' => 'required',
             'body' => 'required',
         ]);
         $post = new Post();
         $post->title = $request->title;
+        $post->subtitle = $request->subtitle;
         $post->body = $request->body;
         $post->published_at = $request->published_at;
         $post->save();
@@ -60,9 +62,11 @@ class PostsController extends Controller
     {
         $request->validate([
             'title' => 'required',
+            'subtitle' => 'required',
             'body' => 'required',
         ]);
         $post->title = $request->title;
+        $post->subtitle = $request->subtitle;
         $post->body = $request->body;
         $post->published_at = $request->published_at;
 

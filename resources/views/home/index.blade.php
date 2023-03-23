@@ -8,7 +8,8 @@
     </div>
     <div class="bottom">
         <p class="">
-            <span style="font-weight:bold">Mayorazgo Asesores</span> es una <span style="font-weight:bold">Asesoría Jurídica-Laboral</span> con mas de 20 años de experiencia en el sector,<br> con un objetivo claro, dar <span style="font-style:bold">tranquilidad y soluciones</span> día a día a nuestros clientes.<br>
+            Gracias por llegar hasta aquí,<br><br>
+            <span style="font-weight:bold">Mayorazgo Asesores</span> es una <span style="font-weight:bold">Asesoría Jurídica-Laboral</span> con mas de 20 años de experiencia en el sector,<br> con un objetivo claro, dar <span style="font-weight:bold">tranquilidad y soluciones</span> día a día a nuestros clientes.<br>
             Nuestro gran aval es el compromiso con nuestros clientes, la rápida respuesta y el aprendizaje continuo,<br> siendo en todo momento nuestros servicios gestionados por <span style="font-weight:bold">profesionales colegiados en cada materia.</span><br>
             Colaboramos estrechamente con asesorías fiscales y contables, sumando así garantías de profesionalidad,<br> ya que esa es sin duda nuestra misión cada día: ayudar y dar al cliente una solución rápida y profesional.
         </p>
@@ -144,7 +145,7 @@
         <div class="bottom">
             <div class="innerBottom">
                 <div class="subtitle">
-                    <h3>Ponte al día con las noticias que te interesan</h3>
+                    <h2>Ponte al día con las noticias que te interesan</h2>
                 </div>
                 @if(empty($posts[0]))
                 <div class="noNews">
@@ -154,10 +155,10 @@
                 @foreach ($posts as $post)
                 <div class="news">
                     <h3>{{ $post->title }}</h3>
+                    <p>{{ $post->subtitle }}</p>
                     <hr>
                     <h5>{{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
                     <br>
-                    <p>{{Str::limit($post->body, 400) }}</p>
                     <div class="gotoNoticia">
                         <button class="gray stylingButtons"><a href="{{ route('posts.show', $post->id) }}" class="buttonTextWt">Ir a noticia</a></button>
                     </div>

@@ -2,7 +2,7 @@
 
 @section('content')
 <section class="costsImputsShow">
-    <div class="innerCostsImputsShow">
+    <div class="innerCostsImputsShow paddingFix">
         <div class="top">
             <h1>Imputación de costes</h1>
             <h3 class="">Gestión de imputación de costes</h3>

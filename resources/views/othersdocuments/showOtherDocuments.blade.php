@@ -2,7 +2,7 @@
 
 @section('content')
 <section class="othersDocumentsShow">
-    <div class="innerOthersDocumentsShow">
+    <div class="innerOthersDocumentsShow paddingFix">
         <div class="top">
             <h1>Otros documentos</h1>
             <h3 class="">Puedes visualizar los documentos.</h3>

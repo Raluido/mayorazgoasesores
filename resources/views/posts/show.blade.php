@@ -16,12 +16,15 @@
                             {{ session('status') }}
                         </div>
                         @endif
-                        <div class="title">
-                            {{ $post->title }}
+                        <div class="title" style="margin-bottom:2em;">
+                            <h1 class="">{{ $post->title }}</h1>
+                        </div>
+                        <div class="subtitle">
+                            {{ $post->subtitle }}
                         </div>
                         <hr>
                         <div class="body">
-                            <p class="">{{ $post->body }}</p>
+                            <p class="">{!! nl2br(e($post->body))!!}</p>
                         </div>
                         <div class="date">
                             <h5>Publicado en: {{ date('Y-m-d', strtotime($post->published_at)) }}</h5>

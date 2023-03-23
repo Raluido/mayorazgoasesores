@@ -2,7 +2,7 @@
 
 @section('content')
 <section class="permissions">
-    <div class="innerPermissions">
+    <div class="innerPermissions paddingFix">
         <div class="top">
             <h1>Permisos</h1>
             Gestión de permisos

@@ -17,7 +17,9 @@ class OthersDocumentsController extends Controller
 
     public function uploadForm()
     {
-        return view('othersdocuments.uploadForm');
+        $presentYear = date("Y");
+
+        return view('othersdocuments.uploadForm')->with('presentYear', $presentYear);
     }
 
     public function uploadOthersDocuments(Request $request)
@@ -140,7 +142,8 @@ class OthersDocumentsController extends Controller
 
     public function downloadForm()
     {
-        return view('othersdocuments.downloadForm');
+        $presentYear = date("Y");
+        return view('othersdocuments.downloadForm')->with('presentYear', $presentYear);
     }
 
     public function downloadList(Request $request)
@@ -227,7 +230,9 @@ class OthersDocumentsController extends Controller
 
     public function showForm()
     {
-        return view('othersdocuments.showForm');
+        $presentYear = date("Y");
+
+        return view('othersdocuments.showForm')->with('presentYear', $presentYear);
     }
 
     public function showOthersDocuments(Request $request)

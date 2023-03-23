@@ -2,7 +2,7 @@
 
 @section('content')
 <section class="roles">
-    <div class="innerRoles">
+    <div class="innerRoles paddingFix">
         <div class="top">
             <div class="">
                 <h1>Roles</h1>

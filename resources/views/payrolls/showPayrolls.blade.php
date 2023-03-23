@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="payrollsShow">
-    <div class="innerPayrollsShow">
+    <div class="innerPayrollsShow paddingFix">
         <div class="top">
             <h1>Nóminas</h1>
             <h3 class="">Gestión de nóminas</h3>
