@@ -187,7 +187,9 @@
                 </div>
                 <div class="contactData">
                     <h4 class="">
-                        C/ Pilar Monteverde, 32<br>Urbanización El Mayorazgo<br>38300 La Orotava, Tenerife.<br><br>Tfno. 922 33 00 25<br>info@mayorazgoasesores.es
+                        C/ Pilar Monteverde, 32<br>Urbanización El Mayorazgo<br>38300 La Orotava, Tenerife.<br>
+                        <div class="iconContact"><img src="{{ Storage::url('design/iconoContacto.jpg') }}" alt="" class=""></div>
+                        Tfno. 922 33 00 25<br>info@mayorazgoasesores.es
                     </h4>
                 </div>
             </div>
