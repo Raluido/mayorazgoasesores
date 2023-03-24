@@ -20,8 +20,9 @@
         @yield('content')
     </main>
 
-
-    <script src="{{ asset('js/mobileMenu.js') }}" defer></script>
+    <script src="{{ asset('js/jquery-3.6.4.min.js') }}">
+    </script>
+    <script src="{{ asset('js/mobileMenu.js') }}"></script>
     @section('scripts')
     @show
     @yield('js')

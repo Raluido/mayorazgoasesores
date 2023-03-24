@@ -28,9 +28,9 @@
                             <option value="DIC">Diciembre</option>
                         </select>
                     </div>
-                    <div class="inputForm" id="year">
+                    <div class="inputForm">
                         <label for="year">Selecciona un año</label>
-                        <select name="year" id="year">
+                        <select name="year" id="year" onload="showMonths()" onchange=showMonths()>
                             @for($i = $presentYear; $i > ($presentYear-5); $i--)
                             <option value="{{ $i }}">{{ $i }}</option>
                             @endfor
@@ -42,9 +42,14 @@
                             Acceder
                         </button>
                     </div>
+                    @if(isset($months))
+                    {{ $months[0]->month }}
+                    {{ $months[1]->month }}
+                    @endif
                 </form>
             </div>
         </div>
     </div>
-    </div>
-    @endsection
+</section>
+<script src="{{ asset('js/showMonths.js') }}" defer></script>
+@endsection

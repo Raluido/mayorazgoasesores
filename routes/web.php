@@ -125,6 +125,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         Route::resource('roles', RolesController::class);
         Route::resource('permissions', PermissionsController::class);
+
+        Route::get('/getYear/{year}', 'CostsImputsController@getYear')->name('intranet.getYear');
     });
 
     Route::get('/posts/showAll', 'PostsController@showAll')->name('posts.showAll');
