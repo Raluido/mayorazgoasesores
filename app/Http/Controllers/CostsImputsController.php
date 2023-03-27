@@ -117,19 +117,22 @@ class CostsImputsController extends Controller
     {
         $presentYear = date("Y");
 
-        return view('costsimputs.showForm')->with('presentYear', $presentYear);
+        $months = DB::table('costs_imputs')
+            ->select('month')
+            ->where('year', $presentYear)
+            ->get();
+
+        return view('costsimputs.showForm')->with('presentYear', $presentYear)->with('months', $months);
     }
 
     public function getYear($year)
     {
-        $presentYear = date("Y");
-
         $months = DB::table('costs_imputs')
             ->select('month')
             ->where('year', $year)
             ->get();
 
-        return view('costsimputs.showForm')->with('presentYear', $presentYear)->with('months', $months);
+        return $months;
     }
 
     public function showCostsImputs(Request $request)
