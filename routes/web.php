@@ -116,7 +116,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::group(['prefix' => 'posts'], function () {
             Route::get('/', 'PostsController@index')->name('posts.index');
             Route::get('/create', 'PostsController@create')->name('posts.create');
-            Route::get('/showAll', 'PostsController@showAll')->name('posts.showAll');
             Route::post('/store', 'PostsController@store')->name('posts.store');
             Route::get('/{post}/edit', 'PostsController@edit')->name('posts.edit');
             Route::put('/{post}', 'PostsController@update')->name('posts.update');
@@ -125,8 +124,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         Route::resource('roles', RolesController::class);
         Route::resource('permissions', PermissionsController::class);
-
-        Route::get('/getYear/{year}', 'CostsImputsController@getYear')->name('intranet.getYear');
     });
 
     Route::get('/posts/showAll', 'PostsController@showAll')->name('posts.showAll');

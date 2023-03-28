@@ -24,6 +24,8 @@ class PayrollsController extends Controller
 
     public function uploadPayrolls(Request $request)
     {
+        $presentYear = date("Y");
+
         $file = $request->file('payrolls');
 
         if ($request->hasFile('payrolls')) {
@@ -31,7 +33,7 @@ class PayrollsController extends Controller
             $extension = $file->getClientOriginalExtension();
             $check = in_array($extension, $allowedfileExtension);
             if ($check) {
-                $filenamewithextension = date('d-m-Y h:i:s a', time()) . ".pdf";
+                $filenamewithextension = date('d-m-Y h.i.s a', time()) . ".pdf";
                 $file->storeAs('storage/media/',  $filenamewithextension);
                 $month = $request->input('month');
                 $year = $request->input('year');
@@ -40,15 +42,15 @@ class PayrollsController extends Controller
             } else {
                 echo '<div class="alert alert-warning"><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
 
-                return view('payrolls.uploadForm');
+                return view('payrolls.uploadForm')->with('presentYear', $presentYear);
             }
         } else {
             echo '<div class="alert alert-warning"><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
 
-            return view('payrolls.uploadForm');
+            return view('payrolls.uploadForm')->with('presentYear', $presentYear);
         }
 
-        return view('payrolls.uploadForm')->with('successMsg', "Las nóminas han comenzado a subirse, tardaremos unos minutos, gracias ;)");
+        return view('payrolls.uploadForm')->with('presentYear', $presentYear)->with('successMsg', "Las nóminas han comenzado a subirse, tardaremos unos minutos, gracias ;)");
     }
 
     public function downloadForm()

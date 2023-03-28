@@ -14,20 +14,18 @@
                         <input name="_token" type="hidden" value="{{ csrf_token() }}">
                         <label for="month">Selecciona un mes</label>
                         <select name="month" id="month">
-                            <?php
-                            $data = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-                            ?>
-                            @for ($i = 0; $i < count($data); $i++) @for ($j=0; $j < count($months); $j++) @if ($data[$i]==$months[$j]->month)
-                                <option value="" style="background-color:green;">{{ $data[$i] }}</option>
-                                @break;
-                                @else
-                                @if($j == (count($months)-1))
-                                <option value="">{{ $data[$i] }}</option>
-                                @endif
-                                @endif
-                                @endfor
-                                @endfor
-
+                            <option value="ENE">Enero</option>
+                            <option value="FEB">Febrero</option>
+                            <option value="MAR">Marzo</option>
+                            <option value="ABR">Abril</option>
+                            <option value="MAY">Mayo</option>
+                            <option value="JUN">Junio</option>
+                            <option value="JUL">Julio</option>
+                            <option value="AGO">Agosto</option>
+                            <option value="SEP">Septiembre</option>
+                            <option value="OCT">Octubre</option>
+                            <option value="NOV">Noviembre</option>
+                            <option value="DIC">Diciembre</option>
                         </select>
                     </div>
                     <div class="inputForm">
@@ -49,5 +47,4 @@
         </div>
     </div>
 </section>
-<script src="{{ asset('js/showMonths.js') }}" defer></script>
 @endsection

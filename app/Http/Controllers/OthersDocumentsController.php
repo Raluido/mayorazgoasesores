@@ -24,6 +24,8 @@ class OthersDocumentsController extends Controller
 
     public function uploadOthersDocuments(Request $request)
     {
+        $presentYear = date("Y");
+
         $month = $request->input('month');
         $year = $request->input('year');
         $nif = $request->input('nif');
@@ -131,10 +133,10 @@ class OthersDocumentsController extends Controller
             } else {
                 echo '<div class="alert alert-warning"><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
 
-                return view('othersdocuments.uploadForm');
+                return view('othersdocuments.uploadForm')->with('presentYear', $presentYear);
             }
 
-            return view('othersdocuments.uploadForm')->with('successMsg', "Los documentos de imputación de costes se han subido correctamente, gracias ;)");
+            return view('othersdocuments.uploadForm')->with('presentYear', $presentYear)->with('successMsg', "Los documentos de imputación de costes se han subido correctamente, gracias ;)");
         } else {
             echo '<div class="alert alert-warning"><strong>Warning!</strong>El ' . $nif . ' corresponde a una empresa que no ha sido creada aún.</div>';
         }

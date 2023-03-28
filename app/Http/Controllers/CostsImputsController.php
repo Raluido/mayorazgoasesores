@@ -27,6 +27,8 @@ class CostsImputsController extends Controller
 
     public function uploadCostsImputs(Request $request)
     {
+        $presentYear = date("Y");
+        
         $file = $request->file('costsimputs');
 
         if ($request->hasFile('costsimputs')) {
@@ -34,7 +36,7 @@ class CostsImputsController extends Controller
             $extension = $file->getClientOriginalExtension();
             $check = in_array($extension, $allowedfileExtension);
             if ($check) {
-                $filenamewithextension = date('d-m-Y h:i:s a', time()) . ".pdf";
+                $filenamewithextension = date('d-m-Y h.i.s a', time()) . ".pdf";
                 $file->storeAs('storage/media/',  $filenamewithextension);
                 $month = $request->input('month');
                 $year = $request->input('year');
@@ -48,10 +50,10 @@ class CostsImputsController extends Controller
         } else {
             echo '<div class="alert alert-warning"><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
 
-            return view('costsimputs.uploadForm');
+            return view('costsimputs.uploadForm')->with('presentYear', $presentYear);
         }
 
-        return view('costsimputs.uploadForm')->with('successMsg', "Los documentos de imputación de costes han comenzado a subirse, tardaremos unos minutos, gracias ;)");
+        return view('costsimputs.uploadForm')->with('presentYear', $presentYear)->with('successMsg', "Los documentos de imputación de costes han comenzado a subirse, tardaremos unos minutos, gracias ;)");
     }
 
     public function downloadForm()
