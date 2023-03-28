@@ -1,7 +1,7 @@
 @extends('layouts.app-master')
 
 @section('content')
-<div class="othersDocumentsDownload">
+<section class="othersDocumentsDownload">
     <div class="innerOthersDocumentsDownload">
         <div class="top">
             <h1>Otros documentos del mes</h1>
@@ -39,10 +39,12 @@
                         </select>
                     </div>
                     <div class="buttonsNav">
-                        <button class="stylingButtons blue"><a href="{{ route('home.index') }}" class="buttonTextWt">Volver</a></button>
+                        <button class="stylingButtons blue"><a href="{{ route('intranet.index') }}" class="buttonTextWt">Volver</a></button>
                         <button type="submit" class="stylingButtons green buttonTextWt">Mostar los documentos</button>
                     </div>
                 </form>
             </div>
         </div>
-        @endsection
+    </div>
+</section>
+@endsection

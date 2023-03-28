@@ -28,7 +28,7 @@ class CostsImputsController extends Controller
     public function uploadCostsImputs(Request $request)
     {
         $presentYear = date("Y");
-        
+
         $file = $request->file('costsimputs');
 
         if ($request->hasFile('costsimputs')) {
@@ -63,20 +63,25 @@ class CostsImputsController extends Controller
 
         $presentYear = date("Y");
 
-        return view('costsimputs.downloadForm')->with('month', $month)->with('year', $year)->with('presentYear', $presentYear);
+        return view('costsimputs.downloadForm')
+            ->with('presentYear', $presentYear)
+            ->with('month', $month)
+            ->with('year', $year);
     }
 
     public function getData(Request $request)
     {
+        $presentYear = date("Y");
         $month = $request->input('month');
         $year = $request->input('year');
 
-        return view('costsimputs.downloadForm', compact('month', 'year'));
+        return view('costsimputs.downloadForm', compact('month', 'year', 'presentYear'));
     }
 
 
     public function downloadCostsImputs($month, $year)
     {
+        $presentYear = date("Y");
 
         $files = DB::Table('users')
             ->join('costs_imputs', 'costs_imputs.user_id', '=', 'users.id')
@@ -112,7 +117,10 @@ class CostsImputsController extends Controller
             echo '<div class="alert alert-warning"><strong>Warning!</strong> Las modelos de imputación de costes de ' . $month . $year . ' no están disponibles.<div>';
         }
 
-        return view('costsimputs.downloadForm')->with('month', $month)->with('year', $year);
+        return view('costsimputs.downloadForm')
+            ->with('month', $month)
+            ->with('year', $year)
+            ->with('presentYear', $presentYear);
     }
 
     public function showForm()
@@ -124,7 +132,9 @@ class CostsImputsController extends Controller
             ->where('year', $presentYear)
             ->get();
 
-        return view('costsimputs.showForm')->with('presentYear', $presentYear)->with('months', $months);
+        return view('costsimputs.showForm')
+            ->with('presentYear', $presentYear)
+            ->with('months', $months);
     }
 
     public function getYear($year)

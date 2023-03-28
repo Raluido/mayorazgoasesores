@@ -45,6 +45,14 @@ a {
     color: white;
 }
 
+.d-none {
+    display: none;
+}
+
+.d-block {
+    display: block;
+}
+
 .messages {
     padding-left: 5em;
 }
@@ -1081,6 +1089,33 @@ header .intranetMenu a {
     margin-top: 4em;
 }
 
+/* download payrolls */
+
+.payrollsDownload .innerPayrollsDownload {
+    padding: 5em 4em;
+}
+
+.payrollsDownload .innerPayrollsDownload .bottom .innerBottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 6em;
+}
+
+.payrollsDownload .innerPayrollsDownload .bottom form .inputForm {
+    margin: 2em 0;
+}
+
+.payrollsDownload .innerPayrollsDownload .bottom .downloadButton {
+    margin-top: 2em;
+}
+
+.payrollsDownload .innerPayrollsDownload .bottom .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 5em;
+}
+
 /* form payrolls */
 
 .payrollsForm .innerPayrollsForm {
@@ -1165,6 +1200,33 @@ header .intranetMenu a {
     margin-top: 4em;
 }
 
+/* download costs inputs */
+
+.costsImputsDownload .innerCostsImputsDownload {
+    padding: 5em 4em;
+}
+
+.costsImputsDownload .innerCostsImputsDownload .bottom .innerBottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 6em;
+}
+
+.costsImputsDownload .innerCostsImputsDownload .bottom form .inputForm {
+    margin: 2em 0;
+}
+
+.costsImputsDownload .innerCostsImputsDownload .bottom .downloadButton {
+    margin-top: 2em;
+}
+
+.costsImputsDownload .innerCostsImputsDownload .bottom .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 5em;
+}
+
 /* form costs inputs */
 
 .costsImputsForm .innerCostsImputsForm {
@@ -1244,6 +1306,33 @@ header .intranetMenu a {
     margin-top: 4em;
 }
 
+/* download others documents */
+
+.othersDocumentsDownload .innerOthersDocumentsDownload {
+    padding: 5em 4em;
+}
+
+.othersDocumentsDownload .innerOthersDocumentsDownload .bottom .innerBottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 6em;
+}
+
+.othersDocumentsDownload .innerOthersDocumentsDownload .bottom form .inputForm {
+    margin: 2em 0;
+}
+
+.othersDocumentsDownload .innerOthersDocumentsDownload .bottom .downloadButton {
+    margin-top: 2em;
+}
+
+.othersDocumentsDownload .innerOthersDocumentsDownload .bottom .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 5em;
+}
+
 /* form others Documents */
 
 .othersDocumentsForm .innerOthersDocumentsForm {
@@ -1296,6 +1385,41 @@ header .intranetMenu a {
 
 
 .othersDocumentsShow .innerOthersDocumentsShow .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
+/* list others documents */
+
+.othersDocumentsList .innerOthersDocumentsList {
+    padding: 5em 4em;
+}
+
+.othersDocumentsList .innerOthersDocumentsList .bottom table {
+    margin-top: 2em;
+}
+
+.othersDocumentsList .innerOthersDocumentsList .bottom table tr,
+.othersDocumentsList .innerOthersDocumentsList .bottom table th,
+.othersDocumentsList .innerOthersDocumentsList .bottom table td {
+    border: 1px solid gray;
+}
+
+.othersDocumentsList .innerOthersDocumentsList .bottom table tr th {
+    padding: .5em;
+}
+
+.othersDocumentsList .innerOthersDocumentsList .bottom table tr td:nth-child(2) {
+    text-align: center;
+}
+
+.othersDocumentsList .innerOthersDocumentsList .bottom table tr td {
+    padding: 1em;
+}
+
+
+.othersDocumentsList .innerOthersDocumentsList .buttonsNav {
     display: flex;
     justify-content: space-evenly;
     margin-top: 4em;

@@ -55,23 +55,30 @@ class PayrollsController extends Controller
 
     public function downloadForm()
     {
+        $presentYear = date("Y");
         $month = null;
         $year = null;
 
-        return view('payrolls.downloadForm')->with('month', $month)->with('year', $year);
+        return view('payrolls.downloadForm')
+            ->with('month', $month)
+            ->with('year', $year)
+            ->with('presentYear', $presentYear);
     }
 
     public function getData(Request $request)
     {
+        $presentYear = date("Y");
         $month = $request->input('month');
         $year = $request->input('year');
 
-        return view('payrolls.downloadForm', compact('month', 'year'));
+        return view('payrolls.downloadForm', compact('month', 'year', 'presentYear'));
     }
 
 
     public function downloadPayrolls($month, $year)
     {
+        $presentYear = date("Y");
+
         $files = DB::Table('users')
             ->join('employees', 'employees.user_id', '=', 'users.id')
             ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
@@ -102,10 +109,13 @@ class PayrollsController extends Controller
                 return response()->download(public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
             }
         } else {
-            echo '<div class="alert alert-warning"><strong>Warning!</strong> Las nóminas de ' . $month . $year . ' no están disponibles.<div>';
+            echo '<div class=""><strong>Warning!</strong> Las nóminas de ' . $month . $year . ' no están disponibles.<div>';
         }
 
-        return view('payrolls.downloadForm')->with('month', $month)->with('year', $year);
+        return view('payrolls.downloadForm')
+            ->with('month', $month)
+            ->with('year', $year)
+            ->with('presentYear', $presentYear);
     }
 
     public function showForm()

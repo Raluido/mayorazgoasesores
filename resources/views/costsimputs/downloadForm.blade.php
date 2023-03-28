@@ -29,7 +29,7 @@
                             <option value="DIC">Diciembre</option>
                         </select>
                     </div>
-                    <div class="inputForm" id="hiddeYear">
+                    <div class="inputForm d-none" id="hiddeYear">
                         <label for="year">Selecciona un año</label>
                         <select name="year" id="year" onChange="Visibility1()">
                             <option value=""></option>
@@ -38,24 +38,24 @@
                             @endfor
                         </select>
                     </div>
-                    <button type="submit" id="form_execute" class="stylingButtons green buttonTextWt">
-                        Seleccionar fecha
-                    </button>
+                    <div class="">
+                        <button type="submit" id="form_execute" class="d-none">Seleccionar fecha</button>
+                    </div>
                 </form>
-                <div class="">
+                <div class="downloadButton">
                     @if ($month && $year != null)
-                    <a href="{{ url('/costsimputs/download/' . $month . '/' . $year) }}" class="">Descargar
+                    <a href="{{ url('/costsimputs/download/' . $month . '/' . $year) }}" class="stylingButtons green buttonTextWt">Descargar
                         imputación de costes de
                         {{ ' ' . $month . ' ' . $year }}</a>
                     @else
                     <p>Debes seleccionar un mes y un año.</p>
                     @endif
                 </div>
+                <div class="buttonsNav">
+                    <button class="stylingButtons blue"><a href="{{ route('intranet.index') }}" class="buttonTextWt">Volver</a></button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="buttonsNav">
-        <button class="stylingButtons blue"><a href="{{ route('intranet.index') }}" class="buttonTextWt">Volver</a></button>
     </div>
 </section>
 @endsection
