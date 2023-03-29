@@ -48,5 +48,6 @@
         <div class="buttonsNav">
             <button class="stylingButtons blue"><a href="{{ route('home.index') }}" class="buttonTextWt">Volver</a></button>
         </div>
+    </div>
 </section>
 @endsection

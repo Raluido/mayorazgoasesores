@@ -68,7 +68,8 @@
     @if (!empty($successMsg))
     <div class="messages green"> {{ $successMsg }}</div>
     @endif
-    @endsection
-    @section('js')
-    <script src="{{ asset('js/spinner.js') }}" defer></script>
-    @endsection
+</section>
+@endsection
+@section('js')
+<script src="{{ asset('js/spinner.js') }}" defer></script>
+@endsection

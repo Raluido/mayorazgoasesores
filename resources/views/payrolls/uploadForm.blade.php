@@ -1,7 +1,7 @@
 @extends('layouts.app-master')
 
 @section('content')
-<div class="payrollsUpload">
+<section class="payrollsUpload">
     <div class="innerPayrollsUpload">
         <div class="top">
             <h1>Nóminas del mes</h1>
@@ -62,11 +62,11 @@
             </div>
         </div>
     </div>
-</div>
-@if (!empty($successMsg))
-<div class="messages green"> {{ $successMsg }}</div>
-@endif
-</div>
+    @if (!empty($successMsg))
+    <div class="messages green"> {{ $successMsg }}</div>
+    @endif
+    </div>
+</section>
 @endsection
 @section('js')
 <script src="{{ asset('js/spinner.js') }}" defer></script>

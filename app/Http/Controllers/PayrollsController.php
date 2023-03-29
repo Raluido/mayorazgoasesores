@@ -19,7 +19,7 @@ class PayrollsController extends Controller
     {
         $presentYear = date("Y");
 
-        return view('payrolls.uploadForm')->with('presentYear', $presentYear);
+        return view('payrolls.uploadForm', compact('presentYear'));
     }
 
     public function uploadPayrolls(Request $request)
@@ -40,12 +40,12 @@ class PayrollsController extends Controller
                 AddUsersAuto::dispatch($filenamewithextension);
                 UploadPayrolls::dispatch($filenamewithextension, $month, $year);
             } else {
-                echo '<div class="alert alert-warning"><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
+                echo '<div class=""><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
 
                 return view('payrolls.uploadForm')->with('presentYear', $presentYear);
             }
         } else {
-            echo '<div class="alert alert-warning"><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
+            echo '<div class=""><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
 
             return view('payrolls.uploadForm')->with('presentYear', $presentYear);
         }
@@ -112,10 +112,7 @@ class PayrollsController extends Controller
             echo '<div class=""><strong>Warning!</strong> Las nóminas de ' . $month . $year . ' no están disponibles.<div>';
         }
 
-        return view('payrolls.downloadForm')
-            ->with('month', $month)
-            ->with('year', $year)
-            ->with('presentYear', $presentYear);
+        return view('payrolls.downloadForm', compact('month', 'year', 'presentYear'));
     }
 
     public function showForm()
@@ -139,7 +136,7 @@ class PayrollsController extends Controller
             ->paginate(10);
 
         if ($payrolls[0] == null) {
-            echo '<div class="alert alert-warning"> Aún no están disponibles las nóminas de ' . $month . $year . '<div>';
+            echo '<div class=""> Aún no están disponibles las nóminas de ' . $month . $year . '<div>';
         }
         return view('payrolls.showPayrolls', compact('payrolls', 'month', 'year'));
     }

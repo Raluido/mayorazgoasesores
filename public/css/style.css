@@ -1319,8 +1319,18 @@ header .intranetMenu a {
     margin-top: 6em;
 }
 
+.othersDocumentsDownload .innerOthersDocumentsDownload .bottom form {
+    width: 50%;
+}
+
 .othersDocumentsDownload .innerOthersDocumentsDownload .bottom form .inputForm {
     margin: 2em 0;
+    display: flex;
+    justify-content: center;
+}
+
+.othersDocumentsDownload .innerOthersDocumentsDownload .bottom form .inputForm label {
+    margin-right: 1em;
 }
 
 .othersDocumentsDownload .innerOthersDocumentsDownload .bottom .downloadButton {
@@ -1404,14 +1414,11 @@ header .intranetMenu a {
 .othersDocumentsList .innerOthersDocumentsList .bottom table th,
 .othersDocumentsList .innerOthersDocumentsList .bottom table td {
     border: 1px solid gray;
+    text-align: center;
 }
 
 .othersDocumentsList .innerOthersDocumentsList .bottom table tr th {
     padding: .5em;
-}
-
-.othersDocumentsList .innerOthersDocumentsList .bottom table tr td:nth-child(2) {
-    text-align: center;
 }
 
 .othersDocumentsList .innerOthersDocumentsList .bottom table tr td {

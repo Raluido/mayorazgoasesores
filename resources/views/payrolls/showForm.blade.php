@@ -1,7 +1,7 @@
 @extends('layouts.app-master')
 
 @section('content')
-<div class="payrollsForm">
+<section class="payrollsForm">
     <div class="innerPayrollsForm">
         <div class="top">
             <h1 class="">Mostrar Nóminas</h1>
@@ -46,5 +46,5 @@
             </div>
         </div>
     </div>
-</div>
+</section>
 @endsection

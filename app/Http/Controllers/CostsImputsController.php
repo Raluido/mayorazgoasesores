@@ -22,7 +22,7 @@ class CostsImputsController extends Controller
     {
         $presentYear = date("Y");
 
-        return view('costsimputs.uploadForm')->with('presentYear', $presentYear);
+        return view('costsimputs.uploadForm', compact('presentYear'));
     }
 
     public function uploadCostsImputs(Request $request)
@@ -43,12 +43,12 @@ class CostsImputsController extends Controller
                 AddUsersAuto::dispatch($filenamewithextension);
                 UploadCostsImputs::dispatch($filenamewithextension, $month, $year);
             } else {
-                echo '<div class="alert alert-warning"><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
+                echo '<div class=""><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
 
                 return view('costsimputs.uploadForm');
             }
         } else {
-            echo '<div class="alert alert-warning"><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
+            echo '<div class=""><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
 
             return view('costsimputs.uploadForm')->with('presentYear', $presentYear);
         }
@@ -63,10 +63,7 @@ class CostsImputsController extends Controller
 
         $presentYear = date("Y");
 
-        return view('costsimputs.downloadForm')
-            ->with('presentYear', $presentYear)
-            ->with('month', $month)
-            ->with('year', $year);
+        return view('costsimputs.downloadForm', compact('month', 'year', 'presentYear'));
     }
 
     public function getData(Request $request)
@@ -104,7 +101,6 @@ class CostsImputsController extends Controller
                 foreach ($files as $file) {
                     $filename = basename((array_values((array)$file))[0]);
                     $temp = (array_values((array)$filename))[0];
-                    log::info($temp);
                     $zip->addFile($public_dir . '/' . $temp, $temp);
                 }
                 $zip->close();
@@ -117,10 +113,7 @@ class CostsImputsController extends Controller
             echo '<div class="alert alert-warning"><strong>Warning!</strong> Las modelos de imputación de costes de ' . $month . $year . ' no están disponibles.<div>';
         }
 
-        return view('costsimputs.downloadForm')
-            ->with('month', $month)
-            ->with('year', $year)
-            ->with('presentYear', $presentYear);
+        return view('costsimputs.downloadForm', compact('month', 'year', 'presentYear'));
     }
 
     public function showForm()
@@ -132,9 +125,7 @@ class CostsImputsController extends Controller
             ->where('year', $presentYear)
             ->get();
 
-        return view('costsimputs.showForm')
-            ->with('presentYear', $presentYear)
-            ->with('months', $months);
+        return view('costsimputs.showForm', compact('months', 'presentYear'));
     }
 
     public function getYear($year)
@@ -161,7 +152,7 @@ class CostsImputsController extends Controller
             ->paginate(10);
 
         if ($costsimputs[0] == null) {
-            echo '<div class="alert alert-warning">Aún no están disponibles las imputaciones de costes de ' . $month . $year . '<div>';
+            echo '<div class="">Aún no están disponibles las imputaciones de costes de ' . $month . $year . '<div>';
         }
 
         return view('costsimputs.showCostsImputs', compact('costsimputs', 'month', 'year'));

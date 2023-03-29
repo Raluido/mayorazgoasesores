@@ -1,7 +1,7 @@
 @extends('layouts.app-master')
 
 @section('content')
-<div class="payrollsShow">
+<section class="payrollsShow">
     <div class="innerPayrollsShow paddingFix">
         <div class="top">
             <h1>Nóminas</h1>
@@ -45,9 +45,9 @@
             <button class="stylingButtons blue"><a href="{{ route('intranet.index') }}" class="buttonTextWt">Volver</a></button>
             <button class="stylingButtons red"><a class="buttonTextWt" href="{{ url('payrolls/deleteAll') }}">Eliminar todas</a></button>
         </div>
+        <div class="">
+            {!! $payrolls->links() !!}
+        </div>
     </div>
-    <div class="">
-        {!! $payrolls->links() !!}
-    </div>
-</div>
+</section>
 @endsection
