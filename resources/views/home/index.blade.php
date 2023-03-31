@@ -7,12 +7,14 @@
         <img src="{{ Storage::url('design/bienvenidos.jpg') }}" alt="" class="">
     </div>
     <div class="bottom">
-        <p class="">
-            Gracias por llegar hasta aquí,<br><br>
-            <span style="font-weight:bold">Mayorazgo Asesores</span> es una <span style="font-weight:bold">Asesoría Jurídica-Laboral</span> con mas de 20 años de experiencia en el sector,<br> con un objetivo claro, dar <span style="font-weight:bold">tranquilidad y soluciones</span> día a día a nuestros clientes.<br>
-            Nuestro gran aval es el compromiso con nuestros clientes, la rápida respuesta y el aprendizaje continuo,<br> siendo en todo momento nuestros servicios gestionados por <span style="font-weight:bold">profesionales colegiados en cada materia.</span><br>
-            Colaboramos estrechamente con asesorías fiscales y contables, sumando así garantías de profesionalidad,<br> ya que esa es sin duda nuestra misión cada día: ayudar y dar al cliente una solución rápida y profesional.
-        </p>
+        <div class="innerBottom">
+            <p class="">
+                Gracias por llegar hasta aquí,<br><br>
+                <span style="font-weight:bold">Mayorazgo Asesores</span> es una <span style="font-weight:bold">Asesoría Jurídica-Laboral</span> con mas de 20 años de experiencia en el sector,<br> con un objetivo claro, dar <span style="font-weight:bold">tranquilidad y soluciones</span> día a día a nuestros clientes.<br>
+                Nuestro gran aval es el compromiso con nuestros clientes, la rápida respuesta y el aprendizaje continuo,<br> siendo en todo momento nuestros servicios gestionados por <span style="font-weight:bold">profesionales colegiados en cada materia.</span><br>
+                Colaboramos estrechamente con asesorías fiscales y contables, sumando así garantías de profesionalidad,<br> ya que esa es sin duda nuestra misión cada día: ayudar y dar al cliente una solución rápida y profesional.
+            </p>
+        </div>
     </div>
 </section>
 <section class="equipo" id="equipo">
@@ -24,23 +26,23 @@
             <div class="innerBottom">
                 <div class="">
                     <img src="{{ Storage::url('design/equipo/Fran.jpg') }}" alt="" class="">
-                    <h3 class="">Fran Luis</h3>
+                    <h3 class="">Francisco Javier Luis Domínguez</h3>
                     <h4 class="">Graduado Social</h4>
                 </div>
                 <div class="">
                     <img src="{{ Storage::url('design/equipo/Cande.jpg') }}" alt="" class="">
-                    <h3 class="">Cande Rguez.</h3>
-                    <h4 class="">Experta en Gestión Laboral</h4>
+                    <h3 class="">Mª Candelaria Rodríguez González</h3>
+                    <h4 class="">Técnico en Gestión Laboral</h4>
                 </div>
                 <div class="">
                     <img src="{{ Storage::url('design/equipo/Nieves.jpg') }}" alt="" class="">
-                    <h3 class="">Nieves Moleiro</h3>
+                    <h3 class="">Mª Nieves Moleiro Rodríguez</h3>
                     <h4 class="">Administrativa Laboral</h4>
                 </div>
                 <div class="">
                     <img src="{{ Storage::url('design/equipo/Ana.jpg') }}" alt="" class="">
-                    <h3 class="">Ana Ledesma</h3>
-                    <h4 class="">Abogada Civil y Penal</h4>
+                    <h3 class="">Ana Raquel Ledesma Martín</h3>
+                    <h4 class="">Abogada</h4>
                 </div>
             </div>
         </div>
