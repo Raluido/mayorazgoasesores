@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="buttonsNav">
-            <button class="stylingButtons blue"><a class="buttonTextWt" href="{{ route('intranet.index') }} ">Volver</a></button>
+            <button class="stylingButtons blue"><a class="buttonTextWt" href="{{ route('home.index') }} ">Volver</a></button>
         </div>
     </div>
 </section>
