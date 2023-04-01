@@ -210,7 +210,7 @@ header .intranetMenu a {
 }
 
 .bienvenidos .bottom .innerBottom {
-    margin: 4em 0;
+    margin: 6em 0;
 }
 
 .bienvenidos .bottom p {
@@ -1586,12 +1586,12 @@ header .intranetMenu a {
 @media (max-width: 767px) {
 
     header nav .innerLogo h3 {
-        font-size: 1.1em;
+        font-size: 1.5rem;
         line-height: 0.9;
     }
 
     header nav .innerLogo h3 span {
-        font-size: 1.2em;
+        font-size: 1.3em;
     }
 
     table {
@@ -1634,7 +1634,7 @@ header .intranetMenu a {
     }
 
     .bienvenidos .bottom p {
-        font-size: 1.2em;
+        font-size: 5vw;
     }
 
     .equipo .bottom .innerBottom>div {
@@ -1779,17 +1779,15 @@ header .intranetMenu a {
 
 }
 
-@media (min-width: 581px) and (max-width: 1023px) {
-    .bienvenidos .bottom p {
-        font-size: 1.1em;
-    }
-}
-
 @media (min-width: 768px) and (max-height: 1366px) and (orientation: portrait) {
     /*IPAD's*/
 
-    .bienvenidos .bottom .innerBottom {
-        margin: unset;
+    .bienvenidos {
+        min-height: 88vh;
+    }
+
+    .bienvenidos .bottom p {
+        font-size: 1.3em;
     }
 
     .equipo .bottom {
@@ -1807,6 +1805,10 @@ header .intranetMenu a {
 
     .servicios {
         min-height: 100vh;
+    }
+
+    .servicios .innerServicios .bottom .innerBottom>div .iconText h4 {
+        font-size: 1.1em;
     }
 
     .servicios .innerServicios,
@@ -1904,6 +1906,25 @@ header .intranetMenu a {
         display: block !important;
     }
 
+}
+
+@media (min-width: 1280px) {
+
+    html {
+        font-size: 1.5vw;
+    }
+
+    .bienvenidos .bottom .innerBottom {
+        margin: 10em 0;
+    }
+
+    .servicios .innerServicios .bottom .innerBottom {
+        margin: 12em 0;
+    }
+
+    .noticias .innerNoticias .bottom .innerBottom {
+        margin: 6em 0;
+    }
 }
 
 @media (min-width: 1440px) {
