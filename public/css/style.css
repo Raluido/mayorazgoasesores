@@ -1768,6 +1768,15 @@ header .intranetMenu a {
         height: auto;
     }
 
+    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 {
+        font-size: 1.4rem;
+    }
+
+    .contacto .innerContacto .bottom .innerBottom .logo {
+        display: flex;
+        justify-content: center;
+    }
+
 }
 
 @media (min-width: 581px) and (max-width: 1023px) {
