@@ -91,7 +91,7 @@ header nav {
 
 header .innerNav {
     display: grid;
-    grid-template-columns: [first] 20% [second] 60% [third] 20%;
+    grid-template-columns: [first] 18% [second] 64% [third] 18%;
 }
 
 header .innerNav .logoMenu {
@@ -1852,7 +1852,7 @@ header .intranetMenu a {
 
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
 
     header .innerNav {
         display: flex;
