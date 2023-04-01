@@ -1695,6 +1695,18 @@ header .intranetMenu a {
         padding: 0 2em;
     }
 
+    .noticias .bottom .innerBottom .news h3 {
+        font-size: 1.3em;
+    }
+
+    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 {
+        font-size: 1.2rem;
+    }
+
+    .noticias .bottom .innerBottom .news p {
+        font-size: 1.1em;
+    }
+
     .contacto .innerContacto .bottom .innerBottom {
         flex-direction: column;
         align-items: center;
