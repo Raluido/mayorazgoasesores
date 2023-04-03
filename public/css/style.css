@@ -58,8 +58,10 @@ a {
 }
 
 input,
-textarea {
+textarea,
+select {
     display: block;
+    width: 100%;
 }
 
 html {
@@ -140,7 +142,7 @@ header .innerNav .mobileMenu {
 }
 
 header nav .innerLogo {
-    width: 7em;
+    width: 14em;
     height: auto;
     display: flex;
     align-items: center;
@@ -666,6 +668,18 @@ header .menu {
     margin-top: 0.5em;
 }
 
+.form-signin .login form .inputDiv input {
+    font-size: 1em;
+}
+
+.form-signin .login form .inputDiv label {
+    font-size: 1.1em;
+}
+
+.form-signin .login form .inputDiv button {
+    font-size: 1em;
+}
+
 /* end */
 
 /* intranet index */
@@ -676,6 +690,10 @@ header .menu {
 
 .intranet .innerIntranet h3 {
     margin-bottom: 3em;
+}
+
+.intranet .innerIntranet .areasIntranet ul li a {
+    font-size: 1.1em;
 }
 
 .intranet .innerIntranet .areasIntranet {
@@ -986,21 +1004,34 @@ header .menu {
 
 /* users show */
 
+.usersShow {
+    min-height: 85vh;
+}
+
 .usersShow .innerUsersShow {
     padding: 5em 4em;
+}
+
+.usersShow .innerUsersShow .bottom .innerBottom {
+    margin-top: 5em;
+    padding: 1em;
+    line-height: 1.8;
+}
+
+.usersShow .innerUsersShow .bottom table tr,
+.usersShow .innerUsersShow .bottom table th,
+.usersShow .innerUsersShow .bottom table td {
+    border: 1px solid gray;
+}
+
+.usersShow .innerUsersShow .bottom table tr th,
+.usersShow .innerUsersShow .bottom table tr td {
+    padding: .5em;
 }
 
 .usersShow .innerUsersShow .bottom {
     display: flex;
     justify-content: center;
-}
-
-.usersShow .innerUsersShow .bottom .innerBottom {
-    border: 1px solid lightgray;
-    margin-top: 5em;
-    padding: 1em;
-    line-height: 1.8;
-    display: inline;
 }
 
 .usersShow .innerUsersShow .buttonsNav {
@@ -1011,8 +1042,13 @@ header .menu {
 
 /* edit users */
 
+.editUsers {
+    min-height: 85vh;
+}
+
 .editUsers .innerEditUsers {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 4em 0;
 }
 
 .editUsers .innerEditUsers .bottom {
@@ -1021,12 +1057,18 @@ header .menu {
     justify-content: center;
 }
 
+.editUsers .innerEditUsers .bottom form {
+    width: 50%;
+}
+
 .editUsers .innerEditUsers .bottom form .inputDiv {
     margin: 2em 0;
 }
 
-.editUsers .innerEditUsers .bottom form .inputDiv label {
-    margin-right: 2em;
+.editUsers .innerEditUsers .bottom form .inputDiv label,
+.editUsers .innerEditUsers .bottom form .inputDiv input,
+.editUsers .innerEditUsers .bottom form .inputDiv select {
+    font-size: 1.1em;
 }
 
 .editUsers .innerEditUsers .buttonsNav {
@@ -1103,21 +1145,34 @@ header .menu {
 
 /* employees show */
 
+.employeesShow {
+    min-height: 85vh;
+}
+
 .employeesShow .innerEmployeesShow {
     padding: 5em 4em;
+}
+
+.employeesShow .innerEmployeesShow .bottom .innerBottom {
+    margin-top: 5em;
+    padding: 1em;
+    line-height: 1.8;
+}
+
+.employeesShow .innerEmployeesShow .bottom table tr,
+.employeesShow .innerEmployeesShow .bottom table th,
+.employeesShow .innerEmployeesShow .bottom table td {
+    border: 1px solid gray;
+}
+
+.employeesShow .innerEmployeesShow .bottom table tr th,
+.employeesShow .innerEmployeesShow .bottom table tr td {
+    padding: .5em;
 }
 
 .employeesShow .innerEmployeesShow .bottom {
     display: flex;
     justify-content: center;
-}
-
-.employeesShow .innerEmployeesShow .bottom .innerBottom {
-    border: 1px solid lightgray;
-    margin-top: 5em;
-    padding: 1em;
-    line-height: 1.8;
-    display: inline;
 }
 
 .employeesShow .innerEmployeesShow .buttonsNav {
@@ -1162,6 +1217,10 @@ header .menu {
     margin: 1em 0;
 }
 
+.employeesEdit .innerEmployeesEdit .bottom form .inputForm input {
+    font-size: 1em;
+}
+
 .employeesEdit .innerEmployeesEdit .bottom form .buttonsNav {
     width: 100%;
     display: flex;
@@ -1178,11 +1237,17 @@ header .menu {
 .payrollsUpload .innerPayrollsUpload .bottom .innerBottom {
     display: flex;
     justify-content: center;
-    margin-top: 6em;
+    margin-top: 4em;
 }
 
 .payrollsUpload .innerPayrollsUpload .bottom form .inputForm {
     margin: 2em 0;
+}
+
+.payrollsUpload .innerPayrollsUpload .bottom form .inputForm input,
+.payrollsUpload .innerPayrollsUpload .bottom form .inputForm select,
+.payrollsUpload .innerPayrollsUpload .bottom form .inputForm label {
+    font-size: 1em;
 }
 
 .payrollsUpload .innerPayrollsUpload .bottom form .buttonsNav {
@@ -1232,6 +1297,16 @@ header .menu {
 
 .payrollsForm .innerPayrollsForm .bottom form .inputForm {
     margin: 2em 0;
+}
+
+.payrollsForm .innerPayrollsForm .bottom form {
+    width: 30%;
+}
+
+.payrollsForm .innerPayrollsForm .bottom form .inputForm input,
+.payrollsForm .innerPayrollsForm .bottom form .inputForm label,
+.payrollsForm .innerPayrollsForm .bottom form .inputForm select {
+    font-size: 1em;
 }
 
 .payrollsForm .innerPayrollsForm .bottom form .buttonsNav {
@@ -1292,6 +1367,12 @@ header .menu {
     margin-top: 6em;
 }
 
+.costsImputsUpload .innerCostsImputsUpload .bottom form .inputForm input,
+.costsImputsUpload .innerCostsImputsUpload .bottom form .inputForm label,
+.costsImputsUpload .innerCostsImputsUpload .bottom form .inputForm select {
+    font-size: 1em;
+}
+
 .costsImputsUpload .innerCostsImputsUpload .bottom form .inputForm {
     margin: 2em 0;
 }
@@ -1339,6 +1420,16 @@ header .menu {
     display: flex;
     justify-content: center;
     margin-top: 6em;
+}
+
+.costsImputsForm .innerCostsImputsForm .bottom form {
+    width: 30%;
+}
+
+.costsImputsForm .innerCostsImputsForm .bottom form .inputForm input,
+.costsImputsForm .innerCostsImputsForm .bottom form .inputForm label,
+.costsImputsForm .innerCostsImputsForm .bottom form .inputForm select {
+    font-size: 1em;
 }
 
 .costsImputsForm .innerCostsImputsForm .bottom form .inputForm {
@@ -1398,6 +1489,12 @@ header .menu {
     margin-top: 6em;
 }
 
+.othersDocumentsUpload .innerOthersDocumentsUpload .bottom form .inputForm input,
+.othersDocumentsUpload .innerOthersDocumentsUpload .bottom form .inputForm label,
+.othersDocumentsUpload .innerOthersDocumentsUpload .bottom form .inputForm select {
+    font-size: 1em;
+}
+
 .othersDocumentsUpload .innerOthersDocumentsUpload .bottom form .inputForm {
     margin: 2em 0;
 }
@@ -1455,6 +1552,16 @@ header .menu {
     display: flex;
     justify-content: center;
     margin-top: 6em;
+}
+
+.othersDocumentsForm .innerOthersDocumentsForm .bottom form {
+    width: 40%;
+}
+
+.othersDocumentsForm .innerOthersDocumentsForm .bottom form .inputForm input,
+.othersDocumentsForm .innerOthersDocumentsForm .bottom form .inputForm label,
+.othersDocumentsForm .innerOthersDocumentsForm .bottom form .inputForm select {
+    font-size: 1em;
 }
 
 .othersDocumentsForm .innerOthersDocumentsForm .bottom form .inputForm {
@@ -1592,6 +1699,17 @@ header .menu {
     margin-top: 6em;
 }
 
+.noticiasIntranetEdit .innerNoticiasIntranetEdit .bottom form {
+    width: 70%;
+}
+
+.noticiasIntranetEdit .innerNoticiasIntranetEdit .bottom form .inputForm input,
+.noticiasIntranetEdit .innerNoticiasIntranetEdit .bottom form .inputForm label,
+.noticiasIntranetEdit .innerNoticiasIntranetEdit .bottom form .inputForm select,
+.noticiasIntranetEdit .innerNoticiasIntranetEdit .bottom form .inputForm textarea {
+    font-size: 1em;
+}
+
 .noticiasIntranetEdit .innerNoticiasIntranetEdit .bottom form .inputForm {
     margin: 2em 0;
 }
@@ -1608,14 +1726,21 @@ header .menu {
     padding: 5em 4em;
 }
 
-.createNoticia .innerCreateNoticia .bottom {
+.createNoticia .innerCreateNoticia .bottom .innerBottom {
     margin-top: 4em;
     display: flex;
     justify-content: center;
 }
 
-.createNoticia .innerCreateNoticia .bottom .innerBottom {
-    width: 80%;
+.createNoticia .innerCreateNoticia .bottom form {
+    width: 70%;
+}
+
+.createNoticia .innerCreateNoticia .bottom form .inputForm input,
+.createNoticia .innerCreateNoticia .bottom form .inputForm select,
+.createNoticia .innerCreateNoticia .bottom form .inputForm label,
+.createNoticia .innerCreateNoticia .bottom form .inputForm textarea {
+    font-size: 1em;
 }
 
 .createNoticia .innerCreateNoticia .bottom form .inputForm {
@@ -1743,7 +1868,7 @@ header .menu {
         font-size: 1em;
     }
 
-    .noticias .innerNoticias .bottom {
+    .noticias .innerNoticias .bottom .innerBottom {
         padding: 0 2em;
     }
 
@@ -1784,6 +1909,12 @@ header .menu {
     .contacto .logo {
         margin-right: unset;
         margin-bottom: 2em;
+    }
+
+    .payrollsForm .innerPayrollsForm .bottom form,
+    .costsImputsForm .innerCostsImputsForm .bottom form,
+    .othersDocumentsForm .innerOthersDocumentsForm .bottom form {
+        width: 80%;
     }
 }
 
@@ -1835,11 +1966,15 @@ header .menu {
     /*IPAD's*/
 
     .bienvenidos {
-        min-height: 88vh;
+        min-height: 94vh;
     }
 
     .bienvenidos .bottom p {
         font-size: 1.3em;
+    }
+
+    .bienvenidos .bottom .innerBottom {
+        margin: unset;
     }
 
     .equipo .bottom {

@@ -9,20 +9,27 @@
         </div>
         <div class="bottom">
             <div class="innerBottom">
-                <div>
-                    Empresa: {{ $employeeData[0]->name }}
-                </div>
-                <div>
-                    Nif: {{ $employeeData[0]->nif }}
-                </div>
-                <div>
-                    Dni: {{ $employeeData[0]->dni }}
-                </div>
+                <table class="">
+                    <thead>
+                        <tr>
+                            <th scope="col" width="15%">Empleado</th>
+                            <th scope="col" width="15%">Nif</th>
+                            <th scope="col" width="10%">Dni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ $employeeData[0]->name }}</td>
+                            <td>{{ $employeeData[0]->nif }}</td>
+                            <td>{{ $employeeData[0]->dni }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="buttonsNav">
-            <button class="stylingButtons blue"><a href="{{ route('employees.edit', $employeeData[0]->id) }}" class="buttonTextWt">Editar</a></button>
             <button class="stylingButtons green"><a href="{{ route('employees.index') }}" class="buttonTextWt">Volver</a></button>
+            <button class="stylingButtons blue"><a href="{{ route('employees.edit', $employeeData[0]->id) }}" class="buttonTextWt">Editar</a></button>
         </div>
     </div>
     @endsection
