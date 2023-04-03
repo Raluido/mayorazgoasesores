@@ -8,8 +8,8 @@
         </div>
         <div class="bottom">
             <div class="innerBottom">
-                <div class="subtitle">
-                    <h3>Ponte al día con las noticias que te interesan</h3>
+                <div class="">
+                    <h1>Todas las noticias</h1>
                 </div>
                 @if(empty($posts[0]))
                 <div class="noNews">
@@ -18,11 +18,19 @@
                 @else
                 @foreach ($posts as $post)
                 <div class="news">
-                    <h3>{{ $post->title }}</h3>
+                    <div class="title" style="margin-bottom:2em;">
+                        <h1 class="">{{ $post->title }}</h1>
+                    </div>
+                    <div class="subtitle">
+                        <p class="">{{ $post->subtitle }}</p>
+                    </div>
                     <hr>
-                    <h5>{{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
-                    <br>
-                    <p>{{ $post->body }}</p>
+                    <div class="content">
+                        <p class="">{!! nl2br(e($post->body))!!}</p>
+                    </div>
+                    <div class="date">
+                        <h5>Publicado en: {{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
+                    </div>
                     <div class="gotoNoticia">
                         <button class="gray stylingButtons"><a href="{{ route('posts.show', $post->id) }}" class="buttonTextWt">Ir a noticia</a></button>
                     </div>

@@ -5,7 +5,6 @@
     <div class="innerShowNoticia">
         <div class="top">
             <h1>Noticias</h1>
-            <h3 class="">Las noticias de actualidad</h3>
         </div>
         <div class="bottom">
             <div class="innerBottom">
@@ -20,10 +19,10 @@
                             <h1 class="">{{ $post->title }}</h1>
                         </div>
                         <div class="subtitle">
-                            {{ $post->subtitle }}
+                            <p class="">{{ $post->subtitle }}</p>
                         </div>
                         <hr>
-                        <div class="body">
+                        <div class="content">
                             <p class="">{!! nl2br(e($post->body))!!}</p>
                         </div>
                         <div class="date">

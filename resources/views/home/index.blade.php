@@ -3,17 +3,19 @@
 @section('content')
 
 <section class="bienvenidos">
-    <div class="top">
-        <img src="{{ Storage::url('design/bienvenidos.jpg') }}" alt="" class="">
-    </div>
-    <div class="bottom">
-        <div class="innerBottom">
-            <p class="">
-                Gracias por llegar hasta aquí,<br><br>
-                <span style="font-weight:bold">Mayorazgo Asesores</span> es una <span style="font-weight:bold">Asesoría Jurídica-Laboral</span> con mas de 20 años de experiencia en el sector,<br> con un objetivo claro, dar <span style="font-weight:bold">tranquilidad y soluciones</span> día a día a nuestros clientes.<br>
-                Nuestro gran aval es el compromiso con nuestros clientes, la rápida respuesta y el aprendizaje continuo,<br> siendo en todo momento nuestros servicios gestionados por <span style="font-weight:bold">profesionales colegiados en cada materia.</span><br>
-                Colaboramos estrechamente con asesorías fiscales y contables, sumando así garantías de profesionalidad,<br> ya que esa es sin duda nuestra misión cada día: ayudar y dar al cliente una solución rápida y profesional.
-            </p>
+    <div class="innerBienvenidos">
+        <div class="top">
+            <img src="{{ Storage::url('design/bienvenidos.jpg') }}" alt="" class="">
+        </div>
+        <div class="bottom">
+            <div class="innerBottom">
+                <p class="">
+                    Gracias por llegar hasta aquí,<br><br>
+                    <span style="font-weight:bold">Mayorazgo Asesores</span> es una <span style="font-weight:bold">Asesoría Jurídica-Laboral</span> con mas de 20 años de experiencia en el sector,<br> con un objetivo claro, dar <span style="font-weight:bold">tranquilidad y soluciones</span> día a día a nuestros clientes.<br>
+                    Nuestro gran aval es el compromiso con nuestros clientes, la rápida respuesta y el aprendizaje continuo,<br> siendo en todo momento nuestros servicios gestionados por <span style="font-weight:bold">profesionales colegiados en cada materia.</span><br>
+                    Colaboramos estrechamente con asesorías fiscales y contables, sumando así garantías de profesionalidad,<br> ya que esa es sin duda nuestra misión cada día: ayudar y dar al cliente una solución rápida y profesional.
+                </p>
+            </div>
         </div>
     </div>
 </section>
