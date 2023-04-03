@@ -1767,8 +1767,21 @@ header .menu {
         line-height: 0.9;
     }
 
+    header .innerNav {
+        display: flex;
+        justify-content: space-between;
+    }
+
     header nav .innerLogo h3 span {
         font-size: 1.3em;
+    }
+
+    header nav .innerLogo {
+        width: 6em;
+    }
+
+    header .innerNav .mobileMenu {
+        margin-right: 1em;
     }
 
     table {
@@ -1808,10 +1821,6 @@ header .menu {
 
     .bienvenidos .bottom .innerBottom {
         margin: 3em 1em;
-    }
-
-    .bienvenidos .bottom p {
-        font-size: 5vw;
     }
 
     .equipo .bottom .innerBottom>div {
@@ -1894,8 +1903,12 @@ header .menu {
     }
 
     .contacto .innerContacto .bottom .innerBottom .logo {
-        width: 50%;
+        width: 80%;
         height: auto;
+    }
+
+    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
+        font-size: 1.3rem;
     }
 
     .contacto .innerContacto .bottom .innerBottom .logo h1 {
@@ -1930,6 +1943,19 @@ header .menu {
         font-size: 1.1em;
     }
 
+    header nav .innerLogo {
+        width: 5em;
+    }
+
+    header .innerNav {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    header .innerNav .mobileMenu {
+        margin-right: 1em;
+    }
+
     .bienvenidos .bottom {
         margin: 3em 0;
     }
@@ -1946,9 +1972,21 @@ header .menu {
         margin: 0;
     }
 
+    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
+        font-size: 1.2rem;
+    }
+
+    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 span {
+        font-size: 1.3em;
+    }
+
     .contacto .innerContacto .bottom .innerBottom .logo {
-        width: 30%;
+        width: 35vw;
         height: auto;
+    }
+
+    .contacto .innerContacto .bottom .innerBottom .contactData {
+        width: 35vw;
     }
 
     .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 {
@@ -2040,11 +2078,6 @@ header .menu {
 }
 
 @media (max-width: 1024px) {
-
-    header .innerNav {
-        display: flex;
-        justify-content: space-around;
-    }
 
     header .innerNav .logoMenu .menu,
     header .innerNav .intranetMenu {
