@@ -1915,7 +1915,7 @@ header .menu {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 7em;
+        width: 5em;
     }
 
     .servicios .innerServicios .bottom>div .iconText img {
@@ -1999,7 +1999,7 @@ header .menu {
     }
 
     header nav .innerLogo {
-        width: 7em;
+        width: 5em;
     }
 
     header .innerNav {
