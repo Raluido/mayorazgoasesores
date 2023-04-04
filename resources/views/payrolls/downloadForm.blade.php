@@ -5,7 +5,7 @@
     <div class="innerPayrollsDownload">
         <div class="top">
             <h1>Nóminas del mes</h1>
-            <h3 class="">Descargar nóminas.</h3>
+            <h3 class="">Descargar nóminas</h3>
         </div>
         <div class="bottom">
             <div class="innerBottom">

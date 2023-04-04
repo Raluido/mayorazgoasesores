@@ -5,7 +5,7 @@
     <div class="innerOthersDocumentsDownload">
         <div class="top">
             <h1>Otros documentos del mes</h1>
-            <h3 class="">Descargar otros documentos.</h3>
+            <h3 class="">Descargar otros documentos</h3>
         </div>
         <div class="bottom">
             <div class="innerBottom">
@@ -39,8 +39,8 @@
                         </select>
                     </div>
                     <div class="buttonsNav">
+                        <button type="submit" class="stylingButtons green buttonTextWt">Mostar documentos</button>
                         <button class="stylingButtons blue"><a href="{{ route('intranet.index') }}" class="buttonTextWt">Volver</a></button>
-                        <button type="submit" class="stylingButtons green buttonTextWt">Mostar los documentos</button>
                     </div>
                 </form>
             </div>

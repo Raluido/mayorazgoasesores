@@ -5,7 +5,7 @@
     <div class="innerCostsImputsDownload">
         <div class="top">
             <h1>Imputación de costes del mes</h1>
-            <h3 class="">Descargar los modelos de imputación de costes.</h3>
+            <h3 class="">Descargar los modelos de imputación de costes</h3>
         </div>
         <div class="bottom">
             <div class="innerBottom">

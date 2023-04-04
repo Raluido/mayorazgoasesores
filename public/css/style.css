@@ -88,7 +88,7 @@ header nav {
 
 header .innerNav {
     display: grid;
-    grid-template-columns: [first] 15% [second] 70% [third] 15%;
+    grid-template-columns: [first] 10% [second] 80% [third] 10%;
     margin: .5em 0;
 }
 
@@ -118,9 +118,10 @@ header .innerNav .intranetMenu .dropdownIntranet {
     padding: 1em;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    right: .5em;
 }
 
-header .innerNav .intranetMenu .dropdown a {
+header .innerNav .intranetMenu .dropdownIntranet a {
     display: block;
     margin-bottom: 1em;
     cursor: pointer;
@@ -142,7 +143,7 @@ header .innerNav .mobileMenu {
 }
 
 header nav .innerLogo {
-    width: 14em;
+    width: 8em;
     height: auto;
     display: flex;
     align-items: center;
@@ -161,7 +162,6 @@ header nav .innerLogo h3 span {
 header nav .innerLogo img {
     width: 100%;
     height: 100%;
-    margin-right: 1em;
 }
 
 header .menu ul {
@@ -611,18 +611,18 @@ header .menu {
 }
 
 .contacto .innerContacto .bottom .innerBottom .logo .innerLogo>div {
-    width: 50%;
+    width: 40%;
     height: auto;
 }
 
 .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    width: 50%;
+    width: 40%;
 }
 
 .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 span {
-    font-size: 1.5em;
+    font-size: 1.3em;
 }
 
 .contacto .innerContacto .bottom .iconContact {
@@ -1269,6 +1269,16 @@ header .menu {
     margin-top: 6em;
 }
 
+.payrollsDownload .innerPayrollsDownload .bottom form {
+    width: 40%;
+}
+
+.payrollsDownload .innerPayrollsDownload .bottom form .inputForm input,
+.payrollsDownload .innerPayrollsDownload .bottom form .inputForm select,
+.payrollsDownload .innerPayrollsDownload .bottom form .inputForm label {
+    font-size: 1em;
+}
+
 .payrollsDownload .innerPayrollsDownload .bottom form .inputForm {
     margin: 2em 0;
 }
@@ -1396,6 +1406,16 @@ header .menu {
     margin-top: 6em;
 }
 
+.costsImputsDownload .innerCostsImputsDownload .bottom form {
+    width: 40%;
+}
+
+.costsImputsDownload .innerCostsImputsDownload .bottom form .inputForm input,
+.costsImputsDownload .innerCostsImputsDownload .bottom form .inputForm label,
+.costsImputsDownload .innerCostsImputsDownload .bottom form .inputForm select {
+    font-size: 1em;
+}
+
 .costsImputsDownload .innerCostsImputsDownload .bottom form .inputForm {
     margin: 2em 0;
 }
@@ -1519,17 +1539,17 @@ header .menu {
 }
 
 .othersDocumentsDownload .innerOthersDocumentsDownload .bottom form {
-    width: 50%;
+    width: 70%;
+}
+
+.othersDocumentsDownload .innerOthersDocumentsDownload .bottom form .inputForm input,
+.othersDocumentsDownload .innerOthersDocumentsDownload .bottom form .inputForm label,
+.othersDocumentsDownload .innerOthersDocumentsDownload .bottom form .inputForm select {
+    font-size: 1em;
 }
 
 .othersDocumentsDownload .innerOthersDocumentsDownload .bottom form .inputForm {
     margin: 2em 0;
-    display: flex;
-    justify-content: center;
-}
-
-.othersDocumentsDownload .innerOthersDocumentsDownload .bottom form .inputForm label {
-    margin-right: 1em;
 }
 
 .othersDocumentsDownload .innerOthersDocumentsDownload .bottom .downloadButton {
@@ -1757,6 +1777,49 @@ header .menu {
     margin-top: 3em;
 }
 
+/* intranet user edit */
+
+.editUser .innerEditUser {
+    padding: 5em 4em;
+}
+
+.editUser .innerEditUser .bottom .sideNavButtons button:nth-child(1) {
+    display: block;
+    margin-bottom: 1em;
+}
+
+.editUser .innerEditUser .bottom .sideNavButtons button:nth-child(2) {
+    margin-bottom: 2em;
+}
+
+.editUser .innerEditUser .bottom .innerBottom {
+    margin-top: 5em;
+    display: flex;
+    justify-content: space-around;
+}
+
+.editUser .innerEditUser .bottom .divForm, 
+    .editUser .innerEditUser .bottom .sideNavButtons {
+    width: 60%;
+}
+
+.editUser .innerEditUser .bottom form .inputForm input,
+.editUser .innerEditUser .bottom form .inputForm label,
+.editUser .innerEditUser .bottom form .inputForm select,
+.editUser .innerEditUser .bottom form .inputForm textarea {
+    font-size: 1em;
+}
+
+.editUser .innerEditUser .bottom form .inputForm {
+    margin: 2em 0;
+}
+
+.editUser .innerEditUser .bottom form .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
 /* end */
 
 
@@ -1767,10 +1830,6 @@ header .menu {
         line-height: 0.9;
     }
 
-    header .innerNav {
-        display: flex;
-        justify-content: space-between;
-    }
 
     header nav .innerLogo h3 span {
         font-size: 1.3em;
@@ -1778,10 +1837,6 @@ header .menu {
 
     header nav .innerLogo {
         width: 6em;
-    }
-
-    header .innerNav .mobileMenu {
-        margin-right: 1em;
     }
 
     table {
@@ -2008,14 +2063,6 @@ header .menu {
         justify-content: space-between;
     }
 
-    header nav .innerLogo {
-        width: 9em;
-    }
-
-    header .innerNav .mobileMenu {
-        margin-right: 2em;
-    }
-
     .bienvenidos {
         min-height: 94vh;
     }
@@ -2099,7 +2146,12 @@ header .menu {
 
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 950px) {
+
+    header .innerNav {
+        display: flex;
+        justify-content: space-between;
+    }
 
     header .innerNav .logoMenu .menu,
     header .innerNav .intranetMenu {
@@ -2110,6 +2162,7 @@ header .menu {
         display: flex;
         align-items: center;
         position: relative;
+        margin-right: 2em;
     }
 
     header .innerNav .mobileMenu .mobileMenuBtn {
