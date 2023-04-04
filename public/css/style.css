@@ -143,20 +143,20 @@ header .innerNav .mobileMenu {
 }
 
 header nav .innerLogo {
-    width: 8em;
+    width: 13em;
     height: auto;
     display: flex;
     align-items: center;
 }
 
 header nav .innerLogo h3 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     line-height: 0.9;
     font-weight: 600;
 }
 
 header nav .innerLogo h3 span {
-    font-size: 1.2em;
+    font-size: 1.3em;
 }
 
 header nav .innerLogo img {
@@ -1826,17 +1826,17 @@ header .menu {
 @media (max-width: 767px) {
 
     header nav .innerLogo h3 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         line-height: 0.9;
     }
 
 
     header nav .innerLogo h3 span {
-        font-size: 1.3em;
+        font-size: 1.4em;
     }
 
     header nav .innerLogo {
-        width: 6em;
+        width: 14em;
     }
 
     table {
@@ -1990,16 +1990,16 @@ header .menu {
     /*MOBILES*/
 
     header nav .innerLogo h3 {
-        font-size: 1em;
+        font-size: 1.1em;
         line-height: 0.9;
     }
 
     header nav .innerLogo h3 span {
-        font-size: 1.1em;
+        font-size: 1.2em;
     }
 
     header nav .innerLogo {
-        width: 5em;
+        width: 9em;
     }
 
     header .innerNav {
