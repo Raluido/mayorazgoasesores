@@ -1881,6 +1881,7 @@ header .innerNav .logoMenu .menu {
 
     .bienvenidos .bottom p {
         font-size: 3.8vw;
+        white-space: nowrap;
     }
 
     .bienvenidos .bottom .innerBottom {
