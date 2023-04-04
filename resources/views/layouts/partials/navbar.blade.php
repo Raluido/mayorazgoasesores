@@ -2,12 +2,14 @@
     <nav class="">
         <div class="innerNav">
             <div class="logoMenu">
-                <div class="logo">
-                    <a href="{{ route('home.index') }}" class="innerLogo">
-                        <img src="{{ Storage::url('design/logoFixed.jpg') }}" alt="" class="">
-                        <h3 class="">mayorago<br><span>asesores</span></h3>
-                    </a>
-                </div>
+                <a href="{{ route('home.index') }}" class="">
+                    <div class="logo">
+                        <div class="imageLogo"><img src="{{ Storage::url('design/logoFixed.jpg') }}" alt="" class=""></div>
+                        <div class="nameLogo">
+                            <h3 class="">mayorago<br><span>asesores</span></h3>
+                        </div>
+                    </div>
+                </a>
                 <div class="menu">
                     <ul class="">
                         <li class=""><a class="" href="{{ route('home.index') }}">Inicio</a></li>
@@ -28,10 +30,6 @@
                         <hr><br>
                         <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
-                        <!-- <hr><br>
-                            <a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>
-                            <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
-                            <a class="dropdown-item" href="{{ route('permissions.index') }}">Permisos</a> -->
                     </div>
                     @endrole
                     @role('user')
@@ -85,10 +83,6 @@
                         <a class="" href="/#servicios">Servicios</a>
                         <a class="" href="/#noticias">Noticias</a>
                         <a class="" href="/#contacto">Contacto</a>
-                        <!-- <hr><br>
-                            <a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>
-                            <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
-                            <a class="dropdown-item" href="{{ route('permissions.index') }}">Permisos</a> -->
                     </div>
                     @endrole
                     @role('user')
