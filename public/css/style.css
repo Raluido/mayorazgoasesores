@@ -1798,8 +1798,8 @@ header .menu {
     justify-content: space-around;
 }
 
-.editUser .innerEditUser .bottom .divForm, 
-    .editUser .innerEditUser .bottom .sideNavButtons {
+.editUser .innerEditUser .bottom .divForm,
+.editUser .innerEditUser .bottom .sideNavButtons {
     width: 60%;
 }
 
@@ -1859,10 +1859,6 @@ header .menu {
 
     .intranet .innerIntranet {
         padding: 5em 2em;
-    }
-
-    textarea {
-        width: 25em;
     }
 
     header .innerNav .mobileMenu .dropdown {
@@ -1937,7 +1933,19 @@ header .menu {
     }
 
     .noticias .bottom .innerBottom .news h3 {
-        font-size: 1.3em;
+        font-size: 1.1em;
+    }
+
+    .noticias .innerNoticias .bottom .innerBottom .subtitle p {
+        font-size: 1em;
+    }
+
+    .showNoticia .innerShowNoticia .bottom .subtitle p {
+        font-size: 1.2em;
+    }
+
+    .showNoticia .innerShowNoticia .bottom .content p {
+        font-size: 1.1em;
     }
 
     .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 {

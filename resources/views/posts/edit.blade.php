@@ -5,7 +5,7 @@
     <div class="innerNoticiasIntranetEdit">
         <div class="top">
             <h1 class="">Editor de Noticias</h1>
-            <h3 class="">Aqui podrás hacer modificaciones a las noticias que ya has subido.</h3>
+            <h3 class="">Aqui podrás hacer modificaciones a las noticias que ya has subido</h3>
         </div>
         <div class="bottom">
             <div class="innerBottom">
