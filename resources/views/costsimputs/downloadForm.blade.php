@@ -41,19 +41,19 @@
                     <div class="">
                         <button type="submit" id="form_execute" class="d-none">Seleccionar fecha</button>
                     </div>
+                    <div class="downloadButton">
+                        @if ($month && $year != null)
+                        <a href="{{ url('/costsimputs/download/' . $month . '/' . $year) }}" class="stylingButtons green buttonTextWt">Descargar
+                            imputación de costes de
+                            {{ ' ' . $month . ' ' . $year }}</a>
+                        @else
+                        <p>Debes seleccionar un mes y un año.</p>
+                        @endif
+                    </div>
+                    <div class="buttonsNav">
+                        <button class="stylingButtons blue"><a href="{{ route('intranet.index') }}" class="buttonTextWt">Volver</a></button>
+                    </div>
                 </form>
-                <div class="downloadButton">
-                    @if ($month && $year != null)
-                    <a href="{{ url('/costsimputs/download/' . $month . '/' . $year) }}" class="stylingButtons green buttonTextWt">Descargar
-                        imputación de costes de
-                        {{ ' ' . $month . ' ' . $year }}</a>
-                    @else
-                    <p>Debes seleccionar un mes y un año.</p>
-                    @endif
-                </div>
-                <div class="buttonsNav">
-                    <button class="stylingButtons blue"><a href="{{ route('intranet.index') }}" class="buttonTextWt">Volver</a></button>
-                </div>
             </div>
         </div>
     </div>

@@ -73,7 +73,6 @@ body {
     padding: 0;
     width: 100%;
     height: 100%;
-    font-size: 0.9rem;
     font-weight: normal;
 }
 
@@ -1248,8 +1247,14 @@ header .innerNav .logoMenu .menu {
     margin-top: 4em;
 }
 
+.payrollsUpload .innerPayrollsUpload .bottom form {
+    border: 1px solid gray;
+    padding: 3em 3em 5em;
+    background-color: #F5F5F5;
+}
+
 .payrollsUpload .innerPayrollsUpload .bottom form .inputForm {
-    margin: 2em 0;
+    margin-top: 2em;
 }
 
 .payrollsUpload .innerPayrollsUpload .bottom form .inputForm input,
@@ -1279,6 +1284,9 @@ header .innerNav .logoMenu .menu {
 
 .payrollsDownload .innerPayrollsDownload .bottom form {
     width: 40%;
+    border: 1px solid gray;
+    padding: 3em 3em 5em;
+    background-color: #F5F5F5;
 }
 
 .payrollsDownload .innerPayrollsDownload .bottom form .inputForm input,
@@ -1317,8 +1325,12 @@ header .innerNav .logoMenu .menu {
     margin: 2em 0;
 }
 
+
 .payrollsForm .innerPayrollsForm .bottom form {
     width: 30%;
+    border: 1px solid gray;
+    padding: 3em 3em 5em;
+    background-color: #F5F5F5;
 }
 
 .payrollsForm .innerPayrollsForm .bottom form .inputForm input,
@@ -1391,8 +1403,14 @@ header .innerNav .logoMenu .menu {
     font-size: 1em;
 }
 
+.costsImputsUpload .innerCostsImputsUpload .bottom form {
+    border: 1px solid gray;
+    padding: 3em 3em 5em;
+    background-color: #F5F5F5;
+}
+
 .costsImputsUpload .innerCostsImputsUpload .bottom form .inputForm {
-    margin: 2em 0;
+    margin-top: 2em;
 }
 
 .costsImputsUpload .innerCostsImputsUpload .bottom form .buttonsNav {
@@ -1416,6 +1434,9 @@ header .innerNav .logoMenu .menu {
 
 .costsImputsDownload .innerCostsImputsDownload .bottom form {
     width: 40%;
+    border: 1px solid gray;
+    padding: 3em 3em 5em;
+    background-color: #F5F5F5;
 }
 
 .costsImputsDownload .innerCostsImputsDownload .bottom form .inputForm input,
@@ -1452,6 +1473,9 @@ header .innerNav .logoMenu .menu {
 
 .costsImputsForm .innerCostsImputsForm .bottom form {
     width: 30%;
+    border: 1px solid gray;
+    padding: 3em 3em 5em;
+    background-color: #F5F5F5;
 }
 
 .costsImputsForm .innerCostsImputsForm .bottom form .inputForm input,
@@ -1517,6 +1541,13 @@ header .innerNav .logoMenu .menu {
     margin-top: 6em;
 }
 
+.othersDocumentsUpload .innerOthersDocumentsUpload .bottom form {
+    border: 1px solid gray;
+    padding: 3em 3em 5em;
+    background-color: #F5F5F5;
+}
+
+
 .othersDocumentsUpload .innerOthersDocumentsUpload .bottom form .inputForm input,
 .othersDocumentsUpload .innerOthersDocumentsUpload .bottom form .inputForm label,
 .othersDocumentsUpload .innerOthersDocumentsUpload .bottom form .inputForm select {
@@ -1548,6 +1579,9 @@ header .innerNav .logoMenu .menu {
 
 .othersDocumentsDownload .innerOthersDocumentsDownload .bottom form {
     width: 70%;
+    border: 1px solid gray;
+    padding: 3em 3em 5em;
+    background-color: #F5F5F5;
 }
 
 .othersDocumentsDownload .innerOthersDocumentsDownload .bottom form .inputForm input,
@@ -1584,6 +1618,9 @@ header .innerNav .logoMenu .menu {
 
 .othersDocumentsForm .innerOthersDocumentsForm .bottom form {
     width: 40%;
+    border: 1px solid gray;
+    padding: 3em 3em 5em;
+    background-color: #F5F5F5;
 }
 
 .othersDocumentsForm .innerOthersDocumentsForm .bottom form .inputForm input,
