@@ -1976,7 +1976,6 @@ header .innerNav .logoMenu .menu {
         padding: 5em 2em;
     }
 
-
     .bienvenidos .bottom {
         padding: 0 1.2em;
     }
@@ -2104,6 +2103,38 @@ header .innerNav .logoMenu .menu {
     .othersDocumentsForm .innerOthersDocumentsForm .bottom form {
         width: 80%;
     }
+
+    .editPass .innerEditPass .bottom .divForm form {
+        width: 100%;
+    }
+
+    .editUser .innerEditUser .bottom .divForm form {
+        width: 100%;
+    }
+
+    .payrollsDownload .innerPayrollsDownload .bottom form {
+        width: 100%;
+    }
+
+    .payrollsForm .innerPayrollsForm .bottom form {
+        width: 100%;
+    }
+
+    .costsImputsDownload .innerCostsImputsDownload .bottom form {
+        width: 100%;
+    }
+
+    .costsImputsForm .innerCostsImputsForm .bottom form {
+        width: 100%;
+    }
+
+    .othersDocumentsDownload .innerOthersDocumentsDownload .bottom form {
+        width: 100%;
+    }
+
+    .othersDocumentsForm .innerOthersDocumentsForm .bottom form {
+        width: 100%;
+    }
 }
 
 @media (min-width: 667px) and (max-height: 428px) and (orientation: landscape) {
@@ -2187,6 +2218,10 @@ header .innerNav .logoMenu .menu {
         justify-content: space-between;
     }
 
+    header .innerNav .mobileMenu .dropdown {
+        right: 0;
+    }
+
     .bienvenidos {
         min-height: 94vh;
     }
@@ -2267,6 +2302,37 @@ header .innerNav .logoMenu .menu {
         font-size: 1.3em;
     }
 
+    .editPass .innerEditPass .bottom .divForm form {
+        width: 100%;
+    }
+
+    .editUser .innerEditUser .bottom .divForm form {
+        width: 100%;
+    }
+
+    .payrollsDownload .innerPayrollsDownload .bottom form {
+        width: 100%;
+    }
+
+    .payrollsForm .innerPayrollsForm .bottom form {
+        width: 100%;
+    }
+
+    .costsImputsDownload .innerCostsImputsDownload .bottom form {
+        width: 100%;
+    }
+
+    .costsImputsForm .innerCostsImputsForm .bottom form {
+        width: 100%;
+    }
+
+    .othersDocumentsDownload .innerOthersDocumentsDownload .bottom form {
+        width: 100%;
+    }
+
+    .othersDocumentsForm .innerOthersDocumentsForm .bottom form {
+        width: 100%;
+    }
 
 }
 
