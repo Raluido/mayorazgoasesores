@@ -52,8 +52,6 @@ class UploadCostsImputs implements ShouldQueue
         $filename = $this->filename;
         $monthInput = $this->month;
         $yearInput = $this->year;
-        $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-        $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         $uploadError = array();
 
         // Split each page into a new PDF
@@ -88,27 +86,22 @@ class UploadCostsImputs implements ShouldQueue
             $pdf = $pdfParser->parseFile($index);
             $content = $pdf->getText();
 
-            $findme = 'N.I.F.';
-            $pos = strpos($content, $findme);
-            $Nif = substr($content, ($pos - 39), 9);
+            preg_match_all('/PERIODO\s+DEL\s+[0-9]{2}\/[0-9]{2}\/[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
 
-            // fix nif
+            $month = substr($period[0][0][0], 15, 2);
+            $year = substr($period[0][0][0], 18, 2);
 
-            try {
-                if (ctype_space($Nif[0]) || ctype_space($Nif[1])) {
-                    $Nif = substr($content, ($pos - 37), 9);
-                }
-            } catch (\Throwable $th) {
-                $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
-                break;
+            preg_match_all('/[0-9]{8}[A-Z]/', $content, $dni, PREG_OFFSET_CAPTURE);
+            preg_match_all('/[A-Z]{1}[0-9]{8}/', $content, $cif, PREG_OFFSET_CAPTURE);
+            preg_match_all('/[X-Z]{1}[0-9]{7}[A-Z]{1}/', $content, $nie, PREG_OFFSET_CAPTURE);
+
+            if (count($cif[0]) == 1) {
+                $NIF = $cif[0][0][0];
+            } elseif (count($dni[0]) == 1) {
+                $NIF = $dni[0][0][0];
+            } elseif (count($nie[0]) == 1) {
+                $NIF = $nie[0][0][0];
             }
-
-            // end fix nif
-
-            $findme2 = 'PERIODO';
-            $pos2 = strpos($content, $findme2);
-            $month = substr($content, ($pos2 + 15), 2);
-
 
             switch ($month) {
                 case '01':
@@ -149,59 +142,15 @@ class UploadCostsImputs implements ShouldQueue
                     break;
             }
 
-            $year = '20' . substr($content, ($pos2 + 18), 2);
-
-            // check if the nif format is correct
-
-            $true = 0;
             $oldFilename = basename($index);
 
-            if (in_array($Nif[0], $abc)) {
-                for ($i = 1; $i < 8; $i++) {
-                    if (in_array($Nif[$i], $num)) {
-                        $true++;
-                    } else {
-                        $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
-                        break;
-                    }
-                }
-                if (true == 8) {
-                    if ($oldNif != $Nif) {
-                        $x = 0;
-                    } else {
-                        $x++;
-                    }
-                    $oldNif = $Nif;
-                    rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $Nif . '_' . $month . $year . '_' . $x . '.pdf'));
-                } else {
-                    $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
-                }
-            } elseif (in_array($Nif[8], $abc)) {
-                for ($i = 0; $i < 7; $i++) {
-                    if (in_array($Nif[$i], $num)) {
-                        $true++;
-                    } else {
-                        $uploadError[] = 'El ' . $Nif . ' ha dado error de forma, consule al administrador de sistema.';
-                        break;
-                    }
-                }
-                if (true == 8) {
-                    if ($oldNif != $Nif) {
-                        $x = 0;
-                    } else {
-                        $x = 0;
-                        $x++;
-                    }
-                    $oldNif = $Nif;
-                    rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $Nif . '_' . $month . $year . '_' . $x . '.pdf'));
-                } else {
-                    $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
-                }
-            } elseif (!in_array($Nif[8], $abc) || !in_array($Nif[0], $abc)) {
-                $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
+            if ($oldNif != $NIF) {
+                $x = 0;
+            } else {
+                $x++;
             }
-
-            // end check if the nif format is correct
+            $oldNif = $NIF;
+            rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $NIF . '_' . $month . 20 . $year . '_' . $x . '.pdf'));
         }
 
         $files = glob(public_path('storage/media/costsImputsTemp/' . basename($filename, '.pdf') . '_*.*'));
@@ -229,6 +178,8 @@ class UploadCostsImputs implements ShouldQueue
                 $nif = substr($filename, 0, 9);
 
                 // create user if it doesnt exist
+
+                log::info(substr($filename, 10, 7));
 
                 if (User::where('nif', '=', $nif)->exists()) {
                     if ($monthInput . $yearInput == substr($filename, 10, 7)) {
@@ -393,7 +344,6 @@ class UploadCostsImputs implements ShouldQueue
                 }
             }
         }
-
 
         Mail::to("raluido@gmail.com")->send(new UploadCostsImputsNotification($uploadError, $usersCreated, $monthInput, $yearInput));
 

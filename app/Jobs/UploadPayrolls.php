@@ -9,20 +9,17 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use setasign\Fpdi\Fpdi;
-use App\Models\Payroll;
 use App\Models\Employee;
+use App\Models\Payroll;
 use DB;
-use ZipArchive;
-use Illuminate\Support\Facades\Auth;
 use Smalot\PdfParser\Parser;
-use Spatie\PdfToText\Pdf;
 use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use App\Mail\UploadPayrollsNotification;
 use App\Mail\JobErrorNotification;
-use Illuminate\Support\Facades\Mail;
 use Exception;
 
 
@@ -53,7 +50,6 @@ class UploadPayrolls implements ShouldQueue
      */
     public function handle()
     {
-
         $filename = $this->filename;
         $monthInput = $this->month;
         $yearInput = $this->year;
@@ -90,99 +86,50 @@ class UploadPayrolls implements ShouldQueue
             $pdf = $pdfParser->parseFile($index);
             $content = $pdf->getText();
 
-            $findme = 'NIF. ';
-            $pos = strpos($content, $findme);
-            $Nif = substr($content, ($pos + 5), 9);
 
-            $findme1 = 'D.N.I.';
-            $pos1 = strpos($content, $findme1);
-            $Dni = substr($content, ($pos1 + 94), 11);      // Porque algunos no estan en la misma posicion
-            $DniFix = preg_replace('/\s+/', '', $Dni);      // Eliminamos espacios en blanco
+            preg_match_all('/MENS\s+[0-9]{2}\s+[A-Z]{3}\s+[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
 
-            $findme2 = 'PERIODO';
-            $pos2 = strpos($content, $findme2);
-            $month = substr($content, ($pos2 + 79), 3);
-            $year = '20' . substr($content, ($pos2 + 83), 2);
+            $month = substr($period[0][0][0], 9, 3);
+            $year = substr($period[0][0][0], 13);
 
+            preg_match_all('/[0-9]{8}[A-Z]/', $content, $dni, PREG_OFFSET_CAPTURE);
+            preg_match_all('/[A-Z]{1}[0-9]{8}/', $content, $cif, PREG_OFFSET_CAPTURE);
+            preg_match_all('/[X-Z]{1}[0-9]{7}[A-Z]{1}/', $content, $nie, PREG_OFFSET_CAPTURE);
 
-            // check if the nif/dni format is correct
-
-            $true = 0;
-            $oldFilename = basename($index);
-
-            try {
-                if (in_array($Nif[0], $abc)) {
-                    for ($i = 1; $i < 8; $i++) {
-                        if (in_array($Nif[$i], $num)) {
-                            $true++;
-                        } else {
-                            $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
-                            break;
-                        }
-                    }
-                    if (true == 8) {
-                        $true = 0;
-                        if (in_array($DniFix[8], $abc)) {
-                            for ($i = 0; $i < 7; $i++) {
-                                if (in_array($Nif[$i], $num)) {
-                                    $true++;
-                                } else {
-                                    $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
-                                    break;
-                                }
-                            }
-                            if (true == 8) {
-                                rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $Nif . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
-                            } else {
-                                $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
-                            }
-                        } else {
-                            $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
-                        }
-                    } else {
-                        $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
-                    }
-                } elseif (in_array($Nif[8], $abc)) {
-                    for ($i = 0; $i < 7; $i++) {
-                        if (in_array($Nif[$i], $num)) {
-                            $true++;
-                        } else {
-                            $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
-                            break;
-                        }
-                    }
-                    if (true == 8) {
-                        $true = 0;
-                        if (in_array($DniFix[8], $abc)) {
-                            for ($i = 0; $i < 7; $i++) {
-                                if (in_array($Nif[$i], $num)) {
-                                    $true++;
-                                } else {
-                                    $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
-                                    break;
-                                }
-                            }
-                            if (true == 8) {
-                                rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $Nif . '_' .  $DniFix . '_' . $month . $year . '.pdf'));
-                            } else {
-                                $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
-                            }
-                        } else {
-                            $uploadError[] = 'El ' . $DniFix . 'ha dado error de forma, consule al administrador de sistema.';
-                        }
-                    } else {
-                        $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
-                    }
-                } elseif (!in_array($Nif[8], $abc) || !in_array($Nif[0], $abc)) {
-                    $uploadError[] = 'El ' . $Nif . 'ha dado error de forma, consule al administrador de sistema.';
+            if (count($cif[0]) == 1) {
+                $NIF = $cif[0][0][0];
+                if (count($dni[0]) == 1) {
+                    $DNI = $dni[0][0][0];
+                } else {
+                    $DNI = $nie[0][0][0];
                 }
-            } catch (\Throwable $th) {
-                $uploadError[] = 'El ' . $Nif . 'o el ' . $DniFix . 'han dado error de forma, consule al administrador de sistema.';
-                break;
+            } elseif (count($dni[0]) == 2) {
+                if ($dni[0][0][1] < $dni[0][1][1]) {
+                    $NIF = $dni[0][0][0];
+                    $DNI = $dni[0][1][0];
+                } else {
+                    $NIF = $dni[0][1][0];
+                    $DNI = $dni[0][0][0];
+                }
+            } elseif (count($nie[0]) == 2) {
+                if ($nie[0][0][1] < $nie[0][1][1]) {
+                    $NIF = $nie[0][0][0];
+                    $DNI = $nie[0][1][0];
+                } else {
+                    $NIF = $nie[0][1][0];
+                    $DNI = $nie[0][0][0];
+                }
+            } elseif (count($dni[0]) == 1 && count($nie[0]) == 1 && $dni[0][0][1] < $nie[0][0][1]) {
+                $NIF = $dni[0][0][0];
+                $DNI = $nie[0][0][0];
+            } elseif (count($dni[0]) == 1 && count($nie[0]) == 1 && $dni[0][0][1] > $nie[0][0][1]) {
+                $NIF = $nie[0][0][0];
+                $DNI = $dni[0][0][0];
             }
-        }
 
-        // End check
+            $oldFilename = basename($index);
+            rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.pdf'));
+        }
 
         // delete temp files
 
@@ -253,6 +200,7 @@ class UploadPayrolls implements ShouldQueue
                 }
             }
         } else {
+
             $path = public_path('/storage/media/payrolls/' . $yearInput . '/' . $monthInput);
             if (!File::exists($path)) {
                 File::makeDirectory($path, 0777, true);

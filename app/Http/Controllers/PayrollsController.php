@@ -11,6 +11,7 @@ use ZipArchive;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\UploadPayrolls;
 use App\Jobs\AddUsersAuto;
+use App\Jobs\Test;
 
 class PayrollsController extends Controller
 {
