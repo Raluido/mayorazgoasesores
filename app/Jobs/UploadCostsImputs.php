@@ -179,8 +179,6 @@ class UploadCostsImputs implements ShouldQueue
 
                 // create user if it doesnt exist
 
-                log::info(substr($filename, 10, 7));
-
                 if (User::where('nif', '=', $nif)->exists()) {
                     if ($monthInput . $yearInput == substr($filename, 10, 7)) {
                         rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));

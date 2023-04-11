@@ -53,8 +53,6 @@ class UploadPayrolls implements ShouldQueue
         $filename = $this->filename;
         $monthInput = $this->month;
         $yearInput = $this->year;
-        $abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-        $num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         $uploadError = array();
 
 
