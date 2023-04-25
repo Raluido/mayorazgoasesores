@@ -15,7 +15,7 @@
                             {{ session('status') }}
                         </div>
                         @endif
-                        <div class="title" style="margin-bottom:2em;">
+                        <div class="title">
                             <h1 class="">{{ $post->title }}</h1>
                         </div>
                         <div class="subtitle">

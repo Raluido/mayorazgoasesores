@@ -269,12 +269,12 @@ header .innerNav .logoMenu .menu {
     text-align: center;
 }
 
-.equipo .bottom>div h3 {
+.equipo .bottom .innerBottom h3 {
     margin-bottom: -1em;
     font-family: 'Myriad Pro Regular';
 }
 
-.equipo .bottom>div img {
+.equipo .bottom .innerBottom img {
     width: 100%;
     height: 100%;
 }
@@ -293,16 +293,13 @@ header .innerNav .logoMenu .menu {
     height: auto;
 }
 
-.servicios .innerServicios .bottom {
-    margin: 8em 0;
-}
-
 
 .servicios .innerServicios .bottom .innerBottom {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin: 8em 0;
 }
 
 .servicios .innerServicios .bottom .innerBottom>div {
@@ -313,6 +310,7 @@ header .innerNav .logoMenu .menu {
 
 .servicios .innerServicios .bottom .innerBottom>div .iconText h4 {
     font-family: 'Myriad Pro Regular';
+    text-align: center;
 }
 
 .servicios .innerServicios .bottom .innerBottom>div ul.dashed>li {
@@ -343,7 +341,6 @@ header .innerNav .logoMenu .menu {
 .servicios .innerServicios .bottom>div .iconText {
     width: 20%;
     height: auto;
-    text-align: center;
 }
 
 .servicios .innerServicios .bottom>div .iconText>div {
@@ -456,8 +453,8 @@ header .innerNav .logoMenu .menu {
 }
 
 .noticiasAll .innerNoticias .bottom .innerBottom {
-    margin: 5em 0;
-    padding: 3em;
+    margin: 7em 0;
+    padding: 0 4em;
 }
 
 .noticiasAll .innerNoticias .bottom .innerBottom .news,
@@ -469,6 +466,10 @@ header .innerNav .logoMenu .menu {
 .noticiasAll .innerNoticias .bottom h4 {
     font-family: 'Myriad Pro Regular';
 
+}
+
+.noticiasAll .innerNoticias .bottom .news .title {
+    margin-bottom: 4em;
 }
 
 .noticiasAll .innerNoticias .bottom .news .content {
@@ -526,8 +527,8 @@ header .innerNav .logoMenu .menu {
 }
 
 .showNoticia .innerShowNoticia .bottom .innerBottom {
-    margin: 5em 0;
-    padding: 3em;
+    margin: 7em 0;
+    padding: 4em;
 }
 
 .showNoticia .innerShowNoticia .bottom .content {
@@ -539,6 +540,9 @@ header .innerNav .logoMenu .menu {
     margin-bottom: .1em;
 }
 
+.showNoticia .innerShowNoticia .bottom .title {
+    margin-bottom: 4em;
+}
 
 .showNoticia .innerShowNoticia .bottom .content p {
     font-size: 1.3em;
@@ -628,7 +632,7 @@ header .innerNav .logoMenu .menu {
 .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
     font-size: 1.5rem;
     font-weight: 600;
-    width: 40%;
+    /* width: 40%; */
 }
 
 .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 span {
@@ -686,8 +690,14 @@ header .innerNav .logoMenu .menu {
     font-size: 1.1em;
 }
 
-.form-signin .login form .inputDiv button {
+.form-signin .login form .inputSubmit {
+    display: flex;
+    justify-content: center;
+}
+
+.form-signin .login form .inputSubmit button {
     font-size: 1em;
+    margin-top: 2em;
 }
 
 /* end */
@@ -695,7 +705,8 @@ header .innerNav .logoMenu .menu {
 /* intranet index */
 
 .intranet .innerIntranet {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .intranet .innerIntranet h3 {
@@ -723,7 +734,8 @@ header .innerNav .logoMenu .menu {
 /* intranet roles */
 
 .roles .innerRoles {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .roles .innerRoles .bottom {
@@ -764,17 +776,18 @@ header .innerNav .logoMenu .menu {
 .roles .innerRoles .backButton {
     display: flex;
     justify-content: center;
-    margin-top: 2em;
+    margin-top: 4em;
 }
 
 /* create roles */
 
 .createRoles .createInnerRoles {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .createRoles .createInnerRoles .bottom {
-    margin-top: 4em;
+    margin-top: 2em;
     display: flex;
     justify-content: center;
 }
@@ -823,11 +836,12 @@ header .innerNav .logoMenu .menu {
 /* show roles */
 
 .showRoles .innerShowRoles {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .showRoles .innerShowRoles .bottom {
-    margin-top: 4em;
+    margin-top: 2em;
     display: flex;
     justify-content: center;
 }
@@ -868,11 +882,12 @@ header .innerNav .logoMenu .menu {
 /* edit roles */
 
 .editRoles .innerEditRoles {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .editRoles .innerEditRoles .bottom {
-    margin-top: 4em;
+    margin-top: 2em;
     display: flex;
     justify-content: center;
 }
@@ -913,11 +928,12 @@ header .innerNav .logoMenu .menu {
 /* permissions roles */
 
 .permissions .innerPermissions {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .permissions .innerPermissions .bottom {
-    margin-top: 4em;
+    margin-top: 2em;
 }
 
 .permissions .innerPermissions .bottom .addPermission {
@@ -956,7 +972,8 @@ header .innerNav .logoMenu .menu {
 /* edit permissions roles */
 
 .editPermissions .innerEditPermissions {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .editPermissions .innerEditPermissions .bottom form {
@@ -972,10 +989,39 @@ header .innerNav .logoMenu .menu {
     margin-top: 4em;
 }
 
+/* add permissions roles */
+
+.addPermissions .innerAddPermissions {
+    padding: 0 4em;
+    margin: 5em 0;
+}
+
+.addPermissions .innerAddPermissions .bottom .innerBottom {
+    display: flex;
+    justify-content: center;
+}
+
+.addPermissions .innerAddPermissions .bottom form {
+    margin-top: 6em;
+    width: 50%;
+}
+
+
+.addPermissions .innerAddPermissions .buttonsNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4em;
+}
+
 /* users */
 
 .users .innerUsers {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
+}
+
+.users .innerUsers .bottom {
+    margin-top: 2em;
 }
 
 .users .innerUsers .bottom .addDelButtons {
@@ -1019,7 +1065,8 @@ header .innerNav .logoMenu .menu {
 }
 
 .usersShow .innerUsersShow {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .usersShow .innerUsersShow .bottom .innerBottom {
@@ -1058,7 +1105,7 @@ header .innerNav .logoMenu .menu {
 
 .editUsers .innerEditUsers {
     padding: 0 4em;
-    margin: 4em 0;
+    margin: 5em 0;
 }
 
 .editUsers .innerEditUsers .bottom {
@@ -1090,7 +1137,8 @@ header .innerNav .logoMenu .menu {
 /* create users */
 
 .createUsers .innerCreateUsers {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .createUsers .innerCreateUsers .bottom {
@@ -1110,13 +1158,14 @@ header .innerNav .logoMenu .menu {
 .createUsers .innerCreateUsers .buttonsNav {
     display: flex;
     justify-content: space-evenly;
-    margin-top: 3em;
+    margin-top: 4em;
 }
 
 /* employees */
 
 .employees .innerEmployees {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .employees .innerEmployees .bottom .addDelButtons {
@@ -1160,7 +1209,8 @@ header .innerNav .logoMenu .menu {
 }
 
 .employeesShow .innerEmployeesShow {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .employeesShow .innerEmployeesShow .bottom .innerBottom {
@@ -1194,13 +1244,23 @@ header .innerNav .logoMenu .menu {
 /* employees create */
 
 .employeesCreate .innerEmployeesCreate {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .employeesCreate .innerEmployeesCreate .bottom form {
-    margin-top: 6em;
+    margin-top: 4em;
     display: flex;
-    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+}
+
+.employeesCreate .innerEmployeesCreate .bottom form .inputForm {
+    margin: 1em 0;
+}
+
+.employeesCreate .innerEmployeesCreate .bottom form .inputForm input {
+    font-size: 1em;
 }
 
 
@@ -1241,7 +1301,8 @@ header .innerNav .logoMenu .menu {
 /* upload payrolls */
 
 .payrollsUpload .innerPayrollsUpload {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .payrollsUpload .innerPayrollsUpload .bottom .innerBottom {
@@ -1275,7 +1336,8 @@ header .innerNav .logoMenu .menu {
 /* download payrolls */
 
 .payrollsDownload .innerPayrollsDownload {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .payrollsDownload .innerPayrollsDownload .bottom .innerBottom {
@@ -1309,13 +1371,14 @@ header .innerNav .logoMenu .menu {
 .payrollsDownload .innerPayrollsDownload .bottom .buttonsNav {
     display: flex;
     justify-content: space-evenly;
-    margin-top: 5em;
+    margin-top: 4em;
 }
 
 /* form payrolls */
 
 .payrollsForm .innerPayrollsForm {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .payrollsForm .innerPayrollsForm .bottom .innerBottom {
@@ -1351,7 +1414,8 @@ header .innerNav .logoMenu .menu {
 /* payrolls show */
 
 .payrollsShow .innerPayrollsShow {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .payrollsShow .innerPayrollsShow .bottom .addDelButtons {
@@ -1391,7 +1455,8 @@ header .innerNav .logoMenu .menu {
 /* upload costs inputs */
 
 .costsImputsUpload .innerCostsImputsUpload {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .costsImputsUpload .innerCostsImputsUpload .bottom .innerBottom {
@@ -1425,7 +1490,8 @@ header .innerNav .logoMenu .menu {
 /* download costs inputs */
 
 .costsImputsDownload .innerCostsImputsDownload {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .costsImputsDownload .innerCostsImputsDownload .bottom .innerBottom {
@@ -1459,13 +1525,14 @@ header .innerNav .logoMenu .menu {
 .costsImputsDownload .innerCostsImputsDownload .bottom .buttonsNav {
     display: flex;
     justify-content: space-evenly;
-    margin-top: 5em;
+    margin-top: 4em;
 }
 
 /* form costs inputs */
 
 .costsImputsForm .innerCostsImputsForm {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .costsImputsForm .innerCostsImputsForm .bottom .innerBottom {
@@ -1500,7 +1567,8 @@ header .innerNav .logoMenu .menu {
 /* show costs inputs */
 
 .costsImputsShow .innerCostsImputsShow {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .costsImputsShow .innerCostsImputsShow .bottom table {
@@ -1535,7 +1603,8 @@ header .innerNav .logoMenu .menu {
 /* others Documents upload */
 
 .othersDocumentsUpload .innerOthersDocumentsUpload {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .othersDocumentsUpload .innerOthersDocumentsUpload .bottom .innerBottom {
@@ -1570,7 +1639,8 @@ header .innerNav .logoMenu .menu {
 /* download others documents */
 
 .othersDocumentsDownload .innerOthersDocumentsDownload {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .othersDocumentsDownload .innerOthersDocumentsDownload .bottom .innerBottom {
@@ -1604,13 +1674,14 @@ header .innerNav .logoMenu .menu {
 .othersDocumentsDownload .innerOthersDocumentsDownload .bottom .buttonsNav {
     display: flex;
     justify-content: space-evenly;
-    margin-top: 5em;
+    margin-top: 4em;
 }
 
 /* form others Documents */
 
 .othersDocumentsForm .innerOthersDocumentsForm {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .othersDocumentsForm .innerOthersDocumentsForm .bottom .innerBottom {
@@ -1645,7 +1716,8 @@ header .innerNav .logoMenu .menu {
 /* show others documents */
 
 .othersDocumentsShow .innerOthersDocumentsShow {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .othersDocumentsShow .innerOthersDocumentsShow .bottom table {
@@ -1680,7 +1752,8 @@ header .innerNav .logoMenu .menu {
 /* list others documents */
 
 .othersDocumentsList .innerOthersDocumentsList {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .othersDocumentsList .innerOthersDocumentsList .bottom table {
@@ -1714,7 +1787,8 @@ header .innerNav .logoMenu .menu {
 /* intranet noticias */
 
 .noticiasIntranet .innerNoticiasIntranet {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .noticiasIntranet .innerNoticiasIntranet .bottom {
@@ -1758,7 +1832,8 @@ header .innerNav .logoMenu .menu {
 /* intranet edit noticias */
 
 .noticiasIntranetEdit .innerNoticiasIntranetEdit {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .noticiasIntranetEdit .innerNoticiasIntranetEdit .bottom .innerBottom {
@@ -1791,7 +1866,8 @@ header .innerNav .logoMenu .menu {
 /* create noticias */
 
 .createNoticia .innerCreateNoticia {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .createNoticia .innerCreateNoticia .bottom .innerBottom {
@@ -1822,13 +1898,14 @@ header .innerNav .logoMenu .menu {
 .createNoticia .innerCreateNoticia .bottom .buttonsNav {
     display: flex;
     justify-content: space-evenly;
-    margin-top: 3em;
+    margin-top: 4em;
 }
 
 /* intranet user edit */
 
 .editUser .innerEditUser {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .editUser .innerEditUser .bottom .sideNavButtons button:nth-child(1) {
@@ -1859,7 +1936,7 @@ header .innerNav .logoMenu .menu {
 .editUser .innerEditUser .bottom .sideNavButtons {
     width: 10%;
     margin-right: 5em;
-    margin-top: 3em;
+    margin-top: 4em;
 }
 
 .editUser .innerEditUser .bottom form .inputForm input,
@@ -1882,7 +1959,8 @@ header .innerNav .logoMenu .menu {
 /* intranet pass edit */
 
 .editPass .innerEditPass {
-    padding: 5em 4em;
+    padding: 0 4em;
+    margin: 5em 0;
 }
 
 .editPass .innerEditPass .bottom .sideNavButtons button:nth-child(1) {
@@ -2056,12 +2134,20 @@ header .innerNav .logoMenu .menu {
 
     .noticiasAll .innerNoticias .bottom .innerBottom {
         margin: 3em 0;
-        padding: 1em;
+        padding: 2em;
+    }
+
+    .noticiasAll .innerNoticias .bottom .news .subtitle p {
+        font-size: 1.2em;
+    }
+
+    .noticiasAll .innerNoticias .bottom .news .content p {
+        font-size: 1.1em;
     }
 
     .showNoticia .innerShowNoticia .bottom .innerBottom {
         margin: 3em 0;
-        padding: 1em;
+        padding: 2em;
     }
 
     .showNoticia .innerShowNoticia .bottom .subtitle p {
@@ -2413,6 +2499,6 @@ header .innerNav .logoMenu .menu {
     }
 
     body {
-        width: 1920px;
+        width: 1440px;
     }
 }

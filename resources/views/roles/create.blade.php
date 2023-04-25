@@ -52,7 +52,7 @@
             </form>
         </div>
         <div class="buttonsNav">
-            <button class="stylingButtons blue"><a href="{{ route('users.index') }}" class="buttonTextWt">Volver</a></button>
+            <button class="stylingButtons blue"><a href="{{ route('roles.index') }}" class="buttonTextWt">Volver</a></button>
             <button type="submit" class="stylingButtons green buttonTextWt">Guardar cambios</button>
         </div>
     </div>

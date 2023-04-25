@@ -18,7 +18,7 @@
                 @else
                 @foreach ($posts as $post)
                 <div class="news">
-                    <div class="title" style="margin-bottom:2em;">
+                    <div class="title">
                         <h1 class="">{{ $post->title }}</h1>
                     </div>
                     <div class="subtitle">

@@ -28,14 +28,14 @@
                     <span class="red" style="display:block;">{{ $errors->first('password') }}</span>
                     @endif
                 </div>
-                <div class="inputDiv">
-                    <button class="" type="submit">Login</button>
-                    <div class="forgetPass">
+                <div class="inputSubmit">
+                    <button class="blue buttonTextWt" type="submit">Acceder</button>
+                    <!-- <div class="forgetPass">
                         <label class="">
                             <a class="" href="{{ route('forget.password.get') }}">Olvidé la
                                 contraseña</a>
                         </label>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

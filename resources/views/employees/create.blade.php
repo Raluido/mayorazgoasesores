@@ -4,19 +4,20 @@
 <div class="employeesCreate">
     <div class="innerEmployeesCreate">
         <div class="top">
-            <h1>Añadir nuevo empleado</h1>
+            <h1>Añadir empleado</h1>
+            <h3 class="">Aqui puedes agregar nuevos empleados a la base de datos</h3>
         </div>
         <div class="bottom">
             <form method="POST" action="">
                 @csrf
-                <div class="mb-3">
+                <div class="inputForm">
                     <label for="nif" class="">Nif empresa</label>
                     <input value="{{ old('nif') }}" type="text" class="" name="nif" placeholder="Nif" required>
                     @if ($errors->has('nif'))
                     <span class="">{{ $errors->first('nif') }}</span>
                     @endif
                 </div>
-                <div class="mb-3">
+                <div class="inputForm">
                     <label for="dni" class="">Dni empleado</label>
                     <input type="text" class="" name="dni" placeholder="dni" required>
                     @if ($errors->has('dni'))

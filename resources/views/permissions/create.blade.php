@@ -1,30 +1,30 @@
 @extends('layouts.app-master')
 
 @section('content')
-    <div class="bg-light p-4 rounded">
-        <h2>Add new permission</h2>
-        <div class="lead">
-            Add new permission.
+<section class="addPermissions">
+    <div class="innerAddPermissions">
+        <div class="top">
+            <h1>Permisos</h1>
+            <h3 class="">Añadir nuevo permiso</h3>
         </div>
-
-        <div class="container mt-4">
-
-            <form method="POST" action="{{ route('permissions.store') }}">
-                @csrf
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input value="{{ old('name') }}" type="text" class="form-control" name="name" placeholder="Name"
-                        required>
-
-                    @if ($errors->has('name'))
-                        <span class="text-danger text-left">{{ $errors->first('name') }}</span>
-                    @endif
-                </div>
-
-                <button type="submit" class="btn btn-primary">Save permission</button>
-                <a href="{{ route('permissions.index') }}" class="btn btn-default">Back</a>
-            </form>
+        <div class="bottom">
+            <div class="innerBottom">
+                <form method="POST" action="{{ route('permissions.store') }}">
+                    @csrf
+                    <div class="inputForm">
+                        <label for="name" class="form-label">Name</label>
+                        <input value="{{ old('name') }}" type="text" class="form-control" name="name" placeholder="Name" required>
+                        @if ($errors->has('name'))
+                        <span class="">{{ $errors->first('name') }}</span>
+                        @endif
+                    </div>
+                    <div class="buttonsNav">
+                        <button class="stylingButtons blue"><a href="{{ route('permissions.index') }}" class="buttonTextWt">Volver</a></button>
+                        <button type="submit" class="stylingButtons green buttonTextWt">Guardar permiso</button>
+                    </div>
+                </form>
+            </div>
         </div>
-
     </div>
+</section>
 @endsection
