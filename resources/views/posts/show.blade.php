@@ -4,7 +4,7 @@
 <section class="showNoticia">
     <div class="innerShowNoticia">
         <div class="top">
-            <h1>Noticias</h1>
+            <img src="{{ Storage::url('design/noticias.jpg') }}" alt="" class="">
         </div>
         <div class="bottom">
             <div class="innerBottom">
@@ -30,10 +30,10 @@
                         </div>
                     </div>
                 </div>
+                <div class="buttonsNav">
+                    <button class="stylingButtons blue"><a class="buttonTextWt" href="{{ route('home.index') }} ">Volver</a></button>
+                </div>
             </div>
-        </div>
-        <div class="buttonsNav">
-            <button class="stylingButtons blue"><a class="buttonTextWt" href="{{ route('home.index') }} ">Volver</a></button>
         </div>
     </div>
 </section>
