@@ -28,8 +28,6 @@
                         <td>{{ $permission->name }}</td>
                         <td>{{ $permission->guard_name }}</td>
                         <td><button class="stylingButtons green"><a href="{{ route('permissions.edit', $permission->id) }}" class="buttonTextWt">Editar</a></button>
-                        </td>
-                        <td>
                             {!! Form::open([
                             'method' => 'DELETE',
                             'route' => ['permissions.destroy', $permission->id],

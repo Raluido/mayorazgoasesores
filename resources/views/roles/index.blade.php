@@ -15,35 +15,32 @@
             </div>
         </div>
         <div class="bottom">
-            <div class="addRol">
-                <button class="green stylingButtons"><a href="{{ route('roles.create') }}" class="buttonTextWt">Añadir rol</a></button>
+            <div class="innerBottom">
+                <div class="addRol">
+                    <button class="green stylingButtons"><a href="{{ route('roles.create') }}" class="buttonTextWt">Añadir rol</a></button>
+                </div>
+                <table class="">
+                    <tr>
+                        <th width="1%">No</th>
+                        <th>Nombre</th>
+                        <th width="3%" colspan="3">Acción</th>
+                    </tr>
+                    @foreach ($roles as $key => $role)
+                    <tr>
+                        <td>{{ $role->id }}</td>
+                        <td>{{ $role->name }}</td>
+                        <td>
+                            <button class="green stylingButtons"><a class="buttonTextWt" href="{{ route('roles.show', $role->id) }}">Mostrar</a></button>
+                            <button class="blue stylingButtons"><a class="buttonTextWt" href="{{ route('roles.edit', $role->id) }}">Editar</a></button>
+                            {!! Form::open(['method' => 'DELETE', 'route' => ['roles.destroy', $role->id], 'style' => 'display:inline']) !!}
+                            {!! Form::submit('Eliminar', ['class' => 'red stylingButtons buttonTextWt']) !!}
+                            {!! Form::close() !!}
+                        </td>
+                    </tr>
+                    @endforeach
+                </table>
             </div>
-            <table class="">
-                <tr>
-                    <th width="1%">No</th>
-                    <th>Nombre</th>
-                    <th width="3%" colspan="3">Acción</th>
-                </tr>
-                @foreach ($roles as $key => $role)
-                <tr>
-                    <td>{{ $role->id }}</td>
-                    <td>{{ $role->name }}</td>
-                    <td>
-                        <button class="green stylingButtons"><a class="buttonTextWt" href="{{ route('roles.show', $role->id) }}">Mostrar</a></button>
-                    </td>
-                    <td>
-                        <button class="blue stylingButtons"><a class="buttonTextWt" href="{{ route('roles.edit', $role->id) }}">Editar</a></button>
-                    </td>
-                    <td>
-                        {!! Form::open(['method' => 'DELETE', 'route' => ['roles.destroy', $role->id], 'style' => 'display:inline']) !!}
-                        {!! Form::submit('Eliminar', ['class' => 'red stylingButtons buttonTextWt']) !!}
-                        {!! Form::close() !!}
-                    </td>
-                </tr>
-                @endforeach
-            </table>
         </div>
-
         <div class="">
             {!! $roles->links() !!}
         </div>

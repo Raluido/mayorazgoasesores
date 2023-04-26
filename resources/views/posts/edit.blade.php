@@ -2,7 +2,7 @@
 
 @section('content')
 <section class="noticiasIntranetEdit">
-    <div class="innerNoticiasIntranetEdit">
+    <div class="innerNoticiasIntranetEdit paddingFix">
         <div class="top">
             <h1 class="">Editor de Noticias</h1>
             <h3 class="">Aqui podrás hacer modificaciones a las noticias que ya has subido</h3>
