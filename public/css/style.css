@@ -786,14 +786,10 @@ header .innerNav .logoMenu .menu {
     margin: 5em 0;
 }
 
-.createRoles .createInnerRoles .bottom {
+.createRoles .createInnerRoles .bottom .innerBottom {
     margin-top: 2em;
     display: flex;
     justify-content: center;
-}
-
-.createRoles .createInnerRoles form {
-    width: 90%;
 }
 
 .createRoles .createInnerRoles .bottom .addRol {
@@ -976,10 +972,14 @@ header .innerNav .logoMenu .menu {
     margin: 5em 0;
 }
 
-.editPermissions .innerEditPermissions .bottom form {
+.editPermissions .innerEditPermissions .bottom .innerBottom {
     margin-top: 6em;
     display: flex;
     justify-content: center;
+}
+
+.editPermissions .innerEditPermissions .bottom form {
+    width: 50%;
 }
 
 
@@ -1108,7 +1108,7 @@ header .innerNav .logoMenu .menu {
     margin: 5em 0;
 }
 
-.editUsers .innerEditUsers .bottom {
+.editUsers .innerEditUsers .bottom .innerBottom {
     margin-top: 4em;
     display: flex;
     justify-content: center;
@@ -1141,10 +1141,14 @@ header .innerNav .logoMenu .menu {
     margin: 5em 0;
 }
 
-.createUsers .innerCreateUsers .bottom {
+.createUsers .innerCreateUsers .bottom .innerBottom {
     margin-top: 4em;
     display: flex;
     justify-content: center;
+}
+
+.createUsers .innerCreateUsers .bottom form {
+    width: 50%;
 }
 
 .createUsers .innerCreateUsers .bottom form .inputDiv {
@@ -1248,11 +1252,14 @@ header .innerNav .logoMenu .menu {
     margin: 5em 0;
 }
 
-.employeesCreate .innerEmployeesCreate .bottom form {
+.employeesCreate .innerEmployeesCreate .bottom .innerBottom {
     margin-top: 4em;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
+}
+
+.employeesCreate .innerEmployeesCreate .bottom form {
+    width: 50%;
 }
 
 .employeesCreate .innerEmployeesCreate .bottom form .inputForm {
@@ -2021,7 +2028,6 @@ header .innerNav .logoMenu .menu {
         line-height: 0.9;
     }
 
-
     header nav .innerNav .logoMenu .logo .nameLogo h3 span {
         font-size: 1.4em;
     }
@@ -2032,7 +2038,6 @@ header .innerNav .logoMenu .menu {
 
     header .innerNav .mobileMenu .dropdown {
         right: 0;
-        top: 6em;
     }
 
     table {
@@ -2197,6 +2202,29 @@ header .innerNav .logoMenu .menu {
         margin-bottom: 2em;
     }
 
+    .createUsers .innerCreateUsers .bottom .innerBottom,
+    .editUsers .innerEditUsers .bottom .innerBottom,
+    .employeesCreate .innerEmployeesCreate .bottom .innerBottom,
+    .employeesEdit .innerEmployeesEdit .bottom .innerBottom,
+    .addPermissions .innerAddPermissions .bottom .innerBottom,
+    .editPermissions .innerEditPermissions .bottom .innerBottom,
+    .createNoticia .innerCreateNoticia .bottom .innerBottom,
+    .noticiasIntranetEdit .innerNoticiasIntranetEdit .bottom .innerBottom {
+        margin-top: 4em;
+        display: unset;
+    }
+
+    .createUsers .innerCreateUsers .bottom form,
+    .editUsers .innerEditUsers .bottom form,
+    .employeesCreate .innerEmployeesCreate .bottom form,
+    .employeesEdit .innerEmployeesEdit .bottom form,
+    .addPermissions .innerAddPermissions .bottom form,
+    .editPermissions .innerEditPermissions .bottom form,
+    .createNoticia .innerCreateNoticia .bottom form,
+    .noticiasIntranetEdit .innerNoticiasIntranetEdit .bottom form {
+        width: unset;
+    }
+
     .payrollsForm .innerPayrollsForm .bottom form,
     .costsImputsForm .innerCostsImputsForm .bottom form,
     .othersDocumentsForm .innerOthersDocumentsForm .bottom form {
@@ -2246,6 +2274,10 @@ header .innerNav .logoMenu .menu {
 
     header nav .innerNav .logoMenu .logo .nameLogo h3 span {
         font-size: 1.2em;
+    }
+
+    header .innerNav .mobileMenu .dropdown {
+        right: 0;
     }
 
     header nav .innerNav .logoMenu .logo .imageLogo {

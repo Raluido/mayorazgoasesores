@@ -8,19 +8,21 @@
             <h3>Asignar permisos</h3>
         </div>
         <div class="bottom">
-            <table class="">
-                <thead>
-                    <th scope="col" width="20%">Nombre</th>
-                    <th scope="col" width="1%">Guard</th>
-                </thead>
+            <div class="innerBottom">
+                <table class="">
+                    <thead>
+                        <th scope="col" width="20%">Nombre</th>
+                        <th scope="col" width="1%">Guard</th>
+                    </thead>
 
-                @foreach ($rolePermissions as $permission)
-                <tr>
-                    <td>{{ $permission->name }}</td>
-                    <td>{{ $permission->guard_name }}</td>
-                </tr>
-                @endforeach
-            </table>
+                    @foreach ($rolePermissions as $permission)
+                    <tr>
+                        <td>{{ $permission->name }}</td>
+                        <td>{{ $permission->guard_name }}</td>
+                    </tr>
+                    @endforeach
+                </table>
+            </div>
         </div>
         <div class="buttonsNav">
             <button class="stylingButtons blue"><a href="{{ route('roles.index') }}" class="buttonTextWt">Volver</a></button>

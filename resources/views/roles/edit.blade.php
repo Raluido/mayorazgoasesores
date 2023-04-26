@@ -8,47 +8,49 @@
             <h3 class="">Editar roles y manejar permisos</h3>
         </div>
         <div class="bottom">
-            @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <strong>Whoops!</strong>Hubo algún problema con el input.<br><br>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+            <div class="innerBottom">
+                @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <strong>Whoops!</strong>Hubo algún problema con el input.<br><br>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                <form method="POST" action="{{ route('roles.update', $role->id) }}">
+                    @method('patch')
+                    @csrf
+                    <div class="">
+                        <label for="name" class="" style="margin-right:2em;">Nombre</label>
+                        <input value="{{ $role->name }}" type="text" class="" name="name" placeholder="Name" required>
+                    </div>
+
+                    <table class="t">
+                        <thead>
+                            <th scope="col" width="1%"><input type="checkbox" name="all_permission"></th>
+                            <th scope="col" width="20%">Name</th>
+                            <th scope="col" width="1%">Guard</th>
+                        </thead>
+
+                        @foreach ($permissions as $permission)
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="permission[{{ $permission->name }}]" value="{{ $permission->name }}" class='permission' {{ in_array($permission->name, $rolePermissions) ? 'checked' : '' }}>
+                            </td>
+                            <td>{{ $permission->name }}</td>
+                            <td>{{ $permission->guard_name }}</td>
+                        </tr>
+                        @endforeach
+                    </table>
+                    <div class="buttonsNav">
+                        <button class="stylingButtons blue"><a href="{{ route('roles.index') }}" class="buttonTextWt">Volver</a></button>
+                        <button type="submit" class="stylingButtons green buttonTextWt">Guardar cambios</button>
+                    </div>
+                </form>
             </div>
-            @endif
-
-            <form method="POST" action="{{ route('roles.update', $role->id) }}">
-                @method('patch')
-                @csrf
-                <div class="">
-                    <label for="name" class="" style="margin-right:2em;">Nombre</label>
-                    <input value="{{ $role->name }}" type="text" class="" name="name" placeholder="Name" required>
-                </div>
-
-                <table class="t">
-                    <thead>
-                        <th scope="col" width="1%"><input type="checkbox" name="all_permission"></th>
-                        <th scope="col" width="20%">Name</th>
-                        <th scope="col" width="1%">Guard</th>
-                    </thead>
-
-                    @foreach ($permissions as $permission)
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="permission[{{ $permission->name }}]" value="{{ $permission->name }}" class='permission' {{ in_array($permission->name, $rolePermissions) ? 'checked' : '' }}>
-                        </td>
-                        <td>{{ $permission->name }}</td>
-                        <td>{{ $permission->guard_name }}</td>
-                    </tr>
-                    @endforeach
-                </table>
-                <div class="buttonsNav">
-                    <button class="stylingButtons blue"><a href="{{ route('roles.index') }}" class="buttonTextWt">Volver</a></button>
-                    <button type="submit" class="stylingButtons green buttonTextWt">Guardar cambios</button>
-                </div>
-            </form>
         </div>
     </div>
     @endsection

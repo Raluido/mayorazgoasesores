@@ -2,7 +2,7 @@
 
 @section('content')
 <section class="createNoticia">
-    <div class="innerCreateNoticia">
+    <div class="innerCreateNoticia paddingFix">
         <div class="top">
             <h1>Noticias</h1>
             <h3 class="">Aqui puedes crear nuevas noticias.</h3>

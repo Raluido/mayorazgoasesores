@@ -12,48 +12,50 @@
             </div>
         </div>
         <div class="bottom">
-            @if (count($errors) > 0)
-            <div class="">
-                <strong>Whoops!</strong> Hubo algún problema con la entrada.<br><br>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
-            <form method="POST" action="{{ route('roles.store') }}">
-                @csrf
+            <div class="innerBottom">
+                @if (count($errors) > 0)
                 <div class="">
-                    <label for="name" class="" style="margin-right:2em;">Nombre</label>
-                    <input value="{{ old('name') }}" type="text" class="" name="name" placeholder="Name" required>
+                    <strong>Whoops!</strong> Hubo algún problema con la entrada.<br><br>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
+                @endif
 
-                <!-- <label for="permissions" class="">Asignar permisos</label> -->
+                <form method="POST" action="{{ route('roles.store') }}">
+                    @csrf
+                    <div class="">
+                        <label for="name" class="" style="margin-right:2em;">Nombre</label>
+                        <input value="{{ old('name') }}" type="text" class="" name="name" placeholder="Name" required>
+                    </div>
 
-                <table class="">
-                    <thead>
-                        <th scope="col" width="0.2%"><input type="checkbox" name="all_permission"></th>
-                        <th scope="col" width="10%">Nombre</th>
-                        <th scope="col" width="1%">Guard</th>
-                    </thead>
+                    <!-- <label for="permissions" class="">Asignar permisos</label> -->
 
-                    @foreach ($permissions as $permission)
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="permission[{{ $permission->name }}]" value="{{ $permission->name }}" class='permission'>
-                        </td>
-                        <td>{{ $permission->name }}</td>
-                        <td>{{ $permission->guard_name }}</td>
-                    </tr>
-                    @endforeach
-                </table>
-            </form>
-        </div>
-        <div class="buttonsNav">
-            <button class="stylingButtons blue"><a href="{{ route('roles.index') }}" class="buttonTextWt">Volver</a></button>
-            <button type="submit" class="stylingButtons green buttonTextWt">Guardar cambios</button>
+                    <table class="">
+                        <thead>
+                            <th scope="col" width="0.2%"><input type="checkbox" name="all_permission"></th>
+                            <th scope="col" width="10%">Nombre</th>
+                            <th scope="col" width="1%">Guard</th>
+                        </thead>
+
+                        @foreach ($permissions as $permission)
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="permission[{{ $permission->name }}]" value="{{ $permission->name }}" class='permission'>
+                            </td>
+                            <td>{{ $permission->name }}</td>
+                            <td>{{ $permission->guard_name }}</td>
+                        </tr>
+                        @endforeach
+                    </table>
+                    <div class="buttonsNav">
+                        <button class="stylingButtons blue"><a href="{{ route('roles.index') }}" class="buttonTextWt">Volver</a></button>
+                        <button type="submit" class="stylingButtons green buttonTextWt">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </section>
