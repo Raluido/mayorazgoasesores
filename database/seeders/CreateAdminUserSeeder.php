@@ -20,7 +20,7 @@ class CreateAdminUserSeeder extends Seeder
             'name' => 'Admin',
             'nif' => '11122233Z',
             'email' => 'admin@admin.es',
-            'password' => 'admin123'
+            'password' => 'tV93e222WAgwYT'
         ]);
 
         $role = Role::create(['name' => 'admin']);
