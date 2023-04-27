@@ -95,19 +95,20 @@ class PayrollsController extends Controller
             $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
             $zip = new ZipArchive;
 
-            $public_dir = public_path('storage/media/payrolls/' . $year . '/' . $month);
+            $publicDir = public_path('storage/media/payrolls/' . $year . '/' . $month);
+            $tempFolder = public_path('storage/media/payrolls');
 
-            if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
+            if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($files as $file) {
                     $filename = basename((array_values((array)$file))[0]);
                     $temp = (array_values((array)$filename))[0];
-                    $zip->addFile($public_dir . '/' . $temp, $temp);
+                    $zip->addFile($publicDir . '/' . $temp, $temp);
                 }
                 $zip->close();
             }
 
-            if (file_exists($public_dir . '/' . $zipFilename)) {
-                return response()->download(public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
+            if (file_exists($tempFolder . '/' . $zipFilename)) {
+                return response()->download($tempFolder . '/' . $zipFilename)->deleteFileAfterSend(true);
             }
         } else {
             echo '<div class=""><strong>Warning!</strong> Las nóminas de ' . $month . $year . ' no están disponibles.<div>';
@@ -162,3 +163,46 @@ class PayrollsController extends Controller
         return redirect()->route('payrolls.showForm')->with('payrolls');
     }
 }
+
+
+
+
+// public function downloadPayrolls($month, $year)
+//     {
+//         $presentYear = date("Y");
+
+//         $files = DB::Table('users')
+//             ->join('employees', 'employees.user_id', '=', 'users.id')
+//             ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
+//             ->where('users.nif', '=', Auth::user()->nif)
+//             ->where('payrolls.year', '=', $year)
+//             ->where('payrolls.month', '=', $month)
+//             ->select('payrolls.filename')
+//             ->get()
+//             ->toArray();
+
+//         if ($files != null) {
+
+//             $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
+//             $zip = new ZipArchive;
+
+//             $public_dir = public_path('storage/media/payrolls/' . $year . '/' . $month);
+
+//             if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
+//                 foreach ($files as $file) {
+//                     $filename = basename((array_values((array)$file))[0]);
+//                     $temp = (array_values((array)$filename))[0];
+//                     $zip->addFile($public_dir . '/' . $temp, $temp);
+//                 }
+//                 $zip->close();
+//             }
+
+//             if (file_exists($public_dir . '/' . $zipFilename)) {
+//                 return response()->download(public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
+//             }
+//         } else {
+//             echo '<div class=""><strong>Warning!</strong> Las nóminas de ' . $month . $year . ' no están disponibles.<div>';
+//         }
+
+//         return view('payrolls.downloadForm', compact('month', 'year', 'presentYear'));
+//     }

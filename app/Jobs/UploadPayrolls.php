@@ -147,9 +147,9 @@ class UploadPayrolls implements ShouldQueue
         $uploadError = array();
 
         if (!File::exists($path)) {
-            File::makeDirectory($path, 0777, true);
+            File::makeDirectory($path, 0775, true);
             $path = public_path('/storage/media/payrolls/' . $yearInput . '/' . $monthInput);
-            File::makeDirectory($path, 0777, true);
+            File::makeDirectory($path, 0775, true);
 
             foreach ($files as $file) {
                 $filename = basename($file);
@@ -201,7 +201,7 @@ class UploadPayrolls implements ShouldQueue
 
             $path = public_path('/storage/media/payrolls/' . $yearInput . '/' . $monthInput);
             if (!File::exists($path)) {
-                File::makeDirectory($path, 0777, true);
+                File::makeDirectory($path, 0775, true);
 
                 foreach ($files as $file) {
                     $filename = basename($file);

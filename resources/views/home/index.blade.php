@@ -183,11 +183,32 @@
         </div>
         <div class="bottom">
             <div class="innerBottom">
-                <div class="logo">
-                    <a href="{{ route('home.index') }}" class="innerLogo">
-                        <div class=""><img src="{{ Storage::url('design/logoFixed.jpg') }}" alt="" class=""></div>
-                        <h3 class="">mayorago<br><span>asesores</span></h3>
-                    </a>
+                <div class="contactForm">
+                    <form class="formData" action="/mail.php" method="post">
+                        <div class="innerForm">
+                            <div class="inputRow">
+                                <div class="">
+                                    <label for="name">Nombre</label>
+                                    <input class="" for="name" name="name" type="text" placeholder="Escribe tu nombre" required>
+                                </div>
+                                <div class="">
+                                    <label for="email">Email</label>
+                                    <input class="" for="email" name="email" type="email" placeholder="Escribe tu email" required>
+                                </div>
+                            </div>
+                            <div class="inputComments">
+                                <label for="comments">Comentarios</label>
+                                <textarea class="" name="comments" minlength="30" rows="5" placeholder="Hola, me gustaría comentarles..." required></textarea>
+                            </div>
+                            <div class="captcha">
+                                <div class="g-recaptcha" data-sitekey="6Lc4LVMgAAAAAJMAk7gw51s5fxrQhmDXixC_16-f">
+                                </div>
+                            </div>
+                            <div class="submitButtom">
+                                <button class="blue" type="submit">Enviar</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="contactData">
                     <h4 class="">
@@ -205,3 +226,29 @@
 
 
 @endsection
+
+
+
+
+
+
+
+<!-- <div class="bottom">
+    <div class="innerBottom">
+        <div class="logo">
+            <a href="{{ route('home.index') }}" class="innerLogo">
+                <div class=""><img src="{{ Storage::url('design/logoFixed.jpg') }}" alt="" class=""></div>
+                <h3 class="">mayorago<br><span>asesores</span></h3>
+            </a>
+        </div>
+        <div class="contactData">
+            <h4 class="">
+                C/ Pilar Monteverde, 32<br>Urbanización El Mayorazgo<br>38300 La Orotava, Tenerife.<br>
+                <div class="iconContact">
+                    <div class=""><img src="{{ Storage::url('design/iconoContacto.jpg') }}" alt="" class=""></div>
+                </div>
+                Tfno. 922 33 00 25<br>info@mayorazgoasesores.es
+            </h4>
+        </div>
+    </div>
+</div> -->

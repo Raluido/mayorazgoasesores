@@ -192,19 +192,20 @@ class OthersDocumentsController extends Controller
                 $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
                 $zip = new ZipArchive;
 
-                $public_dir = public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . Auth::user()->nif);
+                $publicDir = public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . Auth::user()->nif);
+                $tempFolder = public_path('storage/media/othersDocuments');
 
-                if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
+                if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                     foreach ($othersDocuments as $index) {
                         $filename = basename((array_values((array)$index))[0]);
                         $temp = (array_values((array)$filename))[0];
-                        $zip->addFile($public_dir . '/' . $temp, $temp);
+                        $zip->addFile($publicDir . '/' . $temp, $temp);
                     }
                     $zip->close();
                 }
 
-                if (file_exists($public_dir . '/' . $zipFilename)) {
-                    return response()->download(public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . Auth::user()->nif . '/' . $zipFilename))->deleteFileAfterSend(true);
+                if (file_exists($tempFolder . '/' . $zipFilename)) {
+                    return response()->download($tempFolder . '/' . $zipFilename)->deleteFileAfterSend(true);
                 }
             } else {
                 echo '<div class="alert alert-warning"><strong>Warning!</strong> Debes elegir un mes y un año.<div>';

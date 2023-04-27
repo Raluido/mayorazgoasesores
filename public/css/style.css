@@ -594,25 +594,27 @@ header .innerNav .logoMenu .menu {
 .contacto .innerContacto .bottom .innerBottom {
     display: flex;
     justify-content: center;
-    padding: 10em 0;
+    align-items: center;
+    width: 80%;
+    margin: 4em 0;
 }
 
-.contacto .innerContacto .bottom .innerBottom .logo {
+/* .contacto .innerContacto .bottom .innerBottom .logo {
     width: 30vw;
     height: auto;
     display: flex;
     justify-content: center;
-}
+} */
 
 .contacto .innerContacto .bottom .innerBottom .contactData {
-    width: 30vw;
+    width: 50%;
     height: auto;
     display: flex;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
 }
 
-.contacto .innerContacto .bottom .innerBottom .logo img {
+/* .contacto .innerContacto .bottom .innerBottom .logo img {
     width: 100%;
     height: 100%;
 }
@@ -632,12 +634,12 @@ header .innerNav .logoMenu .menu {
 .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
     font-size: 1.5rem;
     font-weight: 600;
-    /* width: 40%; */
+    width: 40%;
 }
 
 .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 span {
     font-size: 1.3em;
-}
+} */
 
 .contacto .innerContacto .bottom .iconContact {
     margin: 1em 0 .5em 0;
@@ -656,6 +658,55 @@ header .innerNav .logoMenu .menu {
 .contacto .innerContacto .bottom .iconContact img {
     width: 100%;
     height: 100%;
+}
+
+.contact form {
+    font-size: 1.2em;
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+}
+
+.contacto .innerForm {
+    width: 100%;
+}
+
+.contacto .innerForm div {
+    padding: 1em 0 .5em 0;
+}
+
+.contacto .inputRow {
+    display: flex;
+}
+
+.contacto .inputRow div {
+    width: 50%;
+}
+
+.contacto .inputRow div:first-child {
+    margin-right: 2em;
+}
+
+.contacto .inputRow input {
+    margin-top: .4em;
+    width: 100%;
+    line-height: 2em;
+}
+
+.contacto .inputComments textarea {
+    width: 100%;
+    height: 5em;
+    margin-top: .5em;
+}
+
+.contacto .submitButtom button {
+    padding: 0.3em .5em;
+    color: white;
+}
+
+.contacto .submitButtom {
+    text-align: center;
+    font-size: 1.2em;
 }
 
 
@@ -2163,9 +2214,9 @@ header .innerNav .logoMenu .menu {
         font-size: 1.1em;
     }
 
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 {
+    /* .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 {
         font-size: 1.2rem;
-    }
+    } */
 
     .noticias .bottom .innerBottom .news p {
         font-size: 1.1em;
@@ -2180,7 +2231,7 @@ header .innerNav .logoMenu .menu {
         text-align: center;
     }
 
-    .contacto .innerContacto .bottom .innerBottom .logo {
+    /* .contacto .innerContacto .bottom .innerBottom .logo {
         width: 80%;
         height: auto;
     }
@@ -2200,7 +2251,7 @@ header .innerNav .logoMenu .menu {
     .contacto .logo {
         margin-right: unset;
         margin-bottom: 2em;
-    }
+    } */
 
     .createUsers .innerCreateUsers .bottom .innerBottom,
     .editUsers .innerEditUsers .bottom .innerBottom,
@@ -2313,7 +2364,7 @@ header .innerNav .logoMenu .menu {
         margin: 0;
     }
 
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
+    /* .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
         font-size: 1.2rem;
     }
 
@@ -2324,20 +2375,20 @@ header .innerNav .logoMenu .menu {
     .contacto .innerContacto .bottom .innerBottom .logo {
         width: 35vw;
         height: auto;
-    }
+    } */
 
     .contacto .innerContacto .bottom .innerBottom .contactData {
         width: 35vw;
     }
 
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 {
+    /* .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 {
         font-size: 1.4rem;
     }
 
     .contacto .innerContacto .bottom .innerBottom .logo {
         display: flex;
         justify-content: center;
-    }
+    } */
 
 }
 
@@ -2405,15 +2456,15 @@ header .innerNav .logoMenu .menu {
         flex-direction: column;
     }
 
-    .contacto .innerContacto .bottom .innerBottom .logo {
+    /* .contacto .innerContacto .bottom .innerBottom .logo {
         width: 40vw;
-    }
+    } */
 
     .contacto .innerContacto .bottom .innerBottom .contactData {
         width: 40vw;
     }
 
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
+    /* .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
         font-size: 1.3rem;
     }
 
@@ -2427,7 +2478,7 @@ header .innerNav .logoMenu .menu {
 
     .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 span {
         font-size: 1.1em;
-    }
+    } */
 
     .contacto .innerContacto .contactData h4 {
         font-size: 1.3em;
