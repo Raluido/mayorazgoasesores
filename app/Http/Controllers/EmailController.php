@@ -3,26 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\EmailRequest;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class EmailController extends Controller
 {
-    public function sendEmail(Request $request)
+    public function send(EmailRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email',
-            'comments' => 'required'
-        ]);
-
+        $fromEmail = "mayorazgoasesores.info@gmail.com";
+        $userEmail = $request->input('email');
+        $userName = $request->input('name');
         $toName = "Mayorazgo Asesores";
         $toEmail = "raul@websiwebs.es";
+        $content = $request->input('content');
 
-        $data = array('name' => $fromName, 'body' => $content);
-        Mail::send('emails.template', $data, function ($message) use ($toName, $toEmail) {
-            $message->to($toEmail, $toName)
-                ->subject('El usuario' . $fromName . 'ha enviado un mensaje');
-            $message
-                ->from($fromEmail, $fromName);
+        Mail::send('mails.mail-Send-template', ['name' => $userName, 'body' => $content], function ($message) use ($toName, $toEmail, $userName, $userEmail, $fromEmail) {
+            $message->from($fromEmail, $userName);
+            $message->subject('El usuario' . $userName . 'ha enviado un mensaje');
+            $message->to($toEmail, $toName);
+            $message->replyTo($userEmail, $userName);
         });
     }
 }

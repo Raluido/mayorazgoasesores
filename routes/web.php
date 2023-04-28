@@ -20,6 +20,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
      */
     Route::get('/', 'HomeController@index')->name('home.index');
 
+    Route::post('/send', 'EmailController@send')->name('mail.send');
+
     Route::group(['middleware' => ['guest']], function () {
 
         /**

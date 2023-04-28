@@ -184,7 +184,8 @@
         <div class="bottom">
             <div class="innerBottom">
                 <div class="contactForm">
-                    <form class="formData" action="/mail.php" method="post">
+                    <form class="formData" action="{{ route('mail.send') }}" method="post">
+                        @csrf
                         <div class="innerForm">
                             <div class="inputRow">
                                 <div class="">
@@ -197,15 +198,13 @@
                                 </div>
                             </div>
                             <div class="inputComments">
-                                <label for="comments">Comentarios</label>
-                                <textarea class="" name="comments" minlength="30" rows="5" placeholder="Hola, me gustaría comentarles..." required></textarea>
+                                <label for="content">Comentarios</label>
+                                <textarea class="" name="content" minlength="30" rows="5" placeholder="Hola, me gustaría comentarles..." required></textarea>
                             </div>
-                            <div class="captcha">
-                                <div class="g-recaptcha" data-sitekey="6Lc4LVMgAAAAAJMAk7gw51s5fxrQhmDXixC_16-f">
-                                </div>
-                            </div>
+                            <input type="hidden" name="g-recaptcha-response" id="hidden-token" />
+                            <input type="hidden" name="g-recaptcha-action" id="hidden-action" />
                             <div class="submitButtom">
-                                <button class="blue" type="submit">Enviar</button>
+                                <button class="blue g-recaptcha" type="submit" data-sitekey="{{ config('services.recaptcha_ent.site_key') }}" data-callback='onSubmit' data-action='login'>Enviar</button>
                             </div>
                         </div>
                     </form>
@@ -223,7 +222,14 @@
         </div>
     </div>
 </section>
-
+<script src="https://www.google.com/recaptcha/enterprise.js?render={{ config('services.recaptcha_ent.site_key') }}"></script>
+<script>
+    function onSubmit(token) {
+        document.getElementById('hidden-token').value = token;
+        document.getElementById('hidden-action').value = "login";
+        document.getElementById("login-form").submit();
+    }
+</script>
 
 @endsection
 
