@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\Payroll;
 use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\UploadPayrolls;
 use App\Jobs\AddUsersAuto;
-use App\Jobs\Test;
+use setasign\Fpdi\Fpdi;
+use Smalot\PdfParser\Parser;
 
 class PayrollsController extends Controller
 {
@@ -26,20 +26,43 @@ class PayrollsController extends Controller
     public function uploadPayrolls(Request $request)
     {
         $presentYear = date("Y");
-
         $file = $request->file('payrolls');
 
         if ($request->hasFile('payrolls')) {
+
             $allowedfileExtension = ['pdf'];
             $extension = $file->getClientOriginalExtension();
             $check = in_array($extension, $allowedfileExtension);
+
             if ($check) {
-                $filenamewithextension = date('d-m-Y h.i.s a', time()) . ".pdf";
-                $file->storeAs('storage/media/',  $filenamewithextension);
-                $month = $request->input('month');
-                $year = $request->input('year');
-                AddUsersAuto::dispatch($filenamewithextension);
-                UploadPayrolls::dispatch($filenamewithextension, $month, $year);
+
+                $filename = date('d-m-Y h.i.s a', time()) . ".pdf";
+                $file->storeAs('storage/media/',  $filename);
+                $filenameNoExt = pathinfo($filename, PATHINFO_FILENAME);
+
+                $newPdf = new Fpdi();
+                $newPdf->addPage();
+                $newPdf->setSourceFile(public_path('storage/media/' . $filename));
+                $newPdf->useTemplate($newPdf->importPage(1));
+                $newFilename = sprintf('%s/%s_p%s.pdf', public_path('storage/media'), $filenameNoExt, 1);
+                $newPdf->output($newFilename, 'F');
+                $pdfParser = new Parser();
+                $pdf = $pdfParser->parseFile($newFilename);
+                $content = $pdf->getText();
+                preg_match_all('/MENS\s+[0-9]{2}\s+[A-Z]{3}\s+[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
+                unlink($newFilename);
+
+                if (!empty($period[0])) {
+                    $month = $request->input('month');
+                    $year = $request->input('year');
+                    AddUsersAuto::dispatch($filename);
+                    UploadPayrolls::dispatch($filename, $month, $year);
+                } else {
+                    unlink(public_path('storage/media/' . $filename));
+                    echo '<div class=""><strong>Warning!</strong>El documento adjuntado no tiene el formato de nómina.</div>';
+
+                    return view('payrolls.uploadForm')->with('presentYear', $presentYear);
+                }
             } else {
                 echo '<div class=""><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
 
