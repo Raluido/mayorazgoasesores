@@ -182,51 +182,17 @@ class UploadCostsImputs implements ShouldQueue
             $filename = basename($file);
             $nif = substr($filename, 0, 9);
 
-            // create user if it doesnt exist
-
-            if (User::where('nif', '=', $nif)->exists()) {
-                if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                    rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
-                    $costsImput = new CostsImput();
-                    $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
-                    $costsImput->filename = $path . '/' . $filename;
-                    $costsImput->month = $monthInput;
-                    $costsImput->year = $yearInput;
-                    $costsImput->save();
-                } else {
-                    unlink(public_path('storage/media/costsImputsTemp/' . $filename));
-                    $uploadError[] = 'Error, la fecha es incorrecta:' . ' ' . $filename;
-                }
+            if ($monthInput . $yearInput == substr($filename, 10, 7)) {
+                rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
+                $costsImput = new CostsImput();
+                $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
+                $costsImput->filename = $path . '/' . $filename;
+                $costsImput->month = $monthInput;
+                $costsImput->year = $yearInput;
+                $costsImput->save();
             } else {
-                $user = new User();
-                $user->nif = $nif;
-                $user->name = "Nombre";
-                $user->email = "email@email.com";
-                $password = Str::random(10);
-                $user->password = $password;
-
-                $data = array(
-                    'nif' => $nif,
-                    'password' => $password,
-                );
-
-                $usersCreated[] = $data;
-
-                $user->save();
-                $user->assignRole('user');
-
-                if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                    rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
-                    $costsImput = new CostsImput();
-                    $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
-                    $costsImput->filename = $path . '/' . $filename;
-                    $costsImput->month = $monthInput;
-                    $costsImput->year = $yearInput;
-                    $costsImput->save();
-                } else {
-                    unlink(public_path('storage/media/costsImputsTemp/' . $filename));
-                    $uploadError[] = 'Error, la fecha es incorrecta:' . ' ' . $filename;
-                }
+                unlink(public_path('storage/media/costsImputsTemp/' . $filename));
+                $uploadError[] = 'Error, la fecha es incorrecta:' . ' ' . $filename;
             }
         }
 
