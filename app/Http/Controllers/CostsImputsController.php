@@ -13,7 +13,7 @@ use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\UploadCostsImputs;
-use App\Jobs\AddUsersAuto;
+use App\Jobs\AddUsersCostsImputs;
 
 class CostsImputsController extends Controller
 {
@@ -27,7 +27,6 @@ class CostsImputsController extends Controller
 
     public function uploadCostsImputs(Request $request)
     {
-        $presentYear = date("Y");
         $file = $request->file('costsimputs');
 
         if ($request->hasFile('costsimputs')) {
@@ -37,6 +36,8 @@ class CostsImputsController extends Controller
             $check = in_array($extension, $allowedfileExtension);
 
             if ($check) {
+
+                // checking if its a costsimputs format
 
                 $filename = date('d-m-Y h.i.s a', time()) . ".pdf";
                 $file->storeAs('storage/media/',  $filename);
@@ -52,32 +53,27 @@ class CostsImputsController extends Controller
                 $pdf = $pdfParser->parseFile($newFilename);
                 $content = $pdf->getText();
                 preg_match_all('/PERIODO\s+DEL\s+[0-9]{2}\/[0-9]{2}\/[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
-                unlink($newFilename);
+
+                // end
 
                 if (!empty($period[0])) {
-
+                    unlink($newFilename);
                     $month = $request->input('month');
                     $year = $request->input('year');
-                    AddUsersAuto::dispatch($filename);
+                    AddUsersCostsImputs::dispatch($filename, $month, $year);
                     UploadCostsImputs::dispatch($filename, $month, $year);
                 } else {
                     unlink(public_path('storage/media/' . $filename));
-                    echo '<div class=""><strong>Warning!</strong>El documento adjuntado no tiene el formato de imputación de costes.</div>';
-
-                    return view('costsimputs.uploadForm')->with('presentYear', $presentYear);
+                    unlink($newFilename);
+                    return redirect()->route('costsimputs.uploadForm')->withErrors(__('El documento adjuntado no tiene el formato de imputación de costes.'));
                 }
             } else {
-                echo '<div class=""><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
-
-                return view('costsimputs.uploadForm');
+                return redirect()->route('costsimputs.uploadForm')->withErrors(__('Sólo se admiten archivos con extensión .pdf'));
             }
         } else {
-            echo '<div class=""><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
-
-            return view('costsimputs.uploadForm')->with('presentYear', $presentYear);
+            return redirect()->route('costsimputs.uploadForm')->withErrors(__('No has añadido ningun archivo aún.'));
         }
-
-        return view('costsimputs.uploadForm')->with('presentYear', $presentYear)->with('successMsg', "Los documentos de imputación de costes han comenzado a subirse, tardaremos unos minutos, gracias ;)");
+        return redirect()->route('costsimputs.uploadForm')->withSuccess(__('Los documentos de imputación de costes han comenzado a subirse, tardaremos unos minutos, gracias ;)'));
     }
 
     public function downloadForm()

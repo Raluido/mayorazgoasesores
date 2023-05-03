@@ -9,7 +9,7 @@ use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\UploadPayrolls;
-use App\Jobs\AddUsersAuto;
+use App\Jobs\AddUsersPayrolls;
 use setasign\Fpdi\Fpdi;
 use Smalot\PdfParser\Parser;
 
@@ -25,7 +25,6 @@ class PayrollsController extends Controller
 
     public function uploadPayrolls(Request $request)
     {
-        $presentYear = date("Y");
         $file = $request->file('payrolls');
 
         if ($request->hasFile('payrolls')) {
@@ -53,28 +52,23 @@ class PayrollsController extends Controller
                 unlink($newFilename);
 
                 if (!empty($period[0])) {
+                    unlink($newFilename);
                     $month = $request->input('month');
                     $year = $request->input('year');
-                    AddUsersAuto::dispatch($filename);
+                    AddUsersPayrolls::dispatch($filename, $month, $year);
                     UploadPayrolls::dispatch($filename, $month, $year);
                 } else {
                     unlink(public_path('storage/media/' . $filename));
-                    echo '<div class=""><strong>Warning!</strong>El documento adjuntado no tiene el formato de nómina.</div>';
-
-                    return view('payrolls.uploadForm')->with('presentYear', $presentYear);
+                    unlink($newFilename);
+                    return redirect()->route('payrolls.uploadForm')->withErrors(__('El documento adjuntado no tiene el formato de nómina.'));
                 }
             } else {
-                echo '<div class=""><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
-
-                return view('payrolls.uploadForm')->with('presentYear', $presentYear);
+                return redirect()->route('payrolls.uploadForm')->withErrors(__('Sólo se admiten archivos con extensión .pdf'));
             }
         } else {
-            echo '<div class=""><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
-
-            return view('payrolls.uploadForm')->with('presentYear', $presentYear);
+            return redirect()->route('payrolls.uploadForm')->withErrors(__('No has añadido ningun archivo aún.'));
         }
-
-        return view('payrolls.uploadForm')->with('presentYear', $presentYear)->with('successMsg', "Las nóminas han comenzado a subirse, tardaremos unos minutos, gracias ;)");
+        return redirect()->route('payrolls.uploadForm')->withSuccess(__('Las nóminas han comenzado a subirse, tardaremos unos minutos, gracias ;)'));
     }
 
     public function downloadForm()
@@ -186,46 +180,3 @@ class PayrollsController extends Controller
         return redirect()->route('payrolls.showForm')->with('payrolls');
     }
 }
-
-
-
-
-// public function downloadPayrolls($month, $year)
-//     {
-//         $presentYear = date("Y");
-
-//         $files = DB::Table('users')
-//             ->join('employees', 'employees.user_id', '=', 'users.id')
-//             ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
-//             ->where('users.nif', '=', Auth::user()->nif)
-//             ->where('payrolls.year', '=', $year)
-//             ->where('payrolls.month', '=', $month)
-//             ->select('payrolls.filename')
-//             ->get()
-//             ->toArray();
-
-//         if ($files != null) {
-
-//             $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
-//             $zip = new ZipArchive;
-
-//             $public_dir = public_path('storage/media/payrolls/' . $year . '/' . $month);
-
-//             if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
-//                 foreach ($files as $file) {
-//                     $filename = basename((array_values((array)$file))[0]);
-//                     $temp = (array_values((array)$filename))[0];
-//                     $zip->addFile($public_dir . '/' . $temp, $temp);
-//                 }
-//                 $zip->close();
-//             }
-
-//             if (file_exists($public_dir . '/' . $zipFilename)) {
-//                 return response()->download(public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
-//             }
-//         } else {
-//             echo '<div class=""><strong>Warning!</strong> Las nóminas de ' . $month . $year . ' no están disponibles.<div>';
-//         }
-
-//         return view('payrolls.downloadForm', compact('month', 'year', 'presentYear'));
-//     }

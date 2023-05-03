@@ -13,9 +13,6 @@
                 <button class="stylingButtons red buttonTextWt" onclick="confirmation()">Eliminar
                     todas</button>
             </div>
-            <div class="">
-                @include('layouts.partials.messages')
-            </div>
 
             <table class="">
                 <thead>
@@ -58,6 +55,9 @@
             </div>
         </div>
     </div>
+</div>
+<div class="">
+    @include('layouts.partials.messages')
 </div>
 @endsection
 @section('js')

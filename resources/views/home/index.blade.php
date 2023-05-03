@@ -210,25 +210,27 @@
                     </form>
                 </div>
                 <div class="contactData">
-                    <div class="">
+                    <div class="innerContactData">
                         <h4 class="">
                             C/ Pilar Monteverde, 32<br>Urbanización El Mayorazgo<br>38300 La Orotava, Tenerife.<br>
                         </h4>
                         <div class="iconContact">
-                            <div class=""><img src="{{ Storage::url('design/iconoContacto.jpg') }}" alt="" class=""></div>
+                            <div class="innerIconContact"><img src="{{ Storage::url('design/iconoContacto.jpg') }}" alt="" class=""></div>
                         </div>
                         <a href="https://wa.me/34618299310">
-                            <h5 class="">
-                                Tfno. 618 29 93 10
-                            </h5>
+                            <h4 class="">
+                                Móvil. 618 29 93 10
+                            </h4>
                         </a>
                         <a href="922330025" class="">
-                            <h5 class="">
+                            <h4 class="">
                                 Tfno. 922 33 00 25
-                            </h5>
+                            </h4>
                         </a>
-                        <h5 class="">info@mayorazgoasesores.es
-                        </h5>
+                        <a href="mailto:info@mayorazgoasesores.es" class="">
+                            <h4 class="">info@mayorazgoasesores.es
+                            </h4>
+                        </a>
                     </div>
                 </div>
             </div>

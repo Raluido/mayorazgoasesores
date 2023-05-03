@@ -62,11 +62,10 @@
             </div>
         </div>
     </div>
-    @if (!empty($successMsg))
-    <div class="messages green"> {{ $successMsg }}</div>
-    @endif
-    </div>
 </section>
+<div class="">
+    @include('layouts.partials.messages')
+</div>
 @endsection
 @section('js')
 <script src="{{ asset('js/spinner.js') }}" defer></script>

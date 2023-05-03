@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -14,10 +13,8 @@ use App\Models\Payroll;
 use DB;
 use Smalot\PdfParser\Parser;
 use Illuminate\Support\Facades\File;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use App\Mail\UploadPayrollsNotification;
 use App\Mail\JobErrorNotification;
 use Exception;
@@ -55,7 +52,6 @@ class UploadPayrolls implements ShouldQueue
         $yearInput = $this->year;
         $uploadError = array();
 
-
         // Split each page into a new PDF
 
         $pdf = new Fpdi();
@@ -77,7 +73,7 @@ class UploadPayrolls implements ShouldQueue
 
         // read and rename each .pdf
 
-        $files = glob(public_path('storage/media/payrollsTemp/*'));
+        $files = glob(public_path('storage/media/payrollsTemp/*.*'));
 
         foreach ($files as $index) {
             $pdfParser = new Parser();
@@ -205,7 +201,13 @@ class UploadPayrolls implements ShouldQueue
         }
 
         Mail::to("raluido@gmail.com")->send(new UploadPayrollsNotification($uploadError, $monthInput, $yearInput));
-        array_map('unlink', glob(public_path('storage/media/payrollsTemp/' . '*.*')));
+
+        $files = glob(public_path('storage/media/payrollsTemp/*.*'));
+        foreach ($files as $index) {
+            if (is_file($index)) {
+                unlink($index);
+            }
+        }
     }
 
     /**
@@ -216,7 +218,15 @@ class UploadPayrolls implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        array_map('unlink', glob(public_path('storage/media/payrollsTemp/' . '*.*')));
+        $files = glob(public_path('storage/media/payrollsTemp/*.*'));
+        foreach ($files as $index) {
+            unlink($index);
+        }
+
+        $files = glob(public_path('storage/media/*.*'));
+        foreach ($files as $index) {
+            unlink($index);
+        }
 
         $jobError = "Error en la carga de Nóminas, vuelva a intentarlo gracias ;)";
         Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError, $exception));

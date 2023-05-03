@@ -11,6 +11,7 @@ use App\Models\User;
 use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Exists;
 
 class OthersDocumentsController extends Controller
 {
@@ -38,96 +39,56 @@ class OthersDocumentsController extends Controller
                 $path = public_path('/storage/media/othersDocuments/' . $year);
 
                 if (!File::exists($path)) {
-                    File::makeDirectory($path, 0777, true);
+                    File::makeDirectory($path, 0775, true);
                     $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
-                    File::makeDirectory($path, 0777, true);
+                    File::makeDirectory($path, 0775, true);
                     $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
-                    File::makeDirectory($path, 0777, true);
+                    File::makeDirectory($path, 0775, true);
+                } else {
+                    $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
+                    if (!File::exists($path)) {
+                        File::makeDirectory($path, 0775, true);
+                        $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
+                        File::makeDirectory($path, 0775, true);
+                    } else {
+                        $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
+                        if (!File::exists($path)) {
+                            File::makeDirectory($path, 0775, true);
+                        }
+                    }
+                }
 
-                    $files = $request->file('othersdocuments');
+                $files = $request->file('othersdocuments');
 
-                    foreach ($files as $index) {
+                foreach ($files as $index) {
+                    $filename = $index->getClientOriginalName();
+                    $check = DB::Table('users')
+                        ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
+                        ->where('others_documents.year', '=', $year)
+                        ->where('others_documents.month', '=', $month)
+                        ->where('others_documents.filename', '=', $filename)
+                        ->where('users.nif', '=', $nif)
+                        ->exists();
+
+                    if ($check) {
+                        OtherDocument::where('filename', $filename)->delete();
+                        unlink(public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif . '/' . $filename));
+                        $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $filename);
+                        $otherDocument = new OtherDocument();
+                        $otherDocument->user_id = $userid;
+                        $otherDocument->filename = $filename;
+                        $otherDocument->month = $month;
+                        $otherDocument->year = $year;
+                        $otherDocument->save();
+                    } else {
                         $name = $index->getClientOriginalName();
                         $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
                         $otherDocument = new OtherDocument();
                         $otherDocument->user_id = $userid;
-                        $otherDocument->filename = $path . '/' . $name;
+                        $otherDocument->filename = $name;
                         $otherDocument->month = $month;
                         $otherDocument->year = $year;
                         $otherDocument->save();
-                    }
-                } else {
-                    $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
-                    if (!File::exists($path)) {
-                        File::makeDirectory($path, 0777, true);
-                        $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
-                        File::makeDirectory($path, 0777, true);
-
-                        $files = $request->file('othersdocuments');
-
-                        foreach ($files as $index) {
-                            $name = $index->getClientOriginalName();
-                            $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
-                            $otherDocument = new OtherDocument();
-                            $otherDocument->user_id = $userid;
-                            $otherDocument->filename = $path . '/' . $name;
-                            $otherDocument->month = $month;
-                            $otherDocument->year = $year;
-                            $otherDocument->save();
-                        }
-                    } else {
-                        $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
-                        if (!File::exists($path)) {
-                            File::makeDirectory($path, 0777, true);
-                            $files = $request->file('othersdocuments');
-
-                            foreach ($files as $index) {
-                                $name = $index->getClientOriginalName();
-                                $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
-                                $otherDocument = new OtherDocument();
-                                $otherDocument->user_id = $userid;
-                                $otherDocument->filename = $path . '/' . $name;
-                                $otherDocument->month = $month;
-                                $otherDocument->year = $year;
-                                $otherDocument->save();
-                            }
-                        } else {
-
-                            $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
-
-                            $files = $request->file('othersdocuments');
-
-                            foreach ($files as $index) {
-                                $check = DB::Table('users')
-                                    ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
-                                    ->where('others_documents.year', '=', $year)
-                                    ->where('others_documents.month', '=', $month)
-                                    ->where('users.nif', '=', $nif)
-                                    ->select('others_documents.filename')
-                                    ->exists();
-
-                                if ($check) {
-                                    $name = $index->getClientOriginalName();
-                                    OtherDocument::where('filename', $name)->delete();
-                                    $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
-                                    $otherDocument = new OtherDocument();
-                                    $otherDocument->user_id = $userid;
-                                    $otherDocument->filename = $path . '/' . $name;
-                                    $otherDocument->month = $month;
-                                    $otherDocument->year = $year;
-                                    $otherDocument->save();
-                                } else {
-                                    $name = $index->getClientOriginalName();
-                                    $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
-                                    $otherDocument = new OtherDocument();
-                                    $otherDocument->user_id = $userid;
-                                    $otherDocument->filename = $path . '/' . $name;
-                                    $otherDocument->month = $month;
-                                    $otherDocument->year = $year;
-                                    $otherDocument->save();
-                                }
-                            }
-                        }
                     }
                 }
             } else {
@@ -136,7 +97,7 @@ class OthersDocumentsController extends Controller
                 return view('othersdocuments.uploadForm')->with('presentYear', $presentYear);
             }
 
-            return view('othersdocuments.uploadForm')->with('presentYear', $presentYear)->with('successMsg', "Los documentos de imputación de costes se han subido correctamente, gracias ;)");
+            return view('othersdocuments.uploadForm')->with('presentYear', $presentYear)->with('successMsg', "Los documentos se han subido correctamente, gracias ;)");
         } else {
             echo '<div class="alert alert-warning"><strong>Warning!</strong>El ' . $nif . ' corresponde a una empresa que no ha sido creada aún.</div>';
         }
@@ -272,7 +233,7 @@ class OthersDocumentsController extends Controller
 
         File::deleteDirectory(public_path('/storage/media/othersDocuments'));
         $path = public_path('/storage/media/othersDocuments');
-        File::makeDirectory($path, 0777, true);
+        File::makeDirectory($path, 0775, true);
         DB::table('others_documents')->delete();
 
         return view('othersdocuments.showForm');
