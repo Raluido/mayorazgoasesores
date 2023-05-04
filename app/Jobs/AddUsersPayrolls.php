@@ -51,7 +51,9 @@ class AddUsersPayrolls implements ShouldQueue
         $monthInput = $this->month;
         $yearInput = $this->year;
         $uploadError = array();
-        $usersNifPass = array();
+        $data = array();
+        $oldNIF = "";
+        $usersNifPass[] = array();
 
         $pdf = new Fpdi();
         $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
@@ -71,57 +73,59 @@ class AddUsersPayrolls implements ShouldQueue
 
         $files = glob(public_path('storage/media/addUsersTemp/*'));
 
-        $data = array();
-        $companyData = array();
-        $oldNIF = "";
-
         foreach ($files as $index) {
             $pdfParser = new Parser();
             $pdf = $pdfParser->parseFile($index);
             $content = $pdf->getText();
 
             preg_match_all('/MENS\s+[0-9]{2}\s+[A-Z]{3}\s+[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
-
-            $month = substr($period[0][0][0], 9, 3);
-            $year = substr($period[0][0][0], 13);
-
             preg_match_all('/[0-9]{8}[A-Z]/', $content, $dni, PREG_OFFSET_CAPTURE);
             preg_match_all('/[A-Z]{1}[0-9]{8}/', $content, $cif, PREG_OFFSET_CAPTURE);
             preg_match_all('/[X-Z]{1}[0-9]{7}[A-Z]{1}/', $content, $nie, PREG_OFFSET_CAPTURE);
 
-            if (count($cif[0]) == 1) {
-                $NIF = $cif[0][0][0];
-                if (count($dni[0]) == 1) {
-                    $DNI = $dni[0][0][0];
-                } else {
-                    $DNI = $nie[0][0][0];
-                }
-            } elseif (count($dni[0]) == 2) {
-                if ($dni[0][0][1] < $dni[0][1][1]) {
+            try {
+                $month = substr($period[0][0][0], 9, 3);
+                $year = substr($period[0][0][0], 13);
+
+                if (count($cif[0]) == 1) {
+                    $NIF = $cif[0][0][0];
+                    if (count($dni[0]) == 1) {
+                        $DNI = $dni[0][0][0];
+                    } else {
+                        $DNI = $nie[0][0][0];
+                    }
+                } elseif (count($dni[0]) == 2) {
+                    if ($dni[0][0][1] < $dni[0][1][1]) {
+                        $NIF = $dni[0][0][0];
+                        $DNI = $dni[0][1][0];
+                    } else {
+                        $NIF = $dni[0][1][0];
+                        $DNI = $dni[0][0][0];
+                    }
+                } elseif (count($nie[0]) == 2) {
+                    if ($nie[0][0][1] < $nie[0][1][1]) {
+                        $NIF = $nie[0][0][0];
+                        $DNI = $nie[0][1][0];
+                    } else {
+                        $NIF = $nie[0][1][0];
+                        $DNI = $nie[0][0][0];
+                    }
+                } elseif (count($dni[0]) == 1 && count($nie[0]) == 1 && $dni[0][0][1] < $nie[0][0][1]) {
                     $NIF = $dni[0][0][0];
-                    $DNI = $dni[0][1][0];
-                } else {
-                    $NIF = $dni[0][1][0];
+                    $DNI = $nie[0][0][0];
+                } elseif (count($dni[0]) == 1 && count($nie[0]) == 1 && $dni[0][0][1] > $nie[0][0][1]) {
+                    $NIF = $nie[0][0][0];
                     $DNI = $dni[0][0][0];
                 }
-            } elseif (count($nie[0]) == 2) {
-                if ($nie[0][0][1] < $nie[0][1][1]) {
-                    $NIF = $nie[0][0][0];
-                    $DNI = $nie[0][1][0];
-                } else {
-                    $NIF = $nie[0][1][0];
-                    $DNI = $nie[0][0][0];
-                }
-            } elseif (count($dni[0]) == 1 && count($nie[0]) == 1 && $dni[0][0][1] < $nie[0][0][1]) {
-                $NIF = $dni[0][0][0];
-                $DNI = $nie[0][0][0];
-            } elseif (count($dni[0]) == 1 && count($nie[0]) == 1 && $dni[0][0][1] > $nie[0][0][1]) {
-                $NIF = $nie[0][0][0];
-                $DNI = $dni[0][0][0];
+            } catch (\Throwable $th) {
+                $month = "";
+                $year = "";
+                $NIF = "";
+                continue;
             }
 
             if ($month . '20' . $year != $monthInput . $yearInput) {
-                $uploadError = "Mes incorrecto en la nómina: " . $DNI;
+                $uploadError = "Error en las fechas/identificación de la nómina";
             } else {
                 $findme2 = 'EMPRESA';
                 $pos2 = strpos($content, $findme2);
@@ -138,7 +142,7 @@ class AddUsersPayrolls implements ShouldQueue
             }
         }
 
-        // delete folder and create
+        // delete temps files
 
         $files = glob(public_path('storage/media/addUsersTemp/*.*'));
         foreach ($files as $index) {
@@ -150,11 +154,9 @@ class AddUsersPayrolls implements ShouldQueue
         // End
 
         foreach ($data as $index) {
-
             if (User::where('nif', '=', $index[0])->exists()) {
                 $uploadError = "La empresa" . $index[0] . " ya está creada.";
             } else {
-
                 $user = new User();
                 $user->nif = $index[0];
                 $user->name = $index[1];

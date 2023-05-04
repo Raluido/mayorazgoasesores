@@ -53,6 +53,8 @@ class UploadCostsImputs implements ShouldQueue
         $monthInput = $this->month;
         $yearInput = $this->year;
         $uploadError = array();
+        $oldNif = "";
+        $x = 0;
 
         // Split each page into a new PDF
 
@@ -77,29 +79,32 @@ class UploadCostsImputs implements ShouldQueue
 
         $files = glob(public_path('storage/media/costsImputsTemp/*.*'));
 
-        $oldNif = "";
-        $x = 0;
-
         foreach ($files as $index) {
             $pdfParser = new Parser();
             $pdf = $pdfParser->parseFile($index);
             $content = $pdf->getText();
 
             preg_match_all('/PERIODO\s+DEL\s+[0-9]{2}\/[0-9]{2}\/[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
-
-            $month = substr($period[0][0][0], 15, 2);
-            $year = substr($period[0][0][0], 18, 2);
-
             preg_match_all('/[0-9]{8}[A-Z]/', $content, $dni, PREG_OFFSET_CAPTURE);
             preg_match_all('/[A-Z]{1}[0-9]{8}/', $content, $cif, PREG_OFFSET_CAPTURE);
             preg_match_all('/[X-Z]{1}[0-9]{7}[A-Z]{1}/', $content, $nie, PREG_OFFSET_CAPTURE);
 
-            if (count($cif[0]) == 1) {
-                $NIF = $cif[0][0][0];
-            } elseif (count($dni[0]) == 1) {
-                $NIF = $dni[0][0][0];
-            } elseif (count($nie[0]) == 1) {
-                $NIF = $nie[0][0][0];
+            try {
+                $month = substr($period[0][0][0], 15, 2);
+                $year = substr($period[0][0][0], 18, 2);
+
+                if (count($cif[0]) == 1) {
+                    $NIF = $cif[0][0][0];
+                } elseif (count($dni[0]) == 1) {
+                    $NIF = $dni[0][0][0];
+                } elseif (count($nie[0]) == 1) {
+                    $NIF = $nie[0][0][0];
+                }
+            } catch (\Throwable $th) {
+                $month = "";
+                $year = "";
+                $NIF = "";
+                continue;
             }
 
             switch ($month) {
@@ -139,17 +144,26 @@ class UploadCostsImputs implements ShouldQueue
                 case '12':
                     $month = 'DIC';
                     break;
+                default:
+                    $month = "";
+                    break;
             }
 
-            $oldFilename = basename($index);
-
-            if ($oldNif != $NIF) {
-                $x = 0;
+            if ($month . '20' . $year != $monthInput . $yearInput) {
+                $uploadError = "Error en las fechas/identificación del modelo de imputación de costes";
             } else {
-                $x++;
+
+                $oldFilename = basename($index);
+
+                if ($oldNif != $NIF) {
+                    $x = 0;
+                } else {
+                    $x++;
+                }
+
+                $oldNif = $NIF;
+                rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $NIF . '_' . $month . 20 . $year . '_' . $x . '.pdf'));
             }
-            $oldNif = $NIF;
-            rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $NIF . '_' . $month . 20 . $year . '_' . $x . '.pdf'));
         }
 
         $files = glob(public_path('storage/media/costsImputsTemp/' . basename($filename, '.pdf') . '_*.*'));

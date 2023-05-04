@@ -51,7 +51,9 @@ class AddUsersCostsImputs implements ShouldQueue
         $monthInput = $this->month;
         $yearInput = $this->year;
         $uploadError = array();
-        $usersNifPass = array();
+        $data = array();
+        $oldNIF = "";
+        $usersNifPass[] = array();
 
         $pdf = new Fpdi();
         $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
@@ -71,24 +73,19 @@ class AddUsersCostsImputs implements ShouldQueue
 
         $files = glob(public_path('storage/media/addUsersTemp/*'));
 
-        $data = array();
-        $companyData = array();
-        $oldNIF = "";
-
         foreach ($files as $index) {
             $pdfParser = new Parser();
             $pdf = $pdfParser->parseFile($index);
             $content = $pdf->getText();
 
             preg_match_all('/PERIODO\s+DEL\s+[0-9]{2}\/[0-9]{2}\/[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
+            preg_match_all('/[0-9]{8}[A-Z]/', $content, $dni, PREG_OFFSET_CAPTURE);
+            preg_match_all('/[A-Z]{1}[0-9]{8}/', $content, $cif, PREG_OFFSET_CAPTURE);
+            preg_match_all('/[X-Z]{1}[0-9]{7}[A-Z]{1}/', $content, $nie, PREG_OFFSET_CAPTURE);
 
             try {
                 $month = substr($period[0][0][0], 15, 2);
                 $year = substr($period[0][0][0], 18, 2);
-
-                preg_match_all('/[0-9]{8}[A-Z]/', $content, $dni, PREG_OFFSET_CAPTURE);
-                preg_match_all('/[A-Z]{1}[0-9]{8}/', $content, $cif, PREG_OFFSET_CAPTURE);
-                preg_match_all('/[X-Z]{1}[0-9]{7}[A-Z]{1}/', $content, $nie, PREG_OFFSET_CAPTURE);
 
                 if (count($cif[0]) == 1) {
                     $NIF = $cif[0][0][0];
@@ -97,71 +94,73 @@ class AddUsersCostsImputs implements ShouldQueue
                 } elseif (count($nie[0]) == 1) {
                     $NIF = $nie[0][0][0];
                 }
-
-                switch ($month) {
-                    case '01':
-                        $month = 'ENE';
-                        break;
-                    case '02':
-                        $month = 'FEB';
-                        break;
-                    case '03':
-                        $month = 'MAR';
-                        break;
-                    case '04':
-                        $month = 'ABR';
-                        break;
-                    case '05':
-                        $month = 'MAY';
-                        break;
-                    case '06':
-                        $month = 'JUN';
-                        break;
-                    case '07':
-                        $month = 'JUL';
-                        break;
-                    case '08':
-                        $month = 'AGO';
-                        break;
-                    case '09':
-                        $month = 'SEP';
-                        break;
-                    case '10':
-                        $month = 'OCT';
-                        break;
-                    case '11':
-                        $month = 'NOV';
-                        break;
-                    case '12':
-                        $month = 'DIC';
-                        break;
-                    default:
-                        $month = null;
-                }
-
-                if ($month . '20' . $year != $monthInput . $yearInput || $month == null) {
-                    $uploadError = "Mes incorrecto en la imputación de costes: " . $NIF;
-                } else {
-                    $findme2 = 'Empre sa';
-                    $pos2 = strpos($content, $findme2);
-                    $company = substr($content, ($pos2 + 14), 35);
-
-                    if ($oldNIF != $NIF) {
-                        $companyData = array();
-                        $companyData[] = $NIF;
-                        $companyData[] = $company;
-                        $data[] = $companyData;
-                    }
-
-                    $oldNIF = $NIF;
-                }
             } catch (\Throwable $th) {
-                $uploadError = $NIF;
+                $month = "";
+                $year = "";
+                $NIF = "";
                 continue;
+            }
+
+            switch ($month) {
+                case '01':
+                    $month = 'ENE';
+                    break;
+                case '02':
+                    $month = 'FEB';
+                    break;
+                case '03':
+                    $month = 'MAR';
+                    break;
+                case '04':
+                    $month = 'ABR';
+                    break;
+                case '05':
+                    $month = 'MAY';
+                    break;
+                case '06':
+                    $month = 'JUN';
+                    break;
+                case '07':
+                    $month = 'JUL';
+                    break;
+                case '08':
+                    $month = 'AGO';
+                    break;
+                case '09':
+                    $month = 'SEP';
+                    break;
+                case '10':
+                    $month = 'OCT';
+                    break;
+                case '11':
+                    $month = 'NOV';
+                    break;
+                case '12':
+                    $month = 'DIC';
+                    break;
+                default:
+                    $month = "";
+                    break;
+            }
+
+            if ($month . '20' . $year != $monthInput . $yearInput) {
+                $uploadError = "Error en las fechas/identificación del modelo de imputación de costes";
+            } else {
+                $findme2 = 'Empre sa';
+                $pos2 = strpos($content, $findme2);
+                $company = substr($content, ($pos2 + 14), 35);
+
+                if ($oldNIF != $NIF) {
+                    $companyData = array();
+                    $companyData[] = $NIF;
+                    $companyData[] = $company;
+                    $data[] = $companyData;
+                }
+                $oldNIF = $NIF;
             }
         }
 
-        // delete folder and create
+        // delete temps files
 
         $files = glob(public_path('storage/media/addUsersTemp/*.*'));
         foreach ($files as $index) {
@@ -175,7 +174,7 @@ class AddUsersCostsImputs implements ShouldQueue
         foreach ($data as $index) {
 
             if (User::where('nif', '=', $index[0])->exists()) {
-                $uploadError = "La empresa" . $index[0] . " ya está creada.";
+                $uploadError = "La empresa " . $index[0] . " ya está creada.";
             } else {
 
                 $user = new User();

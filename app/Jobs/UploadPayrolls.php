@@ -82,47 +82,52 @@ class UploadPayrolls implements ShouldQueue
 
 
             preg_match_all('/MENS\s+[0-9]{2}\s+[A-Z]{3}\s+[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
-
-            $month = substr($period[0][0][0], 9, 3);
-            $year = substr($period[0][0][0], 13);
-
             preg_match_all('/[0-9]{8}[A-Z]/', $content, $dni, PREG_OFFSET_CAPTURE);
             preg_match_all('/[A-Z]{1}[0-9]{8}/', $content, $cif, PREG_OFFSET_CAPTURE);
             preg_match_all('/[X-Z]{1}[0-9]{7}[A-Z]{1}/', $content, $nie, PREG_OFFSET_CAPTURE);
 
-            if (count($cif[0]) == 1) {
-                $NIF = $cif[0][0][0];
-                if (count($dni[0]) == 1) {
-                    $DNI = $dni[0][0][0];
-                } else {
-                    $DNI = $nie[0][0][0];
-                }
-            } elseif (count($dni[0]) == 2) {
-                if ($dni[0][0][1] < $dni[0][1][1]) {
-                    $NIF = $dni[0][0][0];
-                    $DNI = $dni[0][1][0];
-                } else {
-                    $NIF = $dni[0][1][0];
-                    $DNI = $dni[0][0][0];
-                }
-            } elseif (count($nie[0]) == 2) {
-                if ($nie[0][0][1] < $nie[0][1][1]) {
-                    $NIF = $nie[0][0][0];
-                    $DNI = $nie[0][1][0];
-                } else {
-                    $NIF = $nie[0][1][0];
-                    $DNI = $nie[0][0][0];
-                }
-            } elseif (count($dni[0]) == 1 && count($nie[0]) == 1 && $dni[0][0][1] < $nie[0][0][1]) {
-                $NIF = $dni[0][0][0];
-                $DNI = $nie[0][0][0];
-            } elseif (count($dni[0]) == 1 && count($nie[0]) == 1 && $dni[0][0][1] > $nie[0][0][1]) {
-                $NIF = $nie[0][0][0];
-                $DNI = $dni[0][0][0];
-            }
+            try {
+                $month = substr($period[0][0][0], 9, 3);
+                $year = substr($period[0][0][0], 13);
 
-            $oldFilename = basename($index);
-            rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.pdf'));
+
+                if (count($cif[0]) == 1) {
+                    $NIF = $cif[0][0][0];
+                    if (count($dni[0]) == 1) {
+                        $DNI = $dni[0][0][0];
+                    } else {
+                        $DNI = $nie[0][0][0];
+                    }
+                } elseif (count($dni[0]) == 2) {
+                    if ($dni[0][0][1] < $dni[0][1][1]) {
+                        $NIF = $dni[0][0][0];
+                        $DNI = $dni[0][1][0];
+                    } else {
+                        $NIF = $dni[0][1][0];
+                        $DNI = $dni[0][0][0];
+                    }
+                } elseif (count($nie[0]) == 2) {
+                    if ($nie[0][0][1] < $nie[0][1][1]) {
+                        $NIF = $nie[0][0][0];
+                        $DNI = $nie[0][1][0];
+                    } else {
+                        $NIF = $nie[0][1][0];
+                        $DNI = $nie[0][0][0];
+                    }
+                } elseif (count($dni[0]) == 1 && count($nie[0]) == 1 && $dni[0][0][1] < $nie[0][0][1]) {
+                    $NIF = $dni[0][0][0];
+                    $DNI = $nie[0][0][0];
+                } elseif (count($dni[0]) == 1 && count($nie[0]) == 1 && $dni[0][0][1] > $nie[0][0][1]) {
+                    $NIF = $nie[0][0][0];
+                    $DNI = $dni[0][0][0];
+                }
+
+                $oldFilename = basename($index);
+                rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.pdf'));
+            } catch (\Throwable $th) {
+                $uploadError = "Error en las fechas/identificación de la nómina";
+                continue;
+            }
         }
 
         // delete temp files
