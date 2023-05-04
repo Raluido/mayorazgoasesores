@@ -53,7 +53,7 @@ class AddUsersCostsImputs implements ShouldQueue
         $uploadError = array();
         $data = array();
         $oldNIF = "";
-        $usersNifPass[] = array();
+        $usersNifPass = array();
 
         $pdf = new Fpdi();
         $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
@@ -190,8 +190,6 @@ class AddUsersCostsImputs implements ShouldQueue
                 );
 
                 $usersNifPass[] = $userNifPass;
-                log::info($usersNifPass);
-                die();
                 $user->save();
                 $user->assignRole('user');
             }
