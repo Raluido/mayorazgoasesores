@@ -19,6 +19,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
      * Home Routes
      */
     Route::get('/', 'HomeController@index')->name('home.index');
+    Route::get('/mtn', 'HomeController@mtn')->name('maintenance.working');
 
     Route::post('/send', 'EmailController@send')->name('mail.send');
 

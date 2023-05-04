@@ -18,4 +18,9 @@ class HomeController extends Controller
 
         return view('home.index', compact('posts'));
     }
+
+    public function mtn()
+    {
+        return view('maintenance.working');
+    }
 }
