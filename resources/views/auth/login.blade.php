@@ -30,12 +30,12 @@
                 </div>
                 <div class="inputSubmit">
                     <button class="blue buttonTextWt" type="submit">Acceder</button>
-                    <!-- <div class="forgetPass">
+                    <div class="forgetPass">
                         <label class="">
                             <a class="" href="{{ route('forget.password.get') }}">Olvidé la
                                 contraseña</a>
                         </label>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>

@@ -53,7 +53,7 @@ class AddUsersPayrolls implements ShouldQueue
         $uploadError = array();
         $data = array();
         $oldNIF = "";
-        $usersNifPass[] = array();
+        $usersNifPass = array();
 
         $pdf = new Fpdi();
         $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
@@ -125,7 +125,7 @@ class AddUsersPayrolls implements ShouldQueue
             }
 
             if ($month . '20' . $year != $monthInput . $yearInput) {
-                $uploadError = "Error en las fechas/identificación de la nómina";
+                $uploadError[] = "Error en las fechas/identificación de la nómina";
             } else {
                 $findme2 = 'EMPRESA';
                 $pos2 = strpos($content, $findme2);
@@ -164,12 +164,12 @@ class AddUsersPayrolls implements ShouldQueue
                 $password = Str::random(10);
                 $user->password = $password;
 
-                $data = array(
+                $userNifPass = array(
                     'nif' => $index[0],
                     'password' => $password,
                 );
 
-                $usersNifPass[] = $data;
+                $usersNifPass[] = $userNifPass;
                 $user->save();
                 $user->assignRole('user');
             }

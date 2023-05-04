@@ -15,7 +15,7 @@
                         <li class=""><a class="" href="{{ route('home.index') }}">Inicio</a></li>
                         <li class=""><a class="" href="/#equipo">Equipo</a></li>
                         <li class=""><a class="" href="/#servicios">Servicios</a></li>
-                        <li class=""><a class="" href="/#noticias">Noticias</a></li>
+                        <li class=""><a class="" href="/#noticias">De interés</a></li>
                         <li class=""><a class="" href="/#contacto">Contacto</a></li>
                     </ul>
                 </div>
@@ -81,7 +81,7 @@
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
-                        <a class="" href="/#noticias">Noticias</a>
+                        <a class="" href="/#noticias">De interés</a>
                         <a class="" href="/#contacto">Contacto</a>
                     </div>
                     @endrole
@@ -96,7 +96,7 @@
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
-                        <a class="" href="/#noticias">Noticias</a>
+                        <a class="" href="/#noticias">De interés</a>
                         <a class="" href="/#contacto">Contacto</a>
                     </div>
                     @endrole
@@ -110,7 +110,7 @@
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
-                        <a class="" href="/#noticias">Noticias</a>
+                        <a class="" href="/#noticias">De interés</a>
                         <a class="" href="/#contacto">Contacto</a>
                     </div>
                     @endrole
@@ -124,7 +124,7 @@
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
-                        <a class="" href="/#noticias">Noticias</a>
+                        <a class="" href="/#noticias">De interés</a>
                         <a class="" href="/#contacto">Contacto</a>
                     </div>
                     @endrole
@@ -138,7 +138,7 @@
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
-                        <a class="" href="/#noticias">Noticias</a>
+                        <a class="" href="/#noticias">De interés</a>
                         <a class="" href="/#contacto">Contacto</a>
                     </div>
                     @endguest

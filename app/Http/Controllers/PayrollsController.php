@@ -52,14 +52,12 @@ class PayrollsController extends Controller
                 unlink($newFilename);
 
                 if (!empty($period[0])) {
-                    unlink($newFilename);
                     $month = $request->input('month');
                     $year = $request->input('year');
                     AddUsersPayrolls::dispatch($filename, $month, $year);
                     UploadPayrolls::dispatch($filename, $month, $year);
                 } else {
                     unlink(public_path('storage/media/' . $filename));
-                    unlink($newFilename);
                     return redirect()->route('payrolls.uploadForm')->withErrors(__('El documento adjuntado no tiene el formato de nómina.'));
                 }
             } else {

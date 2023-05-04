@@ -177,8 +177,6 @@ class UploadCostsImputs implements ShouldQueue
 
         $path = public_path('/storage/media/costsImputs/' . $yearInput);
 
-        $usersCreated = array();
-
         if (!File::exists($path)) {
             File::makeDirectory($path, 0775, true);
             $path = public_path('/storage/media/costsImputs/' . $yearInput . '/' . $monthInput);
@@ -210,9 +208,14 @@ class UploadCostsImputs implements ShouldQueue
             }
         }
 
-        Mail::to("raluido@gmail.com")->send(new UploadCostsImputsNotification($uploadError, $usersCreated, $monthInput, $yearInput));
+        Mail::to("raluido@gmail.com")->send(new UploadCostsImputsNotification($uploadError, $monthInput, $yearInput));
 
-        array_map('unlink', glob(public_path('storage/media/costsImputsTemp/*.*')));
+        $files = glob(public_path('storage/media/costsImputsTemp/*.*'));
+        foreach ($files as $index) {
+            if (is_file($index)) {
+                unlink($index);
+            }
+        }
     }
 
     /**

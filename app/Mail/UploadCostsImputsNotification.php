@@ -21,10 +21,9 @@ class UploadCostsImputsNotification extends Mailable
      *
      * @return void
      */
-    public function __construct($uploadError, $usersCreated, $monthInput, $yearInput)
+    public function __construct($uploadError, $monthInput, $yearInput)
     {
         $this->uploadError = $uploadError;
-        $this->usersCreated = $usersCreated;
         $this->monthInput = $monthInput;
         $this->yearInput = $yearInput;
     }
@@ -40,7 +39,6 @@ class UploadCostsImputsNotification extends Mailable
             ->subject('Proceso de envio de imputación de costes finalizado')
             ->view('mails.mail-UploadCostsImputs-template')
             ->with('uploadError', $this->uploadError)
-            ->with('usersCreated', $this->usersCreated)
             ->with('monthInput', $this->monthInput)
             ->with('yearInput', $this->yearInput);
     }

@@ -144,7 +144,7 @@ class AddUsersCostsImputs implements ShouldQueue
             }
 
             if ($month . '20' . $year != $monthInput . $yearInput) {
-                $uploadError = "Error en las fechas/identificación del modelo de imputación de costes";
+                $uploadError[] = "Error en las fechas/identificación del modelo de imputación de costes";
             } else {
                 $findme2 = 'Empre sa';
                 $pos2 = strpos($content, $findme2);
@@ -184,12 +184,14 @@ class AddUsersCostsImputs implements ShouldQueue
                 $password = Str::random(10);
                 $user->password = $password;
 
-                $data = array(
+                $userNifPass = array(
                     'nif' => $index[0],
                     'password' => $password,
                 );
 
-                $usersNifPass[] = $data;
+                $usersNifPass[] = $userNifPass;
+                log::info($usersNifPass);
+                die();
                 $user->save();
                 $user->assignRole('user');
             }

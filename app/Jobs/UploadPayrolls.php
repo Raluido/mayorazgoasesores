@@ -185,22 +185,22 @@ class UploadPayrolls implements ShouldQueue
                     $employee->user_id = $userId;
                     $employee->dni = $dni;
                     $employee->save();
-
-                    if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
-                        rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
-                        $payroll = new Payroll();
-                        $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
-                        $payroll->filename = $path . '/' . $filename;
-                        $payroll->year = $yearInput;
-                        $payroll->month = $monthInput;
-                        $payroll->save();
-                    } else {
-                        unlink(public_path('storage/media/payrollsTemp/' . $filename));
-                        $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
-                    }
                 } catch (\Throwable $th) {
                     $uploadError[] = "No se ha podido agregar la nómina de la empresa " . $nif . ", compruebe si la empresa no está creada aún.";
                     continue;
+                }
+
+                if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
+                    rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
+                    $payroll = new Payroll();
+                    $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
+                    $payroll->filename = $path . '/' . $filename;
+                    $payroll->year = $yearInput;
+                    $payroll->month = $monthInput;
+                    $payroll->save();
+                } else {
+                    unlink(public_path('storage/media/payrollsTemp/' . $filename));
+                    $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
                 }
             }
         }
