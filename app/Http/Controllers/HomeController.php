@@ -23,4 +23,19 @@ class HomeController extends Controller
     {
         return view('maintenance.working');
     }
+
+    public function legal()
+    {
+        return view('legal.legalNotice');
+    }
+
+    public function privacy()
+    {
+        return view('legal.privacyPolicy');
+    }
+
+    public function cookies()
+    {
+        return view('legal.cookiesPolicy');
+    }
 }

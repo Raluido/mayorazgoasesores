@@ -17,7 +17,7 @@
                     les facilita la siguiente información básica relativa a los datos personales aportados.
                 </p>
                 <div class="columnsDiv">
-                    <h5 class="">Responsable del Tratamiento</h5>
+                    <h4 class="">Responsable del Tratamiento</h4>
                     <p class="">Francisco Javier Luis Domínguez (Mayorazgo Asesores)
                         43374503E
                         Calle Pilar Monteverde, 31, El Mayorazgo, 38300, La Orotava
@@ -25,7 +25,7 @@
                         info@mayorazgoasesores.es</p>
                 </div>
                 <div class="columnsDiv">
-                    <h5 class="">Finalidades del Tratamiento</h5>
+                    <h4 class="">Finalidades del Tratamiento</h4>
                     <p class="">Tratamos la información que nos facilita con el fin de cumplir
                         con el deber de información previa y servicios proporcionados
                         por nuestra empresa. Se utilizará su correo electrónico y/o
@@ -39,7 +39,7 @@
                         exigencia legal.</p>
                 </div>
                 <div class="columnsDiv">
-                    <h5 class="">Legitimación del Tratamiento</h5>
+                    <h4 class="">Legitimación del Tratamiento</h4>
                     <p class="">La base legal para el tratamiento de sus datos es el
                         consentimiento previo que expresa pulsando el botón de
                         aceptación del correspondiente formulario de recogida de datos
@@ -51,7 +51,7 @@
                         previo.</p>
                 </div>
                 <div class="columnsDiv">
-                    <h5 class="">Destinatarios</h5>
+                    <h4 class="">Destinatarios</h4>
                     <p class="">No está prevista la cesión de datos personales facilitados en el
                         formulario de contacto. Si finalmente contrata alguno de
                         nuestros servicios las cesiones previstas serán las mínimas y
@@ -60,7 +60,7 @@
                         transferencia de datos a terceros países</p>
                 </div>
                 <div class="columnsDiv">
-                    <h5 class="">Derechos</h5>
+                    <h4 class="">Derechos</h4>
                     <p class="">Usted tiene derecho a obtener información sobre si estamos
                         tratando datos personales que le conciernen o no. Podrá
                         ejercer los derechos de acceso, rectificación, supresión,
@@ -71,7 +71,7 @@
                         de control competente (AEPD).</p>
                 </div>
                 <div class="columnsDiv">
-                    <h5 class="">Procedencia</h5>
+                    <h4 class="">Procedencia</h4>
                     <p class="">Los datos personales proceden de la persona interesada y/o
                         de proveedores a los que haya prestado su consentimiento. La
                         categoría de datos que tratamos son: identificativos (nombre,

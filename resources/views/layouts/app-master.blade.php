@@ -20,16 +20,7 @@
         @yield('content')
     </main>
 
-    <footer class="">
-        <div class="innerFooter">
-            <div class="">
-                <a href="{{ route(home.cookies) }}" class="">Política de cookies</a>
-                <a href="{{ route(home.legal) }}" class="">Aviso legal</a>
-                <a href="{{ route(home.privacy) }}" class="">Política de privacidad</a>
-            </div>
-            <div class=""></div>
-        </div>
-    </footer>
+    @include('layouts.partials.footer')
 
     <script src="{{ asset('js/jquery-3.6.4.min.js') }}">
     </script>

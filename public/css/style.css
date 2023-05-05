@@ -683,8 +683,97 @@ header .innerNav .logoMenu .menu {
     font-size: 1.2em;
 }
 
+/* footer */
 
-/* end */
+footer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    z-index: -1;
+}
+
+footer .innerFooter {
+    border-top: 1px solid gray;
+    width: 90%;
+    display: flex;
+    justify-content: space-around;
+    padding: 3em 0;
+}
+
+footer .innerFooter .publicAdtion .innerPublicAdtion a,
+footer .innerFooter .legalLinks .innerLegalLinks a {
+    font-size: .9em;
+}
+
+footer .innerFooter .publicAdtion .innerPublicAdtion div:nth-child(1),
+footer .innerFooter .legalLinks .innerLegalLinks div:nth-child(1) {
+    margin-bottom: 2em;
+}
+
+footer .innerFooter .publicAdtion .innerPublicAdtion div:nth-child(2),
+footer .innerFooter .legalLinks .innerLegalLinks div:nth-child(n+2) {
+    margin-bottom: 1em;
+}
+
+footer .websiwebs {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    margin: 2em 7em .5em 0;
+}
+
+/* cookies */
+
+.legal .innerLegal {
+    margin: 5em 0;
+    padding: 0 5em;
+}
+
+.legal .innerLegal .top {
+    margin-bottom: 4em;
+}
+
+.legal .innerLegal .bottom .innerBottom h4 {
+    margin: 3em 0 2em 0;
+}
+
+.legal .innerLegal .bottom .innerBottom .columnsDiv {
+    display: flex;
+    justify-content: space-around;
+}
+
+.legal .innerLegal .bottom .innerBottom .columnsDiv h5 {
+    width: 30%;
+}
+
+.legal .innerLegal .bottom .innerBottom .columnsDiv p {
+    width: 70%;
+}
+
+/* consent */
+
+.cookieConsent {
+    width: 100%;
+    background-color: #F5F5F5;
+    position: absolute;
+    z-index: 1;
+    top: 15em;
+}
+
+.cookieConsent .innerCookieConsent {
+    padding: 1em 3em;
+}
+
+.cookieConsent .innerCookieConsent .info {
+    margin-bottom: 1em;
+}
+
+.cookieConsent .innerCookieConsent .acceptBtn {
+    display: flex;
+    justify-content: center;
+}
 
 /* maintenance */
 

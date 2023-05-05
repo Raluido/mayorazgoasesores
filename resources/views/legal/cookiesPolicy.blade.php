@@ -11,11 +11,7 @@
             <div class="innerBottom">
                 <p class="">
                     A través de este sitio web no se recaban datos de carácter personal de los usuarios
-                    sin su conocimiento, ni se ceden a terceros. Con la finalidad de ofrecerle el mejor
-                    servicio y con el objeto de facilitar el uso, se analizan el número de páginas visitadas,
-                    el número de visitas, así como la actividad de los visitantes y su frecuencia de
-                    utilización. A estos efectos, Mayorazgo Asesores utiliza la información estadística
-                    elaborada por su Proveedor de Servicios de Internet.
+                    sin su conocimiento, ni se ceden a terceros.
                     Mayorazgo Asesores no utiliza cookies para recoger información de los usuarios, ni
                     registra las direcciones IP de acceso. Únicamente se utilizan cookies propias, de
                     sesión, con finalidad técnica (aquellas que permiten al usuario la navegación a través
@@ -36,22 +32,7 @@
                     teléfono-empresa
                     info@mayorazgoasesores.es</p>
                 <h4 class="">¿PARA QUÉ UTILIZAMOS COOKIES?</h4>
-                <p class="">Los servicios de Mayorazgo Asesores utilizan Cookies:</p>
-                <ul class="">
-                    <li class="">Con el objetivo de ofrecer al usuario contenidos e información más
-                        adecuados a sus intereses y facilitar su navegación a través de
-                        nuestros servicios.</li>
-                    <li class="">Para registrar las preferencias del usuario y proporcionarle un acceso
-                        más rápido.</li>
-                    <li class="">Para personalizar los servicios que Mayorazgo Asesores facilitando y
-                        ofreciendo a cada usuario información que es de su interés o que
-                        puede ser de su interés, basándose para ello en el uso que realiza de
-                        estos servicios.</li>
-                    <li class="">Para conocer todos los servicios de Mayorazgo Asesores solicitados
-                        por los usuarios durante la navegación, de forma que podrán facilitar u
-                        ofrecer información adecuada a los gustos y preferencias de cada
-                        usuario.</li>
-                </ul>
+                <p class="">Los servicios de Mayorazgo Asesores utilizan Cookies para identificar las sesiones en las que previamente se autentificó el usuario, con el propósito de mantener el sitio web seguro.
                 <h4 class="">¿QUÉ TIPOS DE COOKIES HAY EN LOS SERVICIOS DE MAYORAZGO ASESORES Y
                     CUÁLES SON SUS FINALIDADES?</h4>
                 <p class="">En función de su duración, las Cookies pueden dividirse en:</p>
@@ -62,70 +43,6 @@
                         que sirven, por ejemplo, para que el usuario se mantenga identificado en los
                         Servicios de Mayorazgo Asesores o bien cuando se borran manualmente.</li>
                 </ul>
-                <p class="">En función de quién crea la Cookie se clasifican en:</p>
-                <ul class="">
-                    <li class="">Cookies propias: Son las que envían al ordenador o dispositivo del usuario,
-                        nuestros Servicios y son gestionadas exclusivamente por Mayorazgo Asesores.</li>
-                    <li class="">Cookies de terceros: Aquellas que son enviadas por entidades ajenas a
-                        Mayorazgo Asesores y que se activan cuando se accede desde nuestros
-                        Servicios a redes sociales o a visualizar videos.</li>
-                </ul>
-                <h4 class="">¿QUÉ COOKIES SE PUEDEN INSTALAR EN LOS SERVICIOS DE MAYORAZGO
-                    ASESORES?</h4>
-                <table class="">
-                    <tr class="">
-                        <th class="">Tipo de Cookies</th>
-                        <th class="">Descripción</th>
-                        <th class="">Finalidad / información</th>
-                        <th class="">Plazo de
-                            tratamiento</th>
-                    </tr>
-                    <tr class="">
-                        <td class="">Rendimiento</td>
-                        <td class="">Estas Cookies se utilizan para
-                            mejorar la navegación y optimizar
-                            el funcionamiento de nuestros
-                            Servicios. Almacenan
-                            configuraciones de Servicios para
-                            que no tenga que reconfigurarlos
-                            cada vez que nos visite.</td>
-                        <td class="">Ajustes de volumen de reproductores de vídeo o
-                            sonido; las velocidades de transmisión de vídeo que
-                            sean compatibles con su navegador; los objetos
-                            guardados en el “carrito de la compra” en los
-                            Servicios de E-commerce; etc.</td>
-                        <td class="">Persistentes</td>
-                    </tr>
-                    <tr class="">
-                        <td class="">Analíticas</td>
-                        <td class="">Cada vez que un usuario visita un
-                            Servicio, una herramienta de un
-                            proveedor externo genera una
-                            Cookie analítica en el ordenador
-                            del usuario. Esta Cookie, que sólo
-                            se genera en la visita, servirá en
-                            próximas visitas a los Servicios de
-                            Mayorazgo Asesores
-                            para identificar de forma
-                            anónima al visitante.</td>
-                        <td class="">Permitir la identificación anónima de los usuarios
-                            navegantes a través de la “Cookie” (identifica
-                            navegadores y dispositivos, no personas) y por lo
-                            tanto la contabilización aproximada del número de
-                            visitantes y su tendencia en el tiempo. Identificar de
-                            forma anónima los contenidos más visitados y más
-                            atractivos para los usuarios. Saber si el usuario que
-                            está accediendo es nuevo o repite visita. Salvo que el
-                            usuario decida registrarse en un Servicio de
-                            Mayorazgo Asesores, la “Cookie” nunca irá asociada
-                            a ningún dato de carácter personal que pueda
-                            identificarle directamente. Dichas Cookies sólo serán
-                            utilizadas con propósitos estadísticos que ayuden a
-                            la optimización y mejora de la experiencia de los
-                            usuarios en el Servicio.</td>
-                        <td class="">Persistentes</td>
-                    </tr>
-                </table>
                 <h4 class="">Validez y desactivación</h4>
                 <p class="">Las cookies temporales (cookies de sesión) sólo se almacenan temporalmente en su
                     ordenador o dispositivo terminal. Cuando cierras el navegador, estas cookies se
