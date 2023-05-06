@@ -1,4 +1,4 @@
-<div class="cookieConsent">
+<div class="cookieConsent js-cookie-consent">
     <div class="innerCookieConsent">
         <div class="">
             <div class="">

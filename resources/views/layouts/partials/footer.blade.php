@@ -33,5 +33,4 @@
     <div class="websiwebs">
         <h5 class="">Esta web ha sido desarrollada por websiwebs&#174; en HTML, PHP y CSS.</h5>
     </div>
-    @include('cookie-consent::index')
 </footer>

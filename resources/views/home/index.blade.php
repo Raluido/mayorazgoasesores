@@ -184,7 +184,7 @@
         <div class="bottom">
             <div class="innerBottom">
                 <div class="contactForm">
-                    <form class="formData" action="{{ route('mail.send') }}" method="post">
+                    <form class="formData" id="login-form" action="{{ route('mail.send') }}" method="post">
                         @csrf
                         <div class="innerForm">
                             <div class="inputRow">
@@ -204,7 +204,7 @@
                             <input type="hidden" name="g-recaptcha-response" id="hidden-token" />
                             <input type="hidden" name="g-recaptcha-action" id="hidden-action" />
                             <div class="submitButtom">
-                                <button class="blue g-recaptcha" type="submit" data-sitekey="{{ config('services.recaptcha_ent.site_key') }}" data-callback='onSubmit' data-action='login'>Enviar</button>
+                                <button class="blue g-recaptcha" data-sitekey="{{ config('services.recaptcha_ent.site_key') }}" data-callback='onSubmit' data-action='login'>Enviar</button>
                             </div>
                         </div>
                     </form>
@@ -242,7 +242,7 @@
     function onSubmit(token) {
         document.getElementById('hidden-token').value = token;
         document.getElementById('hidden-action').value = "login";
-        document.getElementById("login-form").submit();
+        console.log(document.getElementById("login-form").submit());
     }
 </script>
 

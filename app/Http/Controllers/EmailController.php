@@ -11,6 +11,9 @@ class EmailController extends Controller
 {
     public function send(EmailRequest $request)
     {
+
+        $request->validated();
+
         $fromEmail = "mayorazgoasesores.info@gmail.com";
         $userEmail = $request->input('email');
         $userName = $request->input('name');
@@ -24,5 +27,7 @@ class EmailController extends Controller
             $message->to($toEmail, $toName);
             $message->replyTo($userEmail, $userName);
         });
+
+        return redirect()->back();
     }
 }

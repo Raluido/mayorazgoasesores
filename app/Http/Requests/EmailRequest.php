@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Log;
+use App\Rules\ReCaptchaEnterpriseRule;
 
 class EmailRequest extends FormRequest
 {
@@ -28,7 +29,8 @@ class EmailRequest extends FormRequest
             'name' => 'required',
             'email' => 'required|email',
             'content' => 'required',
-            'g-recaptcha-response' => 'required|captcha'
+            'g-recaptcha-action' => 'required|string',
+            'g-recaptcha-response' => ['required', new ReCaptchaEnterpriseRule]
         ];
     }
 

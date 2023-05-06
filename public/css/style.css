@@ -603,6 +603,10 @@ header .innerNav .logoMenu .menu {
     width: 55%;
 }
 
+.grecaptcha-badge {
+    visibility: hidden;
+}
+
 .contacto .innerContacto .bottom .innerBottom .contactData {
     height: auto;
     display: flex;
@@ -690,8 +694,6 @@ footer {
     align-items: center;
     flex-direction: column;
     width: 100%;
-    position: relative;
-    z-index: -1;
 }
 
 footer .innerFooter {
@@ -757,9 +759,8 @@ footer .websiwebs {
 .cookieConsent {
     width: 100%;
     background-color: #F5F5F5;
-    position: absolute;
-    z-index: 1;
-    top: 15em;
+    position: fixed;
+    bottom: 0;
 }
 
 .cookieConsent .innerCookieConsent {
