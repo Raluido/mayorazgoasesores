@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\Payroll;
 use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\UploadPayrolls;
-use App\Jobs\AddUsersAuto;
-use App\Jobs\Test;
+use App\Jobs\AddUsersPayrolls;
+use setasign\Fpdi\Fpdi;
+use Smalot\PdfParser\Parser;
 
 class PayrollsController extends Controller
 {
@@ -25,33 +25,48 @@ class PayrollsController extends Controller
 
     public function uploadPayrolls(Request $request)
     {
-        $presentYear = date("Y");
-
         $file = $request->file('payrolls');
 
         if ($request->hasFile('payrolls')) {
+
             $allowedfileExtension = ['pdf'];
             $extension = $file->getClientOriginalExtension();
             $check = in_array($extension, $allowedfileExtension);
-            if ($check) {
-                $filenamewithextension = date('d-m-Y h.i.s a', time()) . ".pdf";
-                $file->storeAs('storage/media/',  $filenamewithextension);
-                $month = $request->input('month');
-                $year = $request->input('year');
-                AddUsersAuto::dispatch($filenamewithextension);
-                UploadPayrolls::dispatch($filenamewithextension, $month, $year);
-            } else {
-                echo '<div class=""><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
 
-                return view('payrolls.uploadForm')->with('presentYear', $presentYear);
+            if ($check) {
+
+                $filename = date('d-m-Y h.i.s a', time()) . ".pdf";
+                $file->storeAs('storage/media/',  $filename);
+                $filenameNoExt = pathinfo($filename, PATHINFO_FILENAME);
+
+                $newPdf = new Fpdi();
+                $newPdf->addPage();
+                $newPdf->setSourceFile(public_path('storage/media/' . $filename));
+                $newPdf->useTemplate($newPdf->importPage(1));
+                $newFilename = sprintf('%s/%s_p%s.pdf', public_path('storage/media'), $filenameNoExt, 1);
+                $newPdf->output($newFilename, 'F');
+                $pdfParser = new Parser();
+                $pdf = $pdfParser->parseFile($newFilename);
+                $content = $pdf->getText();
+                preg_match_all('/MENS\s+[0-9]{2}\s+[A-Z]{3}\s+[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
+                unlink($newFilename);
+
+                if (!empty($period[0])) {
+                    $month = $request->input('month');
+                    $year = $request->input('year');
+                    AddUsersPayrolls::dispatch($filename, $month, $year);
+                    UploadPayrolls::dispatch($filename, $month, $year);
+                } else {
+                    unlink(public_path('storage/media/' . $filename));
+                    return redirect()->route('payrolls.uploadForm')->withErrors(__('El documento adjuntado no tiene el formato de nómina.'));
+                }
+            } else {
+                return redirect()->route('payrolls.uploadForm')->withErrors(__('Sólo se admiten archivos con extensión .pdf'));
             }
         } else {
-            echo '<div class=""><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
-
-            return view('payrolls.uploadForm')->with('presentYear', $presentYear);
+            return redirect()->route('payrolls.uploadForm')->withErrors(__('No has añadido ningun archivo aún.'));
         }
-
-        return view('payrolls.uploadForm')->with('presentYear', $presentYear)->with('successMsg', "Las nóminas han comenzado a subirse, tardaremos unos minutos, gracias ;)");
+        return redirect()->route('payrolls.uploadForm')->withSuccess(__('Las nóminas han comenzado a subirse, tardaremos unos minutos, gracias ;)'));
     }
 
     public function downloadForm()
@@ -95,19 +110,20 @@ class PayrollsController extends Controller
             $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
             $zip = new ZipArchive;
 
-            $public_dir = public_path('storage/media/payrolls/' . $year . '/' . $month);
+            $publicDir = public_path('storage/media/payrolls/' . $year . '/' . $month);
+            $tempFolder = public_path('storage/media/payrolls');
 
-            if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
+            if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($files as $file) {
                     $filename = basename((array_values((array)$file))[0]);
                     $temp = (array_values((array)$filename))[0];
-                    $zip->addFile($public_dir . '/' . $temp, $temp);
+                    $zip->addFile($publicDir . '/' . $temp, $temp);
                 }
                 $zip->close();
             }
 
-            if (file_exists($public_dir . '/' . $zipFilename)) {
-                return response()->download(public_path('storage/media/payrolls/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
+            if (file_exists($tempFolder . '/' . $zipFilename)) {
+                return response()->download($tempFolder . '/' . $zipFilename)->deleteFileAfterSend(true);
             }
         } else {
             echo '<div class=""><strong>Warning!</strong> Las nóminas de ' . $month . $year . ' no están disponibles.<div>';

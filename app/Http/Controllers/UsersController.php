@@ -184,7 +184,7 @@ class UsersController extends Controller
         $user->delete();
 
         return redirect()->route('users.index')
-            ->withSuccess(__('Empresas eliminado correctamente.'));
+            ->withSuccess(__('Empresas eliminadas correctamente.'));
     }
 
     public function deleteAll()
@@ -194,37 +194,6 @@ class UsersController extends Controller
         return redirect()->route('users.index')
             ->withSuccess(__('Estamos eliminando TODOS los datos, en breve terminamos;)'));
     }
-
-    // public function AddUsersAutoForm()
-    // {
-    //     return view('users.addUsersAutoForm');
-    // }
-
-    // public function AddUsersAuto(Request $request)
-    // {
-    //     $file = $request->file('payrolls');
-
-    //     if ($request->hasFile('payrolls')) {
-    //         $allowedfileExtension = ['pdf'];
-    //         $extension = $file->getClientOriginalExtension();
-    //         $check = in_array($extension, $allowedfileExtension);
-    //         if ($check) {
-    //             $filenamewithextension = date('d-m-Y h:i:s a', time()) . ".pdf";
-    //             $file->storeAs('storage/media/',  $filenamewithextension);
-    //             AddUsersAuto::dispatch($filenamewithextension);
-    //         } else {
-    //             echo '<div class="alert alert-warning"><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
-
-    //             return view('users.addUsersAutoForm');
-    //         }
-    //     } else {
-    //         echo '<div class="alert alert-warning"><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
-
-    //         return view('users.addUsersAutoForm');
-    //     }
-
-    //     return view('users.addUsersAutoForm')->with('successMsg', "Estamos añadiendo las empresas, tardaremos unos minutos, gracias ;)");
-    // }
 
     public function editPassword()
     {

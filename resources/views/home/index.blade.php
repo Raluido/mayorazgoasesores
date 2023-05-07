@@ -183,25 +183,70 @@
         </div>
         <div class="bottom">
             <div class="innerBottom">
-                <div class="logo">
-                    <a href="{{ route('home.index') }}" class="innerLogo">
-                        <div class=""><img src="{{ Storage::url('design/logoFixed.jpg') }}" alt="" class=""></div>
-                        <h3 class="">mayorazgo<br><span>asesores</span></h3>
-                    </a>
+                <div class="contactForm">
+                    <div class="">
+                        @include('layouts.partials.messages')
+                    </div>
+                    <form class="formData" id="login-form" action="{{ route('mail.send') }}" method="post">
+                        @csrf
+                        <div class="innerForm">
+                            <div class="inputRow">
+                                <div class="">
+                                    <label for="name">Nombre</label>
+                                    <input class="" for="name" name="name" type="text" placeholder="Escribe tu nombre" required>
+                                </div>
+                                <div class="">
+                                    <label for="email">Email</label>
+                                    <input class="" for="email" name="email" type="email" placeholder="Escribe tu email" required>
+                                </div>
+                            </div>
+                            <div class="inputComments">
+                                <label for="content">Comentarios</label>
+                                <textarea class="" name="content" minlength="30" rows="5" placeholder="Hola, me gustaría comentarles..." required></textarea>
+                            </div>
+                            <input type="hidden" name="g-recaptcha-response" id="hidden-token" />
+                            <input type="hidden" name="g-recaptcha-action" id="hidden-action" />
+                            <div class="submitButtom">
+                                <button class="blue g-recaptcha" data-sitekey="{{ config('services.recaptcha_ent.site_key') }}" data-callback='onSubmit' data-action='login'>Enviar</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="contactData">
-                    <h4 class="">
-                        C/ Pilar Monteverde, 32<br>Urbanización El Mayorazgo<br>38300 La Orotava, Tenerife.<br>
+                    <div class="innerContactData">
+                        <h4 class="">
+                            C/ Pilar Monteverde, 32<br>Urbanización El Mayorazgo<br>38300 La Orotava, Tenerife.<br>
+                        </h4>
                         <div class="iconContact">
-                            <div class=""><img src="{{ Storage::url('design/iconoContacto.jpg') }}" alt="" class=""></div>
+                            <div class="innerIconContact"><img src="{{ Storage::url('design/iconoContacto.jpg') }}" alt="" class=""></div>
                         </div>
-                        Tfno. 922 33 00 25<br>info@mayorazgoasesores.es
-                    </h4>
+                        <a href="https://wa.me/34618299310">
+                            <h4 class="">
+                                Móvil. 618 29 93 10
+                            </h4>
+                        </a>
+                        <a href="922330025" class="">
+                            <h4 class="">
+                                Tfno. 922 33 00 25
+                            </h4>
+                        </a>
+                        <a href="mailto:info@mayorazgoasesores.es" class="">
+                            <h4 class="">info@mayorazgoasesores.es
+                            </h4>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
+<script src="https://www.google.com/recaptcha/enterprise.js?render={{ config('services.recaptcha_ent.site_key') }}"></script>
+<script>
+    function onSubmit(token) {
+        document.getElementById('hidden-token').value = token;
+        document.getElementById('hidden-action').value = "login";
+        console.log(document.getElementById("login-form").submit());
+    }
+</script>
 
 @endsection

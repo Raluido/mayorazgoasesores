@@ -20,6 +20,8 @@
         @yield('content')
     </main>
 
+    @include('layouts.partials.footer')
+
     <script src="{{ asset('js/jquery-3.6.4.min.js') }}">
     </script>
     <script src="{{ asset('js/mobileMenu.js') }}"></script>

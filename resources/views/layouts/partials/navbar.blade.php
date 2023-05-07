@@ -15,20 +15,21 @@
                         <li class=""><a class="" href="{{ route('home.index') }}">Inicio</a></li>
                         <li class=""><a class="" href="/#equipo">Equipo</a></li>
                         <li class=""><a class="" href="/#servicios">Servicios</a></li>
-                        <li class=""><a class="" href="/#noticias">Noticias</a></li>
+                        <li class=""><a class="" href="/#noticias">De interés</a></li>
                         <li class=""><a class="" href="/#contacto">Contacto</a></li>
                     </ul>
                 </div>
             </div>
             <div class="intranetMenu">
                 <div class="innerIntranetMenu">
-                    <button class="intranetMenuBtn" onclick="openMenuIntranet()" type="button">Intranet</button>
+                    <button class="intranetMenuBtn" onclick="openMenuIntranet()" type="button">Área de clientes</button>
                     @auth
                     @role('admin')
                     <div class="dropdownIntranet" id="myDropdownIntranet">
                         <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
                         <hr><br>
                         <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
+                        <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                     </div>
                     @endrole
@@ -46,6 +47,7 @@
                         <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
                         <hr><br>
                         <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
+                        <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                     </div>
                     @endrole
@@ -54,6 +56,7 @@
                         <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
                         <hr><br>
                         <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
+                        <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                     </div>
                     @endrole
@@ -76,12 +79,13 @@
                         <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
                         <hr><br>
                         <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
+                        <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                         <hr><br>
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
-                        <a class="" href="/#noticias">Noticias</a>
+                        <a class="" href="/#noticias">De interés</a>
                         <a class="" href="/#contacto">Contacto</a>
                     </div>
                     @endrole
@@ -96,7 +100,7 @@
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
-                        <a class="" href="/#noticias">Noticias</a>
+                        <a class="" href="/#noticias">De interés</a>
                         <a class="" href="/#contacto">Contacto</a>
                     </div>
                     @endrole
@@ -105,12 +109,13 @@
                         <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
                         <hr><br>
                         <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
+                        <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                         <hr><br>
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
-                        <a class="" href="/#noticias">Noticias</a>
+                        <a class="" href="/#noticias">De interés</a>
                         <a class="" href="/#contacto">Contacto</a>
                     </div>
                     @endrole
@@ -119,12 +124,13 @@
                         <p class="logued">Bienvenido {{ auth()->user()->name }}</p>
                         <hr><br>
                         <a href="{{ route('intranet.index') }}" class="dropdown-item">Intranet</a>
+                        <a class="dropdown-item" href="{{ route('user.editData') }}">Panel usuario</a>
                         <a href="{{ route('logout.perform') }}" class="dropdown-item">Salir</a>
                         <hr><br>
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
-                        <a class="" href="/#noticias">Noticias</a>
+                        <a class="" href="/#noticias">De interés</a>
                         <a class="" href="/#contacto">Contacto</a>
                     </div>
                     @endrole
@@ -138,7 +144,7 @@
                         <a class="" href="{{ route('home.index') }}">Inicio</a>
                         <a class="" href="/#equipo">Equipo</a>
                         <a class="" href="/#servicios">Servicios</a>
-                        <a class="" href="/#noticias">Noticias</a>
+                        <a class="" href="/#noticias">De interés</a>
                         <a class="" href="/#contacto">Contacto</a>
                     </div>
                     @endguest

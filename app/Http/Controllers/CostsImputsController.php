@@ -13,7 +13,7 @@ use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\UploadCostsImputs;
-use App\Jobs\AddUsersAuto;
+use App\Jobs\AddUsersCostsImputs;
 
 class CostsImputsController extends Controller
 {
@@ -27,33 +27,53 @@ class CostsImputsController extends Controller
 
     public function uploadCostsImputs(Request $request)
     {
-        $presentYear = date("Y");
-
         $file = $request->file('costsimputs');
 
         if ($request->hasFile('costsimputs')) {
+
             $allowedfileExtension = ['pdf'];
             $extension = $file->getClientOriginalExtension();
             $check = in_array($extension, $allowedfileExtension);
-            if ($check) {
-                $filenamewithextension = date('d-m-Y his a', time()) . ".pdf";
-                $file->storeAs('storage/media/',  $filenamewithextension);
-                $month = $request->input('month');
-                $year = $request->input('year');
-                AddUsersAuto::dispatch($filenamewithextension);
-                UploadCostsImputs::dispatch($filenamewithextension, $month, $year);
-            } else {
-                echo '<div class=""><strong>Warning!</strong> Sólo se admiten archivos con extensión .pdf</div>';
 
-                return view('costsimputs.uploadForm');
+            if ($check) {
+
+                // checking if its a costsimputs format
+
+                $filename = date('d-m-Y h.i.s a', time()) . ".pdf";
+                $file->storeAs('storage/media/',  $filename);
+                $filenameNoExt = pathinfo($filename, PATHINFO_FILENAME);
+
+                $newPdf = new Fpdi();
+                $newPdf->addPage();
+                $newPdf->setSourceFile(public_path('storage/media/' . $filename));
+                $newPdf->useTemplate($newPdf->importPage(1));
+                $newFilename = sprintf('%s/%s_p%s.pdf', public_path('storage/media'), $filenameNoExt, 1);
+                $newPdf->output($newFilename, 'F');
+                $pdfParser = new Parser();
+                $pdf = $pdfParser->parseFile($newFilename);
+                $content = $pdf->getText();
+                preg_match_all('/PERIODO\s+DEL\s+[0-9]{2}\/[0-9]{2}\/[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
+
+                // end
+
+                if (!empty($period[0])) {
+                    unlink($newFilename);
+                    $month = $request->input('month');
+                    $year = $request->input('year');
+                    AddUsersCostsImputs::dispatch($filename, $month, $year);
+                    UploadCostsImputs::dispatch($filename, $month, $year);
+                } else {
+                    unlink(public_path('storage/media/' . $filename));
+                    unlink($newFilename);
+                    return redirect()->route('costsimputs.uploadForm')->withErrors(__('El documento adjuntado no tiene el formato de imputación de costes.'));
+                }
+            } else {
+                return redirect()->route('costsimputs.uploadForm')->withErrors(__('Sólo se admiten archivos con extensión .pdf'));
             }
         } else {
-            echo '<div class=""><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
-
-            return view('costsimputs.uploadForm')->with('presentYear', $presentYear);
+            return redirect()->route('costsimputs.uploadForm')->withErrors(__('No has añadido ningun archivo aún.'));
         }
-
-        return view('costsimputs.uploadForm')->with('presentYear', $presentYear)->with('successMsg', "Los documentos de imputación de costes han comenzado a subirse, tardaremos unos minutos, gracias ;)");
+        return redirect()->route('costsimputs.uploadForm')->withSuccess(__('Los documentos de imputación de costes han comenzado a subirse, tardaremos unos minutos, gracias ;)'));
     }
 
     public function downloadForm()
@@ -95,19 +115,20 @@ class CostsImputsController extends Controller
             $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
             $zip = new ZipArchive;
 
-            $public_dir = public_path('storage/media/costsImputs/' . $year . '/' . $month);
+            $publicDir = public_path('storage/media/costsImputs/' . $year . '/' . $month);
+            $tempFolder = public_path('storage/media/costsImputs');
 
-            if ($zip->open($public_dir . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
+            if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($files as $file) {
                     $filename = basename((array_values((array)$file))[0]);
                     $temp = (array_values((array)$filename))[0];
-                    $zip->addFile($public_dir . '/' . $temp, $temp);
+                    $zip->addFile($publicDir . '/' . $temp, $temp);
                 }
                 $zip->close();
             }
 
-            if (file_exists($public_dir . '/' . $zipFilename)) {
-                return response()->download(public_path('storage/media/costsImputs/' . $year . '/' . $month . '/' . $zipFilename))->deleteFileAfterSend(true);
+            if (file_exists($tempFolder . '/' . $zipFilename)) {
+                return response()->download($tempFolder . '/' . $zipFilename)->deleteFileAfterSend(true);
             }
         } else {
             echo '<div class="alert alert-warning"><strong>Warning!</strong> Las modelos de imputación de costes de ' . $month . $year . ' no están disponibles.<div>';

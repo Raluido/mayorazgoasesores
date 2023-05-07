@@ -87,7 +87,7 @@ header nav {
 
 header .innerNav {
     display: grid;
-    grid-template-columns: [first] 10% [second] 80% [third] 10%;
+    grid-template-columns: [first] 15% [second] 70% [third] 15%;
     margin: .5em 0;
 }
 
@@ -593,50 +593,25 @@ header .innerNav .logoMenu .menu {
 
 .contacto .innerContacto .bottom .innerBottom {
     display: flex;
-    justify-content: center;
-    padding: 10em 0;
+    justify-content: space-around;
+    align-items: center;
+    width: 85%;
+    margin: 4em 0;
 }
 
-.contacto .innerContacto .bottom .innerBottom .logo {
-    width: 30vw;
-    height: auto;
-    display: flex;
-    justify-content: center;
+.contacto .innerContacto .bottom .innerBottom .contactForm {
+    width: 55%;
+}
+
+.grecaptcha-badge {
+    visibility: hidden;
 }
 
 .contacto .innerContacto .bottom .innerBottom .contactData {
-    width: 30vw;
     height: auto;
     display: flex;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
-}
-
-.contacto .innerContacto .bottom .innerBottom .logo img {
-    width: 100%;
-    height: 100%;
-}
-
-.contacto .innerContacto .bottom .innerBottom .logo .innerLogo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.contacto .innerContacto .bottom .innerBottom .logo .innerLogo>div {
-    width: 40%;
-    height: auto;
-}
-
-.contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    /* width: 40%; */
-}
-
-.contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 span {
-    font-size: 1.3em;
 }
 
 .contacto .innerContacto .bottom .iconContact {
@@ -645,18 +620,243 @@ header .innerNav .logoMenu .menu {
     justify-content: center;
 }
 
-.contacto .innerContacto .bottom .iconContact>div {
+.contacto .innerContacto .bottom .iconContact .innerIconContact {
     width: 3em;
 }
 
+.contacto .innerContacto .bottom .innerContactData>a:nth-child(-n+4)>h4 {
+    margin-bottom: -1em;
+}
+
 .contacto .innerContacto .bottom .contactData h4 {
-    font-size: 1.2em;
+    font-size: 1.1em;
+    text-align: center;
 }
 
 .contacto .innerContacto .bottom .iconContact img {
     width: 100%;
     height: 100%;
 }
+
+.contact form {
+    font-size: 1.2em;
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+}
+
+.contacto .innerForm {
+    width: 100%;
+}
+
+.contacto .innerForm div {
+    padding: 1em 0 .5em 0;
+}
+
+.contacto .inputRow {
+    display: flex;
+}
+
+.contacto .inputRow div {
+    width: 50%;
+}
+
+.contacto .inputRow div:first-child {
+    margin-right: 2em;
+}
+
+.contacto .inputRow input {
+    margin-top: .4em;
+    width: 100%;
+    line-height: 2em;
+}
+
+.contacto .inputComments textarea {
+    width: 100%;
+    height: 5em;
+    margin-top: .5em;
+}
+
+.contacto .submitButtom button {
+    padding: 0.3em .5em;
+    color: white;
+}
+
+.contacto .submitButtom {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+/* footer */
+
+footer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+footer .innerFooter {
+    border-top: 1px solid gray;
+    width: 90%;
+    display: flex;
+    justify-content: space-around;
+    padding: 3em 0;
+}
+
+footer .innerFooter .publicAdtion .innerPublicAdtion a,
+footer .innerFooter .legalLinks .innerLegalLinks a {
+    font-size: .9em;
+}
+
+footer .innerFooter .publicAdtion .innerPublicAdtion div:nth-child(1),
+footer .innerFooter .legalLinks .innerLegalLinks div:nth-child(1) {
+    margin-bottom: 2em;
+}
+
+footer .innerFooter .publicAdtion .innerPublicAdtion div:nth-child(2),
+footer .innerFooter .legalLinks .innerLegalLinks div:nth-child(n+2) {
+    margin-bottom: 1em;
+}
+
+footer .websiwebs {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    margin: 2em 7em .5em 0;
+}
+
+/* cookies */
+
+.legal .innerLegal {
+    margin: 5em 0;
+    padding: 0 5em;
+}
+
+.legal .innerLegal .top {
+    margin-bottom: 4em;
+}
+
+.legal .innerLegal .bottom .innerBottom h4 {
+    margin: 3em 0 2em 0;
+}
+
+.legal .innerLegal .bottom .innerBottom .columnsDiv {
+    display: flex;
+    justify-content: space-around;
+}
+
+.legal .innerLegal .bottom .innerBottom .columnsDiv h5 {
+    width: 30%;
+}
+
+.legal .innerLegal .bottom .innerBottom .columnsDiv p {
+    width: 70%;
+}
+
+/* consent */
+
+.cookieConsent {
+    width: 100%;
+    background-color: #F5F5F5;
+    position: fixed;
+    bottom: 0;
+}
+
+.cookieConsent .innerCookieConsent {
+    padding: 1em 3em;
+}
+
+.cookieConsent .innerCookieConsent .info {
+    margin-bottom: 1em;
+}
+
+.cookieConsent .innerCookieConsent .acceptBtn {
+    display: flex;
+    justify-content: center;
+}
+
+.cookieConsent .innerCookieConsent .acceptBtn button:nth-child(1) {
+    margin-right: 4em;
+}
+
+/* maintenance */
+
+.maintenance {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.maintenance .innerMaintenance {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.maintenance .innerMaintenance .bottom {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: end;
+    margin-bottom: 3em;
+}
+
+.maintenance .innerMaintenance .top {
+    margin-top: 5em;
+}
+
+.maintenance .innerMaintenance .top .innerTop {
+    display: flex;
+    justify-content: center;
+}
+
+.maintenance .innerMaintenance .top .innerTop h4 {
+    line-height: 2;
+}
+
+.maintenance .innerMaintenance .bottom .innerBottom {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.maintenance .innerMaintenance .bottom .innerBottom .logo a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.maintenance .innerMaintenance .bottom .innerBottom .logo div {
+    width: 12em;
+    height: auto;
+}
+
+.maintenance .innerMaintenance .bottom .innerBottom .logo img {
+    width: 100%;
+    height: 100%;
+}
+
+.maintenance .innerMaintenance .bottom .innerBottom .contactData .innerContactData h4 {
+    text-align: center;
+}
+
+.maintenance .innerMaintenance .bottom .innerBottom .contactData .innerContactData .iconContact {
+    display: flex;
+    justify-content: center;
+}
+
+.maintenance .innerMaintenance .bottom .innerBottom .contactData .innerContactData .iconContact .innerIconContact {
+    width: 4em;
+    height: auto;
+}
+
+.maintenance .innerMaintenance .bottom .innerBottom .contactData .innerContactData .iconContact .innerIconContact img {
+    width: 100%;
+    height: 100%;
+}
+
 
 
 /* end */
@@ -696,6 +896,39 @@ header .innerNav .logoMenu .menu {
 }
 
 .form-signin .login form .inputSubmit button {
+    font-size: 1em;
+    margin-top: 2em;
+}
+
+/* end */
+
+/* ResetPassword */
+
+.form-signin .resetPassword {
+    display: flex;
+    justify-content: center;
+    margin-top: 20vh;
+}
+
+.form-signin .resetPassword form {
+    padding: 2em 3em;
+    border: 1px solid gray;
+}
+
+.form-signin .resetPassword form .inputDiv input {
+    font-size: 1em;
+}
+
+.form-signin .resetPassword form .inputDiv label {
+    font-size: 1.1em;
+}
+
+.form-signin .resetPassword  form .inputSubmit {
+    display: flex;
+    justify-content: center;
+}
+
+.form-signin .resetPassword form .inputSubmit button {
     font-size: 1em;
     margin-top: 2em;
 }
@@ -2163,10 +2396,6 @@ header .innerNav .logoMenu .menu {
         font-size: 1.1em;
     }
 
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 {
-        font-size: 1.2rem;
-    }
-
     .noticias .bottom .innerBottom .news p {
         font-size: 1.1em;
     }
@@ -2176,30 +2405,8 @@ header .innerNav .logoMenu .menu {
         align-items: center;
     }
 
-    .contacto .innerContacto .bottom .innerBottom .contactData {
-        text-align: center;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo {
-        width: 80%;
-        height: auto;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
-        font-size: 1.3rem;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo h1 {
-        font-size: 1.5em;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo span {
-        font-size: 1.6em;
-    }
-
-    .contacto .logo {
-        margin-right: unset;
-        margin-bottom: 2em;
+    .contacto .innerContacto .bottom .innerBottom .contactForm {
+        width: unset;
     }
 
     .createUsers .innerCreateUsers .bottom .innerBottom,
@@ -2312,33 +2519,6 @@ header .innerNav .logoMenu .menu {
     .equipo .innerEquipo .bottom .innerBottom {
         margin: 0;
     }
-
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
-        font-size: 1.2rem;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 span {
-        font-size: 1.3em;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo {
-        width: 35vw;
-        height: auto;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .contactData {
-        width: 35vw;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 {
-        font-size: 1.4rem;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo {
-        display: flex;
-        justify-content: center;
-    }
-
 }
 
 @media (min-width: 768px) and (max-height: 1366px) and (orientation: portrait) {
@@ -2403,30 +2583,6 @@ header .innerNav .logoMenu .menu {
     .noticias {
         display: flex;
         flex-direction: column;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo {
-        width: 40vw;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .contactData {
-        width: 40vw;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 {
-        font-size: 1.3rem;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h3 span {
-        font-size: 1.4em;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 {
-        font-size: 1.6rem;
-    }
-
-    .contacto .innerContacto .bottom .innerBottom .logo .innerLogo h1 span {
-        font-size: 1.1em;
     }
 
     .contacto .innerContacto .contactData h4 {

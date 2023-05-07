@@ -18,4 +18,24 @@ class HomeController extends Controller
 
         return view('home.index', compact('posts'));
     }
+
+    public function mtn()
+    {
+        return view('maintenance.working');
+    }
+
+    public function legal()
+    {
+        return view('legal.legalNotice');
+    }
+
+    public function privacy()
+    {
+        return view('legal.privacyPolicy');
+    }
+
+    public function cookies()
+    {
+        return view('legal.cookiesPolicy');
+    }
 }
