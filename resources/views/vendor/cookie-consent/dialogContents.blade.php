@@ -7,9 +7,12 @@
                         {!! trans('cookie-consent::texts.message') !!}
                     </p>
                 </div>
-                <div class="">
-                    <button class="js-cookie-consent-agree cookie-consent__agree">
+                <div class="acceptBtn">
+                    <button class="js-cookie-consent-agree cookie-consent__agree blue buttonTextWt">
                         {{ trans('cookie-consent::texts.agree') }}
+                    </button>
+                    <button class="green">
+                        <a href="{{ route('home.cookies') }}" class="buttonTextWt">Más información</a>
                     </button>
                 </div>
             </div>

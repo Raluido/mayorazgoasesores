@@ -19,7 +19,7 @@ class ReCaptchaEnterpriseRule implements Rule
         $response = \Http::asJson()->post($this->recaptchaEnterpriseVerificationUrl(), [
             'event' => [
                 'token' => $value,
-                'site_key' => '6Ld_3cUlAAAAAJI9CG8ytRMejHLKeJPQ4p9le0n2',
+                'site_key' => $this->getSiteKey(),
                 'expectedAction' => request()->get('g-recaptcha-action', null),
             ]
         ]);
@@ -50,5 +50,10 @@ class ReCaptchaEnterpriseRule implements Rule
     private function getApiKey(): ?string
     {
         return config('services.recaptcha_ent.api_key');
+    }
+
+    private function getSiteKey(): ?string
+    {
+        return config('services.recaptcha_ent.site_key');
     }
 }

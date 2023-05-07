@@ -776,6 +776,10 @@ footer .websiwebs {
     justify-content: center;
 }
 
+.cookieConsent .innerCookieConsent .acceptBtn button:nth-child(1) {
+    margin-right: 4em;
+}
+
 /* maintenance */
 
 .maintenance {
