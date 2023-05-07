@@ -8,7 +8,7 @@ return [
          * The name of this application. You can use this name to monitor
          * the backups.
          */
-        'name' => env('APP_NAME', 'laravel-backup'),
+        'name' => '1mSkBvCYwnnTKzOkt181GAKbQ87V3nfTD',
 
         'source' => [
 
@@ -117,7 +117,6 @@ return [
              */
             'disks' => [
                 'google',
-                'local',
             ],
         ],
 
@@ -167,11 +166,11 @@ return [
         'notifiable' => \Spatie\Backup\Notifications\Notifiable::class,
 
         'mail' => [
-            'to' => 'your@example.com',
+            'to' => 'raul@websiwebs.es',
 
             'from' => [
-                'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-                'name' => env('MAIL_FROM_NAME', 'Example'),
+                'address' => env('MAIL_FROM_ADDRESS', 'mayorazgoasesores.info@gmail.com'),
+                'name' => env('MAIL_FROM_NAME', 'Mayorazgoasesores'),
             ],
         ],
 
@@ -244,7 +243,7 @@ return [
             /*
              * The number of weeks for which one weekly backup must be kept.
              */
-            'keep_weekly_backups_for_weeks' => 8,
+            'keep_weekly_backups_for_weeks' => 1,
 
             /*
              * The number of months for which one monthly backup must be kept.

@@ -20,7 +20,7 @@ class CreateAsesorUserSeeder extends Seeder
             'name' => 'Asesor',
             'nif' => '22333444Z',
             'email' => 'asesor@asesor.es',
-            'password' => 'asesor123'
+            'password' => '6sibTc8m8oScuM'
         ]);
 
         $role = Role::create(['name' => 'asesor']);
