@@ -186,7 +186,7 @@
                 <div class="logo">
                     <a href="{{ route('home.index') }}" class="innerLogo">
                         <div class=""><img src="{{ Storage::url('design/logoFixed.jpg') }}" alt="" class=""></div>
-                        <h3 class="">mayorago<br><span>asesores</span></h3>
+                        <h3 class="">mayorazgo<br><span>asesores</span></h3>
                     </a>
                 </div>
                 <div class="contactData">
