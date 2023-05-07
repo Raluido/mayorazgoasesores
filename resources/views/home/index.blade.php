@@ -184,6 +184,9 @@
         <div class="bottom">
             <div class="innerBottom">
                 <div class="contactForm">
+                    <div class="">
+                        @include('layouts.partials.messages')
+                    </div>
                     <form class="formData" id="login-form" action="{{ route('mail.send') }}" method="post">
                         @csrf
                         <div class="innerForm">

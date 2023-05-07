@@ -902,6 +902,39 @@ footer .websiwebs {
 
 /* end */
 
+/* ResetPassword */
+
+.form-signin .resetPassword {
+    display: flex;
+    justify-content: center;
+    margin-top: 20vh;
+}
+
+.form-signin .resetPassword form {
+    padding: 2em 3em;
+    border: 1px solid gray;
+}
+
+.form-signin .resetPassword form .inputDiv input {
+    font-size: 1em;
+}
+
+.form-signin .resetPassword form .inputDiv label {
+    font-size: 1.1em;
+}
+
+.form-signin .resetPassword  form .inputSubmit {
+    display: flex;
+    justify-content: center;
+}
+
+.form-signin .resetPassword form .inputSubmit button {
+    font-size: 1em;
+    margin-top: 2em;
+}
+
+/* end */
+
 /* intranet index */
 
 .intranet .innerIntranet {

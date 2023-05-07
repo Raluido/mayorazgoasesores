@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Carbon\Carbon;
 use App\Models\User;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 use Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +39,7 @@ class ForgotPasswordController extends Controller
         ]);
 
         Mail::send('mails.mail-ForgetPassword-template', ['token' => $token], function ($message) use ($request) {
+            $message->from('mayorazgoasesores.info@gmail.com');
             $message->to($request->email);
             $message->subject('Resetear Contraseña');
         });

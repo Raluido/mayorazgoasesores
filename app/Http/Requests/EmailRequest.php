@@ -26,9 +26,9 @@ class EmailRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => 'required|email',
-            'content' => 'required',
+            'name' => 'required|max:50',
+            'email' => 'required|email|max:255',
+            'content' => 'required|max:600',
             'g-recaptcha-action' => 'required|string',
             'g-recaptcha-response' => ['required', new ReCaptchaEnterpriseRule]
         ];

@@ -12,15 +12,14 @@ class EmailController extends Controller
     public function send(EmailRequest $request)
     {
 
-        $request->validated();
+        $validated = $request->validated();
 
         $fromEmail = "mayorazgoasesores.info@gmail.com";
-        $userEmail = $request->input('email');
-        $userName = $request->input('name');
+        $userEmail = $validated['email'];
+        $userName = $validated['name'];
         $toName = "Mayorazgo Asesores";
         $toEmail = "raul@websiwebs.es";
-        $content = $request->input('content');
-
+        $content = $validated['content'];
         Mail::send('mails.mail-Send-template', ['name' => $userName, 'body' => $content], function ($message) use ($toName, $toEmail, $userName, $userEmail, $fromEmail) {
             $message->from($fromEmail, $userName);
             $message->subject('El usuario' . $userName . 'ha enviado un mensaje');
@@ -28,6 +27,15 @@ class EmailController extends Controller
             $message->replyTo($userEmail, $userName);
         });
 
-        return redirect()->back();
+        if (count(Mail::failures()) > 0) {
+
+            return redirect()->back()->withErrors(__("Ha habido un error al enviar el mensaje, vuelva a intentarlo más tarde."));
+
+            foreach (Mail::failures() as $email_address) {
+                echo " - $email_address <br />";
+            }
+        } else {
+            return redirect()->back()->withSuccess(__("El mensage se ha enviado correctamente"));
+        }
     }
 }
