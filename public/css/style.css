@@ -892,7 +892,7 @@ footer .websiwebs {
 
 .form-signin .login form .inputSubmit {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 .form-signin .login form .inputSubmit button {

@@ -48,7 +48,7 @@ class DestroyAllEmployees implements ShouldQueue
         $passed = "El proceso de eliminación de todos los trabajadores ha finalizado con éxito";
 
 
-        Mail::to("raluido@gmail.com")->send(new DeleteNotification($passed));
+        Mail::to("f.luis@mayorazgoasesores.es")->send(new DeleteNotification($passed));
     }
 
     /**
@@ -60,6 +60,6 @@ class DestroyAllEmployees implements ShouldQueue
     public function failed(Exception $exception)
     {
         $jobError = "Error en la eliminando a TODOS los empleados, vuelva a intentarlo gracias ;)";
-        Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError, $exception));
+        Mail::to("f.luis@mayorazgoasesores.es")->send(new JobErrorNotification($jobError, $exception));
     }
 }

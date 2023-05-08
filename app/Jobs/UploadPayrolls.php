@@ -205,7 +205,7 @@ class UploadPayrolls implements ShouldQueue
             }
         }
 
-        Mail::to("raluido@gmail.com")->send(new UploadPayrollsNotification($uploadError, $monthInput, $yearInput));
+        Mail::to("f.luis@mayorazgoasesores.es")->send(new UploadPayrollsNotification($uploadError, $monthInput, $yearInput));
 
         $files = glob(public_path('storage/media/payrollsTemp/*.*'));
         foreach ($files as $index) {
@@ -234,6 +234,6 @@ class UploadPayrolls implements ShouldQueue
         }
 
         $jobError = "Error en la carga de Nóminas, vuelva a intentarlo gracias ;)";
-        Mail::to("raluido@gmail.com")->send(new JobErrorNotification($jobError, $exception));
+        Mail::to("f.luis@mayorazgoasesores.es")->send(new JobErrorNotification($jobError, $exception));
     }
 }
