@@ -22,7 +22,7 @@ class EmailController extends Controller
         $content = $validated['content'];
         Mail::send('mails.mail-Send-template', ['name' => $userName, 'body' => $content], function ($message) use ($toName, $toEmail, $userName, $userEmail, $fromEmail) {
             $message->from($fromEmail, $userName);
-            $message->subject('El usuario' . $userName . 'ha enviado un mensaje');
+            $message->subject('El usuario ' . $userName . ' ha enviado un mensaje');
             $message->to($toEmail, $toName);
             $message->replyTo($userEmail, $userName);
         });
