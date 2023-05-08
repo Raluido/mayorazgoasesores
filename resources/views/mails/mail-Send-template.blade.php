@@ -1,3 +1,3 @@
-<h4>El cliente {{ $name }} ha enviado un mensaje</h4>
+<h4>El cliente &nbsp {{ $name }} &nbsp ha enviado un mensaje</h4>
 
 <p class="">{{ $body }}</p>

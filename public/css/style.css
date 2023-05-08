@@ -923,7 +923,7 @@ footer .websiwebs {
     font-size: 1.1em;
 }
 
-.form-signin .resetPassword  form .inputSubmit {
+.form-signin .resetPassword form .inputSubmit {
     display: flex;
     justify-content: center;
 }
@@ -2468,6 +2468,12 @@ footer .websiwebs {
 
     .othersDocumentsForm .innerOthersDocumentsForm .bottom form {
         width: 100%;
+    }
+
+    footer .websiwebs {
+        display: flex;
+        justify-content: center;
+        margin: unset;
     }
 }
 
