@@ -4,7 +4,8 @@
 <div class="editPass">
     <div class="innerEditPass">
         <div class="top">
-            <h1>Usuario</h1>
+            <h2>Usuario</h2>
+            Aqui puedes modificar tus datos de usuario y la contraseña
         </div>
         <div class="bottom">
             <div class="sideNavButtons">

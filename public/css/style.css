@@ -2148,6 +2148,11 @@ footer .websiwebs {
     margin: 5em 0;
 }
 
+.editUser .innerEditUser .bottom {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .editUser .innerEditUser .bottom .sideNavButtons button:nth-child(1) {
     display: block;
     margin-bottom: 1em;
@@ -2159,14 +2164,12 @@ footer .websiwebs {
 
 
 .editUser .innerEditUser .bottom .divForm {
-    width: 100%;
     margin-top: 2em;
     display: flex;
     justify-content: center;
 }
 
 .editUser .innerEditUser .bottom .divForm form {
-    width: 30%;
     border: 1px solid gray;
     padding: 3em 3em 5em;
     background-color: #F5F5F5;
@@ -2174,9 +2177,8 @@ footer .websiwebs {
 
 
 .editUser .innerEditUser .bottom .sideNavButtons {
-    width: 10%;
     margin-right: 5em;
-    margin-top: 4em;
+    margin-top: 3em;
 }
 
 .editUser .innerEditUser .bottom form .inputForm input,
@@ -2203,6 +2205,11 @@ footer .websiwebs {
     margin: 5em 0;
 }
 
+.editPass .innerEditPass .bottom {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .editPass .innerEditPass .bottom .sideNavButtons button:nth-child(1) {
     display: block;
     margin-bottom: 1em;
@@ -2214,14 +2221,14 @@ footer .websiwebs {
 
 
 .editPass .innerEditPass .bottom .divForm {
-    width: 100%;
+    width: 40%;
     margin-top: 2em;
     display: flex;
     justify-content: center;
 }
 
 .editPass .innerEditPass .bottom .divForm form {
-    width: 30%;
+    width: 100%;
     border: 1px solid gray;
     padding: 3em 3em 5em;
     background-color: #F5F5F5;
@@ -2229,7 +2236,6 @@ footer .websiwebs {
 
 
 .editPass .innerEditPass .bottom .sideNavButtons {
-    width: 10%;
     margin-right: 5em;
     margin-top: 3em;
 }
@@ -2438,12 +2444,20 @@ footer .websiwebs {
         width: 80%;
     }
 
-    .editPass .innerEditPass .bottom .divForm form {
+    .editPass .innerEditPass .bottom,
+    .editUser .innerEditUser .bottom {
+        display: unset;
+        justify-content: space-evenly;
+    }
+
+    .editPass .innerEditPass .bottom .divForm,
+    .editUser .innerEditUser .bottom {
         width: 100%;
     }
 
+    .editPass .innerEditPass .bottom .divForm form,
     .editUser .innerEditUser .bottom .divForm form {
-        width: 100%;
+        padding: 3em 2em 5em;
     }
 
     .payrollsDownload .innerPayrollsDownload .bottom form {

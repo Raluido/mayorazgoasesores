@@ -30,7 +30,8 @@
                         @endif
                     </div>
                     <div class="inputSubmit">
-                        <button class="blue buttonTextWt" type="submit">Acceder</button>
+                        <button class="blue"><a href="{{ route('home.index') }}" class="buttonTextWt">Volver</a></button>
+                        <button class="green buttonTextWt" type="submit">Acceder</button>
                         <div class="forgetPass">
                             <label class="">
                                 <a class="" href="{{ route('forget.password.get') }}">Olvidé la
