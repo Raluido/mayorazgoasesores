@@ -29,7 +29,7 @@
                             <option value="DIC">Diciembre</option>
                         </select>
                     </div>
-                    <div class="inputForm" id="hiddeYear">
+                    <div class="inputForm d-none" id="hiddeYear">
                         <label for="year">Selecciona un año</label>
                         <select name="year" id="year" onChange="Visibility1()">
                             <option value=""></option>
