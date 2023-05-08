@@ -111,7 +111,7 @@ class PayrollsController extends Controller
             $zip = new ZipArchive;
 
             $publicDir = public_path('storage/media/payrolls/' . $year . '/' . $month);
-            $tempFolder = public_path('storage/media/payrolls');
+            $tempFolder = public_path('storage/media');
 
             if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($files as $file) {

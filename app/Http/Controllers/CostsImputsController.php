@@ -116,7 +116,7 @@ class CostsImputsController extends Controller
             $zip = new ZipArchive;
 
             $publicDir = public_path('storage/media/costsImputs/' . $year . '/' . $month);
-            $tempFolder = public_path('storage/media/costsImputs');
+            $tempFolder = public_path('storage/media');
 
             if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($files as $file) {
