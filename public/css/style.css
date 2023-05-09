@@ -793,23 +793,13 @@ footer .websiwebs {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-}
-
-.maintenance .innerMaintenance .bottom {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    justify-content: end;
-    margin-bottom: 3em;
-}
-
-.maintenance .innerMaintenance .top {
-    margin-top: 5em;
+    justify-content: space-evenly;
 }
 
 .maintenance .innerMaintenance .top .innerTop {
     display: flex;
     justify-content: center;
+    text-align: center;
 }
 
 .maintenance .innerMaintenance .top .innerTop h4 {
@@ -2489,6 +2479,18 @@ footer .websiwebs {
         justify-content: center;
         margin: unset;
         padding: 0 1em;
+    }
+
+    .maintenance .innerMaintenance .bottom .innerBottom {
+        display: unset;
+    }
+
+    .maintenance .innerMaintenance .bottom .innerBottom .logo div {
+        width: 10em;
+    }
+
+    .maintenance .innerMaintenance .bottom .innerBottom .logo h3 {
+        font-size: 1.5em;
     }
 }
 
