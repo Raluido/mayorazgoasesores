@@ -2488,6 +2488,7 @@ footer .websiwebs {
         display: flex;
         justify-content: center;
         margin: unset;
+        padding: 0 1em;
     }
 }
 

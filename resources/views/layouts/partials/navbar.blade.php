@@ -22,7 +22,7 @@
             </div>
             <div class="intranetMenu">
                 <div class="innerIntranetMenu">
-                    <button class="intranetMenuBtn" onclick="openMenuIntranet()" type="button">Área de clientes</button>
+                    <button class="intranetMenuBtn" onclick="openMenuIntranet()" type="button">Área de privada</button>
                     @auth
                     @role('admin')
                     <div class="dropdownIntranet" id="myDropdownIntranet">
