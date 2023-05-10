@@ -176,25 +176,6 @@
         </div>
 </section>
 
-<div class="">
-    <?php
-    libxml_use_internal_errors(true);
-    $c = file_get_contents("https://elpais.com/");
-    $d = new DomDocument();
-    $d->loadHTML($c);
-    $xp = new domxpath($d);
-    foreach ($xp->query("//meta[@property='og:title']") as $el) {
-        echo $el->getAttribute("content");
-    }
-    foreach ($xp->query("//meta[@property='og:description']") as $el) {
-        echo $el->getAttribute("content");
-    }
-    foreach ($xp->query("//meta[@property='og:image']") as $el) {
-        echo $el->getAttribute("content");
-    }
-    ?>
-</div>
-
 <section class="contacto" id="contacto">
     <div class="innerContacto">
         <div class="top">
