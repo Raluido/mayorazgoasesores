@@ -2487,6 +2487,14 @@ footer .websiwebs {
         padding: 0 1em;
     }
 
+    footer .innerFooter .publicAdtion .innerPublicAdtion .iconLinks {
+        display: unset;
+    }
+
+    footer .innerFooter .publicAdtion .innerPublicAdtion .innerIconLinks:nth-child(1) {
+        margin: 1em 0 1em 0;
+    }
+
     .maintenance .innerMaintenance .bottom .innerBottom {
         display: unset;
     }
