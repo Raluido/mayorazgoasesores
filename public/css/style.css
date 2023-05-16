@@ -704,19 +704,20 @@ footer .innerFooter {
     padding: 3em 0;
 }
 
-footer .innerFooter .publicAdtion .innerPublicAdtion a,
-footer .innerFooter .legalLinks .innerLegalLinks a {
-    font-size: .9em;
+footer .innerFooter .publicAdtion .innerPublicAdtion div:nth-child(2) {
+    width: 9em;
+    height: auto;
+    margin: 2em 0 2em 0;
 }
 
-footer .innerFooter .publicAdtion .innerPublicAdtion div:nth-child(1),
-footer .innerFooter .legalLinks .innerLegalLinks div:nth-child(1) {
-    margin-bottom: 2em;
+footer .innerFooter .publicAdtion .innerPublicAdtion div:nth-child(3) {
+    width: 7em;
+    height: auto;
 }
 
-footer .innerFooter .publicAdtion .innerPublicAdtion div:nth-child(2),
-footer .innerFooter .legalLinks .innerLegalLinks div:nth-child(n+2) {
-    margin-bottom: 1em;
+footer .innerFooter .publicAdtion .innerPublicAdtion div img {
+    width: 100%;
+    height: 100%;
 }
 
 footer .websiwebs {

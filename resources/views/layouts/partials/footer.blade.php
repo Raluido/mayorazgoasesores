@@ -5,11 +5,15 @@
                 <div class="">
                     <h4 class="">Enlaces de interés</h4>
                 </div>
-                <div class="">
-                    <a href="https://portal.seg-social.gob.es/" class="">TGSS</a>
+                <div class="iconLinks">
+                    <a href="https://portal.seg-social.gob.es/" target="_blank" class="">
+                        <img src="{{ Storage::url('design/tgss.png') }}" alt="" class="">
+                    </a>
                 </div>
-                <div class="">
-                    <a href="https://sede.agenciatributaria.gob.es/" class="">AEAT</a>
+                <div class="iconLinks">
+                    <a href="https://sede.agenciatributaria.gob.es/" target="_blank" class="">
+                        <img src="{{ Storage::url('design/aeat.png') }}" alt="" class="">
+                    </a>
                 </div>
             </div>
         </div>
