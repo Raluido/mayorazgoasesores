@@ -16,25 +16,6 @@ class HomeController extends Controller
             ->limit(5)
             ->get();
 
-
-        libxml_use_internal_errors(true);
-        $doc = new \DomDocument();
-        $doc->loadHTML(file_get_contents('https://elpais.com/'));
-        $xpath = new \DOMXPath($doc);
-        $query = '//*/meta[starts-with(@property, \'og:\')]';
-        $metas = $xpath->query($query);
-        foreach ($metas as $meta) {
-            // $property = $meta->getAttribute('property');
-            $content = $meta->getAttribute('content');
-            $result = mb_detect_encoding($content);
-            $result1 = mb_convert_encoding($content, "UTF-8", "ISO-8859-1");
-            // log::info($property);
-            log::info($result);
-            log::info($result1);
-        }
-
-
-
         return view('home.index', compact('posts'));
     }
 
