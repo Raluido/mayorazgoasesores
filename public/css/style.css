@@ -704,18 +704,23 @@ footer .innerFooter {
     padding: 3em 0;
 }
 
-footer .innerFooter .publicAdtion .innerPublicAdtion div:nth-child(2) {
-    width: 9em;
-    height: auto;
-    margin: 2em 0 2em 0;
+footer .innerFooter .publicAdtion .innerPublicAdtion .iconLinks {
+    display: flex;
+    margin-top: 2em;
 }
 
-footer .innerFooter .publicAdtion .innerPublicAdtion div:nth-child(3) {
+footer .innerFooter .publicAdtion .innerPublicAdtion .innerIconLinks:nth-child(1) {
+    width: 9em;
+    height: auto;
+    margin-right: 2em;
+}
+
+footer .innerFooter .publicAdtion .innerPublicAdtion .innerIconLinks:nth-child(2) {
     width: 6em;
     height: auto;
 }
 
-footer .innerFooter .publicAdtion .innerPublicAdtion div img {
+footer .innerFooter .publicAdtion .innerPublicAdtion .innerIconLinks img {
     width: 100%;
     height: 100%;
 }

@@ -6,14 +6,16 @@
                     <h4 class="">Enlaces de interés</h4>
                 </div>
                 <div class="iconLinks">
-                    <a href="https://portal.seg-social.gob.es/" target="_blank" class="">
-                        <img src="{{ Storage::url('design/tgss.png') }}" alt="" class="">
-                    </a>
-                </div>
-                <div class="iconLinks">
-                    <a href="https://sede.agenciatributaria.gob.es/" target="_blank" class="">
-                        <img src="{{ Storage::url('design/aeat.png') }}" alt="" class="">
-                    </a>
+                    <div class="innerIconLinks">
+                        <a href="https://portal.seg-social.gob.es/" target="_blank" class="">
+                            <img src="{{ Storage::url('design/tgss.png') }}" alt="" class="">
+                        </a>
+                    </div>
+                    <div class="innerIconLinks">
+                        <a href="https://sede.agenciatributaria.gob.es/" target="_blank" class="">
+                            <img src="{{ Storage::url('design/aeat.png') }}" alt="" class="">
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
