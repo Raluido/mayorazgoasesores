@@ -6,7 +6,7 @@
                     <div class="logo">
                         <div class="imageLogo"><img src="{{ Storage::url('design/logoFixed.jpg') }}" alt="" class=""></div>
                         <div class="nameLogo">
-                            <h3 class="">mayorago<br><span>asesores</span></h3>
+                            <h3 class="">mayorazgo<br><span>asesores</span></h3>
                         </div>
                     </div>
                 </a>
