@@ -197,6 +197,13 @@
                 }
                 if(!$metaImage[0] == ""){
                 $image = $metaImage[0]->getAttribute('content');
+
+                try {
+                $checkImage = getimagesize($image);
+                } catch (\Throwable $th) {
+                $checkImage = "";
+                }
+
                 } else {
                 $image = "";
                 }
@@ -204,7 +211,7 @@
                 <div class="link">
                     <div class="innerLink">
                         <div class="linkImage">
-                            @if(!$image == "")
+                            @if(!$image == "" && $checkImage != "")
                             <a href="{{ $post->body }}" target="_blank" class="">
                                 <img src="{{ $image }}" alt="" class="">
                             </a>
