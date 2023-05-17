@@ -176,18 +176,39 @@
                 $doc = new \DomDocument();
                 $doc->loadHTML(mb_convert_encoding(file_get_contents($post->body), 'HTML-ENTITIES', 'UTF-8'));
                 $xpath = new \DOMXPath($doc);
-                $query = '//*/meta[starts-with(@property, \'og:\')]';
-                $metas = $xpath->query($query);
-                $title = ($metas[0]->getAttribute('content'));
-                $description = ($metas[1]->getAttribute('content'));
-                $image = ($metas[3]->getAttribute('content'));
+                $queryTitle = '//*/meta[starts-with(@property, \'og:title\')]';
+                $queryDescription = '//*/meta[starts-with(@property, \'og:description\')]';
+                $queryImage = '//*/meta[starts-with(@property, \'og:image\')]';
+                $metaTitle = "";
+                $metaDescription = "";
+                $metaImage = "";
+                $metaTitle = $xpath->query($queryTitle);
+                $metaDescription = $xpath->query($queryDescription);
+                $metaImage = $xpath->query($queryImage);
+                if(!$metaTitle[0] == ""){
+                $title = $metaTitle[0]->getAttribute('content');
+                } else {
+                $title = "";
+                }
+                if(!$metaDescription[0] == ""){
+                $description = $metaDescription[0]->getAttribute('content');
+                } else {
+                $description = "";
+                }
+                if(!$metaImage[0] == ""){
+                $image = $metaImage[0]->getAttribute('content');
+                } else {
+                $image = "";
+                }
                 @endphp
                 <div class="link">
                     <div class="innerLink">
                         <div class="linkImage">
+                            @if(!$image == "")
                             <a href="{{ $post->body }}" target="_blank" class="">
                                 <img src="{{ $image }}" alt="" class="">
                             </a>
+                            @endif
                         </div>
                         <h3 class="">{{ $title }}</h3>
                         <p class="">{{ $description }}</p>
