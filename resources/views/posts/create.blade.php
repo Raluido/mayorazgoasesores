@@ -17,6 +17,10 @@
                 <form action="/posts/store" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="inputForm">
+                        <label for="">Si vas a añadir un enlace, marca esta opción</label>
+                        <input type="checkbox" name="link" value="0" class="form-control" style="width:unset; display:unset;">
+                    </div>
+                    <div class="inputForm">
                         <label for="">Título</label>
                         <input type="text" name="title" class="form-control">
                     </div>

@@ -18,6 +18,10 @@
                     @csrf
                     @method('PUT')
                     <div class="inputForm">
+                        <label for="">Si vas a añadir un enlace, marca esta opción</label>
+                        <input type="checkbox" name="link" class="form-control" value="{{ $post->link }}" <?php if($post->link == 1) : echo 'checked="checked"'; endif ?> style="width:unset; display:unset;">
+                    </div>
+                    <div class="inputForm">
                         <label for="">Título</label>
                         <input type="text" name="title" value="{{ $post->title }}">
                     </div>

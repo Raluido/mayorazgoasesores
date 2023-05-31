@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PostsController extends Controller
 {
@@ -33,11 +34,15 @@ class PostsController extends Controller
         //     'subtitle' => 'required',
         //     'body' => 'required',
         // ]);
+
+        log::info($request);
+
         $post = new Post();
-        $post->title = $request->title;
-        $post->subtitle = $request->subtitle;
-        $post->body = $request->body;
-        $post->published_at = $request->published_at;
+        $post->link = $request->input('link', 1);
+        $post->title = $request->input('title');
+        $post->subtitle = $request->input('subtitle');
+        $post->body = $request->input('body');
+        $post->published_at = $request->input('published_at');
         $post->save();
 
         $posts = DB::table('posts')
@@ -60,15 +65,19 @@ class PostsController extends Controller
 
     public function update(Post $post, Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'subtitle' => 'required',
-            'body' => 'required',
-        ]);
-        $post->title = $request->title;
-        $post->subtitle = $request->subtitle;
-        $post->body = $request->body;
-        $post->published_at = $request->published_at;
+        // $request->validate([
+        //     'title' => 'required',
+        //     'subtitle' => 'required',
+        //     'body' => 'required',
+        // ]);
+
+        log::info($request);
+
+        $post->link = $request->input('link');
+        $post->title = $request->input('title');
+        $post->subtitle = $request->input('subtitle');
+        $post->body = $request->input('body');
+        $post->published_at = $request->input('published_at');
 
         $post->save();
         return redirect('/posts')->with('success', 'Se ha actualizado correctamente!');
