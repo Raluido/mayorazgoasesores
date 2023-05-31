@@ -36,11 +36,11 @@ class PostsController extends Controller
         // ]);
 
         $post = new Post();
-        $post->link = $request->input('link', 1);
         $post->title = $request->input('title');
         $post->subtitle = $request->input('subtitle');
         $post->body = $request->input('body');
         $post->published_at = $request->input('published_at');
+        $post->link = $request->input('link', 1);
         $post->save();
 
         $posts = DB::table('posts')
@@ -69,12 +69,20 @@ class PostsController extends Controller
         //     'body' => 'required',
         // ]);
 
-        $post->link = $request->input('link', 1);
+        if ($post->link == 0 && $request->input('link') == 0) {
+            $defaultLink = 1;
+        } elseif ($post->link == 1 && $request->input('link') == null) {
+            $defaultLink = 0;
+        } else {
+            $defaultLink = $post->link;
+        }
+
+
         $post->title = $request->input('title');
         $post->subtitle = $request->input('subtitle');
         $post->body = $request->input('body');
         $post->published_at = $request->input('published_at');
-
+        $post->link = $defaultLink;
         $post->save();
         return redirect('/posts')->with('success', 'Se ha actualizado correctamente!');
     }
