@@ -157,7 +157,7 @@
                 </div>
                 @else
                 @foreach ($posts as $post)
-                @if($post->link == true)
+                @if($post->link == 1)
                 <div class="news">
                     <h3>{{ $post->title }}</h3>
                     <p>{{ $post->subtitle }}</p>

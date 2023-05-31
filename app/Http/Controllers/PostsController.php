@@ -35,8 +35,6 @@ class PostsController extends Controller
         //     'body' => 'required',
         // ]);
 
-        log::info($request);
-
         $post = new Post();
         $post->link = $request->input('link', 1);
         $post->title = $request->input('title');
@@ -71,9 +69,7 @@ class PostsController extends Controller
         //     'body' => 'required',
         // ]);
 
-        log::info($request);
-
-        $post->link = $request->input('link');
+        $post->link = $request->input('link', 1);
         $post->title = $request->input('title');
         $post->subtitle = $request->input('subtitle');
         $post->body = $request->input('body');
