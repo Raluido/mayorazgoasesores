@@ -157,7 +157,7 @@
                 </div>
                 @else
                 @foreach ($posts as $post)
-                @if($post->subtitle != null)
+                @if($post->link == false)
                 <div class="news">
                     <h3>{{ $post->title }}</h3>
                     <p>{{ $post->subtitle }}</p>
@@ -188,12 +188,12 @@
                 if(!$metaTitle[0] == ""){
                 $title = $metaTitle[0]->getAttribute('content');
                 } else {
-                $title = "";
+                $title = $post->title;
                 }
                 if(!$metaDescription[0] == ""){
                 $description = $metaDescription[0]->getAttribute('content');
                 } else {
-                $description = "";
+                $description = $post->subtitle;
                 }
                 if(!$metaImage[0] == ""){
                 $image = $metaImage[0]->getAttribute('content');
