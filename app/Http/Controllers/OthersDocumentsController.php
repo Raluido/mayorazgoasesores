@@ -211,6 +211,8 @@ class OthersDocumentsController extends Controller
             ->select('users.nif', 'others_documents.id', 'others_documents.filename', 'others_documents.year', 'others_documents.month')
             ->paginate(10);
 
+        $othersdocuments->setPath('/othersdocuments/show?month=' . $month . '&year=' . $year);
+
         if ($othersdocuments[0] == null) {
             echo '<div class="alert alert-warning">No hay documentos en ' . $month . $year . '<div>';
         }
@@ -230,12 +232,13 @@ class OthersDocumentsController extends Controller
 
     public function deleteAllOtherDocuments()
     {
+        $presentYear = date("Y");
 
         File::deleteDirectory(public_path('/storage/media/othersDocuments'));
         $path = public_path('/storage/media/othersDocuments');
         File::makeDirectory($path, 0775, true);
         DB::table('others_documents')->delete();
 
-        return view('othersdocuments.showForm');
+        return view('othersdocuments.showForm')->with('presentYear', $presentYear);
     }
 }

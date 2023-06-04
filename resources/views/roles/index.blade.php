@@ -32,9 +32,9 @@
                         <td>
                             <button class="green stylingButtons"><a class="buttonTextWt" href="{{ route('roles.show', $role->id) }}">Mostrar</a></button>
                             <button class="blue stylingButtons"><a class="buttonTextWt" href="{{ route('roles.edit', $role->id) }}">Editar</a></button>
-                            {!! Form::open(['method' => 'DELETE', 'route' => ['roles.destroy', $role->id], 'style' => 'display:inline']) !!}
-                            {!! Form::submit('Eliminar', ['class' => 'red stylingButtons buttonTextWt']) !!}
-                            {!! Form::close() !!}
+                            {{ html()->form('DELETE', '/roles/' . $role->id)->open() }}
+                            {{ html->submit('Borrar')->class(['red','stylingButtons', 'buttonTextWt']) }}
+                            {{ html()->form()->close() }}
                         </td>
                     </tr>
                     @endforeach

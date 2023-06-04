@@ -172,6 +172,8 @@ class CostsImputsController extends Controller
             ->groupBy('users.nif')
             ->paginate(10);
 
+        $costsimputs->setPath('/costsimputs/show?month=' . $month . '&year=' . $year);
+
         if ($costsimputs[0] == null) {
             echo '<div class="">Aún no están disponibles las imputaciones de costes de ' . $month . $year . '<div>';
         }

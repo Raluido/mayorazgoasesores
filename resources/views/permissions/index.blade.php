@@ -28,13 +28,9 @@
                         <td>{{ $permission->name }}</td>
                         <td>{{ $permission->guard_name }}</td>
                         <td><button class="stylingButtons green"><a href="{{ route('permissions.edit', $permission->id) }}" class="buttonTextWt">Editar</a></button>
-                            {!! Form::open([
-                            'method' => 'DELETE',
-                            'route' => ['permissions.destroy', $permission->id],
-                            'style' => 'display:inline',
-                            ]) !!}
-                            {!! Form::submit('Borrar', ['class' => 'buttonTextWt stylingButtons red']) !!}
-                            {!! Form::close() !!}
+                            {{ html()->form('DELETE', '/permissions/' . $permission->id)->open() }}
+                            {{ html()->submit('Borrar')->class(['buttonTextWt', 'stylingButtons', 'red']) }}
+                            {{ html()->form()->close() }}
                         </td>
                     </tr>
                     @endforeach

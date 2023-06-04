@@ -114,7 +114,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('/downloadList', 'OthersDocumentsController@downloadList')->name('othersdocuments.downloadList');
             Route::post('/download', 'OthersDocumentsController@downloadOthersDocuments')->name('othersdocuments.downloadOthersDocuments');
             Route::get('/showForm', 'OthersDocumentsController@showForm')->name('othersdocuments.showForm');
-            Route::post('/show', 'OthersDocumentsController@showOthersDocuments')->name('othersdocuments.showOthersDocuments');
+            Route::get('/show', 'OthersDocumentsController@showOthersDocuments')->name('othersdocuments.showOthersDocuments');
             Route::delete('/delete/{otherdocument}', 'OthersDocumentsController@deleteOthersDocuments')->name('othersdocuments.deleteOthersDocuments');
             Route::get('/deleteAll', 'OthersDocumentsController@deleteAllOtherDocuments')->name('othersdocuments.deleteAllOthersDocuments');
         });

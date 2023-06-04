@@ -152,6 +152,8 @@ class PayrollsController extends Controller
             ->select('users.nif', 'employees.dni', 'payrolls.id', 'payrolls.month', 'payrolls.year')
             ->paginate(10);
 
+        $payrolls->setPath('/payrolls/show?month=' . $month . '&year=' . $year);
+
         if ($payrolls[0] == null) {
             echo '<div class=""> Aún no están disponibles las nóminas de ' . $month . $year . '<div>';
         }
@@ -165,7 +167,7 @@ class PayrollsController extends Controller
 
         DB::Table('payrolls')->where('id', '=', $id)->delete();
 
-        return redirect()->route('payrolls.showForm')->with('payrolls');
+        return redirect()->route('payrolls.showForm');
     }
 
     public function deleteAllPayrolls()
@@ -175,6 +177,6 @@ class PayrollsController extends Controller
         File::makeDirectory($path, 0777, true);
         DB::table('payrolls')->delete();
 
-        return redirect()->route('payrolls.showForm')->with('payrolls');
+        return redirect()->route('payrolls.showForm');
     }
 }

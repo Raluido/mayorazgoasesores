@@ -35,13 +35,9 @@
                         <td>{{ $index->dni }}</td>
                         <td><button class="stylingButtons blue"><a href="{{ route('employees.show', $index->id) }}" class="buttonTextWt">Mostrar</a></button>
                             <button class="stylingButtons green"><a href="{{ route('employees.edit', $index->id) }}" class="buttonTextWt">Editar</a></button>
-                            {!! Form::open([
-                            'method' => 'DELETE',
-                            'route' => ['employees.destroy', $index->id],
-                            'style' => 'display:inline',
-                            ]) !!}
-                            {!! Form::submit('Delete', ['class' => 'stylingButtons red buttonTextWt']) !!}
-                            {!! Form::close() !!}
+                            {{ html()->form('DELETE', '/employees/' . $index->id . '/delete')->open() }}
+                            {{ html()->submit('Borrar')->class(['stylingButtons', 'red', 'buttonTextWt']) }}
+                            {{ html()->form()->close() }}
                         </td>
                     </tr>
                     @endforeach

@@ -39,9 +39,9 @@
                         </td>
                         <td><button class="stylingButtons blue"><a href="{{ route('users.show', $user->id) }}" class="buttonTextWt">Mostrar</a></button>
                             <button class="stylingButtons green"><a href="{{ route('users.edit', $user->id) }}" class="buttonTextWt">Editar</a></button>
-                            {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id], 'style' => 'display:inline']) !!}
-                            {!! Form::submit('Eliminar', ['class' => 'stylingButtons red buttonTextWt']) !!}
-                            {!! Form::close() !!}
+                            {{ html()->form('DELETE', '/users/' . $user->id . '/delete')->open() }}
+                            {{ html()->submit('Borrar')->class(['stylingButtons', 'red', 'buttonTextWt']) }}
+                            {{ html()->form()->close() }}
                         </td>
                     </tr>
                     @endforeach

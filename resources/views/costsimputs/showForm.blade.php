@@ -9,9 +9,8 @@
         </div>
         <div class="bottom">
             <div class="innerBottom">
-                <form method="get" name="showCostsImputsForm" action="/costsimputs/show" enctype="multipart/form-data">
+                <form method="get" name="showCostsImputsForm" action="/costsimputs/show">
                     <div class="inputForm">
-                        <input name="_token" type="hidden" value="{{ csrf_token() }}">
                         <label for="month">Selecciona un mes</label>
                         <select name="month" id="month">
                             <option value="ENE">Enero</option>

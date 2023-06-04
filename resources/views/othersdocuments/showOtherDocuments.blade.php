@@ -27,13 +27,9 @@
                             <td>{{ basename($index->month) }}</td>
                             <td>{{ basename($index->year) }}</td>
                             <td>
-                                {!! Form::open([
-                                'method' => 'DELETE',
-                                'route' => ['othersdocuments.deleteOthersDocuments', $index->id],
-                                'style' => 'display:inline',
-                                ]) !!}
-                                {!! Form::submit('Delete', ['class' => 'stylingButtons red buttonTextWt']) !!}
-                                {!! Form::close() !!}
+                                {{ html()->form('DELETE', '/othersdocuments/' . $index->id . '/delete')->open() }}
+                                {{ html()->submit('Borrar')->class(['stylingButtons', 'red', 'buttonTextWt']) }}
+                                {{ html()->form()->close() }}
                             </td>
                         </tr>
                         @endforeach
