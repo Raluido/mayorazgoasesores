@@ -195,7 +195,7 @@ class AddUsersCostsImputs implements ShouldQueue
             }
         }
 
-        Mail::to("f.luis@mayorazgoasesores.es")->send(new AddUsersNotification($usersNifPass, $uploadError));
+        Mail::to(config('mail.to')['address'])->send(new AddUsersNotification($usersNifPass, $uploadError));
     }
 
     /**
@@ -214,6 +214,6 @@ class AddUsersCostsImputs implements ShouldQueue
         }
 
         $jobError = "Error en la creación de empresas, vuelva a intentarlo gracias ;)";
-        Mail::to("f.luis@mayorazgoasesores.es")->send(new JobErrorNotification($jobError, $exception));
+        Mail::to(config('mail.to')['address'])->send(new JobErrorNotification($jobError, $exception));
     }
 }

@@ -208,7 +208,7 @@ class UploadCostsImputs implements ShouldQueue
             }
         }
 
-        Mail::to("f.luis@mayorazgoasesores.es")->send(new UploadCostsImputsNotification($uploadError, $monthInput, $yearInput));
+        Mail::to(config('mail.to')['address'])->send(new UploadCostsImputsNotification($uploadError, $monthInput, $yearInput));
 
         $files = glob(public_path('storage/media/costsImputsTemp/*.*'));
         foreach ($files as $index) {
@@ -237,6 +237,6 @@ class UploadCostsImputs implements ShouldQueue
         }
 
         $jobError = "Error en la carga de Imputación de Costes, vuelva a intentarlo gracias ;)";
-        Mail::to("f.luis@mayorazgoasesores.es")->send(new JobErrorNotification($jobError, $exception));
+        Mail::to(config('mail.to')['address'])->send(new JobErrorNotification($jobError, $exception));
     }
 }
