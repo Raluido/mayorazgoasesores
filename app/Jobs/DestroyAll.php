@@ -69,7 +69,7 @@ class DestroyAll implements ShouldQueue
         $passed = "El proceso de eliminación de toda la base de datos ha finalizado con éxito";
 
 
-        Mail::to(config('mail.to')['address'])->send(new DeleteNotification($passed));
+        Mail::to(config('app.mail_to_address'))->send(new DeleteNotification($passed));
     }
 
     /**
@@ -81,6 +81,6 @@ class DestroyAll implements ShouldQueue
     public function failed(Exception $exception)
     {
         $jobError = "Error en la eliminando TODOS los datos, vuelva a intentarlo gracias ;)";
-        Mail::to(config('mail.to')['address'])->send(new JobErrorNotification($jobError, $exception));
+        Mail::to(config('app.mail_to_address'))->send(new JobErrorNotification($jobError, $exception));
     }
 }
