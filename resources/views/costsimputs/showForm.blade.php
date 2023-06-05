@@ -8,6 +8,9 @@
             <h3 class="">Subir los modelos de Imputación de Costes del mes seleccionado.</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <div class="innerBottom">
                 <form method="get" name="showCostsImputsForm" action="/costsimputs/show">
                     <div class="inputForm">

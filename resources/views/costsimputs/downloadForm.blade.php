@@ -8,6 +8,9 @@
             <h3 class="">Descargar los modelos de imputación de costes</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <div class="innerBottom">
                 <form method="POST" name="monthyearForm" action="/costsimputs/download" enctype="multipart/form-data">
                     <div class="inputForm">

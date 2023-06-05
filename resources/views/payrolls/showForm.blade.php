@@ -8,6 +8,9 @@
             <h3 class="">Selecciona las nóminas que quieras ver</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <div class="innerBottom">
                 <form method="GET" name="showPayrollsForm" action="{{ route('payrolls.showPayrolls') }}">
                     <div class="inputForm">

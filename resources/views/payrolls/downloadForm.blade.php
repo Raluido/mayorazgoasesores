@@ -8,6 +8,9 @@
             <h3 class="">Descargar nóminas</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <div class="innerBottom">
                 <form method="POST" name="monthyearForm" action="/payrolls/download" enctype="multipart/form-data">
                     <div class="inputForm">

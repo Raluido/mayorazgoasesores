@@ -20,7 +20,8 @@ class PayrollsController extends Controller
     {
         $presentYear = date("Y");
 
-        return view('payrolls.uploadForm', compact('presentYear'));
+        return view('payrolls.uploadForm')
+            ->with('presentYear', $presentYear);
     }
 
     public function uploadPayrolls(Request $request)
@@ -75,10 +76,7 @@ class PayrollsController extends Controller
         $month = null;
         $year = null;
 
-        return view('payrolls.downloadForm')
-            ->with('month', $month)
-            ->with('year', $year)
-            ->with('presentYear', $presentYear);
+        return view('payrolls.downloadForm', compact('month', 'year', 'presentYear'));
     }
 
     public function getData(Request $request)
@@ -126,7 +124,10 @@ class PayrollsController extends Controller
                 return response()->download($tempFolder . '/' . $zipFilename)->deleteFileAfterSend(true);
             }
         } else {
-            echo '<div class=""><strong>Warning!</strong> Las nóminas de ' . $month . $year . ' no están disponibles.<div>';
+            return redirect()
+                ->route('payrolls.downloadForm')
+                ->with($month, $year, $presentYear)
+                ->withErrors(__('Las nóminas de ' . $month . $year . ' no están disponibles.'));
         }
 
         return view('payrolls.downloadForm', compact('month', 'year', 'presentYear'));
@@ -136,11 +137,13 @@ class PayrollsController extends Controller
     {
         $presentYear = date("Y");
 
-        return view('payrolls.showForm')->with('presentYear', $presentYear);
+        return view('payrolls.showForm')
+            ->with('presentYear', $presentYear);
     }
 
     public function showPayrolls(Request $request)
     {
+        $presentYear = date("Y");
         $month = $request->input('month');
         $year = $request->input('year');
 
@@ -155,9 +158,14 @@ class PayrollsController extends Controller
         $payrolls->setPath('/payrolls/show?month=' . $month . '&year=' . $year);
 
         if ($payrolls[0] == null) {
-            echo '<div class=""> Aún no están disponibles las nóminas de ' . $month . $year . '<div>';
+            return redirect()
+                ->route('payrolls.showForm')
+                ->with($presentYear)
+                ->withErrors(__('Aún no están disponibles las nóminas de ' . $month . $year . '.'));
+        } else {
+            return view('payrolls.showPayrolls')
+                ->with('payrolls', $payrolls);
         }
-        return view('payrolls.showPayrolls', compact('payrolls', 'month', 'year'));
     }
 
     public function deletePayrolls($id)
@@ -167,16 +175,18 @@ class PayrollsController extends Controller
 
         DB::Table('payrolls')->where('id', '=', $id)->delete();
 
-        return redirect()->route('payrolls.showForm');
+        return redirect()
+            ->route('payrolls.showForm');
     }
 
     public function deleteAllPayrolls()
     {
         File::deleteDirectory(public_path('/storage/media/payrolls'));
         $path = public_path('/storage/media/payrolls');
-        File::makeDirectory($path, 0777, true);
+        File::makeDirectory($path, 0775, true);
         DB::table('payrolls')->delete();
 
-        return redirect()->route('payrolls.showForm');
+        return redirect()
+            ->route('payrolls.showForm');
     }
 }

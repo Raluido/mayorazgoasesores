@@ -22,7 +22,8 @@ class CostsImputsController extends Controller
     {
         $presentYear = date("Y");
 
-        return view('costsimputs.uploadForm', compact('presentYear'));
+        return view('costsimputs.uploadForm')
+            ->with('presentYear', $presentYear);
     }
 
     public function uploadCostsImputs(Request $request)
@@ -101,11 +102,11 @@ class CostsImputsController extends Controller
         $presentYear = date("Y");
 
         $files = DB::Table('users')
+            ->select('costs_imputs.filename')
             ->join('costs_imputs', 'costs_imputs.user_id', '=', 'users.id')
             ->where('users.nif', '=', Auth::user()->nif)
             ->where('costs_imputs.year', '=', $year)
             ->where('costs_imputs.month', '=', $month)
-            ->select('costs_imputs.filename')
             ->get()
             ->toArray();
 
@@ -131,22 +132,19 @@ class CostsImputsController extends Controller
                 return response()->download($tempFolder . '/' . $zipFilename)->deleteFileAfterSend(true);
             }
         } else {
-            echo '<div class="alert alert-warning"><strong>Warning!</strong> Las modelos de imputación de costes de ' . $month . $year . ' no están disponibles.<div>';
+            return redirect()
+                ->route('costsimputs.downloadForm')
+                ->with($month, $year, $presentYear)
+                ->withErrors(__('Los modelos de imputación de costes de ' . $month . $year . ' no están disponibles.'));
         }
-
-        return view('costsimputs.downloadForm', compact('month', 'year', 'presentYear'));
     }
 
     public function showForm()
     {
         $presentYear = date("Y");
 
-        $months = DB::table('costs_imputs')
-            ->select('month')
-            ->where('year', $presentYear)
-            ->get();
-
-        return view('costsimputs.showForm', compact('months', 'presentYear'));
+        return view('costsimputs.showForm')
+            ->with('presentYear', $presentYear);
     }
 
     public function getYear($year)
@@ -161,24 +159,29 @@ class CostsImputsController extends Controller
 
     public function showCostsImputs(Request $request)
     {
+        $presentYear = date("Y");
         $month = $request->input('month');
         $year = $request->input('year');
 
         $costsimputs = DB::Table('users')
+            ->select('users.nif', 'costs_imputs.month', 'costs_imputs.year', 'costs_imputs.user_id')
             ->join('costs_imputs', 'costs_imputs.user_id', '=', 'users.id')
             ->where('year', '=', $year)
             ->where('month', '=', $month)
-            ->select('users.nif', 'costs_imputs.month', 'costs_imputs.year', 'costs_imputs.user_id')
             ->groupBy('users.nif')
             ->paginate(10);
 
         $costsimputs->setPath('/costsimputs/show?month=' . $month . '&year=' . $year);
 
         if ($costsimputs[0] == null) {
-            echo '<div class="">Aún no están disponibles las imputaciones de costes de ' . $month . $year . '<div>';
+            return redirect()
+                ->route('costsimputs.showForm')
+                ->with('presentYear', $presentYear)
+                ->withErrors(__('Aún no están disponibles las imputaciones de costes de ' . $month . $year . '.'));
+        } else {
+            return view('costsimputs.showCostsImputs')
+                ->with('costsimputs', $costsimputs);
         }
-
-        return view('costsimputs.showCostsImputs', compact('costsimputs', 'month', 'year'));
     }
 
 
@@ -191,10 +194,10 @@ class CostsImputsController extends Controller
             ->count();
 
         $costsimputId = DB::Table('costs_imputs')
+            ->select('filename')
             ->where('year', '=', $year)
             ->where('month', '=', $month)
             ->where('user_id', '=', $id)
-            ->select('filename')
             ->get()
             ->toArray();
 
@@ -216,7 +219,7 @@ class CostsImputsController extends Controller
     {
         File::deleteDirectory(public_path('/storage/media/costsImputs'));
         $path = public_path('/storage/media/costsImputs');
-        File::makeDirectory($path, 0777, true);
+        File::makeDirectory($path, 0775, true);
         DB::table('costs_imputs')->delete();
 
         return view('costsimputs.showForm');
