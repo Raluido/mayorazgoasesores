@@ -29,8 +29,6 @@ class GoogleDriveServiceProvider extends ServiceProvider
             Storage::extend('google', function ($app, $config) {
                 $options = [];
 
-                log::info($config);
-
                 if (!empty($config['teamDriveId'] ?? null)) {
                     $options['teamDriveId'] = $config['teamDriveId'];
                 }
