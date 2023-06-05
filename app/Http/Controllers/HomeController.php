@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
-use App\Providers\GoogleDriveServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
 
 class HomeController extends Controller
 {
     public function index()
     {
+        log::info(Storage::disk('google')->exists('storage'));
+
         $posts = DB::table('posts')
             ->orderBy('created_at', 'desc')
             ->limit(5)

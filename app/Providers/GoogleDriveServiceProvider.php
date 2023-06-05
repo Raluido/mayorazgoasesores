@@ -29,6 +29,8 @@ class GoogleDriveServiceProvider extends ServiceProvider
             Storage::extend('google', function ($app, $config) {
                 $options = [];
 
+                log::info($config);
+
                 if (!empty($config['teamDriveId'] ?? null)) {
                     $options['teamDriveId'] = $config['teamDriveId'];
                 }
@@ -40,7 +42,7 @@ class GoogleDriveServiceProvider extends ServiceProvider
 
                 $service = new \Google\Service\Drive($client);
                 $adapter = new \Masbug\Flysystem\GoogleDriveAdapter($service, $config['folderId'] ?? '/', $options);
-                $driver = new \League\Flysystem\FilesystemOperator($adapter);
+                $driver = new \League\Flysystem\Filesystem($adapter);
 
                 return new \Illuminate\Filesystem\FilesystemAdapter($driver, $adapter);
             });
