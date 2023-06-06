@@ -43,5 +43,8 @@
             {!! $costsimputs->links() !!}
         </div>
     </div>
+    <div class="">
+        @include('layouts.partials.messages')
+    </div>
 </section>
 @endsection

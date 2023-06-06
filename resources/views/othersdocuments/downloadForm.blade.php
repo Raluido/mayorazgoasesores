@@ -8,10 +8,12 @@
             <h3 class="">Descargar otros documentos</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <div class="innerBottom">
-                <form method="POST" name="monthyearForm" action="/othersdocuments/downloadList" enctype="multipart/form-data">
+                <form method="get" name="monthyearForm" action="/othersdocuments/downloadList">
                     <div class="inputForm">
-                        <input name="_token" type="hidden" value="{{ csrf_token() }}">
                         <label for="month">Selecciona un mes</label>
                         <select name="month" id="month">
                             <option value=""></option>

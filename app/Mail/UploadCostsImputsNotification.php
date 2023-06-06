@@ -35,7 +35,7 @@ class UploadCostsImputsNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')
+        return $this->from(ENV('MAIL_FROM_ADDRESS'))
             ->subject('Proceso de envio de imputación de costes finalizado')
             ->view('mails.mail-UploadCostsImputs-template')
             ->with('uploadError', $this->uploadError)

@@ -8,6 +8,9 @@
             <h3 class="">Listar los documentos de interés por mes y año.</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <div class="innerBottom">
                 <form method="GET" name="showOthersDocumentsForm" action="/othersdocuments/show">
                     <div class="inputForm">

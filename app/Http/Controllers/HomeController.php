@@ -13,8 +13,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        log::info(Storage::disk('google')->exists('storage'));
-
         $posts = DB::table('posts')
             ->orderBy('created_at', 'desc')
             ->limit(5)

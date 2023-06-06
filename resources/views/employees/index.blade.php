@@ -13,9 +13,6 @@
                     <button class="stylingButtons red buttonTextWt" onclick="confirmation()">Eliminar
                         todos</button>
             </div>
-            <div class="">
-                @include('layouts.partials.messages')
-            </div>
             <table class="">
                 <thead>
                     <tr>
@@ -51,6 +48,9 @@
             {!! $employees->links() !!}
         </div>
     </div>
+</div>
+<div class="">
+    @include('layouts.partials.messages')
 </div>
 @endsection
 @section('js')

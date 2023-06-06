@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class DeleteNotification extends Mailable
 {
@@ -30,7 +31,7 @@ class DeleteNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')
+        return $this->from(ENV('MAIL_FROM_ADDRESS'))
             ->subject('Proceso de eliminación de toda la base de datos completada')
             ->view('mails.mail-Delete-template')
             ->with('passed', $this->passed);

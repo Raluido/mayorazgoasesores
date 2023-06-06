@@ -31,7 +31,7 @@ class JobErrorNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')
+        return $this->from(ENV('MAIL_FROM_ADDRESS'))
             ->subject('Error en el envío')
             ->view('mails.mail-JobError-template')
             ->with('jobError', $this->jobError)

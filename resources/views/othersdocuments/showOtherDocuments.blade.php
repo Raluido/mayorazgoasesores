@@ -27,7 +27,7 @@
                             <td>{{ basename($index->month) }}</td>
                             <td>{{ basename($index->year) }}</td>
                             <td>
-                                {{ html()->form('DELETE', '/othersdocuments/' . $index->id . '/delete')->open() }}
+                                {{ html()->form('DELETE', '/othersdocuments/delete/' . $index->id . '/' . $index->month . '/' . $index->year)->open() }}
                                 {{ html()->submit('Borrar')->class(['stylingButtons', 'red', 'buttonTextWt']) }}
                                 {{ html()->form()->close() }}
                             </td>

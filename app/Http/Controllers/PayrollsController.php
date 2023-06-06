@@ -59,15 +59,19 @@ class PayrollsController extends Controller
                     UploadPayrolls::dispatch($filename, $month, $year);
                 } else {
                     unlink(public_path('storage/media/' . $filename));
-                    return redirect()->route('payrolls.uploadForm')->withErrors(__('El documento adjuntado no tiene el formato de nómina.'));
+                    return redirect()->route('payrolls.uploadForm')
+                        ->withErrors(__('El documento adjuntado no tiene el formato de nómina.'));
                 }
             } else {
-                return redirect()->route('payrolls.uploadForm')->withErrors(__('Sólo se admiten archivos con extensión .pdf'));
+                return redirect()->route('payrolls.uploadForm')
+                    ->withErrors(__('Sólo se admiten archivos con extensión .pdf'));
             }
         } else {
-            return redirect()->route('payrolls.uploadForm')->withErrors(__('No has añadido ningun archivo aún.'));
+            return redirect()->route('payrolls.uploadForm')
+                ->withErrors(__('No has añadido ningun archivo aún.'));
         }
-        return redirect()->route('payrolls.uploadForm')->withSuccess(__('Las nóminas han comenzado a subirse, tardaremos unos minutos, gracias ;)'));
+        return redirect()->route('payrolls.uploadForm')
+            ->withSuccess(__('Las nóminas han comenzado a subirse, tardaremos unos minutos, gracias ;)'));
     }
 
     public function downloadForm()
@@ -129,8 +133,6 @@ class PayrollsController extends Controller
                 ->with($month, $year, $presentYear)
                 ->withErrors(__('Las nóminas de ' . $month . $year . ' no están disponibles.'));
         }
-
-        return view('payrolls.downloadForm', compact('month', 'year', 'presentYear'));
     }
 
     public function showForm()
@@ -141,11 +143,14 @@ class PayrollsController extends Controller
             ->with('presentYear', $presentYear);
     }
 
-    public function showPayrolls(Request $request)
+    public function showPayrolls(Request $request, $month = null, $year = null)
     {
         $presentYear = date("Y");
-        $month = $request->input('month');
-        $year = $request->input('year');
+
+        if ($month == null && $year == null) {
+            $month = $request->input('month');
+            $year = $request->input('year');
+        }
 
         $payrolls = DB::Table('users')
             ->join('employees', 'employees.user_id', '=', 'users.id')
@@ -168,25 +173,50 @@ class PayrollsController extends Controller
         }
     }
 
-    public function deletePayrolls($id)
+    public function deletePayrolls($id, $month, $year)
     {
         $payrollId = DB::Table('payrolls')->where('id', '=', $id)->value('filename');
-        unlink($payrollId);
 
-        DB::Table('payrolls')->where('id', '=', $id)->delete();
+        try {
+            unlink($payrollId);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
-        return redirect()
-            ->route('payrolls.showForm');
+        $delete = DB::Table('payrolls')->where('id', '=', $id)->delete();
+
+        if ($delete) {
+            return redirect()
+                ->route('payrolls.showPayrolls', compact('year', 'month'))
+                ->withSuccess(__('Se ha eliminado correctamente la nómina'));
+        } else {
+            return redirect()
+                ->route('payrolls.showPayrolls', compact('year', 'month'))
+                ->withErrors(__('Ha habido un error al intentar eliminar la nómina.'));
+        }
     }
 
     public function deleteAllPayrolls()
     {
-        File::deleteDirectory(public_path('/storage/media/payrolls'));
+        try {
+            File::deleteDirectory(public_path('/storage/media/payrolls'));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
         $path = public_path('/storage/media/payrolls');
         File::makeDirectory($path, 0775, true);
-        DB::table('payrolls')->delete();
 
-        return redirect()
-            ->route('payrolls.showForm');
+        $delete = DB::table('payrolls')->delete();
+
+        if ($delete) {
+            return redirect()
+                ->route('payrolls.showForm')
+                ->withSuccess(__('Se han eliminado correctamente todas las nóminas'));
+        } else {
+            return redirect()
+                ->route('costsimputs.showForm')
+                ->withErrors(__('Ha habido un error al intentar eliminar todas nóminas.'));
+        }
     }
 }

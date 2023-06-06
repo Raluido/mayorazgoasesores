@@ -12,6 +12,7 @@ use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Exists;
+use Mockery\Undefined;
 
 class OthersDocumentsController extends Controller
 {
@@ -20,7 +21,8 @@ class OthersDocumentsController extends Controller
     {
         $presentYear = date("Y");
 
-        return view('othersdocuments.uploadForm')->with('presentYear', $presentYear);
+        return view('othersdocuments.uploadForm')
+            ->with('presentYear', $presentYear);
     }
 
     public function uploadOthersDocuments(Request $request)
@@ -92,25 +94,33 @@ class OthersDocumentsController extends Controller
                     }
                 }
             } else {
-                echo '<div class="alert alert-warning"><strong>Warning!</strong> No has añadido ningun archivo aún.</div>';
-
-                return view('othersdocuments.uploadForm')->with('presentYear', $presentYear);
+                return redirect()
+                    ->route('othersdocuments.uploadForm')
+                    ->with('presentYear', $presentYear)
+                    ->withErrors(__('No has añadido ningun archivo aún.'));
             }
-
-            return view('othersdocuments.uploadForm')->with('presentYear', $presentYear)->with('successMsg', "Los documentos se han subido correctamente, gracias ;)");
+            return redirect()
+                ->route('othersdocuments.uploadForm')
+                ->with('presentYear', $presentYear)
+                ->withSuccess(__('Los documentos se han subido correctamente, gracias ;'));
         } else {
-            echo '<div class="alert alert-warning"><strong>Warning!</strong>El ' . $nif . ' corresponde a una empresa que no ha sido creada aún.</div>';
+            return redirect()
+                ->route('othersdocuments.uploadForm')
+                ->with('presentYear', $presentYear)
+                ->withErrors(__('El ' . $nif . ' corresponde a una empresa que no ha sido creada aún.'));
         }
     }
 
     public function downloadForm()
     {
         $presentYear = date("Y");
-        return view('othersdocuments.downloadForm')->with('presentYear', $presentYear);
+        return view('othersdocuments.downloadForm')
+            ->with('presentYear', $presentYear);
     }
 
     public function downloadList(Request $request)
     {
+        $presentYear = date("Y");
         $month = $request->input('month');
         $year = $request->input('year');
 
@@ -123,7 +133,10 @@ class OthersDocumentsController extends Controller
             ->toArray();
 
         if ($othersdocuments == null) {
-            echo '<div class="alert alert-warning"><strong>Warning!</strong> Los documentos de ' . $month . $year . ' no están disponibles aún.</div>';
+            return redirect()
+                ->route('othersdocuments.downloadForm')
+                ->with('presentYear', $presentYear)
+                ->withErrors(__('Los documentos de ' . $month . $year . ' no están disponibles aún.'));
         }
         return view('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'));
     }
@@ -132,77 +145,63 @@ class OthersDocumentsController extends Controller
     {
         $month = $request->input('month');
         $year = $request->input('year');
+        $otherDocumentSlc = $request->othersDocuments;
 
-        $request->validate([
-            'othersDocuments' => 'required|min:1'
-        ]);
 
-        $othersDocuments = DB::Table('users')
-            ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
-            ->where('others_documents.year', '=', $year)
-            ->where('others_documents.month', '=', $month)
-            ->where('users.nif', '=', Auth::user()->nif)
-            ->select('others_documents.filename')
-            ->get()
-            ->toArray();
+        if (!isset($otherDocumentSlc)) {
 
-        if ($othersDocuments != null) {
+            $othersdocuments = DB::Table('users')
+                ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
+                ->where('others_documents.year', '=', $year)
+                ->where('others_documents.month', '=', $month)
+                ->where('users.nif', '=', Auth::user()->nif)
+                ->get()
+                ->toArray();
 
-            if ($month || $year != null) {
+            return redirect()
+                ->route('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'))
+                ->withErrors(__('Debe seleccionar que archivos quiere descargar'));
+        } else {
 
-                $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
-                $zip = new ZipArchive;
+            $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
+            $zip = new ZipArchive;
 
-                $publicDir = public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . Auth::user()->nif);
-                $tempFolder = public_path('storage/media/othersDocuments');
+            $publicDir = public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . Auth::user()->nif);
+            $tempFolder = public_path('storage/media/othersDocuments');
 
-                if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
-                    foreach ($othersDocuments as $index) {
-                        $filename = basename((array_values((array)$index))[0]);
-                        $temp = (array_values((array)$filename))[0];
-                        $zip->addFile($publicDir . '/' . $temp, $temp);
-                    }
-                    $zip->close();
+            if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
+                foreach ($otherDocumentSlc as $index) {
+                    $zip->addFile($publicDir . '/' . $index, $index);
                 }
-
-                if (file_exists($tempFolder . '/' . $zipFilename)) {
-                    return response()->download($tempFolder . '/' . $zipFilename)->deleteFileAfterSend(true);
-                }
-            } else {
-                echo '<div class="alert alert-warning"><strong>Warning!</strong> Debes elegir un mes y un año.<div>';
+                $zip->close();
             }
-        } else {
-            echo '<div class="alert alert-warning"><strong>Warning!</strong> Hemos detectado un error, vuelva a intentarlo, gracias ;)<div>';
+
+            if (file_exists($tempFolder . '/' . $zipFilename)) {
+                return response()->download($tempFolder . '/' . $zipFilename)->deleteFileAfterSend(true);
+            } else {
+                return redirect()
+                    ->route('othersdocuments.downloadForm')
+                    ->withErrors(__('Hemos detectado un error, vuelva a intentarlo, gracias ;)'));
+            }
         }
-
-        $othersDocuments = DB::Table('users')
-            ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
-            ->where('others_documents.year', '=', $year)
-            ->where('others_documents.month', '=', $month)
-            ->where('users.nif', '=', Auth::user()->nif)
-            ->get()
-            ->toArray();
-
-        if ($othersDocuments != null) {
-            return view('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'));
-        } else {
-            return view('othersdocuments.downloadList', compact('No hay documentos en éstas fechas.'));
-        }
-
-        return view('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'));
     }
 
     public function showForm()
     {
         $presentYear = date("Y");
 
-        return view('othersdocuments.showForm')->with('presentYear', $presentYear);
+        return view('othersdocuments.showForm')
+            ->with('presentYear', $presentYear);
     }
 
-    public function showOthersDocuments(Request $request)
+    public function showOthersDocuments(Request $request, $month = null, $year = null)
     {
-        $month = $request->input('month');
-        $year = $request->input('year');
+        $presentYear = date("Y");
+
+        if ($year == null && $month == null) {
+            $month = $request->input('month');
+            $year = $request->input('year');
+        }
 
         $othersdocuments = DB::Table('users')
             ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
@@ -214,31 +213,59 @@ class OthersDocumentsController extends Controller
         $othersdocuments->setPath('/othersdocuments/show?month=' . $month . '&year=' . $year);
 
         if ($othersdocuments[0] == null) {
-            echo '<div class="alert alert-warning">No hay documentos en ' . $month . $year . '<div>';
+            return redirect()
+                ->route('othersdocuments.showForm')
+                ->with('presentYear', $presentYear)
+                ->withErrors(__('No hay documentos en ' . $month . $year));
+        } else {
+            return view('othersdocuments.showOtherDocuments', compact('othersdocuments', 'month', 'year'));
         }
-
-        return view('othersdocuments.showOtherDocuments', compact('othersdocuments', 'month', 'year'));
     }
 
-    public function deleteOthersDocuments($id)
+    public function deleteOthersDocuments($id, $month, $year)
     {
         $otherdocumentId = DB::Table('others_documents')->where('id', '=', $id)->value('filename');
-        unlink($otherdocumentId);
 
-        DB::Table('others_documents')->where('id', '=', $id)->delete();
+        try {
+            unlink($otherdocumentId);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
-        return view('othersdocuments.showForm');
+        $delete = DB::Table('others_documents')->where('id', '=', $id)->delete();
+
+        if ($delete) {
+            return redirect()
+                ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
+                ->withSuccess(__('Se han eliminado correctamente todos los documentos.'));
+        } else {
+            return redirect()
+                ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
+                ->withErrors(__('Ha habido un error al intentar eliminar todos los documentos.'));
+        }
     }
 
     public function deleteAllOtherDocuments()
     {
-        $presentYear = date("Y");
+        try {
+            File::deleteDirectory(public_path('/storage/media/othersDocuments'));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
-        File::deleteDirectory(public_path('/storage/media/othersDocuments'));
         $path = public_path('/storage/media/othersDocuments');
         File::makeDirectory($path, 0775, true);
-        DB::table('others_documents')->delete();
 
-        return view('othersdocuments.showForm')->with('presentYear', $presentYear);
+        $delete = DB::table('others_documents')->delete();
+
+        if ($delete) {
+            return redirect()
+                ->route('othersdocuments.showForm')
+                ->withSuccess(__('Se han eliminado correctamente todos los documentos.'));
+        } else {
+            return redirect()
+                ->route('othersdocuments.showForm')
+                ->withErrors(__('Ha habido un error al intentar eliminar todos los documentos.'));
+        }
     }
 }

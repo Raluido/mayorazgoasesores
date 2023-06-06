@@ -29,7 +29,7 @@ class AddUserNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')
+        return $this->from(ENV('MAIL_FROM_ADDRESS'))
             ->subject('Nuevo registro')
             ->view('mails.mail-AddUser-template')
             ->with('data', $this->data);

@@ -30,7 +30,7 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->from('mayorazgoasesores.info@gmail.com')
+        return $this->from(ENV('MAIL_FROM_ADDRESS'))
             ->subject('Ha recibido un email de' . $this->name)
             ->view('mails.SendEmail');
     }

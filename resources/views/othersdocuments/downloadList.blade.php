@@ -8,8 +8,11 @@
             <h3 class="">Listar otros documentos.</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <div class="innerBottom">
-                <form action="/othersdocuments/download" id="" method="post" enctype="multipart/form-data">
+                <form action="/othersdocuments/download" id="" method="post">
                     <input name="_token" type="hidden" value="{{ csrf_token() }}">
                     <table class="">
                         <thead>
@@ -29,7 +32,7 @@
                                 <td>{{ basename($index->filename) }}</td>
                                 <td>{{ $index->month }}</td>
                                 <td>{{ $index->year }}</td>
-                                <td><input type="checkbox" name="othersDocuments[]" value="{{ $index->filename }}"><br />
+                                <td style="display:flex; align-items:center;"><input type="checkbox" name="othersDocuments[]" value="{{ $index->filename }}"><br />
                                 <td><input type="hidden" name="month" value="{{ $index->month }}"><br />
                                 <td><input type="hidden" name="year" value="{{ $index->year }}"><br />
                                 </td>

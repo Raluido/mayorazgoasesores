@@ -28,7 +28,7 @@
                         <td>{{ basename($index->month) }}</td>
                         <td>{{ basename($index->year) }}</td>
                         <td>
-                            {{ html()->form('DELETE', '/payrolls/delete/' . $index->id)->open() }}
+                            {{ html()->form('DELETE', '/payrolls/delete/' . $index->id . '/' . $index->month . '/' . $index->year)->open() }}
                             {{ html()->submit('Borrar')->class(['stylingButtons', 'red', 'buttonTextWt']) }}
                             {{ html()->form()->close() }}
                         </td>
@@ -44,6 +44,9 @@
         <div class="">
             {!! $payrolls->links() !!}
         </div>
+    </div>
+    <div class="">
+        @include('layouts.partials.messages')
     </div>
 </section>
 @endsection

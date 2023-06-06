@@ -8,6 +8,9 @@
             <h3 class="">Subir otros documentos para cada empresa individualmente.</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <div class="innerBottom">
                 <form action="/othersdocuments/upload" enctype="multipart/form-data" method="POST">
                     @csrf
@@ -65,9 +68,6 @@
             </div>
         </div>
     </div>
-    @if (!empty($successMsg))
-    <div class="messages green"> {{ $successMsg }}</div>
-    @endif
 </section>
 @endsection
 @section('js')

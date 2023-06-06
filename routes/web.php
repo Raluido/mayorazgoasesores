@@ -91,7 +91,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/download/{month}/{year}', 'PayrollsController@downloadPayrolls')->name('payrolls.downloadPayrolls');
             Route::get('/showForm', 'PayrollsController@showForm')->name('payrolls.showForm');
             Route::get('/show', 'PayrollsController@showPayrolls')->name('payrolls.showPayrolls');
-            Route::delete('/delete/{payroll}', 'PayrollsController@deletePayrolls')->name('payrolls.deletePayrolls');
+            Route::delete('/delete/{payroll}/{month}/{year}', 'PayrollsController@deletePayrolls')->name('payrolls.deletePayrolls');
             Route::get('/deleteAll', 'PayrollsController@deleteAllPayrolls')->name('payrolls.deleteAllPayrolls');
         });
 
@@ -111,11 +111,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/uploadForm', 'OthersDocumentsController@uploadForm')->name('othersdocuments.uploadForm');
             Route::post('/upload', 'OthersDocumentsController@uploadOthersDocuments')->name('othersdocuments.uploadOthersDocuments');
             Route::get('/downloadForm', 'OthersDocumentsController@downloadForm')->name('othersdocuments.downloadForm');
-            Route::post('/downloadList', 'OthersDocumentsController@downloadList')->name('othersdocuments.downloadList');
+            Route::get('/downloadList', 'OthersDocumentsController@downloadList')->name('othersdocuments.downloadList');
             Route::post('/download', 'OthersDocumentsController@downloadOthersDocuments')->name('othersdocuments.downloadOthersDocuments');
             Route::get('/showForm', 'OthersDocumentsController@showForm')->name('othersdocuments.showForm');
             Route::get('/show', 'OthersDocumentsController@showOthersDocuments')->name('othersdocuments.showOthersDocuments');
-            Route::delete('/delete/{otherdocument}', 'OthersDocumentsController@deleteOthersDocuments')->name('othersdocuments.deleteOthersDocuments');
+            Route::delete('/delete/{otherdocument}/{month}/{year}', 'OthersDocumentsController@deleteOthersDocuments')->name('othersdocuments.deleteOthersDocuments');
             Route::get('/deleteAll', 'OthersDocumentsController@deleteAllOtherDocuments')->name('othersdocuments.deleteAllOthersDocuments');
         });
 

@@ -205,7 +205,7 @@ class UploadPayrolls implements ShouldQueue
             }
         }
 
-        Mail::to(config('app.mail_to_address'))->send(new UploadPayrollsNotification($uploadError, $monthInput, $yearInput));
+        Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new UploadPayrollsNotification($uploadError, $monthInput, $yearInput));
 
         $files = glob(public_path('storage/media/payrollsTemp/*.*'));
         foreach ($files as $index) {
@@ -234,6 +234,6 @@ class UploadPayrolls implements ShouldQueue
         }
 
         $jobError = "Error en la carga de Nóminas, vuelva a intentarlo gracias ;)";
-        Mail::to(config('app.mail_to_address'))->send(new JobErrorNotification($jobError, $exception));
+        Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new JobErrorNotification($jobError, $exception));
     }
 }
