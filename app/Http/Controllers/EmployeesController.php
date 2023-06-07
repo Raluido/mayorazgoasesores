@@ -102,7 +102,7 @@ class EmployeesController extends Controller
             ->get()
             ->toArray();
 
-        return view('employees.edit',compact('employeeFix'));
+        return view('employees.edit', compact('employeeFix'));
     }
 
     /**
@@ -133,19 +133,31 @@ class EmployeesController extends Controller
 
         if ($payrollsId != array()) {
             foreach ($payrollsId as $index) {
-                unlink((array_values((array)$index))[0]);
-                Db::Table('payrolls')
+                $payroll = Db::Table('payrolls')
                     ->where('filename', '=', (array_values((array)$index))[0])
                     ->delete();
+
+                if ($payroll) {
+                    try {
+                        unlink((array_values((array)$index))[0]);
+                    } catch (\Throwable $th) {
+                        continue;
+                    }
+                }
             }
         }
 
-        DB::Table('employees')
+        $delete = DB::Table('employees')
             ->where('id', '=', $id)
             ->delete();
 
-        return redirect()->route('employees.index')
-            ->withSuccess(__('Empleado eliminado correctamente.'));
+        if ($delete) {
+            return redirect()->route('employees.index')
+                ->withSuccess(__('Empleado eliminado correctamente.'));
+        } else {
+            return redirect()->route('employees.index')
+                ->withErrors(__('Ha habido un error al intentar eliminar el empleado.'));
+        }
     }
 
     public function deleteAll()

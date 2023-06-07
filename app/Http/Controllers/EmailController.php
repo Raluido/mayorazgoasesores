@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\EmailRequest;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\SendAnEmail;
 use Illuminate\Support\Facades\Log;
 
 class EmailController extends Controller
@@ -13,20 +14,15 @@ class EmailController extends Controller
     {
         $validated = $request->validated();
 
-        $fromEmail = "app.mail_from_address";
+        $fromEmail = ENV('MAIL_FROM_ADDRESS');
         $userEmail = $validated['email'];
         $userName = $validated['name'];
         $toName = "Mayorazgo Asesores";
-        $toEmail = "f.luis@mayorazgoasesores.es";
         $content = $validated['content'];
-        Mail::send('mails.mail-Send-template', ['name' => $userName, 'body' => $content], function ($message) use ($toName, $toEmail, $userName, $userEmail, $fromEmail) {
-            $message->from($fromEmail, $userName);
-            $message->subject('El usuario ' . $userName . ' ha enviado un mensaje');
-            $message->to($toEmail, $toName);
-            $message->replyTo($userEmail, $userName);
-        });
 
-        if (count(Mail::failures()) > 0) {
+        Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new SendAnEmail($fromEmail, $userEmail, $userName, $toName, $content));
+
+        if (Mail::flushMAcros() != null) {
             return redirect()
                 ->back()
                 ->withErrors(__("Ha habido un error al enviar el mensaje, vuelva a intentarlo más tarde."));

@@ -137,17 +137,22 @@ class UsersController extends Controller
             ->join('employees', 'employees.user_id', '=', 'users.id')
             ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
             ->where('user_id', '=', $user->id)
-            ->select('payrolls.filename')
+            ->select('payrolls.filename', 'payrolls.id')
             ->get();
 
-        if ($payrollsId != array()) {
+        if (isset($payrollsId[0])) {
             foreach ($payrollsId as $index) {
-                unlink((array_values((array)$index))[0]);
-                Db::Table('payrolls')
-                    ->where('filename', '=', (array_values((array)$index))[0])
+                try {
+                    unlink((array_values((array)$index))[0]);
+                } catch (\Throwable $th) {
+                }
+
+                $delete = Db::Table('payrolls')
+                    ->where('id', '=', (array_values((array)$index))[1])
                     ->delete();
             }
         }
+
 
         DB::Table('employees')
             ->where('user_id', '=', $user->id)
