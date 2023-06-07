@@ -33,7 +33,7 @@
                             <button class="green stylingButtons"><a class="buttonTextWt" href="{{ route('roles.show', $role->id) }}">Mostrar</a></button>
                             <button class="blue stylingButtons"><a class="buttonTextWt" href="{{ route('roles.edit', $role->id) }}">Editar</a></button>
                             {{ html()->form('DELETE', '/roles/' . $role->id)->open() }}
-                            {{ html->submit('Borrar')->class(['red','stylingButtons', 'buttonTextWt']) }}
+                            {{ html()->submit('Borrar')->class(['red','stylingButtons', 'buttonTextWt']) }}
                             {{ html()->form()->close() }}
                         </td>
                     </tr>
