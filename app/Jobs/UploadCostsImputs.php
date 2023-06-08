@@ -175,14 +175,14 @@ class UploadCostsImputs implements ShouldQueue
 
         // move to month/year folder
 
-        $path = public_path('/storage/media/costsImputs/' . $yearInput);
+        $path = public_path('storage/media/costsImputs/' . $yearInput);
 
         if (!File::exists($path)) {
             File::makeDirectory($path, 0775, true);
-            $path = public_path('/storage/media/costsImputs/' . $yearInput . '/' . $monthInput);
+            $path = public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput);
             File::makeDirectory($path, 0775, true);
         } else {
-            $path = public_path('/storage/media/costsImputs/' . $yearInput . '/' . $monthInput);
+            $path = public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput);
             if (!File::exists($path)) {
                 File::makeDirectory($path, 0775, true);
             }
@@ -198,7 +198,7 @@ class UploadCostsImputs implements ShouldQueue
                 rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
                 $costsImput = new CostsImput();
                 $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
-                $costsImput->filename = $path . '/' . $filename;
+                $costsImput->filename = 'storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename;
                 $costsImput->month = $monthInput;
                 $costsImput->year = $yearInput;
                 $costsImput->save();

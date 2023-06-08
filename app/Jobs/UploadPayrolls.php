@@ -143,16 +143,16 @@ class UploadPayrolls implements ShouldQueue
 
         // move to month and year folder
 
-        $path = public_path('/storage/media/payrolls/' . $yearInput);
+        $path = public_path('storage/media/payrolls/' . $yearInput);
         $files = glob(public_path('storage/media/payrollsTemp/*'));
         $uploadError = array();
 
         if (!File::exists($path)) {
             File::makeDirectory($path, 0775, true);
-            $path = public_path('/storage/media/payrolls/' . $yearInput . '/' . $monthInput);
+            $path = public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput);
             File::makeDirectory($path, 0775, true);
         } else {
-            $path = public_path('/storage/media/payrolls/' . $yearInput . '/' . $monthInput);
+            $path = public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput);
             if (!File::exists($path)) {
                 File::makeDirectory($path, 0775, true);
             }
@@ -170,7 +170,7 @@ class UploadPayrolls implements ShouldQueue
                     rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                     $payroll = new Payroll();
                     $payroll->employee_id = Db::Table('employees')->where('dni', '=',  $dni)->value('id');
-                    $payroll->filename = $path . '/' . $filename;
+                    $payroll->filename =  'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename;
                     $payroll->year = $yearInput;
                     $payroll->month = $monthInput;
                     $payroll->save();
@@ -194,7 +194,7 @@ class UploadPayrolls implements ShouldQueue
                     rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                     $payroll = new Payroll();
                     $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
-                    $payroll->filename = $path . '/' . $filename;
+                    $payroll->filename =  'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename;
                     $payroll->year = $yearInput;
                     $payroll->month = $monthInput;
                     $payroll->save();

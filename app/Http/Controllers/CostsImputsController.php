@@ -202,7 +202,7 @@ class CostsImputsController extends Controller
 
         foreach ($costsimputId as $index) {
             try {
-                unlink((array_values((array)$index))[0]);
+                unlink(public_path((array_values((array)$index))[0]));
             } catch (\Throwable $th) {
                 //throw $th;
             }

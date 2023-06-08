@@ -38,8 +38,8 @@ class DestroyAllEmployees implements ShouldQueue
      */
     public function handle(Request $request)
     {
-        File::deleteDirectory(public_path('/storage/media/payrolls'));
-        $path = public_path('/storage/media/payrolls');
+        File::deleteDirectory(public_path('storage/media/payrolls'));
+        $path = public_path('storage/media/payrolls');
         File::makeDirectory($path, 0777, true);
         Db::Table('payrolls')->delete();
 

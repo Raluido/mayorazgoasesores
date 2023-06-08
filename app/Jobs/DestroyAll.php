@@ -47,20 +47,20 @@ class DestroyAll implements ShouldQueue
      */
     public function handle(Request $request)
     {
-        File::deleteDirectory(public_path('/storage/media/payrolls'));
-        $path = public_path('/storage/media/payrolls');
+        File::deleteDirectory(public_path('storage/media/payrolls'));
+        $path = public_path('storage/media/payrolls');
         File::makeDirectory($path, 0775, true);
         Db::Table('payrolls')->delete();
 
         Db::Table('employees')->delete();
 
-        File::deleteDirectory(public_path('/storage/media/costsImputs'));
-        $path = public_path('/storage/media/costsImputs');
+        File::deleteDirectory(public_path('storage/media/costsImputs'));
+        $path = public_path('storage/media/costsImputs');
         File::makeDirectory($path, 0775, true);
         Db::Table('costs_imputs')->delete();
 
-        File::deleteDirectory(public_path('/storage/media/othersDocuments'));
-        $path = public_path('/storage/media/othersDocuments');
+        File::deleteDirectory(public_path('storage/media/othersDocuments'));
+        $path = public_path('storage/media/othersDocuments');
         File::makeDirectory($path, 0775, true);
         Db::Table('others_documents')->delete();
 

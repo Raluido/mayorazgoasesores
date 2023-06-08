@@ -26,8 +26,8 @@ class EmployeesController extends Controller
     public function index()
     {
         $employees = Db::Table('users')
-            ->join('employees', 'employees.user_id', '=', 'users.id')
             ->select('users.name', 'users.nif', 'employees.dni', 'employees.id')
+            ->join('employees', 'employees.user_id', '=', 'users.id')
             ->paginate(10);
 
         if ($employees[0] == null) {
@@ -77,9 +77,9 @@ class EmployeesController extends Controller
     public function show($id)
     {
         $employeeData = Db::Table('users')
+            ->select('users.name', 'users.nif', 'employees.dni', 'employees.id')
             ->join('employees', 'employees.user_id', '=', 'users.id')
             ->where('employees.id', '=', $id)
-            ->select('users.name', 'users.nif', 'employees.dni', 'employees.id')
             ->get()
             ->toArray();
 
@@ -96,9 +96,9 @@ class EmployeesController extends Controller
     public function edit($id)
     {
         $employeeFix = Db::Table('users')
+            ->select('users.name', 'users.nif', 'employees.dni', 'employees.id')
             ->join('employees', 'employees.user_id', '=', 'users.id')
             ->where('employees.id', '=', $id)
-            ->select('users.name', 'users.nif', 'employees.dni', 'employees.id')
             ->get()
             ->toArray();
 
@@ -139,7 +139,7 @@ class EmployeesController extends Controller
 
                 if ($payroll) {
                     try {
-                        unlink((array_values((array)$index))[0]);
+                        unlink(public_path((array_values((array)$index))[0]));
                     } catch (\Throwable $th) {
                         continue;
                     }

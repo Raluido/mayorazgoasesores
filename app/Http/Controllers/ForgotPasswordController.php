@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Hash;
 use Illuminate\Support\Str;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -39,12 +40,13 @@ class ForgotPasswordController extends Controller
         ]);
 
         Mail::send('mails.mail-ForgetPassword-template', ['token' => $token], function ($message) use ($request) {
-            $message->from('mayorazgoasesores.info@gmail.com');
+            $message->from(ENV('MAIL_FROM_ADDRESS'));
             $message->to($request->email);
             $message->subject('Resetear Contraseña');
         });
 
-        return back()->with('message', 'Te hemos enviado un link para recuperar tu contraseña!');
+        return back()
+            ->with('message', 'Te hemos enviado un link a tu cuenta de correo para recuperar tu contraseña!');
     }
     /**
      * Write code on Method
@@ -61,22 +63,9 @@ class ForgotPasswordController extends Controller
      *
      * @return response()
      */
-    public function submitResetPasswordForm(Request $request)
+    public function submitResetPasswordForm(RegisterRequest $request)
     {
-        $request->validate(
-            [
-                'email' => 'required|email|exists:users',
-                'password' => 'required|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
-                'password_confirmation' => 'required'
-            ],
-            [
-                'email.required' => 'Necesitamos tu correo electrónico aqui',
-                'password.required' => 'La contraseña debe contener al menos una letra mayúscula, una minúscula, un caracter espacial, un número y una longitud de al menos 10 dígitos',
-                'password.min' => 'La contraseña debe contener al menos una letra mayúscula, una minúscula, un caracter espacial, un número y una longitud de al menos 10 dígitos',
-                'password.regex' => 'La contraseña debe contener al menos una letra mayúscula, una minúscula, un caracter espacial, un número y una longitud de al menos 10 dígitos',
-                'password_confirmation.required' => 'Tienes que repetir la contraseña del apartado superior aqui',
-            ]
-        );
+        $validated = $request->validate();
 
         $updatePassword = DB::table('password_resets')
             ->where([
@@ -86,7 +75,9 @@ class ForgotPasswordController extends Controller
             ->first();
 
         if (!$updatePassword) {
-            return back()->withInput()->with('error', 'Invalid token!');
+            return back()
+                ->withInput()
+                ->with('error', 'Invalid token!');
         }
 
         $user = User::where('email', $request->email)
@@ -94,6 +85,7 @@ class ForgotPasswordController extends Controller
 
         DB::table('password_resets')->where(['email' => $request->email])->delete();
 
-        return redirect('/login')->with('message', 'Tu contraseña ha sido cambiada!');
+        return redirect('/login')
+            ->with('message', 'Tu contraseña ha sido cambiada!');
     }
 }
