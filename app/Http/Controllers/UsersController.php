@@ -39,12 +39,7 @@ class UsersController extends Controller
      */
     public function create(User $user)
     {
-        return view('users.create')
-            ->with([
-                'user' => $user,
-                'userRole' => $user->roles->pluck('name')->toArray(),
-                'roles' => Role::latest()->get()
-            ]);
+        return view('users.create');
     }
 
     /**
@@ -69,13 +64,19 @@ class UsersController extends Controller
         );
 
         $user->save($request->validated());
-        $user->assignRole($request->input('role'));
+        $result = $user->assignRole('user');
 
-        Mail::to("raluido@gmail.com")->send(new AddUserNotification($data));
+        if ($result) {
 
-        return redirect()
-            ->route('users.index')
-            ->withSuccess(__('Empresa creada correctamente.'));
+            Mail::to($user->email)->send(new AddUserNotification($data));
+            return redirect()
+                ->route('users.index')
+                ->withSuccess(__('Empresa creada correctamente.'));
+        } else {
+            return redirect()
+                ->route('users.index')
+                ->withErrors(__('Ha habido un error al intentar crear la empresa.'));
+        }
     }
 
     /**

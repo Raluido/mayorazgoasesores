@@ -5,11 +5,14 @@
     <div class="innerCreateUsers">
         <div class="top">
             <h1>Añadir nueva empresa</h1>
-            <h3 class="">No olvide seleccionar el rol que éste usuario tendrá en la web.</h3>
+            <h3 class="">Añade un nuevo usuario o empresa.</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <div class="innerBottom">
-                <form method="POST" action="">
+                <form method="POST" action="{{ route('users.store') }}">
                     @csrf
                     <div class="inputDiv">
                         <label for="name" class="form-label">Nombre</label>
@@ -31,20 +34,6 @@
                         <input value="{{ old('nif') }}" type="text" class="form-control" name="nif" placeholder="Nif" required>
                         @if ($errors->has('nif'))
                         <span class="text-danger text-left">{{ $errors->first('nif') }}</span>
-                        @endif
-                    </div>
-                    <div class="inputDiv">
-                        <label for="role" class="form-label">Rol</label>
-                        <select class="form-control" name="role" class="" required>
-                            <option value="">Seleccionar rol</option>
-                            @foreach ($roles as $role)
-                            <option value="{{ $role->id }}" {{ in_array($role->name, $userRole) ? 'selected' : '' }}>
-                                {{ $role->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                        @if ($errors->has('role'))
-                        <span class="text-danger text-left">{{ $errors->first('role') }}</span>
                         @endif
                     </div>
                     <div class="buttonsNav">
