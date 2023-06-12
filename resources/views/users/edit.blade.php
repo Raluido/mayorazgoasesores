@@ -26,27 +26,6 @@
                         <span class="">{{ $errors->first('email') }}</span>
                         @endif
                     </div>
-                    <div class="inputDiv">
-                        <label for="username" class="">Nombre empresa</label>
-                        <input value="{{ $user->username }}" type="text" class="form-control" name="username" placeholder="Username" required>
-                        @if ($errors->has('username'))
-                        <span class="text-danger text-left">{{ $errors->first('username') }}</span>
-                        @endif
-                    </div>
-                    <div class="inputDiv">
-                        <label for="role" class="">Role</label>
-                        <select class="form-control" name="role" required>
-                            <option value="">Select role</option>
-                            @foreach ($roles as $role)
-                            <option value="{{ $role->id }}" {{ in_array($role->name, $userRole) ? 'selected' : '' }}>
-                                {{ $role->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                        @if ($errors->has('role'))
-                        <span class="">{{ $errors->first('role') }}</span>
-                        @endif
-                    </div>
                     <div class="buttonsNav">
                         <button class="stylingButtons blue"><a href="{{ route('users.index') }}" class="buttonTextWt">Volver</button>
                         <button type="submit" class="stylingButtons green buttonTextWt">Guardar cambios</button>

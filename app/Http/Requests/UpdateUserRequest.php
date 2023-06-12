@@ -27,18 +27,18 @@ class UpdateUserRequest extends FormRequest
         $user = request()->route('user');
 
         return [
-            'nif' => 'required|size:9,unique:users,nif',
-            'dni' => 'required|size:9,unique:employees,nif',
             'name' => 'required|unique:users,name',
             'email' => 'required|email:rfc,dns|unique:users,email,' . $user->id,
         ];
-
     }
 
-    public function messages() {
+    public function messages()
+    {
         return [
-            'nif.size' => 'El nif debe estar compuesto por 9 elementos',
-            'dni.size' => 'El dni debe estar compuesto por 9 elementos',
+            'name.required' => 'Necesitas rellenar el campo nombre',
+            'name.unique' => 'Ese nombre ya está en uso',
+            'email.unique' => 'Ese email ya está en uso',
+            'email.required' => 'Necesitas rellenar el campo email',
         ];
     }
 }

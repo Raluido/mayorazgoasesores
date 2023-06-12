@@ -96,17 +96,12 @@ class UsersController extends Controller
     /**
      * Edit user data
      *
-     * @param User $user
      *
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
     {
-        return view('users.edit', [
-            'user' => $user,
-            'userRole' => $user->roles->pluck('name')->toArray(),
-            'roles' => Role::latest()->get()
-        ]);
+        return view('users.edit', ['user' => $user]);
     }
 
     /**
@@ -120,8 +115,6 @@ class UsersController extends Controller
     public function update(User $user, UpdateUserRequest $request)
     {
         $user->update($request->validated());
-
-        $user->syncRoles($request->get('role'));
 
         return redirect()
             ->route('users.index')
@@ -234,53 +227,5 @@ class UsersController extends Controller
         return redirect()
             ->route('users.index')
             ->withSuccess(__('Estamos eliminando TODOS los datos, en breve terminamos;)'));
-    }
-
-    public function editPassword()
-    {
-        $user = auth()->user();
-
-        return view('user.editPassword')
-            ->with('user', $user);
-    }
-
-
-    /**
-     * Update user password
-     *
-     * @param UpdateUserPassword $request
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function updatePassword(UpdateUserPassword $request)
-    {
-        $user = User::find(auth()->user()->id);
-
-        $user->password = $request->input('password');
-        $user->update($request->validated());
-
-        return redirect()
-            ->route('user.editPassword')
-            ->with('user', $user)
-            ->with('successMsg', 'Se ha editado con éxito');
-    }
-
-    public function editData()
-    {
-        $user = auth()->user();
-        return view('user.editData')->with('user', $user);
-    }
-
-    public function updateData(Request $request)
-    {
-        $user = User::find(auth()->user()->id);
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->update();
-
-        return redirect()
-            ->route('user.editData')
-            ->with('user', $user)
-            ->withSuccess(__('Se ha editado con éxito'));
     }
 }
