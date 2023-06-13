@@ -39,6 +39,7 @@ class UpdateUserRequest extends FormRequest
             'name.unique' => 'Ese nombre ya está en uso',
             'email.unique' => 'Ese email ya está en uso',
             'email.required' => 'Necesitas rellenar el campo email',
+            'email.email' => 'El email es incorrecto',
         ];
     }
 }

@@ -7,6 +7,9 @@
             <h1>Noticias</h1>
             <h3 class="">Ponte al día con las noticias que te interesan</h3>
         </div>
+        <div class="">
+            @include('layouts.partials.messages')
+        </div>
         <div class="bottom">
             <div class="createNoticia">
                 <button class="stylingButtons green"><a href="{{ route('posts.create') }}" class="buttonTextWt">Crear noticia</a></button>
@@ -32,7 +35,7 @@
                         <td class="">
                             <button class="stylingButtons blue"><a href="posts/{{ $post->id }}" class="buttonTextWt">Mostrar</a></button>
                             <button class="stylingButtons green"><a href="posts/{{ $post->id }}/edit" class="buttonTextWt">Editar</a></button>
-                            <form action="posts/{{ $post->id }}" method="post">
+                            <form action="{{ route('posts.destroy', $post->id) }}" method="post">
                                 {{ csrf_field() }}
                                 @method('DELETE')
                                 <button class="stylingButtons red buttonTextWt" type="submit">Eliminar</button>

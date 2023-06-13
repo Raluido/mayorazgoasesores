@@ -177,15 +177,12 @@ class PayrollsController extends Controller
     {
         $payrollId = DB::Table('payrolls')->where('id', '=', $id)->value('filename');
 
-        try {
+        if ($payrollId) {
             unlink($payrollId);
-        } catch (\Throwable $th) {
-            //throw $th;
+            $delete = DB::Table('payrolls')->where('id', '=', $id)->delete();
         }
 
-        $delete = DB::Table('payrolls')->where('id', '=', $id)->delete();
-
-        if ($delete) {
+        if (isset($delete) && $delete) {
             return redirect()
                 ->route('payrolls.showPayrolls', compact('year', 'month'))
                 ->withSuccess(__('Se ha eliminado correctamente la nómina'));
@@ -209,7 +206,7 @@ class PayrollsController extends Controller
 
         $delete = DB::table('payrolls')->delete();
 
-        if ($delete) {
+        if (isset($delete) && $delete) {
             return redirect()
                 ->route('payrolls.showForm')
                 ->withSuccess(__('Se han eliminado correctamente todas las nóminas'));
