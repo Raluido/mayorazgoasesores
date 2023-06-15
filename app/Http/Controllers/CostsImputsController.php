@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use Smalot\PdfParser\Parser;
-use Spatie\PdfToText\Pdf;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use setasign\Fpdi\Fpdi;
-use App\Models\CostsImput;
 use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
@@ -58,26 +56,30 @@ class CostsImputsController extends Controller
                 // end
 
                 if (!empty($period[0])) {
-                    unlink($newFilename);
+                    unlink(public_path('storage/media/' . $newFilename));
                     $month = $request->input('month');
                     $year = $request->input('year');
                     AddUsersCostsImputs::dispatch($filename, $month, $year);
                     UploadCostsImputs::dispatch($filename, $month, $year);
                 } else {
                     unlink(public_path('storage/media/' . $filename));
-                    unlink($newFilename);
-                    return redirect()->route('costsimputs.uploadForm')
+                    unlink(public_path('storage/media/' . $newFilename));
+                    return redirect()
+                        ->route('costsimputs.uploadForm')
                         ->withErrors(__('El documento adjuntado no tiene el formato de imputación de costes.'));
                 }
             } else {
-                return redirect()->route('costsimputs.uploadForm')
+                return redirect()
+                    ->route('costsimputs.uploadForm')
                     ->withErrors(__('Sólo se admiten archivos con extensión .pdf'));
             }
         } else {
-            return redirect()->route('costsimputs.uploadForm')
+            return redirect()
+                ->route('costsimputs.uploadForm')
                 ->withErrors(__('No has añadido ningun archivo aún.'));
         }
-        return redirect()->route('costsimputs.uploadForm')
+        return redirect()
+            ->route('costsimputs.uploadForm')
             ->withSuccess(__('Los documentos de imputación de costes han comenzado a subirse, tardaremos unos minutos, gracias ;)'));
     }
 
