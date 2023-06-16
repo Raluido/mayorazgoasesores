@@ -4,6 +4,9 @@
 <section class="intranet">
     @auth
     <div class="innerIntranet">
+        <div class="">
+            @include('layouts.partials.messages')
+        </div>
         @role('asesor')
         <h3>Área de administración</h3>
         <div class="areasIntranet">

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class StoreEmployeeRequest extends FormRequest
 {
@@ -23,6 +24,7 @@ class StoreEmployeeRequest extends FormRequest
      */
     public function rules()
     {
+        if($this->input('companyId') == 'dni' && $this->input('employeeId') == 'dni')
         return [
             'nif' => 'required|size:9',
             'dni' => 'required|size:9|unique:employees,dni',

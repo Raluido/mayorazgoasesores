@@ -52,6 +52,11 @@
 <div class="">
     @include('layouts.partials.messages')
 </div>
+@if (session('msj'))
+<div class="red messages">
+    {{ session('msj') }}
+</div>
+@endif
 @endsection
 @section('js')
 <script src="{{ asset('js/confirmation.js') }}" defer></script>

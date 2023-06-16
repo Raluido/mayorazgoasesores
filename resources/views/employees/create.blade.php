@@ -11,16 +11,31 @@
             <div class="innerBottom">
                 <form method="POST" action="">
                     @csrf
+
                     <div class="inputForm">
-                        <label for="nif" class="">Nif empresa</label>
-                        <input value="{{ old('nif') }}" type="text" class="" name="nif" placeholder="Nif" required>
+                        <select name="companyId" id="" class="">
+                            <option value="nif" class="">NIF</option>
+                            <option value="nie" class="">NIE</option>
+                            <option value="cif" class="">CIF</option>
+                        </select>
+                    </div>
+                    <div class="inputForm">
+                        <label for="nif" class="">ID empresa</label>
+                        <input value="{{ old('nif') }}" type="text" class="" name="nif" placeholder="" required>
                         @if ($errors->has('nif'))
                         <span class="">{{ $errors->first('nif') }}</span>
                         @endif
                     </div>
                     <div class="inputForm">
-                        <label for="dni" class="">Dni empleado</label>
-                        <input type="text" class="" name="dni" placeholder="dni" required>
+                        <select name="employeeId" id="" class="">
+                            <option value="nif" class="">NIF</option>
+                            <option value="nie" class="">NIE</option>
+                            <option value="cif" class="">CIF</option>
+                        </select>
+                    </div>
+                    <div class="inputForm">
+                        <label for="dni" class="">ID empleado</label>
+                        <input type="text" class="" name="dni" placeholder="" required>
                         @if ($errors->has('dni'))
                         <span class="">{{ $errors->first('dni') }}</span>
                         @endif

@@ -56,14 +56,21 @@ class CostsImputsController extends Controller
                 // end
 
                 if (!empty($period[0])) {
-                    unlink(public_path('storage/media/' . $newFilename));
+                    if (file_exists(public_path('storage/media/' . $newFilename))) {
+                        unlink(public_path('storage/media/' . $newFilename));
+                    }
                     $month = $request->input('month');
                     $year = $request->input('year');
                     AddUsersCostsImputs::dispatch($filename, $month, $year);
                     UploadCostsImputs::dispatch($filename, $month, $year);
                 } else {
-                    unlink(public_path('storage/media/' . $filename));
-                    unlink(public_path('storage/media/' . $newFilename));
+                    if (file_exists(public_path('storage/media/' . $filename))) {
+                        unlink(public_path('storage/media/' . $filename));
+                    }
+                    if (file_exists(public_path('storage/media/' . $newFilename))) {
+                        unlink(public_path('storage/media/' . $newFilename));
+                    }
+
                     return redirect()
                         ->route('costsimputs.uploadForm')
                         ->withErrors(__('El documento adjuntado no tiene el formato de imputación de costes.'));
@@ -112,11 +119,9 @@ class CostsImputsController extends Controller
             ->where('users.nif', '=', Auth::user()->nif)
             ->where('costs_imputs.year', '=', $year)
             ->where('costs_imputs.month', '=', $month)
-            ->get()
-            ->toArray();
+            ->get();
 
-
-        if ($files != null) {
+        if (count($files) > 0) {
 
             $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
             $zip = new ZipArchive;
@@ -126,9 +131,8 @@ class CostsImputsController extends Controller
 
             if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($files as $file) {
-                    $filename = basename((array_values((array)$file))[0]);
-                    $temp = (array_values((array)$filename))[0];
-                    $zip->addFile($publicDir . '/' . $temp, $temp);
+                    $filename = basename($file->filename);
+                    $zip->addFile($publicDir . '/' . $filename, $filename);
                 }
                 $zip->close();
             }
@@ -156,7 +160,7 @@ class CostsImputsController extends Controller
     {
         $presentYear = date("Y");
 
-        if ($month || $year == null) {
+        if ($month == null && $year == null) {
             $month = $request->input('month');
             $year = $request->input('year');
         }
@@ -171,14 +175,14 @@ class CostsImputsController extends Controller
 
         $costsimputs->setPath('/costsimputs/show?month=' . $month . '&year=' . $year);
 
-        if ($costsimputs[0] == null) {
+        if (count($costsimputs) > 0) {
+            return view('costsimputs.showCostsImputs')
+                ->with('costsimputs', $costsimputs);
+        } else {
             return redirect()
                 ->route('costsimputs.showForm')
                 ->with('presentYear', $presentYear)
                 ->withErrors(__('Aún no están disponibles las imputaciones de costes de ' . $month . $year . '.'));
-        } else {
-            return view('costsimputs.showCostsImputs')
-                ->with('costsimputs', $costsimputs);
         }
     }
 
@@ -198,15 +202,12 @@ class CostsImputsController extends Controller
             ->where('year', '=', $year)
             ->where('month', '=', $month)
             ->where('user_id', '=', $id)
-            ->get()
-            ->toArray();
+            ->get();
 
 
         foreach ($costsimputId as $index) {
-            try {
-                unlink(public_path((array_values((array)$index))[0]));
-            } catch (\Throwable $th) {
-                //throw $th;
+            if (file_exists(public_path($index->filename))) {
+                unlink(public_path($index->filename));
             }
         }
 
@@ -229,14 +230,12 @@ class CostsImputsController extends Controller
 
     public function deleteAllCostsImputs()
     {
-        try {
-            File::deleteDirectory(public_path('/storage/media/costsImputs'));
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-
         $path = public_path('/storage/media/costsImputs');
-        File::makeDirectory($path, 0775, true);
+
+        if (File::exists($path)) {
+            File::deleteDirectory($path);
+            File::makeDirectory($path, 0775, true);
+        }
 
         $delete = DB::table('costs_imputs')->delete();
 

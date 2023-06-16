@@ -19,9 +19,9 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ $employeeData[0]->name }}</td>
-                            <td>{{ $employeeData[0]->nif }}</td>
-                            <td>{{ $employeeData[0]->dni }}</td>
+                            <td>{{ $employee[0]->name }}</td>
+                            <td>{{ $employee[0]->nif }}</td>
+                            <td>{{ $employee[0]->dni }}</td>
                         </tr>
                     </tbody>
                 </table>
