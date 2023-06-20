@@ -6,6 +6,9 @@
         <div class="top">
             <h1>Empresas</h1>
         </div>
+        <div class="">
+            @include('layouts.partials.messages')
+        </div>
         <div class="bottom">
             <div class="addDelButtons">
                 <button class="stylingButtons green"><a href="{{ route('users.create') }}" class="buttonTextWt">Añadir nueva empresa</a></button>
@@ -55,9 +58,6 @@
             </div>
         </div>
     </div>
-</div>
-<div class="">
-    @include('layouts.partials.messages')
 </div>
 @endsection
 @section('js')

@@ -8,6 +8,9 @@
             <h3 class="">Gestión de nóminas</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <table class="">
                 <thead>
                     <tr>
@@ -44,9 +47,6 @@
         <div class="">
             {!! $payrolls->links() !!}
         </div>
-    </div>
-    <div class="">
-        @include('layouts.partials.messages')
     </div>
 </section>
 @endsection
