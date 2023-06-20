@@ -53,7 +53,7 @@ class UsersController extends Controller
     public function store(User $user, StoreUserRequest $request)
     {
         $user->name = $request->input('name');
-        $user->nif = $request->input('nif');
+        $user->nif = $request->input('companyId');
         $user->email = $request->input('email');
         $password = Str::random(10);
         $user->password = $password;

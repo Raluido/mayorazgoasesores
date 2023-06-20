@@ -27,7 +27,7 @@ class UpdateUserRequest extends FormRequest
         $user = request()->route('user');
 
         return [
-            'name' => 'required|unique:users,name',
+            'name' => 'required|unique:users,name,' . $user->id,
             'email' => 'required|email:rfc,dns|unique:users,email,' . $user->id,
         ];
     }

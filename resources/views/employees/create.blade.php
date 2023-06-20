@@ -8,36 +8,39 @@
             <h3 class="">Aqui puedes agregar nuevos empleados a la base de datos</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
+            {{ var_dump(Session::get('errors')); }}
             <div class="innerBottom">
                 <form method="POST" action="">
                     @csrf
-
                     <div class="inputForm">
-                        <select name="companyId" id="" class="">
+                        <select name="companyIdSlc" id="" class="">
                             <option value="nif" class="">NIF</option>
                             <option value="nie" class="">NIE</option>
                             <option value="cif" class="">CIF</option>
                         </select>
                     </div>
                     <div class="inputForm">
-                        <label for="nif" class="">ID empresa</label>
-                        <input value="{{ old('nif') }}" type="text" class="" name="nif" placeholder="" required>
-                        @if ($errors->has('nif'))
-                        <span class="">{{ $errors->first('nif') }}</span>
+                        <label for="companyId" class="">ID empresa</label>
+                        <input value="{{ old('nif') }}" type="text" class="" name="companyId" required>
+                        @if ($errors->has('companyId'))
+                        <span class="">{{ $errors->first('companyId') }}</span>
                         @endif
                     </div>
                     <div class="inputForm">
-                        <select name="employeeId" id="" class="">
+                        <select name="employeeIdSlc" id="" class="">
                             <option value="nif" class="">NIF</option>
                             <option value="nie" class="">NIE</option>
                             <option value="cif" class="">CIF</option>
                         </select>
                     </div>
                     <div class="inputForm">
-                        <label for="dni" class="">ID empleado</label>
-                        <input type="text" class="" name="dni" placeholder="" required>
-                        @if ($errors->has('dni'))
-                        <span class="">{{ $errors->first('dni') }}</span>
+                        <label for="employeeId" class="">ID empleado</label>
+                        <input type="text" class="" name="employeeId" required>
+                        @if ($errors->has('employeeId'))
+                        <span class="">{{ $errors->first('employeeId') }}</span>
                         @endif
                     </div>
                     <div class="buttonsNav">

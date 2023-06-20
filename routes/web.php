@@ -77,8 +77,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/create', 'EmployeesController@create')->name('employees.create');
             Route::post('/create', 'EmployeesController@store')->name('employees.store');
             Route::get('/{id}/show', 'EmployeesController@show')->name('employees.show');
-            Route::get('/{id}/edit', 'EmployeesController@edit')->name('employees.edit');
-            Route::patch('/{id}/update', 'EmployeesController@update')->name('employees.update');
+            // Route::get('/{id}/edit', 'EmployeesController@edit')->name('employees.edit');
+            // Route::patch('/{id}/update', 'EmployeesController@update')->name('employees.update');
             Route::delete('/{employee}/delete', 'EmployeesController@destroy')->name('employees.destroy');
             Route::get('/deleteAll', 'EmployeesController@deleteAll')->name('employees.deleteAll');
         });

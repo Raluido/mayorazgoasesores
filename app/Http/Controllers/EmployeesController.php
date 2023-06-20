@@ -53,23 +53,32 @@ class EmployeesController extends Controller
     public function store(StoreEmployeeRequest $request)
     {
         $userId = Db::Table('users')
-            ->where('nif', '=', $request->input('nif'))
+            ->where('nif', '=', $request->input('companyId'))
             ->value('id');
 
-        if ($userId != null) {
+        $employeeId = Db::Table('users')
+            ->join('employees', 'users.id', '=', 'employees.user_id')
+            ->where('users.nif', '=', $request->input('companyId'))
+            ->where('employees.dni', '=', $request->input('employeeId'))
+            ->value('id');
+
+        if ($userId != null && $employeeId == null) {
             $employee = new Employee();
             $employee->user_id = $userId;
-            $employee->dni = $request->input('dni');
+            $employee->dni = $request->input('employeeId');
             $employee->save($request->validated());
-
 
             return redirect()
                 ->route('employees.index')
                 ->withSuccess(__('Empleado creado correctamente.'));
-        } else {
+        } else if ($userId == null) {
             return redirect()
                 ->route('employees.index')
                 ->withErrors(__('No existe una empresa asociada a ese nif en nuestra base de datos, para crear un empleado, primero tendrá que crearla.'));
+        } else if ($employeeId != null) {
+            return redirect()
+                ->route('employees.index')
+                ->withErrors(__('Un empleado con esos datos ya figura en la empresa.'));
         }
     }
 
@@ -91,16 +100,15 @@ class EmployeesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Employee $employee)
     {
-        $employeeFix = Db::Table('users')
+        $employee = Db::Table('users')
             ->select('users.name', 'users.nif', 'employees.dni', 'employees.id')
             ->join('employees', 'employees.user_id', '=', 'users.id')
             ->where('employees.id', '=', $id)
-            ->get()
-            ->toArray();
+            ->get();
 
-        return view('employees.edit', compact('employeeFix'));
+        return view('employees.edit', compact('employee'));
     }
 
     /**

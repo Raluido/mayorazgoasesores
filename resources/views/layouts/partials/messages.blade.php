@@ -1,8 +1,8 @@
 @if (Session::get('errors'))
-<?php $data = Session::get('errors')->toJson(JSON_UNESCAPED_UNICODE); ?>
+<?php $data = Session::get('errors'); ?>
 <div class="red messages" role="">
     <i class="fa fa-check"></i>
-    {{ substr($data, 3, (strlen($data) - 6)) }}
+    {{ $data }}
 </div>
 @elseif (Session::get('success'))
 <?php $data = Session::get('success'); ?>

@@ -12,19 +12,19 @@
                 <form method="post" action="{{ route('employees.update', $employeeFix[0]->id) }}">
                     @method('patch')
                     @csrf
-                    <div class="inputForm">
-                        <label for="nif" class="form-label">Nif</label>
-                        <input value="{{ $employeeFix[0]->nif }}" type="text" class="form-control" name="nif" placeholder="Nif" required>
 
-                        @if ($errors->has('nif'))
-                        <span class="text-danger text-left">{{ $errors->first('nif') }}</span>
-                        @endif
+                    <div class="inputForm">
+                        <select name="employeeIdSlc" id="" class="">
+                            <option value="nif" class="">NIF</option>
+                            <option value="nie" class="">NIE</option>
+                            <option value="cif" class="">CIF</option>
+                        </select>
                     </div>
                     <div class="inputForm">
-                        <label for="dni" class="form-label">Dni</label>
-                        <input value="{{ $employeeFix[0]->dni }}" type="text" class="form-control" name="dni" placeholder="Dni" required>
-                        @if ($errors->has('dni'))
-                        <span class="text-danger text-left">{{ $errors->first('dni') }}</span>
+                        <label for="employeeId" class="">ID empleado</label>
+                        <input type="text" class="" name="employeeId" required>
+                        @if ($errors->has('employeeId'))
+                        <span class="">{{ $errors->first('employeeId') }}</span>
                         @endif
                     </div>
                     <div class="buttonsNav">

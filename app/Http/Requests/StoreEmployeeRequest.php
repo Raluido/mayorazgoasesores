@@ -24,19 +24,46 @@ class StoreEmployeeRequest extends FormRequest
      */
     public function rules()
     {
-        if($this->input('companyId') == 'dni' && $this->input('employeeId') == 'dni')
-        return [
-            'nif' => 'required|size:9',
-            'dni' => 'required|size:9|unique:employees,dni',
-        ];
+        $rules = array();
+
+        switch ($this->input('companyIdSlc')) {
+            case 'nif':
+                $rules['companyId'] = 'required|nif|unique:users,nif';
+                break;
+            case 'nie':
+                $rules['companyId'] = 'required|nie|unique:users,nif';
+                break;
+            case 'cif':
+                $rules['companyId'] = 'required|cif|unique:users,nif';
+                break;
+            default:
+                break;
+        }
+
+        switch ($this->input('employeeIdSlc')) {
+            case 'nif':
+                $rules['employeeId'] = 'required|nif|unique:employees,dni';
+                break;
+            case 'nie':
+                $rules['employeeId'] = 'required|nie|unique:employees,dni';
+                break;
+            default:
+                break;
+        }
+
+        return $rules;
     }
 
     public function messages()
     {
         return [
-            'nif.size' => 'El nif debe estar formado por nueve elementos',
-            'dni.size' => 'El dni debe estar formado por nueve elementos',
-            'dni.unique' => 'El trajador ya consta en nuestra base de datos',
+            'companyId.nif' => 'El nif no tiene un formato correcto.',
+            'companyId.nie' => 'El nie no tiene un formato correcto.',
+            'companyId.cif' => 'El cif no tiene un formato correcto.',
+            'companyId.unique' => 'Una empresa con éste id ya consta en nuestra base de datos',
+            'employeeId.nif' => 'El nif no tiene un formato correcto.',
+            'employeeId.nif' => 'El nie no tiene un formato correcto.',
+            'employeeId.unique' => 'Una empleado con éste id ya consta en nuestra base de datos',
         ];
     }
 }

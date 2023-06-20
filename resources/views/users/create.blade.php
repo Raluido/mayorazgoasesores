@@ -8,9 +8,6 @@
             <h3 class="">Añade un nuevo usuario o empresa.</h3>
         </div>
         <div class="bottom">
-            <div class="">
-                @include('layouts.partials.messages')
-            </div>
             <div class="innerBottom">
                 <form method="POST" action="{{ route('users.store') }}">
                     @csrf
@@ -30,10 +27,17 @@
                         @endif
                     </div>
                     <div class="inputDiv">
-                        <label for="nif" class="form-label">Nif</label>
-                        <input value="{{ old('nif') }}" type="text" class="form-control" name="nif" placeholder="Nif" required>
-                        @if ($errors->has('nif'))
-                        <span class="text-danger text-left">{{ $errors->first('nif') }}</span>
+                        <select name="companyIdSlc" id="" class="">
+                            <option value="nif" class="">NIF</option>
+                            <option value="nie" class="">NIE</option>
+                            <option value="cif" class="">CIF</option>
+                        </select>
+                    </div>
+                    <div class="inputDiv">
+                        <label for="companyId" class="">ID empresa</label>
+                        <input value="{{ old('nif') }}" type="text" class="" name="companyId" placeholder="ID Empresa" required>
+                        @if ($errors->has('companyId'))
+                        <span class="">{{ $errors->first('companyId') }}</span>
                         @endif
                     </div>
                     <div class="buttonsNav">

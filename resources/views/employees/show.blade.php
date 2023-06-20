@@ -12,7 +12,7 @@
                 <table class="">
                     <thead>
                         <tr>
-                            <th scope="col" width="15%">Empleado</th>
+                            <th scope="col" width="15%">Empresa</th>
                             <th scope="col" width="15%">Nif</th>
                             <th scope="col" width="10%">Dni</th>
                         </tr>
@@ -29,7 +29,7 @@
         </div>
         <div class="buttonsNav">
             <button class="stylingButtons green"><a href="{{ route('employees.index') }}" class="buttonTextWt">Volver</a></button>
-            <button class="stylingButtons blue"><a href="{{ route('employees.edit', $employeeData[0]->id) }}" class="buttonTextWt">Editar</a></button>
+            <!-- <button class="stylingButtons blue"><a href="route('employees.edit', $employeeData[0]->id)" class="buttonTextWt">Editar</a></button> -->
         </div>
     </div>
     @endsection
