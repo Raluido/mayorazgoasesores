@@ -191,12 +191,6 @@ class CostsImputsController extends Controller
     {
         $presentYear = date("Y");
 
-        $check = DB::Table('costs_imputs')
-            ->where('year', '=', $year)
-            ->where('month', '=', $month)
-            ->where('user_id', '=', $id)
-            ->count();
-
         $costsimputId = DB::Table('costs_imputs')
             ->select('filename')
             ->where('year', '=', $year)
@@ -204,28 +198,29 @@ class CostsImputsController extends Controller
             ->where('user_id', '=', $id)
             ->get();
 
+        if (count($costsimputId) > 0) {
+            foreach ($costsimputId as $index) {
+                if (file_exists(public_path($index->filename))) {
+                    unlink(public_path($index->filename));
+                }
+            }
 
-        foreach ($costsimputId as $index) {
-            if (file_exists(public_path($index->filename))) {
-                unlink(public_path($index->filename));
+            $delete = DB::Table('costs_imputs')
+                ->where('year', '=', $year)
+                ->where('month', '=', $month)
+                ->where('user_id', '=', $id)
+                ->delete();
+
+            if ($delete) {
+                return redirect()
+                    ->route('costsimputs.showCostsImputs', compact('month', 'year'))
+                    ->withSuccess(__('Se ha eliminado correctamente el modelo de imputación de costes.'));
             }
         }
 
-        $delete = DB::Table('costs_imputs')
-            ->where('year', '=', $year)
-            ->where('month', '=', $month)
-            ->where('user_id', '=', $id)
-            ->delete();
-
-        if ($delete) {
-            return redirect()
-                ->route('costsimputs.showCostsImputs', compact('month', 'year'))
-                ->withSuccess(__('Se ha eliminado correctamente el modelo de imputación de costes.'));
-        } else {
-            return redirect()
-                ->route('costsimputs.showCostsImputs', compact('month', 'year'))
-                ->withErrors(__('Ha habido un error al intentar eliminar el modelo de imputación de costes.'));
-        }
+        return redirect()
+            ->route('costsimputs.showCostsImputs', compact('month', 'year'))
+            ->withErrors(__('Ha habido un error al intentar eliminar el modelo de imputación de costes.'));
     }
 
     public function deleteAllCostsImputs()
