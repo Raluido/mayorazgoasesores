@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use setasign\Fpdi\Fpdi;
@@ -11,8 +11,6 @@ use App\Models\User;
 use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\Exists;
-use Mockery\Undefined;
 
 class OthersDocumentsController extends Controller
 {
@@ -32,30 +30,33 @@ class OthersDocumentsController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
         $nif = $request->input('nif');
-        $userid = DB::Table('users')->where('nif', $nif)->value('id');
+        $user = DB::Table('users')
+            ->select('id')
+            ->where('nif', $nif)
+            ->get();
 
-        if (User::where('nif', $nif)->exists()) {
+        if (count($user) > 0) {
 
             if ($request->hasFile('othersdocuments')) {
 
-                $path = public_path('/storage/media/othersDocuments/' . $year);
+                $path = 'storage/media/othersDocuments/' . $year;
 
-                if (!File::exists($path)) {
-                    File::makeDirectory($path, 0775, true);
-                    $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
-                    File::makeDirectory($path, 0775, true);
-                    $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
-                    File::makeDirectory($path, 0775, true);
+                if (!Storage::exists($path)) {
+                    Storage::makeDirectory($path, 0775, true);
+                    $path = 'storage/media/othersDocuments/' . $year . '/' . $month;
+                    Storage::makeDirectory($path, 0775, true);
+                    $path = 'storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif;
+                    Storage::makeDirectory($path, 0775, true);
                 } else {
-                    $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month);
-                    if (!File::exists($path)) {
-                        File::makeDirectory($path, 0775, true);
-                        $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
-                        File::makeDirectory($path, 0775, true);
+                    $path = 'storage/media/othersDocuments/' . $year . '/' . $month;
+                    if (!Storage::exists($path)) {
+                        Storage::makeDirectory($path, 0775, true);
+                        $path = 'storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif;
+                        Storage::makeDirectory($path, 0775, true);
                     } else {
-                        $path = public_path('/storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif);
-                        if (!File::exists($path)) {
-                            File::makeDirectory($path, 0775, true);
+                        $path = 'storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif;
+                        if (!Storage::exists($path)) {
+                            Storage::makeDirectory($path, 0775, true);
                         }
                     }
                 }
@@ -64,30 +65,36 @@ class OthersDocumentsController extends Controller
 
                 foreach ($files as $index) {
                     $filename = $index->getClientOriginalName();
-                    $check = DB::Table('users')
+                    $othersDocuments = DB::Table('users')
                         ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
                         ->where('others_documents.year', '=', $year)
                         ->where('others_documents.month', '=', $month)
                         ->where('others_documents.filename', '=', $filename)
                         ->where('users.nif', '=', $nif)
-                        ->exists();
+                        ->get();
 
-                    if ($check) {
-                        OtherDocument::where('filename', $filename)->delete();
-                        unlink(public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif . '/' . $filename));
-                        $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $filename);
+                    if (count($othersDocuments) > 0) {
+                        if (Storage::exists($path . '/' . $filename)) {
+                            $delete = Storage::delete($path . '/' . $filename);
+                            if ($delete) {
+                                OtherDocument::where('filename', $filename)
+                                    ->delete();
+                            }
+                        }
+
+                        $index->storeAs($path . '/', $filename);
                         $otherDocument = new OtherDocument();
-                        $otherDocument->user_id = $userid;
-                        $otherDocument->filename = $filename;
+                        $otherDocument->user_id = $user[0]->id;
+                        $otherDocument->filename = $path . '/' . $filename;
                         $otherDocument->month = $month;
                         $otherDocument->year = $year;
                         $otherDocument->save();
                     } else {
                         $name = $index->getClientOriginalName();
-                        $index->storeAs('storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif, $name);
+                        $index->storeAs($path . '/', $name);
                         $otherDocument = new OtherDocument();
-                        $otherDocument->user_id = $userid;
-                        $otherDocument->filename = $name;
+                        $otherDocument->user_id = $user[0]->id;
+                        $otherDocument->filename = $path . '/' . $name;
                         $otherDocument->month = $month;
                         $otherDocument->year = $year;
                         $otherDocument->save();
@@ -102,7 +109,7 @@ class OthersDocumentsController extends Controller
             return redirect()
                 ->route('othersdocuments.uploadForm')
                 ->with('presentYear', $presentYear)
-                ->withSuccess(__('Los documentos se han subido correctamente, gracias ;'));
+                ->withSuccess(__('Los documentos se han subido correctamente ;)'));
         } else {
             return redirect()
                 ->route('othersdocuments.uploadForm')
@@ -129,10 +136,9 @@ class OthersDocumentsController extends Controller
             ->where('others_documents.year', '=', $year)
             ->where('others_documents.month', '=', $month)
             ->where('users.nif', '=', Auth::user()->nif)
-            ->get()
-            ->toArray();
+            ->get();
 
-        if ($othersdocuments == null) {
+        if (count($othersdocuments) == 0) {
             return redirect()
                 ->route('othersdocuments.downloadForm')
                 ->with('presentYear', $presentYear)
@@ -171,7 +177,7 @@ class OthersDocumentsController extends Controller
 
             if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($otherDocumentSlc as $index) {
-                    $zip->addFile($publicDir . '/' . $index, $index);
+                    $zip->addFile($index, basename($index));
                 }
                 $zip->close();
             }
@@ -212,7 +218,7 @@ class OthersDocumentsController extends Controller
 
         $othersdocuments->setPath('/othersdocuments/show?month=' . $month . '&year=' . $year);
 
-        if ($othersdocuments[0] == null) {
+        if (($othersdocuments->total()) == 0) {
             return redirect()
                 ->route('othersdocuments.showForm')
                 ->with('presentYear', $presentYear)
@@ -224,48 +230,47 @@ class OthersDocumentsController extends Controller
 
     public function deleteOthersDocuments($id, $month, $year)
     {
-        $otherdocumentId = DB::Table('others_documents')->where('id', '=', $id)->value('filename');
+        $otherDocuments = DB::Table('others_documents')
+            ->where('id', '=', $id)
+            ->get();
 
-        try {
-            unlink($otherdocumentId);
-        } catch (\Throwable $th) {
-            //throw $th;
+        if (count($otherDocuments) > 0) {
+            $delete = Storage::delete($otherDocuments->filename);
+            if ($delete) {
+                $delete = DB::Table('others_documents')
+                    ->where('id', '=', $id)
+                    ->delete();
+                if ($delete) {
+                    return redirect()
+                        ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
+                        ->withSuccess(__('Se han eliminado correctamente todos los documentos.'));
+                }
+            }
         }
-
-        $delete = DB::Table('others_documents')->where('id', '=', $id)->delete();
-
-        if ($delete) {
-            return redirect()
-                ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
-                ->withSuccess(__('Se han eliminado correctamente todos los documentos.'));
-        } else {
-            return redirect()
-                ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
-                ->withErrors(__('Ha habido un error al intentar eliminar todos los documentos.'));
-        }
+        return redirect()
+            ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
+            ->withErrors(__('Ha habido un error al intentar eliminar todos los documentos.'));
     }
 
     public function deleteAllOtherDocuments()
     {
-        try {
-            File::deleteDirectory(public_path('/storage/media/othersDocuments'));
-        } catch (\Throwable $th) {
-            //throw $th;
+        $path = 'storage/media/othersDocuments';
+
+        if (Storage::exists($path)) {
+            $delete = Storage::deleteDirectory($path);
+            if ($delete) {
+                Storage::makeDirectory($path, 0775, true);
+                $delete = DB::table('others_documents')
+                    ->delete();
+                if ($delete) {
+                    return redirect()
+                        ->route('othersdocuments.showForm')
+                        ->withSuccess(__('Se han eliminado correctamente todos los documentos.'));
+                }
+            }
         }
-
-        $path = public_path('/storage/media/othersDocuments');
-        File::makeDirectory($path, 0775, true);
-
-        $delete = DB::table('others_documents')->delete();
-
-        if ($delete) {
-            return redirect()
-                ->route('othersdocuments.showForm')
-                ->withSuccess(__('Se han eliminado correctamente todos los documentos.'));
-        } else {
-            return redirect()
-                ->route('othersdocuments.showForm')
-                ->withErrors(__('Ha habido un error al intentar eliminar todos los documentos.'));
-        }
+        return redirect()
+            ->route('othersdocuments.showForm')
+            ->withErrors(__('Ha habido un error al intentar eliminar todos los documentos.'));
     }
 }

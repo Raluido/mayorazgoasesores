@@ -16,9 +16,9 @@
             <div class="">
                 @include('layouts.partials.messages')
             </div>
-            @if (session('msj'))
+            @if ($msj)
             <div class="red messages">
-                {{ session('msj') }}
+                {{ $msj }}
             </div>
             @endif
             <table class="">

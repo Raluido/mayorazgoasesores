@@ -22,9 +22,12 @@ class ForgotPasswordController extends Controller
 
     public function submitForgetPasswordForm(Request $request)
     {
+        // Let's get the route param by name to get the User object value
+        $user = request()->route('user');
+
         $request->validate(
             [
-                'email' => 'required|email|exists:users',
+                'email' => 'required|email:rfc,dns|unique:users,email,' . $user->id,
             ],
             [
                 'email.exists' => 'El email introducido no consta en nuestra base de datos'

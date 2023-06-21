@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="buttonsNav">
-            <button class="stylingButtons blue"><a href="{{ route('home.index') }}" class="buttonTextWt">Volver</a></button>
+            <button class="stylingButtons blue"><a href="{{ route('othersdocuments.downloadForm') }}" class="buttonTextWt">Volver</a></button>
         </div>
     </div>
 </section>

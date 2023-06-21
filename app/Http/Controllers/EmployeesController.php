@@ -8,7 +8,7 @@ use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Log;
 use App\Jobs\DestroyAllEmployees;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use DB;
 
 
@@ -27,11 +27,12 @@ class EmployeesController extends Controller
             ->join('employees', 'employees.user_id', '=', 'users.id')
             ->paginate(10);
 
-        if (count($employees) > 0) {
-            return view('employees.index', compact('employees'));
+        if (($employees->total()) > 0) {
+            $msj = '';
+            return view('employees.index', compact('employees', 'msj'));
         } else {
-            return view('employees.index', compact('employees'))
-                ->with('msj', 'No hay empleados en nuestra base de datos aún, se añadiran automaticamente cuando cargues alguna nómina o un modelo de imputación de costes.');
+            $msj = 'No hay empleados en nuestra base de datos aún, se añadiran automaticamente cuando cargues alguna nómina o un modelo de imputación de costes.';
+            return view('employees.index', compact('employees', 'msj'));
         }
     }
 
@@ -143,12 +144,15 @@ class EmployeesController extends Controller
 
         if (count($payrolls) > 0) {
             foreach ($payrolls as $index) {
-                $delete = Db::Table('payrolls')
-                    ->where('filename', '=', $index->filename)
-                    ->delete();
-
-                if ($delete && File::exists(public_path($index->filename))) {
-                    unlink(public_path($index->filename));
+                $delete = Storage::delete($index->filename);
+                if ($delete) {
+                    $delete = Db::Table('payrolls')
+                        ->where('filename', '=', $index->filename)
+                        ->delete();
+                    if (!$delete) {
+                        return redirect()->route('employees.index')
+                            ->withErrors(__('Ha habido un error al intentar eliminar las nóminas del empleado, intentelo de nuevo.'));
+                    }
                 } else {
                     return redirect()->route('employees.index')
                         ->withErrors(__('Ha habido un error al intentar eliminar las nóminas del empleado, intentelo de nuevo.'));

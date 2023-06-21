@@ -8,6 +8,9 @@
             <h3 class="">Gestión de imputación de costes</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <div class="innerBottom">
                 <table class="">
                     <thead>
@@ -42,9 +45,6 @@
         <div class="d-flex mb-5">
             {!! $costsimputs->links() !!}
         </div>
-    </div>
-    <div class="">
-        @include('layouts.partials.messages')
     </div>
 </section>
 @endsection

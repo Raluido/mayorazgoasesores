@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Smalot\PdfParser\Parser;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use setasign\Fpdi\Fpdi;
@@ -182,7 +182,7 @@ class CostsImputsController extends Controller
             return redirect()
                 ->route('costsimputs.showForm')
                 ->with('presentYear', $presentYear)
-                ->withErrors(__('Aún no están disponibles las imputaciones de costes de ' . $month . $year . '.'));
+                ->withErrors(__('Aún no están disponibles los modelos de imputación de costes de ' . $month . $year . '.'));
         }
     }
 
@@ -192,7 +192,7 @@ class CostsImputsController extends Controller
         $presentYear = date("Y");
 
         $costsimputId = DB::Table('costs_imputs')
-            ->select('filename')
+            ->select('filename', 'id')
             ->where('year', '=', $year)
             ->where('month', '=', $month)
             ->where('user_id', '=', $id)
@@ -200,48 +200,57 @@ class CostsImputsController extends Controller
 
         if (count($costsimputId) > 0) {
             foreach ($costsimputId as $index) {
-                if (file_exists(public_path($index->filename))) {
-                    unlink(public_path($index->filename));
+                if (Storage::exists($index->filename)) {
+                    $delete = Storage::delete($index->filename);
+                    if ($delete) {
+                        $delete = DB::Table('costs_imputs')
+                            ->where('id', '=', $index->id)
+                            ->delete();
+                        if (!$delete) {
+                            return redirect()
+                                ->route('costsimputs.showCostsImputs', compact('month', 'year'))
+                                ->withErrors(__('Ha habido un error al intentar eliminar el modelo de imputación de costes.'));
+                        }
+                    } else {
+                        return redirect()
+                            ->route('costsimputs.showCostsImputs', compact('month', 'year'))
+                            ->withErrors(__('Ha habido un error al intentar eliminar el modelo de imputación de costes.'));
+                    }
+                } else {
+                    return redirect()
+                        ->route('costsimputs.showCostsImputs', compact('month', 'year'))
+                        ->withErrors(__('Ha habido un error al intentar eliminar el modelo de imputación de costes.'));
                 }
             }
-
-            $delete = DB::Table('costs_imputs')
-                ->where('year', '=', $year)
-                ->where('month', '=', $month)
-                ->where('user_id', '=', $id)
-                ->delete();
-
-            if ($delete) {
-                return redirect()
-                    ->route('costsimputs.showCostsImputs', compact('month', 'year'))
-                    ->withSuccess(__('Se ha eliminado correctamente el modelo de imputación de costes.'));
-            }
+            return redirect()
+                ->route('costsimputs.showCostsImputs', compact('month', 'year'))
+                ->withSuccess(__('Hemos eliminado correctamente el modelos de imputación de costes seleccionado.'));
         }
-
-        return redirect()
-            ->route('costsimputs.showCostsImputs', compact('month', 'year'))
-            ->withErrors(__('Ha habido un error al intentar eliminar el modelo de imputación de costes.'));
     }
 
     public function deleteAllCostsImputs()
     {
-        $path = public_path('/storage/media/costsImputs');
+        $path = 'storage/media/costsImputs';
 
-        if (File::exists($path)) {
-            File::deleteDirectory($path);
-            File::makeDirectory($path, 0775, true);
-        }
-
-        $delete = DB::table('costs_imputs')->delete();
-
-        if ($delete) {
-            return redirect()
-                ->route('costsimputs.showForm')
-                ->withSuccess(__('Se han eliminado correctamente todos los modelos de imputación de costes.'));
-        } else {
-            return redirect()
-                ->route('costsimputs.showForm')
-                ->withErrors(__('Ha habido un error al intentar eliminar todos los modelos de imputación de costes.'));
+        if (Storage::exists($path)) {
+            $delete = Storage::deleteDirectory($path);
+            if ($delete) {
+                Storage::makeDirectory($path, 0775, true);
+                $delete = DB::table('costs_imputs')->delete();
+                if ($delete) {
+                    return redirect()
+                        ->route('costsimputs.showForm')
+                        ->withSuccess(__('Se han eliminado correctamente todos los modelos de imputación de costes.'));
+                } else {
+                    return redirect()
+                        ->route('costsimputs.showForm')
+                        ->withErrors(__('Ha habido un error al intentar eliminar todos los modelos de imputación de costes.'));
+                }
+            } else {
+                return redirect()
+                    ->route('costsimputs.showForm')
+                    ->withErrors(__('Ha habido un error al intentar eliminar la carpeta con los modelos de imputación de costes.'));
+            }
         }
     }
 }

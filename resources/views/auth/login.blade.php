@@ -12,8 +12,6 @@
             <div class="">
                 <div class="">
 
-                    <!-- @include('layouts.partials.messages') -->
-
                     <div class="inputDiv">
                         <input type="text" class="" name="nif" value="{{ old('nif') }}" placeholder="Email o nif" required="required" autofocus>
                         <label for="floatingName">Email o Nif</label>
@@ -41,7 +39,6 @@
                     </div>
                 </div>
             </div>
-            <!-- @include('auth.partials.copy') -->
         </form>
     </section>
 </main>
