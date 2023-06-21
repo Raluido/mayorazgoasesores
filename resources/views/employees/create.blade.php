@@ -8,10 +8,6 @@
             <h3 class="">Aqui puedes agregar nuevos empleados a la base de datos</h3>
         </div>
         <div class="bottom">
-            <div class="">
-                @include('layouts.partials.messages')
-            </div>
-            {{ var_dump(Session::get('errors')); }}
             <div class="innerBottom">
                 <form method="POST" action="">
                     @csrf

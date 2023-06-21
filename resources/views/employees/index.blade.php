@@ -13,6 +13,14 @@
                     <button class="stylingButtons red buttonTextWt" onclick="confirmation()">Eliminar
                         todos</button>
             </div>
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
+            @if (session('msj'))
+            <div class="red messages">
+                {{ session('msj') }}
+            </div>
+            @endif
             <table class="">
                 <thead>
                     <tr>
@@ -49,14 +57,6 @@
         </div>
     </div>
 </div>
-<div class="">
-    @include('layouts.partials.messages')
-</div>
-@if (session('msj'))
-<div class="red messages">
-    {{ session('msj') }}
-</div>
-@endif
 @endsection
 @section('js')
 <script src="{{ asset('js/confirmation.js') }}" defer></script>

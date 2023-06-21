@@ -51,6 +51,7 @@ a {
 
 .messages {
     padding-left: 5em;
+    margin: .5em 0;
 }
 
 input,

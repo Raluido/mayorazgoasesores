@@ -8,6 +8,7 @@ use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Log;
 use App\Jobs\DestroyAllEmployees;
+use Illuminate\Support\Facades\File;
 use DB;
 
 
@@ -30,7 +31,7 @@ class EmployeesController extends Controller
             return view('employees.index', compact('employees'));
         } else {
             return view('employees.index', compact('employees'))
-                ->with('msj', 'No hay empleados en nuestra base de datos aún, se añadiran automaticamente cuando cargues alguna nómina.');
+                ->with('msj', 'No hay empleados en nuestra base de datos aún, se añadiran automaticamente cuando cargues alguna nómina o un modelo de imputación de costes.');
         }
     }
 
@@ -54,15 +55,15 @@ class EmployeesController extends Controller
     {
         $userId = Db::Table('users')
             ->where('nif', '=', $request->input('companyId'))
-            ->value('id');
+            ->get();
 
         $employeeId = Db::Table('users')
             ->join('employees', 'users.id', '=', 'employees.user_id')
             ->where('users.nif', '=', $request->input('companyId'))
             ->where('employees.dni', '=', $request->input('employeeId'))
-            ->value('id');
+            ->get();
 
-        if ($userId != null && $employeeId == null) {
+        if (count($userId) > 0 && count($employeeId) == 0) {
             $employee = new Employee();
             $employee->user_id = $userId;
             $employee->dni = $request->input('employeeId');
@@ -71,11 +72,11 @@ class EmployeesController extends Controller
             return redirect()
                 ->route('employees.index')
                 ->withSuccess(__('Empleado creado correctamente.'));
-        } else if ($userId == null) {
+        } else if (count($userId) == 0 && count($employeeId) == 0) {
             return redirect()
                 ->route('employees.index')
                 ->withErrors(__('No existe una empresa asociada a ese nif en nuestra base de datos, para crear un empleado, primero tendrá que crearla.'));
-        } else if ($employeeId != null) {
+        } else if (count($userId) > 0 && count($employeeId) > 0) {
             return redirect()
                 ->route('employees.index')
                 ->withErrors(__('Un empleado con esos datos ya figura en la empresa.'));
@@ -105,7 +106,7 @@ class EmployeesController extends Controller
         $employee = Db::Table('users')
             ->select('users.name', 'users.nif', 'employees.dni', 'employees.id')
             ->join('employees', 'employees.user_id', '=', 'users.id')
-            ->where('employees.id', '=', $id)
+            ->where('employees.id', '=', $employee->id)
             ->get();
 
         return view('employees.edit', compact('employee'));
@@ -133,24 +134,24 @@ class EmployeesController extends Controller
 
     public function destroy($id)
     {
-        $payrollsId = DB::Table('employees')
+        $payrolls = DB::Table('employees')
+            ->select('payrolls.filename')
             ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
             ->where('employee_id', '=', $id)
-            ->select('payrolls.filename')
             ->get();
 
-        if ($payrollsId != array()) {
-            foreach ($payrollsId as $index) {
-                $payroll = Db::Table('payrolls')
-                    ->where('filename', '=', (array_values((array)$index))[0])
+
+        if (count($payrolls) > 0) {
+            foreach ($payrolls as $index) {
+                $delete = Db::Table('payrolls')
+                    ->where('filename', '=', $index->filename)
                     ->delete();
 
-                if ($payroll) {
-                    try {
-                        unlink(public_path((array_values((array)$index))[0]));
-                    } catch (\Throwable $th) {
-                        continue;
-                    }
+                if ($delete && File::exists(public_path($index->filename))) {
+                    unlink(public_path($index->filename));
+                } else {
+                    return redirect()->route('employees.index')
+                        ->withErrors(__('Ha habido un error al intentar eliminar las nóminas del empleado, intentelo de nuevo.'));
                 }
             }
         }
