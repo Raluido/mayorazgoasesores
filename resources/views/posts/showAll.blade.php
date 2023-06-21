@@ -17,44 +17,69 @@
                 </div>
                 @else
                 @foreach ($posts as $post)
-                @if($post->subtitle != null)
+                @if($post->link == 0)
                 <div class="news">
-                    <div class="title">
-                        <h1 class="">{{ $post->title }}</h1>
-                    </div>
-                    <div class="subtitle">
-                        <p class="">{{ $post->subtitle }}</p>
-                    </div>
-                    <hr>
-                    <div class="content">
-                        <p class="">{!! nl2br(e($post->body))!!}</p>
-                    </div>
+                    <h3>{{ $post->title }}</h3>
+                    <p>{{ $post->subtitle }}</p>
                     <hr>
                     <div class="date">
                         <h5>Publicado en: {{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
                     </div>
+                    <br>
                     <div class="gotoNoticia">
-                        <button class="gray stylingButtons"><a href="{{ route('posts.show', $post->id) }}" class="buttonTextWt">Ir a noticia</a></button>
+                        <button class="gray stylingButtons"><a href="{{ route('posts.show', $post->id) }}" target="_blank" class="buttonTextWt">Ir a noticia</a></button>
                     </div>
                 </div>
                 @else
                 @php
                 libxml_use_internal_errors(true);
                 $doc = new \DomDocument();
+                try {
                 $doc->loadHTML(mb_convert_encoding(file_get_contents($post->body), 'HTML-ENTITIES', 'UTF-8'));
+                } catch (\Throwable $th) {
+                echo '<div class="red">Ha habido un error, compruebe si selecciono correctamente entre link o noticia</div>';
+                }
                 $xpath = new \DOMXPath($doc);
-                $query = '//*/meta[starts-with(@property, \'og:\')]';
-                $metas = $xpath->query($query);
-                $title = ($metas[0]->getAttribute('content'));
-                $description = ($metas[1]->getAttribute('content'));
-                $image = ($metas[3]->getAttribute('content'));
+                $queryTitle = '//*/meta[starts-with(@property, \'og:title\')]';
+                $queryDescription = '//*/meta[starts-with(@property, \'og:description\')]';
+                $queryImage = '//*/meta[starts-with(@property, \'og:image\')]';
+                $metaTitle = "";
+                $metaDescription = "";
+                $metaImage = "";
+                $metaTitle = $xpath->query($queryTitle);
+                $metaDescription = $xpath->query($queryDescription);
+                $metaImage = $xpath->query($queryImage);
+                if(!$metaTitle[0] == ""){
+                $title = $metaTitle[0]->getAttribute('content');
+                } else {
+                $title = $post->title;
+                }
+                if(!$metaDescription[0] == ""){
+                $description = $metaDescription[0]->getAttribute('content');
+                } else {
+                $description = $post->subtitle;
+                }
+                if(!$metaImage[0] == ""){
+                $image = $metaImage[0]->getAttribute('content');
+
+                try {
+                $checkImage = getimagesize($image);
+                } catch (\Throwable $th) {
+                $checkImage = "";
+                }
+
+                } else {
+                $image = "";
+                }
                 @endphp
                 <div class="link">
                     <div class="innerLink">
                         <div class="linkImage">
+                            @if(!$image == "" && $checkImage != "")
                             <a href="{{ $post->body }}" target="_blank" class="">
                                 <img src="{{ $image }}" alt="" class="">
                             </a>
+                            @endif
                         </div>
                         <h3 class="">{{ $title }}</h3>
                         <p class="">{{ $description }}</p>
