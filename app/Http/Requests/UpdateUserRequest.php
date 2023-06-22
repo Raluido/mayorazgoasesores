@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -24,11 +25,11 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         // Let's get the route param by name to get the User object value
-        $user = request()->route('user');
+        $id = auth()->id();
 
         return [
-            'name' => 'required|unique:users,name,' . $user->id,
-            'email' => 'required|email:rfc,dns|unique:users,email,' . $user->id,
+            'name' => 'required|unique:users,name,' . $id,
+            'email' => 'required|email:rfc,dns|unique:users,email,' . $id,
         ];
     }
 

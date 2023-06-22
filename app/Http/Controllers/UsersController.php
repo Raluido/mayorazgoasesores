@@ -3,18 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Http\Requests\UpdateUserPassword;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\DestroyAll;
 use App\Mail\AddUserNotification;
 use DB;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 
 class UsersController extends Controller
@@ -27,7 +24,8 @@ class UsersController extends Controller
 
     public function index()
     {
-        $users = User::latest()->paginate(10);
+        $users = User::latest()
+            ->paginate(10);
 
         return view('users.index', compact('users'));
     }
@@ -130,28 +128,31 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        $payrollsId = DB::Table('users')
+        $payrolls = DB::Table('users')
             ->select('payrolls.filename', 'payrolls.id')
             ->join('employees', 'employees.user_id', '=', 'users.id')
             ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
-            ->where('employees.user_id', '=', $user->id)
+            ->where('employees.user_id', '=', 100000)
             ->get();
 
-
-        if (count($payrollsId) > 0) {
-            foreach ($payrollsId as $index) {
-                if (File::exists(public_path($index->filename))) {
-                    unlink(public_path($index->filename));
-
-                    $delete = Db::Table('payrolls')
-                        ->where('id', '=', $index->id)
-                        ->delete();
-                }
-
-                if (isset($delete) && !$delete) {
-                    return redirect()
-                        ->route('users.index')
-                        ->withErrors('Hemos registrado un error al eliminar la nómina con id ' . $index->filename);
+        if (count($payrolls) > 0) {
+            foreach ($payrolls as $index) {
+                if (Storage::exists($index->filename)) {
+                    $delete = Storage::delete($index->filename);
+                    if ($delete) {
+                        $delete = Db::Table('payrolls')
+                            ->where('id', '=', $index->id)
+                            ->delete();
+                        if (!$delete) {
+                            return redirect()
+                                ->route('users.index')
+                                ->withErrors('Hemos registrado un error al eliminar la nómina con id ' . $index->filename);
+                        }
+                    } else {
+                        return redirect()
+                            ->route('users.index')
+                            ->withErrors('Hemos registrado un error al eliminar la nómina con id ' . $index->filename);
+                    }
                 }
             }
         }
@@ -160,58 +161,67 @@ class UsersController extends Controller
             ->where('user_id', '=', $user->id)
             ->get();
 
-
         if (count($employees) > 0) {
             $delete = DB::Table('employees')
                 ->where('user_id', '=', $user->id)
                 ->delete();
-
-            if (isset($delete) && !$delete) {
+            if (!$delete) {
                 return redirect()
                     ->route('users.index')
                     ->withErrors('Hemos registrado un error al eliminar a un empleado de la empresa ' . $user->id);
             }
         }
 
-        $costsimputsId = DB::Table('costs_imputs')
+        $costsImputs = DB::Table('costs_imputs')
             ->select('filename', 'id')
             ->where('user_id', '=', $user->id)
             ->get();
 
-
-        if (count($costsimputsId) > 0) {
-            foreach ($costsimputsId as $index) {
-                if (File::exists(public_path($index->filename))) {
-                    unlink(public_path($index->filename));
-                    $delete = Db::Table('costs_imputs')
-                        ->where('user_id', '=', $user->id)
-                        ->delete();
-                }
-                if (isset($delete) && !$delete) {
-                    return redirect()
-                        ->route('users.index')
-                        ->withErrors('Hemos registrado un error al eliminar el documento de imputación de costes ' . $index->filename);
+        if (count($costsImputs) > 0) {
+            foreach ($costsImputs as $index) {
+                if (Storage::exists($index->filename)) {
+                    $delete = Storage::delete($index->filename);
+                    if ($delete) {
+                        $delete = Db::Table('costs_imputs')
+                            ->where('user_id', '=', $user->id)
+                            ->delete();
+                        if (!$delete) {
+                            return redirect()
+                                ->route('users.index')
+                                ->withErrors('Hemos registrado un error al eliminar el documento de imputación de costes ' . $index->filename);
+                        }
+                    } else {
+                        return redirect()
+                            ->route('users.index')
+                            ->withErrors('Hemos registrado un error al eliminar el documento de imputación de costes ' . $index->filename);
+                    }
                 }
             }
         }
 
-        $othersdocumentsId = DB::Table('others_documents')
+        $othersDocuments = DB::Table('others_documents')
             ->select('filename', 'id')
             ->where('user_id', '=', $user->id)
             ->get();
 
-        if (count($othersdocumentsId) > 0) {
-            foreach ($othersdocumentsId as $index) {
-                if (File::exists(public_path($index->filename))) {
-                    unlink(public_path($index->filename));
-                    $delete = Db::Table('others_documents')
-                        ->where('user_id', '=', $user->id)
-                        ->delete();
-                }
-                if (isset($delete) && !$delete) {
-                    return redirect()
-                        ->route('users.index')
-                        ->withErrors('Hemos registrado un error al eliminar el documento de otros documentos ' . $index->filename);
+        if (count($othersDocuments) > 0) {
+            foreach ($othersDocuments as $index) {
+                if (Storage::exists($index->filename)) {
+                    $delete = Storage::delete($index->filename);
+                    if ($delete) {
+                        $delete = Db::Table('others_documents')
+                            ->where('user_id', '=', $user->id)
+                            ->delete();
+                        if (!$delete) {
+                            return redirect()
+                                ->route('users.index')
+                                ->withErrors('Hemos registrado un error al eliminar el documento de otros documentos ' . $index->filename);
+                        }
+                    } else {
+                        return redirect()
+                            ->route('users.index')
+                            ->withErrors('Hemos registrado un error al eliminar el documento de otros documentos ' . $index->filename);
+                    }
                 }
             }
         }
@@ -224,7 +234,7 @@ class UsersController extends Controller
                 ->withErrors('Hemos registrado un error al eliminar la empresa.');
         } else {
             return redirect()->route('users.index')
-                ->withSuccess(__('Empresas eliminadas correctamente.'));
+                ->withSuccess(__('Hemos eliminado correctamente la empresa seleccionada.'));
         }
     }
 

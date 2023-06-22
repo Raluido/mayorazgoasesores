@@ -7,6 +7,15 @@
             <h2>Usuario</h2>
             Aqui puedes modificar tus datos de usuario y la contraseña
         </div>
+        <div class="">
+            @if (Session::get('success'))
+            <?php $data = Session::get('success'); ?>
+            <div class="green messages" role="">
+                <i class="fa fa-check"></i>
+                {{ $data }}
+            </div>
+            @endif
+        </div>
         <div class="bottom">
             <div class="sideNavButtons">
                 <button class="stylingButtons gray"><a class="buttonTextWt" href="{{ route('user.editData') }}">Modificar

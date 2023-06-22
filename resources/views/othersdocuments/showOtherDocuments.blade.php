@@ -8,6 +8,9 @@
             <h3 class="">Puedes visualizar los documentos.</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <div class="innerBottom">
                 <table class="">
                     <thead>

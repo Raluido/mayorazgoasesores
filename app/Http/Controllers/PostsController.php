@@ -43,12 +43,8 @@ class PostsController extends Controller
         $post->link = $request->input('link', 1);
         $post->save();
 
-        $posts = DB::table('posts')
-            ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
-
-        return view('posts.index', compact('posts'));
+        return redirect()
+            ->route('home.index');
     }
 
     public function show(Post $post)
@@ -77,14 +73,15 @@ class PostsController extends Controller
             $defaultLink = $post->link;
         }
 
-
         $post->title = $request->input('title');
         $post->subtitle = $request->input('subtitle');
         $post->body = $request->input('body');
         $post->published_at = $request->input('published_at');
         $post->link = $defaultLink;
         $post->save();
-        return redirect('/posts')->with('success', 'Se ha actualizado correctamente!');
+
+        return redirect('/posts')
+            ->with('success', 'Se ha actualizado correctamente!');
     }
 
     public function destroy(Post $post)

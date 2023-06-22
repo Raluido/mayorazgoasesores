@@ -46,7 +46,7 @@ class CostsImputsController extends Controller
                 $newPdf->addPage();
                 $newPdf->setSourceFile(public_path('storage/media/' . $filename));
                 $newPdf->useTemplate($newPdf->importPage(1));
-                $newFilename = sprintf('%s/%s_p%s.pdf', public_path('storage/media'), $filenameNoExt, 1);
+                $newFilename = sprintf('%s/%s_p%s.pdf', 'storage/media', $filenameNoExt, 1);
                 $newPdf->output($newFilename, 'F');
                 $pdfParser = new Parser();
                 $pdf = $pdfParser->parseFile($newFilename);
@@ -56,19 +56,19 @@ class CostsImputsController extends Controller
                 // end
 
                 if (!empty($period[0])) {
-                    if (file_exists(public_path('storage/media/' . $newFilename))) {
-                        unlink(public_path('storage/media/' . $newFilename));
+                    if (Storage::exists($newFilename)) {
+                        Storage::delete($newFilename);
                     }
                     $month = $request->input('month');
                     $year = $request->input('year');
                     AddUsersCostsImputs::dispatch($filename, $month, $year);
                     UploadCostsImputs::dispatch($filename, $month, $year);
                 } else {
-                    if (file_exists(public_path('storage/media/' . $filename))) {
-                        unlink(public_path('storage/media/' . $filename));
+                    if (Storage::exists($filename)) {
+                        Storage::delete($filename);
                     }
-                    if (file_exists(public_path('storage/media/' . $newFilename))) {
-                        unlink(public_path('storage/media/' . $newFilename));
+                    if (Storage::exists($newFilename)) {
+                        Storage::delete($newFilename);
                     }
 
                     return redirect()
@@ -138,7 +138,9 @@ class CostsImputsController extends Controller
             }
 
             if (file_exists($tempFolder . '/' . $zipFilename)) {
-                return response()->download($tempFolder . '/' . $zipFilename)->deleteFileAfterSend(true);
+                return response()
+                    ->download($tempFolder . '/' . $zipFilename)
+                    ->deleteFileAfterSend(true);
             }
         } else {
             return redirect()
@@ -175,7 +177,7 @@ class CostsImputsController extends Controller
 
         $costsimputs->setPath('/costsimputs/show?month=' . $month . '&year=' . $year);
 
-        if (count($costsimputs) > 0) {
+        if ($costsimputs->total() > 0) {
             return view('costsimputs.showCostsImputs')
                 ->with('costsimputs', $costsimputs);
         } else {
@@ -236,21 +238,17 @@ class CostsImputsController extends Controller
             $delete = Storage::deleteDirectory($path);
             if ($delete) {
                 Storage::makeDirectory($path, 0775, true);
-                $delete = DB::table('costs_imputs')->delete();
+                $delete = DB::table('costs_imputs')
+                    ->delete();
                 if ($delete) {
                     return redirect()
                         ->route('costsimputs.showForm')
                         ->withSuccess(__('Se han eliminado correctamente todos los modelos de imputación de costes.'));
-                } else {
-                    return redirect()
-                        ->route('costsimputs.showForm')
-                        ->withErrors(__('Ha habido un error al intentar eliminar todos los modelos de imputación de costes.'));
                 }
-            } else {
-                return redirect()
-                    ->route('costsimputs.showForm')
-                    ->withErrors(__('Ha habido un error al intentar eliminar la carpeta con los modelos de imputación de costes.'));
             }
         }
+        return redirect()
+            ->route('costsimputs.showForm')
+            ->withErrors(__('Ha habido un error al intentar eliminar la carpeta con los modelos de imputación de costes.'));
     }
 }

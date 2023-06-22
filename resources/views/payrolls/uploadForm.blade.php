@@ -8,6 +8,9 @@
             <h3 class="">Aqui podrás subir las nóminas del mes</h3>
         </div>
         <div class="bottom">
+            <div class="">
+                @include('layouts.partials.messages')
+            </div>
             <div class="innerBottom">
                 <form action="/payrolls/upload" enctype="multipart/form-data" method="POST">
                     @csrf
@@ -63,9 +66,6 @@
         </div>
     </div>
 </section>
-<div class="">
-    @include('layouts.partials.messages')
-</div>
 @endsection
 @section('js')
 <script src="{{ asset('js/spinner.js') }}" defer></script>

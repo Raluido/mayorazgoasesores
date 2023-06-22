@@ -230,12 +230,12 @@ class OthersDocumentsController extends Controller
 
     public function deleteOthersDocuments($id, $month, $year)
     {
-        $otherDocuments = DB::Table('others_documents')
+        $othersDocuments = DB::Table('others_documents')
             ->where('id', '=', $id)
-            ->get();
+            ->value('filename');
 
-        if (count($otherDocuments) > 0) {
-            $delete = Storage::delete($otherDocuments->filename);
+        if ($othersDocuments) {
+            $delete = Storage::delete($othersDocuments);
             if ($delete) {
                 $delete = DB::Table('others_documents')
                     ->where('id', '=', $id)
@@ -243,7 +243,7 @@ class OthersDocumentsController extends Controller
                 if ($delete) {
                     return redirect()
                         ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
-                        ->withSuccess(__('Se han eliminado correctamente todos los documentos.'));
+                        ->withSuccess(__('Se han eliminado correctamente los documentos seleccionados.'));
                 }
             }
         }

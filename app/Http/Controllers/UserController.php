@@ -32,9 +32,8 @@ class UserController extends Controller
         $user->update($request->validated());
 
         return redirect()
-            ->route('user.editPassword')
-            ->with('user', $user)
-            ->with('successMsg', 'Se ha editado con éxito');
+            ->route('user.editPassword', ['user' => $user])
+            ->withSuccess(__('La constraseña se actualizado correctamente'));
     }
 
     public function editData()
@@ -44,7 +43,7 @@ class UserController extends Controller
         return view('user.editData', ['user' => $user]);
     }
 
-    public function updateData(UpdateUserRequest $request)
+    public function updateData(User $user, UpdateUserRequest $request)
     {
         $user = User::find(auth()->user()->id);
 

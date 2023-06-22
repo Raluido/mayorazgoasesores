@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use DB;
@@ -44,21 +44,30 @@ class PayrollsController extends Controller
                 $newPdf->addPage();
                 $newPdf->setSourceFile(public_path('storage/media/' . $filename));
                 $newPdf->useTemplate($newPdf->importPage(1));
-                $newFilename = sprintf('%s/%s_p%s.pdf', public_path('storage/media'), $filenameNoExt, 1);
+                $newFilename = sprintf('%s/%s_p%s.pdf', 'storage/media', $filenameNoExt, 1);
                 $newPdf->output($newFilename, 'F');
                 $pdfParser = new Parser();
                 $pdf = $pdfParser->parseFile($newFilename);
                 $content = $pdf->getText();
                 preg_match_all('/MENS\s+[0-9]{2}\s+[A-Z]{3}\s+[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
-                unlink($newFilename);
+
 
                 if (!empty($period[0])) {
+                    if (Storage::exists($newFilename)) {
+                        Storage::delete($newFilename);
+                    }
                     $month = $request->input('month');
                     $year = $request->input('year');
                     AddUsersPayrolls::dispatch($filename, $month, $year);
                     UploadPayrolls::dispatch($filename, $month, $year);
                 } else {
-                    unlink(public_path('storage/media/' . $filename));
+                    if (Storage::exists($filename)) {
+                        Storage::delete($filename);
+                    }
+                    if (Storage::exists($newFilename)) {
+                        Storage::delete($newFilename);
+                    }
+
                     return redirect()->route('payrolls.uploadForm')
                         ->withErrors(__('El documento adjuntado no tiene el formato de nómina.'));
                 }
@@ -97,17 +106,16 @@ class PayrollsController extends Controller
     {
         $presentYear = date("Y");
 
-        $files = DB::Table('users')
+        $payrolls = DB::Table('users')
+            ->select('payrolls.filename')
             ->join('employees', 'employees.user_id', '=', 'users.id')
             ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
             ->where('users.nif', '=', Auth::user()->nif)
             ->where('payrolls.year', '=', $year)
             ->where('payrolls.month', '=', $month)
-            ->select('payrolls.filename')
-            ->get()
-            ->toArray();
+            ->get();
 
-        if ($files != null) {
+        if (count($payrolls) > 0) {
 
             $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
             $zip = new ZipArchive;
@@ -116,16 +124,17 @@ class PayrollsController extends Controller
             $tempFolder = public_path('storage/media');
 
             if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
-                foreach ($files as $file) {
-                    $filename = basename((array_values((array)$file))[0]);
-                    $temp = (array_values((array)$filename))[0];
-                    $zip->addFile($publicDir . '/' . $temp, $temp);
+                foreach ($payrolls as $payroll) {
+                    $filename = basename($payroll->filename);
+                    $zip->addFile($publicDir . '/' . $filename, $filename);
                 }
                 $zip->close();
             }
 
             if (file_exists($tempFolder . '/' . $zipFilename)) {
-                return response()->download($tempFolder . '/' . $zipFilename)->deleteFileAfterSend(true);
+                return response()
+                    ->download($tempFolder . '/' . $zipFilename)
+                    ->deleteFileAfterSend(true);
             }
         } else {
             return redirect()
@@ -162,7 +171,7 @@ class PayrollsController extends Controller
 
         $payrolls->setPath('/payrolls/show?month=' . $month . '&year=' . $year);
 
-        if ($payrolls[0] == null) {
+        if (($payrolls->total()) == 0) {
             return redirect()
                 ->route('payrolls.showForm')
                 ->with($presentYear)
@@ -175,45 +184,47 @@ class PayrollsController extends Controller
 
     public function deletePayrolls($id, $month, $year)
     {
-        $payrollId = DB::Table('payrolls')->where('id', '=', $id)->value('filename');
+        $payroll = DB::Table('payrolls')
+            ->where('id', '=', $id)
+            ->value('filename');
 
-        if ($payrollId) {
-            unlink($payrollId);
-            $delete = DB::Table('payrolls')->where('id', '=', $id)->delete();
+        if ($payroll && Storage::exists($payroll)) {
+            $delete = Storage::delete($payroll);
+            if ($delete) {
+                $delete = DB::Table('payrolls')
+                    ->where('id', '=', $id)
+                    ->delete();
+                if ($delete) {
+                    return redirect()
+                        ->route('payrolls.showPayrolls', compact('year', 'month'))
+                        ->withSuccess(__('Se ha eliminado correctamente la nómina'));
+                }
+            }
         }
-
-        if (isset($delete) && $delete) {
-            return redirect()
-                ->route('payrolls.showPayrolls', compact('year', 'month'))
-                ->withSuccess(__('Se ha eliminado correctamente la nómina'));
-        } else {
-            return redirect()
-                ->route('payrolls.showPayrolls', compact('year', 'month'))
-                ->withErrors(__('Ha habido un error al intentar eliminar la nómina.'));
-        }
+        return redirect()
+            ->route('payrolls.showPayrolls', compact('year', 'month'))
+            ->withErrors(__('Ha habido un error al intentar eliminar la nómina.'));
     }
 
     public function deleteAllPayrolls()
     {
-        try {
-            File::deleteDirectory(public_path('/storage/media/payrolls'));
-        } catch (\Throwable $th) {
-            //throw $th;
+        $path = 'storage/media/payrolls';
+
+        if (Storage::exists($path)) {
+            $delete = Storage::deleteDirectory($path);
+            if ($delete) {
+                Storage::makeDirectory($path, 0775, true);
+                $delete = DB::table('payrolls')
+                    ->delete();
+                if ($delete) {
+                    return redirect()
+                        ->route('payrolls.showForm')
+                        ->withSuccess(__('Se han eliminado correctamente todas las nóminas'));
+                }
+            }
         }
-
-        $path = public_path('/storage/media/payrolls');
-        File::makeDirectory($path, 0775, true);
-
-        $delete = DB::table('payrolls')->delete();
-
-        if (isset($delete) && $delete) {
-            return redirect()
-                ->route('payrolls.showForm')
-                ->withSuccess(__('Se han eliminado correctamente todas las nóminas'));
-        } else {
-            return redirect()
-                ->route('costsimputs.showForm')
-                ->withErrors(__('Ha habido un error al intentar eliminar todas nóminas.'));
-        }
+        return redirect()
+            ->route('payrolls.showForm')
+            ->withErrors(__('Ha habido un error al intentar eliminar todas nóminas.'));
     }
 }

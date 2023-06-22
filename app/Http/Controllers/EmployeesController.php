@@ -141,7 +141,6 @@ class EmployeesController extends Controller
             ->where('employee_id', '=', $id)
             ->get();
 
-
         if (count($payrolls) > 0) {
             foreach ($payrolls as $index) {
                 $delete = Storage::delete($index->filename);
@@ -152,8 +151,11 @@ class EmployeesController extends Controller
                     if (!$delete) {
                         return redirect()->route('employees.index')
                             ->withErrors(__('Ha habido un error al intentar eliminar las nóminas del empleado, intentelo de nuevo.'));
+                    } else {
+                        break;
                     }
                 } else {
+                    log::info("aqui2");
                     return redirect()->route('employees.index')
                         ->withErrors(__('Ha habido un error al intentar eliminar las nóminas del empleado, intentelo de nuevo.'));
                 }
