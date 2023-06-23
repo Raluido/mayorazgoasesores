@@ -17,8 +17,7 @@ use Illuminate\Support\Str;
 use App\Mail\AddUsersNotification;
 use App\Mail\JobErrorNotification;
 use Exception;
-use Illuminate\Support\Facades\File;
-
+use Illuminate\Support\Facades\Storage;
 
 class AddUsersCostsImputs implements ShouldQueue
 {
@@ -56,22 +55,22 @@ class AddUsersCostsImputs implements ShouldQueue
         $usersNifPass = array();
 
         $pdf = new Fpdi();
-        $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
+        $pageCount = $pdf->setSourceFile('storage/media/' . $filename);
         $file = pathinfo($filename, PATHINFO_FILENAME);
 
         // Split each page into a new PDF
         for ($i = 1; $i <= $pageCount; $i++) {
             $newPdf = new Fpdi();
             $newPdf->addPage();
-            $newPdf->setSourceFile(public_path('storage/media/' . $filename));
+            $newPdf->setSourceFile('storage/media/' . $filename);
             $newPdf->useTemplate($newPdf->importPage($i));
-            $newFilename = sprintf('%s/%s_%s.pdf', public_path('storage/media/addUsersTemp'), $file, $i);
+            $newFilename = sprintf('%s/%s_%s.pdf', 'storage/media/addUsersTemp', $file, $i);
             $newPdf->output($newFilename, 'F');
         }
 
         // read each .pdf
 
-        $files = glob(public_path('storage/media/addUsersTemp/*'));
+        $files = glob('storage/media/addUsersTemp/*');
 
         foreach ($files as $index) {
             $pdfParser = new Parser();
@@ -162,10 +161,10 @@ class AddUsersCostsImputs implements ShouldQueue
 
         // delete temps files
 
-        $files = glob(public_path('storage/media/addUsersTemp/*.*'));
+        $files = glob('storage/media/addUsersTemp/*.*');
         foreach ($files as $index) {
-            if (is_file($index)) {
-                unlink($index);
+            if (Storage::exists($index)) {
+                Storage::delete($index);
             }
         }
 
@@ -206,10 +205,10 @@ class AddUsersCostsImputs implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        $files = glob(public_path('storage/media/addUsersTemp/*.*'));
+        $files = glob('storage/media/addUsersTemp/*.*');
         foreach ($files as $index) {
-            if (is_file($index)) {
-                unlink($index);
+            if (Storage::exists($index)) {
+                Storage::delete($index);
             }
         }
 

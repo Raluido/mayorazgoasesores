@@ -3,28 +3,21 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use setasign\Fpdi\Fpdi;
-use App\Models\User;
-use App\Models\Employee;
 use DB;
 use ZipArchive;
 use Smalot\PdfParser\Parser;
 use Spatie\PdfToText\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Mail\AddUsers;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use App\Mail\DeleteNotification;
-use Illuminate\Filesystem\Filesystem;
 use App\Mail\JobErrorNotification;
 use Exception;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 
 class DestroyAll implements ShouldQueue
@@ -47,29 +40,53 @@ class DestroyAll implements ShouldQueue
      */
     public function handle(Request $request)
     {
-        File::deleteDirectory(public_path('storage/media/payrolls'));
-        $path = public_path('storage/media/payrolls');
-        File::makeDirectory($path, 0775, true);
-        Db::Table('payrolls')->delete();
+        $path = 'storage/media/payrolls';
 
-        Db::Table('employees')->delete();
+        if (Storage::exists($path)) {
+            $delete = Storage::deleteDirectory($path);
+            if ($delete) {
+                Storage::makeDirectory($path, 0777, true);
+                $payrolls = Db::Table('payrolls')
+                    ->delete();
+                $employees = Db::Table('employees')
+                    ->delete();
+            }
+        }
 
-        File::deleteDirectory(public_path('storage/media/costsImputs'));
-        $path = public_path('storage/media/costsImputs');
-        File::makeDirectory($path, 0775, true);
-        Db::Table('costs_imputs')->delete();
+        $path = 'storage/media/costsImputs';
 
-        File::deleteDirectory(public_path('storage/media/othersDocuments'));
-        $path = public_path('storage/media/othersDocuments');
-        File::makeDirectory($path, 0775, true);
-        Db::Table('others_documents')->delete();
+        if (Storage::exists($path)) {
+            $delete = Storage::deleteDirectory($path);
+            if ($delete) {
+                Storage::makeDirectory($path, 0777, true);
+                $costsImputs = Db::Table('costs_imputs')
+                    ->delete();
+            }
+        }
 
-        Db::Table('users')->where('id', '>', '2')->delete();
+        $path = 'storage/media/othersDocuments';
 
-        $passed = "El proceso de eliminación de toda la base de datos ha finalizado con éxito";
+        if (Storage::exists($path)) {
+            $delete = Storage::deleteDirectory($path);
+            if ($delete) {
+                Storage::makeDirectory($path, 0777, true);
+                $othersDocuments = Db::Table('others_documents')
+                    ->delete();
+            }
+        }
 
+        if ($payrolls >= 0 && $employees >= 0 && $costsImputs >= 0 && $othersDocuments >= 0) {
+            $users = Db::Table('users')
+                ->where('id', '>', '2')
+                ->delete();
+            if ($users) {
+                $passed = "El proceso de eliminación de toda la base de datos ha finalizado con éxito";
+            } else {
+                $passed = "El proceso de eliminación de toda la base de datos ha fallado";
+            }
 
-        Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new DeleteNotification($passed));
+            Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new DeleteNotification($passed));
+        }
     }
 
     /**

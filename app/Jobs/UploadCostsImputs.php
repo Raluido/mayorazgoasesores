@@ -3,21 +3,17 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use setasign\Fpdi\Fpdi;
 use App\Models\CostsImput;
-use App\Models\User;
 use DB;
 use Smalot\PdfParser\Parser;
-use Illuminate\Support\Facades\File;
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use App\Mail\UploadCostsImputsNotification;
 use App\Mail\JobErrorNotification;
 use Exception;
@@ -67,17 +63,19 @@ class UploadCostsImputs implements ShouldQueue
             $newPdf->addPage();
             $newPdf->setSourceFile(public_path('storage/media/' . $filename));
             $newPdf->useTemplate($newPdf->importPage($i));
-            $newFilename = sprintf('%s/%s_%s.pdf', public_path('storage/media/costsImputsTemp'), $file, $i);
+            $newFilename = sprintf('%s/%s_%s.pdf', 'storage/media/costsImputsTemp', $file, $i);
             $newPdf->output($newFilename, 'F');
         }
 
         // End
 
-        unlink(public_path('storage/media/' . $filename));
+        if (Storage::exists('storage/media/' . $filename)) {
+            Storage::delete('storage/media/' . $filename);
+        }
 
         // read and rename each .pdf
 
-        $files = glob(public_path('storage/media/costsImputsTemp/*.*'));
+        $files = glob('storage/media/costsImputsTemp/*.*');
 
         foreach ($files as $index) {
             $pdfParser = new Parser();
@@ -162,40 +160,55 @@ class UploadCostsImputs implements ShouldQueue
                 }
 
                 $oldNif = $NIF;
-                rename(public_path('storage/media/costsImputsTemp/' . $oldFilename), public_path('storage/media/costsImputsTemp/' . $NIF . '_' . $month . 20 . $year . '_' . $x . '.pdf'));
+                rename('storage/media/costsImputsTemp/' . $oldFilename, 'storage/media/costsImputsTemp/' . $NIF . '_' . $month . 20 . $year . '_' . $x . '.pdf');
             }
         }
 
         $files = glob(public_path('storage/media/costsImputsTemp/' . basename($filename, '.pdf') . '_*.*'));
         foreach ($files as $file) {
-            if (is_file($file)) {
-                unlink($file);
+            if (Storage::exists($file)) {
+                Storage::delete($file);
             }
         }
 
         // move to month/year folder
 
-        $path = public_path('storage/media/costsImputs/' . $yearInput);
+        $path = 'storage/media/costsImputs/' . $yearInput;
 
-        if (!File::exists($path)) {
-            File::makeDirectory($path, 0775, true);
-            $path = public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput);
-            File::makeDirectory($path, 0775, true);
+        if (!Storage::exists($path)) {
+            Storage::makeDirectory($path, 0775, true);
+            $path = 'storage/media/costsImputs/' . $yearInput . '/' . $monthInput;
+            Storage::makeDirectory($path, 0775, true);
         } else {
-            $path = public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput);
-            if (!File::exists($path)) {
-                File::makeDirectory($path, 0775, true);
+            $path = 'storage/media/costsImputs/' . $yearInput . '/' . $monthInput;
+            if (!Storage::exists($path)) {
+                Storage::makeDirectory($path, 0775, true);
             }
         }
 
-        $files = glob(public_path('storage/media/costsImputsTemp/*'));
+
+        $files = glob('storage/media/costsImputsTemp/*');
 
         foreach ($files as $file) {
             $filename = basename($file);
             $nif = substr($filename, 0, 9);
 
+            // delete if the costsImput is already created
+
+            $delete = DB::table('costs_imputs')
+                ->where('month', $monthInput)
+                ->where('year', $yearInput)
+                ->where('filename', $file)
+                ->delete();
+
+            if ($delete) {
+                if (Storage::exists($path)) {
+                    Storage::delete($path);
+                }
+            }
+
             if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
+                rename('storage/media/costsImputsTemp/' . $filename, 'storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename);
                 $costsImput = new CostsImput();
                 $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
                 $costsImput->filename = 'storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename;
@@ -203,7 +216,9 @@ class UploadCostsImputs implements ShouldQueue
                 $costsImput->year = $yearInput;
                 $costsImput->save();
             } else {
-                unlink(public_path('storage/media/costsImputsTemp/' . $filename));
+                if (Storage::exists('storage/media/costsImputsTemp/' . $filename)) {
+                    Storage::delete('storage/media/costsImputsTemp/' . $filename);
+                }
                 $uploadError[] = 'Error, la fecha es incorrecta:' . ' ' . $filename;
             }
         }
@@ -212,8 +227,8 @@ class UploadCostsImputs implements ShouldQueue
 
         $files = glob(public_path('storage/media/costsImputsTemp/*.*'));
         foreach ($files as $index) {
-            if (is_file($index)) {
-                unlink($index);
+            if (Storage::exists($index)) {
+                Storage::delete($index);
             }
         }
     }
@@ -228,12 +243,16 @@ class UploadCostsImputs implements ShouldQueue
     {
         $files = glob(public_path('storage/media/costsImputsTemp/*.*'));
         foreach ($files as $index) {
-            unlink($index);
+            if (Storage::exists($index)) {
+                Storage::delete($index);
+            }
         }
 
         $files = glob(public_path('storage/media/*.*'));
         foreach ($files as $index) {
-            unlink($index);
+            if (Storage::exists($index)) {
+                Storage::delete($index);
+            }
         }
 
         $jobError = "Error en la carga de Imputación de Costes, vuelva a intentarlo gracias ;)";

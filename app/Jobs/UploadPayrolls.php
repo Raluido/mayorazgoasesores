@@ -12,7 +12,7 @@ use App\Models\Employee;
 use App\Models\Payroll;
 use DB;
 use Smalot\PdfParser\Parser;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UploadPayrollsNotification;
@@ -63,17 +63,20 @@ class UploadPayrolls implements ShouldQueue
             $newPdf->addPage();
             $newPdf->setSourceFile(public_path('storage/media/' . $filename));
             $newPdf->useTemplate($newPdf->importPage($i));
-            $newFilename = sprintf('%s/%s_%s.pdf', public_path('storage/media/payrollsTemp'), $file, $i);
+            $newFilename = sprintf('%s/%s_%s.pdf', 'storage/media/payrollsTemp', $file, $i);
             $newPdf->output($newFilename, 'F');
         }
 
         // end
 
-        unlink(public_path('storage/media/' . $filename));
+        if (Storage::exists('storage/media/' . $filename)) {
+            Storage::delete('storage/media/' . $filename);
+        }
+
 
         // read and rename each .pdf
 
-        $files = glob(public_path('storage/media/payrollsTemp/*.*'));
+        $files = glob('storage/media/payrollsTemp/*.*');
 
         foreach ($files as $index) {
             $pdfParser = new Parser();
@@ -123,7 +126,7 @@ class UploadPayrolls implements ShouldQueue
                 }
 
                 $oldFilename = basename($index);
-                rename(public_path('storage/media/payrollsTemp/' . $oldFilename), public_path('storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.pdf'));
+                rename('storage/media/payrollsTemp/' . $oldFilename, 'storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.pdf');
             } catch (\Throwable $th) {
                 $uploadError = "Error en las fechas/identificación de la nómina";
                 continue;
@@ -132,10 +135,10 @@ class UploadPayrolls implements ShouldQueue
 
         // delete temp files
 
-        $files = glob(public_path('storage/media/payrollsTemp/' . basename($filename, '.pdf') . '_*.*'));
+        $files = glob('storage/media/payrollsTemp/' . basename($filename, '.pdf') . '_*.*');
         foreach ($files as $file) {
-            if (is_file($file)) {
-                unlink($file);
+            if (Storage::exists($file)) {
+                Storage::delete($file);
             }
         }
 
@@ -143,18 +146,18 @@ class UploadPayrolls implements ShouldQueue
 
         // move to month and year folder
 
-        $path = public_path('storage/media/payrolls/' . $yearInput);
-        $files = glob(public_path('storage/media/payrollsTemp/*'));
+        $path = 'storage/media/payrolls/' . $yearInput;
+        $files = glob('storage/media/payrollsTemp/*');
         $uploadError = array();
 
-        if (!File::exists($path)) {
-            File::makeDirectory($path, 0775, true);
-            $path = public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput);
-            File::makeDirectory($path, 0775, true);
+        if (!Storage::exists($path)) {
+            Storage::makeDirectory($path, 0775, true);
+            $path = 'storage/media/payrolls/' . $yearInput . '/' . $monthInput;
+            Storage::makeDirectory($path, 0775, true);
         } else {
-            $path = public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput);
-            if (!File::exists($path)) {
-                File::makeDirectory($path, 0775, true);
+            $path = 'storage/media/payrolls/' . $yearInput . '/' . $monthInput;
+            if (!Storage::exists($path)) {
+                Storage::makeDirectory($path, 0775, true);
             }
         }
 
@@ -163,11 +166,25 @@ class UploadPayrolls implements ShouldQueue
             $nif = substr($filename, 0, 9);
             $dni = substr($filename, 10, 9);
 
+            // delete if the payroll is already created
+
+            $delete = DB::table('payrolls')
+                ->where('month', $monthInput)
+                ->where('year', $yearInput)
+                ->where('filename', $file)
+                ->delete();
+
+            if ($delete) {
+                if (Storage::exists($path)) {
+                    Storage::delete($path);
+                }
+            }
+
             // check if the employee is already created or not
 
             if (Employee::where('dni', '=', $dni)->exists()) {
                 if ($monthInput . $yearInput == substr($filename, 20, 7)) {
-                    rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
+                    rename('storage/media/payrollsTemp/' . $filename, 'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename);
                     $payroll = new Payroll();
                     $payroll->employee_id = Db::Table('employees')->where('dni', '=',  $dni)->value('id');
                     $payroll->filename =  'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename;
@@ -175,7 +192,9 @@ class UploadPayrolls implements ShouldQueue
                     $payroll->month = $monthInput;
                     $payroll->save();
                 } else {
-                    unlink(public_path('storage/media/payrollsTemp/' . $filename));
+                    if (Storage::exists('storage/media/payrollsTemp/' . $filename)) {
+                        Storage::delete('storage/media/payrollsTemp/' . $filename);
+                    }
                     $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
                 }
             } else {
@@ -191,7 +210,7 @@ class UploadPayrolls implements ShouldQueue
                 }
 
                 if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
-                    rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
+                    rename('storage/media/payrollsTemp/' . $filename, 'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename);
                     $payroll = new Payroll();
                     $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
                     $payroll->filename =  'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename;
@@ -199,7 +218,9 @@ class UploadPayrolls implements ShouldQueue
                     $payroll->month = $monthInput;
                     $payroll->save();
                 } else {
-                    unlink(public_path('storage/media/payrollsTemp/' . $filename));
+                    if (Storage::exists('storage/media/payrollsTemp/' . $filename)) {
+                        Storage::delete('storage/media/payrollsTemp/' . $filename);
+                    }
                     $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
                 }
             }
@@ -207,10 +228,10 @@ class UploadPayrolls implements ShouldQueue
 
         Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new UploadPayrollsNotification($uploadError, $monthInput, $yearInput));
 
-        $files = glob(public_path('storage/media/payrollsTemp/*.*'));
+        $files = glob('storage/media/payrollsTemp/*.*');
         foreach ($files as $index) {
-            if (is_file($index)) {
-                unlink($index);
+            if (Storage::exists($index)) {
+                Storage::delete($index);
             }
         }
     }
@@ -223,14 +244,18 @@ class UploadPayrolls implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        $files = glob(public_path('storage/media/payrollsTemp/*.*'));
+        $files = glob('storage/media/payrollsTemp/*.*');
         foreach ($files as $index) {
-            unlink($index);
+            if (Storage::exists($index)) {
+                Storage::delete($index);
+            }
         }
 
-        $files = glob(public_path('storage/media/*.*'));
+        $files = glob('storage/media/*.*');
         foreach ($files as $index) {
-            unlink($index);
+            if (Storage::exists($index)) {
+                Storage::delete($index);
+            }
         }
 
         $jobError = "Error en la carga de Nóminas, vuelva a intentarlo gracias ;)";
