@@ -36,36 +36,36 @@ class PayrollsController extends Controller
 
             if ($check) {
 
-                $filename = date('d-m-Y h.i.s a', time()) . ".pdf";
+                $filename = date('d-m-Y his a', time()) . '.' . $extension;
                 $file->storeAs('storage/media/',  $filename);
-                $filenameNoExt = pathinfo($filename, PATHINFO_FILENAME);
+                $fileNameNoExt = pathinfo('storage/media/' . $filename, PATHINFO_FILENAME);
 
                 $newPdf = new Fpdi();
                 $newPdf->addPage();
                 $newPdf->setSourceFile(public_path('storage/media/' . $filename));
                 $newPdf->useTemplate($newPdf->importPage(1));
-                $newFilename = sprintf('%s/%s_p%s.pdf', 'storage/media', $filenameNoExt, 1);
-                $newPdf->output($newFilename, 'F');
+                $newFilename = $fileNameNoExt . '_chk.' . $extension;
+                $newPdf->output(public_path('storage/media/' . $newFilename), 'F');
                 $pdfParser = new Parser();
-                $pdf = $pdfParser->parseFile($newFilename);
+                $pdf = $pdfParser->parseFile(public_path('storage/media/' . $newFilename));
                 $content = $pdf->getText();
                 preg_match_all('/MENS\s+[0-9]{2}\s+[A-Z]{3}\s+[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
 
 
                 if (!empty($period[0])) {
-                    if (Storage::exists($newFilename)) {
-                        Storage::delete($newFilename);
+                    if (Storage::exists('/storage/media/' . $newFilename)) {
+                        Storage::delete('/storage/media/' . $newFilename);
                     }
                     $month = $request->input('month');
                     $year = $request->input('year');
                     AddUsersPayrolls::dispatch($filename, $month, $year);
                     UploadPayrolls::dispatch($filename, $month, $year);
                 } else {
-                    if (Storage::exists($filename)) {
-                        Storage::delete($filename);
+                    if (Storage::exists('storage/media/' . $filename)) {
+                        Storage::delete('storage/media/' . $filename);
                     }
-                    if (Storage::exists($newFilename)) {
-                        Storage::delete($newFilename);
+                    if (Storage::exists('/storage/media/' . $newFilename)) {
+                        Storage::delete('/storage/media/' . $newFilename);
                     }
 
                     return redirect()->route('payrolls.uploadForm')
@@ -120,20 +120,18 @@ class PayrollsController extends Controller
             $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
             $zip = new ZipArchive;
 
-            $publicDir = public_path('storage/media/payrolls/' . $year . '/' . $month);
-            $tempFolder = public_path('storage/media');
+            $path = public_path('storage/media');
 
-            if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
+            if ($zip->open($path . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($payrolls as $payroll) {
-                    $filename = basename($payroll->filename);
-                    $zip->addFile($publicDir . '/' . $filename, $filename);
+                    $zip->addFile($payroll->filename);
                 }
                 $zip->close();
             }
 
-            if (file_exists($tempFolder . '/' . $zipFilename)) {
+            if (Storage::exists('storage/media/' . $zipFilename)) {
                 return response()
-                    ->download($tempFolder . '/' . $zipFilename)
+                    ->download($path . '/' . $zipFilename)
                     ->deleteFileAfterSend(true);
             }
         } else {
@@ -171,7 +169,7 @@ class PayrollsController extends Controller
 
         $payrolls->setPath('/payrolls/show?month=' . $month . '&year=' . $year);
 
-        if (($payrolls->total()) == 0) {
+        if ($payrolls->total() == 0) {
             return redirect()
                 ->route('payrolls.showForm')
                 ->with($presentYear)
@@ -198,12 +196,21 @@ class PayrollsController extends Controller
                     return redirect()
                         ->route('payrolls.showPayrolls', compact('year', 'month'))
                         ->withSuccess(__('Se ha eliminado correctamente la nómina'));
+                } else {
+                    return redirect()
+                        ->route('payrolls.showPayrolls', compact('year', 'month'))
+                        ->withErrors(__('Ha habido un error al intentar eliminar la nómina.'));
                 }
+            } else {
+                return redirect()
+                    ->route('payrolls.showPayrolls', compact('year', 'month'))
+                    ->withErrors(__('Ha habido un error al intentar eliminar la nómina.'));
             }
+        } else {
+            return redirect()
+                ->route('payrolls.showPayrolls', compact('year', 'month'))
+                ->withErrors(__('Ha habido un error al intentar eliminar la nómina.'));
         }
-        return redirect()
-            ->route('payrolls.showPayrolls', compact('year', 'month'))
-            ->withErrors(__('Ha habido un error al intentar eliminar la nómina.'));
     }
 
     public function deleteAllPayrolls()
@@ -220,11 +227,20 @@ class PayrollsController extends Controller
                     return redirect()
                         ->route('payrolls.showForm')
                         ->withSuccess(__('Se han eliminado correctamente todas las nóminas'));
+                } else {
+                    return redirect()
+                        ->route('payrolls.showForm')
+                        ->withErrors(__('Ha habido un error al intentar eliminar todas nóminas.'));
                 }
+            } else {
+                return redirect()
+                    ->route('payrolls.showForm')
+                    ->withErrors(__('Ha habido un error al intentar eliminar todas nóminas.'));
             }
+        } else {
+            return redirect()
+                ->route('payrolls.showForm')
+                ->withErrors(__('Ha habido un error al intentar eliminar todas nóminas.'));
         }
-        return redirect()
-            ->route('payrolls.showForm')
-            ->withErrors(__('Ha habido un error al intentar eliminar todas nóminas.'));
     }
 }

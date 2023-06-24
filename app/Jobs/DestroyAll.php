@@ -45,7 +45,7 @@ class DestroyAll implements ShouldQueue
         if (Storage::exists($path)) {
             $delete = Storage::deleteDirectory($path);
             if ($delete) {
-                Storage::makeDirectory($path, 0777, true);
+                Storage::makeDirectory($path, 0775, true);
                 $payrolls = Db::Table('payrolls')
                     ->delete();
                 $employees = Db::Table('employees')
@@ -58,7 +58,7 @@ class DestroyAll implements ShouldQueue
         if (Storage::exists($path)) {
             $delete = Storage::deleteDirectory($path);
             if ($delete) {
-                Storage::makeDirectory($path, 0777, true);
+                Storage::makeDirectory($path, 0775, true);
                 $costsImputs = Db::Table('costs_imputs')
                     ->delete();
             }
@@ -69,7 +69,7 @@ class DestroyAll implements ShouldQueue
         if (Storage::exists($path)) {
             $delete = Storage::deleteDirectory($path);
             if ($delete) {
-                Storage::makeDirectory($path, 0777, true);
+                Storage::makeDirectory($path, 0775, true);
                 $othersDocuments = Db::Table('others_documents')
                     ->delete();
             }

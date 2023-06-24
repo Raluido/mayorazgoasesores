@@ -124,7 +124,10 @@ class EmployeesController extends Controller
     public function update($id, Request $request)
     {
         $employee = Employee::find($id);
-        $userId = Db::Table('users')->where('nif', '=', $request->input('nif'))->value('users.id')->get();
+        $userId = Db::Table('users')
+            ->where('nif', '=', $request->input('nif'))
+            ->value('users.id')
+            ->get();
         $employee->user_id = $userId;
         $employee->dni = $request->input('dni');
 

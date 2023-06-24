@@ -38,37 +38,37 @@ class CostsImputsController extends Controller
 
                 // checking if its a costsimputs format
 
-                $filename = date('d-m-Y h.i.s a', time()) . ".pdf";
+                $filename = date('d-m-Y his a', time()) . '.' . $extension;
                 $file->storeAs('storage/media/',  $filename);
-                $filenameNoExt = pathinfo($filename, PATHINFO_FILENAME);
+                $fileNameNoExt = pathinfo('storage/media/' . $filename, PATHINFO_FILENAME);
 
                 $newPdf = new Fpdi();
                 $newPdf->addPage();
                 $newPdf->setSourceFile(public_path('storage/media/' . $filename));
                 $newPdf->useTemplate($newPdf->importPage(1));
-                $newFilename = sprintf('%s/%s_p%s.pdf', 'storage/media', $filenameNoExt, 1);
-                $newPdf->output($newFilename, 'F');
+                $newFilename = $fileNameNoExt . '_chk.' . $extension;
+                $newPdf->output(public_path('storage/media/' . $newFilename), 'F');
                 $pdfParser = new Parser();
-                $pdf = $pdfParser->parseFile($newFilename);
+                $pdf = $pdfParser->parseFile(public_path('storage/media/' . $newFilename));
                 $content = $pdf->getText();
                 preg_match_all('/PERIODO\s+DEL\s+[0-9]{2}\/[0-9]{2}\/[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
 
                 // end
 
                 if (!empty($period[0])) {
-                    if (Storage::exists($newFilename)) {
-                        Storage::delete($newFilename);
+                    if (Storage::exists('/storage/media/' . $newFilename)) {
+                        Storage::delete('/storage/media/' . $newFilename);
                     }
                     $month = $request->input('month');
                     $year = $request->input('year');
                     AddUsersCostsImputs::dispatch($filename, $month, $year);
                     UploadCostsImputs::dispatch($filename, $month, $year);
                 } else {
-                    if (Storage::exists($filename)) {
-                        Storage::delete($filename);
+                    if (Storage::exists('storage/media/' . $filename)) {
+                        Storage::delete('storage/media/' . $filename);
                     }
-                    if (Storage::exists($newFilename)) {
-                        Storage::delete($newFilename);
+                    if (Storage::exists('/storage/media/' . $newFilename)) {
+                        Storage::delete('/storage/media/' . $newFilename);
                     }
 
                     return redirect()
@@ -126,20 +126,18 @@ class CostsImputsController extends Controller
             $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
             $zip = new ZipArchive;
 
-            $publicDir = public_path('storage/media/costsImputs/' . $year . '/' . $month);
-            $tempFolder = public_path('storage/media');
+            $path = public_path('storage/media');
 
-            if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
+            if ($zip->open($path . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($files as $file) {
-                    $filename = basename($file->filename);
-                    $zip->addFile($publicDir . '/' . $filename, $filename);
+                    $zip->addFile($file->filename);
                 }
                 $zip->close();
             }
 
-            if (file_exists($tempFolder . '/' . $zipFilename)) {
+            if (Storage::exists('storage/media/' . $zipFilename)) {
                 return response()
-                    ->download($tempFolder . '/' . $zipFilename)
+                    ->download($path . '/' . $zipFilename)
                     ->deleteFileAfterSend(true);
             }
         } else {
@@ -193,15 +191,15 @@ class CostsImputsController extends Controller
     {
         $presentYear = date("Y");
 
-        $costsimputId = DB::Table('costs_imputs')
+        $costsImput = DB::Table('costs_imputs')
             ->select('filename', 'id')
             ->where('year', '=', $year)
             ->where('month', '=', $month)
             ->where('user_id', '=', $id)
             ->get();
 
-        if (count($costsimputId) > 0) {
-            foreach ($costsimputId as $index) {
+        if (count($costsImput) > 0) {
+            foreach ($costsImput as $index) {
                 if (Storage::exists($index->filename)) {
                     $delete = Storage::delete($index->filename);
                     if ($delete) {
@@ -212,6 +210,8 @@ class CostsImputsController extends Controller
                             return redirect()
                                 ->route('costsimputs.showCostsImputs', compact('month', 'year'))
                                 ->withErrors(__('Ha habido un error al intentar eliminar el modelo de imputación de costes.'));
+                        } else {
+                            break;
                         }
                     } else {
                         return redirect()
@@ -244,11 +244,20 @@ class CostsImputsController extends Controller
                     return redirect()
                         ->route('costsimputs.showForm')
                         ->withSuccess(__('Se han eliminado correctamente todos los modelos de imputación de costes.'));
+                } else {
+                    return redirect()
+                        ->route('costsimputs.showForm')
+                        ->withErrors(__('Ha habido un error al intentar eliminar la carpeta con los modelos de imputación de costes.'));
                 }
+            } else {
+                return redirect()
+                    ->route('costsimputs.showForm')
+                    ->withErrors(__('Ha habido un error al intentar eliminar la carpeta con los modelos de imputación de costes.'));
             }
+        } else {
+            return redirect()
+                ->route('costsimputs.showForm')
+                ->withErrors(__('Ha habido un error al intentar eliminar la carpeta con los modelos de imputación de costes.'));
         }
-        return redirect()
-            ->route('costsimputs.showForm')
-            ->withErrors(__('Ha habido un error al intentar eliminar la carpeta con los modelos de imputación de costes.'));
     }
 }

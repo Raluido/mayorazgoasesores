@@ -56,22 +56,23 @@ class AddUsersPayrolls implements ShouldQueue
         $usersNifPass = array();
 
         $pdf = new Fpdi();
-        $pageCount = $pdf->setSourceFile('storage/media/' . $filename);
-        $file = pathinfo($filename, PATHINFO_FILENAME);
+        $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $file = date('d-m-Y his a', time());
 
         // Split each page into a new PDF
         for ($i = 1; $i <= $pageCount; $i++) {
             $newPdf = new Fpdi();
             $newPdf->addPage();
-            $newPdf->setSourceFile('storage/media/' . $filename);
+            $newPdf->setSourceFile(public_path('storage/media/' . $filename));
             $newPdf->useTemplate($newPdf->importPage($i));
-            $newFilename = sprintf('%s/%s_%s.pdf', 'storage/media/addUsersTemp', $file, $i);
+            $newFilename = sprintf('%s/%s_%s.%s', public_path('storage/media/addUsersTemp'), $file, $i, $extension);
             $newPdf->output($newFilename, 'F');
         }
 
         // read each .pdf
 
-        $files = glob('storage/media/addUsersTemp/*');
+        $files = glob(public_path('storage/media/addUsersTemp/*.*'));
 
         foreach ($files as $index) {
             $pdfParser = new Parser();
@@ -144,10 +145,10 @@ class AddUsersPayrolls implements ShouldQueue
 
         // delete temps files
 
-        $files = glob('storage/media/addUsersTemp/*.*');
+        $files = glob(public_path('storage/media/addUsersTemp/*.*'));
         foreach ($files as $index) {
-            if (Storage::exists($index)) {
-                Storage::delete($index);
+            if (Storage::exists('storage/media/addUsersTemp/' . basename($index))) {
+                Storage::delete('storage/media/addUsersTemp/' . basename($index));
             }
         }
 
@@ -188,8 +189,15 @@ class AddUsersPayrolls implements ShouldQueue
     {
         $files = glob(public_path('storage/media/addUsersTemp/*.*'));
         foreach ($files as $index) {
-            if (Storage::exists($index)) {
-                Storage::delete($index);
+            if (Storage::exists('storage/media/addUsersTemp/' . basename($index))) {
+                Storage::delete('storage/media/addUsersTemp/' . basename($index));
+            }
+        }
+
+        $files = glob(public_path('storage/media/*.*'));
+        foreach ($files as $index) {
+            if (Storage::exists('storage/media/' . basename($index))) {
+                Storage::delete('storage/media/' . basename($index));
             }
         }
 

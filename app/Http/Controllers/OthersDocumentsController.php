@@ -73,6 +73,8 @@ class OthersDocumentsController extends Controller
                         ->where('users.nif', '=', $nif)
                         ->get();
 
+                    $path = 'storage/media/othersDocuments/' . $year . '/' . $month . '/' . $nif;
+
                     if (count($othersDocuments) > 0) {
                         if (Storage::exists($path . '/' . $filename)) {
                             $delete = Storage::delete($path . '/' . $filename);
@@ -161,8 +163,7 @@ class OthersDocumentsController extends Controller
                 ->where('others_documents.year', '=', $year)
                 ->where('others_documents.month', '=', $month)
                 ->where('users.nif', '=', Auth::user()->nif)
-                ->get()
-                ->toArray();
+                ->get();
 
             return redirect()
                 ->route('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'))
@@ -172,18 +173,17 @@ class OthersDocumentsController extends Controller
             $zipFilename = Auth::user()->nif . '_' . $month . $year . '.zip';
             $zip = new ZipArchive;
 
-            $publicDir = public_path('storage/media/othersDocuments/' . $year . '/' . $month . '/' . Auth::user()->nif);
-            $tempFolder = public_path('storage/media/othersDocuments');
+            $path = public_path('storage/media');
 
-            if ($zip->open($tempFolder . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
+            if ($zip->open($path . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($otherDocumentSlc as $index) {
                     $zip->addFile($index, basename($index));
                 }
                 $zip->close();
             }
 
-            if (file_exists($tempFolder . '/' . $zipFilename)) {
-                return response()->download($tempFolder . '/' . $zipFilename)->deleteFileAfterSend(true);
+            if (Storage::exists('storage/media/' . $zipFilename)) {
+                return response()->download($path . '/' . $zipFilename)->deleteFileAfterSend(true);
             } else {
                 return redirect()
                     ->route('othersdocuments.downloadForm')
@@ -243,13 +243,13 @@ class OthersDocumentsController extends Controller
                 if ($delete) {
                     return redirect()
                         ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
-                        ->withSuccess(__('Se han eliminado correctamente los documentos seleccionados.'));
+                        ->withSuccess(__('Se ha eliminado correctamente el documento seleccionado.'));
                 }
             }
         }
         return redirect()
             ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
-            ->withErrors(__('Ha habido un error al intentar eliminar todos los documentos.'));
+            ->withErrors(__('Ha habido un error al intentar eliminar el documento.'));
     }
 
     public function deleteAllOtherDocuments()

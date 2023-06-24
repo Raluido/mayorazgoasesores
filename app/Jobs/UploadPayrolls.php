@@ -56,14 +56,15 @@ class UploadPayrolls implements ShouldQueue
 
         $pdf = new Fpdi();
         $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
-        $file = pathinfo($filename, PATHINFO_FILENAME);
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $file = date('d-m-Y his a', time());
 
         for ($i = 1; $i <= $pageCount; $i++) {
             $newPdf = new Fpdi();
             $newPdf->addPage();
             $newPdf->setSourceFile(public_path('storage/media/' . $filename));
             $newPdf->useTemplate($newPdf->importPage($i));
-            $newFilename = sprintf('%s/%s_%s.pdf', 'storage/media/payrollsTemp', $file, $i);
+            $newFilename = sprintf('%s/%s_%s.%s', public_path('storage/media/payrollsTemp'), $file, $i, $extension);
             $newPdf->output($newFilename, 'F');
         }
 
@@ -76,7 +77,7 @@ class UploadPayrolls implements ShouldQueue
 
         // read and rename each .pdf
 
-        $files = glob('storage/media/payrollsTemp/*.*');
+        $files = glob(public_path('storage/media/payrollsTemp/*.*'));
 
         foreach ($files as $index) {
             $pdfParser = new Parser();
@@ -125,20 +126,20 @@ class UploadPayrolls implements ShouldQueue
                     $DNI = $dni[0][0][0];
                 }
 
-                $oldFilename = basename($index);
-                rename('storage/media/payrollsTemp/' . $oldFilename, 'storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.pdf');
+
+                rename(public_path('storage/media/payrollsTemp/' . basename($index)), public_path('storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.' . $extension));
             } catch (\Throwable $th) {
-                $uploadError = "Error en las fechas/identificación de la nómina";
+                $uploadError[] = "Error en las fechas/identificación de la nómina";
                 continue;
             }
         }
 
         // delete temp files
 
-        $files = glob('storage/media/payrollsTemp/' . basename($filename, '.pdf') . '_*.*');
+        $files = glob(public_path('storage/media/payrollsTemp/' . basename($filename, '.' . $extension) . '_*.*'));
         foreach ($files as $file) {
-            if (Storage::exists($file)) {
-                Storage::delete($file);
+            if (Storage::exists('storage/media/payrollsTemp/' . basename($file))) {
+                Storage::delete('storage/media/payrollsTemp/' . basename($file));
             }
         }
 
@@ -147,8 +148,6 @@ class UploadPayrolls implements ShouldQueue
         // move to month and year folder
 
         $path = 'storage/media/payrolls/' . $yearInput;
-        $files = glob('storage/media/payrollsTemp/*');
-        $uploadError = array();
 
         if (!Storage::exists($path)) {
             Storage::makeDirectory($path, 0775, true);
@@ -160,6 +159,9 @@ class UploadPayrolls implements ShouldQueue
                 Storage::makeDirectory($path, 0775, true);
             }
         }
+
+        $files = glob(public_path('storage/media/payrollsTemp/*.*'));
+        $path = 'storage/media/payrolls/' . $yearInput . '/' . $monthInput;
 
         foreach ($files as $file) {
             $filename = basename($file);
@@ -174,9 +176,10 @@ class UploadPayrolls implements ShouldQueue
                 ->where('filename', $file)
                 ->delete();
 
+
             if ($delete) {
-                if (Storage::exists($path)) {
-                    Storage::delete($path);
+                if (Storage::exists($path . '/' . $filename)) {
+                    Storage::delete($path . '/' . $filename);
                 }
             }
 
@@ -184,7 +187,7 @@ class UploadPayrolls implements ShouldQueue
 
             if (Employee::where('dni', '=', $dni)->exists()) {
                 if ($monthInput . $yearInput == substr($filename, 20, 7)) {
-                    rename('storage/media/payrollsTemp/' . $filename, 'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename);
+                    rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                     $payroll = new Payroll();
                     $payroll->employee_id = Db::Table('employees')->where('dni', '=',  $dni)->value('id');
                     $payroll->filename =  'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename;
@@ -210,7 +213,7 @@ class UploadPayrolls implements ShouldQueue
                 }
 
                 if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
-                    rename('storage/media/payrollsTemp/' . $filename, 'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename);
+                    rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                     $payroll = new Payroll();
                     $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
                     $payroll->filename =  'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename;
@@ -226,14 +229,15 @@ class UploadPayrolls implements ShouldQueue
             }
         }
 
-        Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new UploadPayrollsNotification($uploadError, $monthInput, $yearInput));
 
-        $files = glob('storage/media/payrollsTemp/*.*');
+        $files = glob(public_path('storage/media/payrollsTemp/*.*'));
         foreach ($files as $index) {
-            if (Storage::exists($index)) {
-                Storage::delete($index);
+            if (Storage::exists('storage/media/payrollsTemp/' . basename($index))) {
+                Storage::delete('storage/media/payrollsTemp/' . basename($index));
             }
         }
+
+        Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new UploadPayrollsNotification($uploadError, $monthInput, $yearInput));
     }
 
     /**
@@ -244,17 +248,17 @@ class UploadPayrolls implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        $files = glob('storage/media/payrollsTemp/*.*');
+        $files = glob(public_path('storage/media/payrollsTemp/*.*'));
         foreach ($files as $index) {
-            if (Storage::exists($index)) {
-                Storage::delete($index);
+            if (Storage::exists('storage/media/payrollsTemp/' . basename($index))) {
+                Storage::delete('storage/media/payrollsTemp/' . basename($index));
             }
         }
 
-        $files = glob('storage/media/*.*');
+        $files = glob(public_path('storage/media/*.*'));
         foreach ($files as $index) {
-            if (Storage::exists($index)) {
-                Storage::delete($index);
+            if (Storage::exists('storage/media/' . basename($index))) {
+                Storage::delete('storage/media/' . basename($index));
             }
         }
 

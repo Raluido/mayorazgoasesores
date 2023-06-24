@@ -56,14 +56,15 @@ class UploadCostsImputs implements ShouldQueue
 
         $pdf = new Fpdi();
         $pageCount = $pdf->setSourceFile(public_path('storage/media/' . $filename));
-        $file = pathinfo($filename, PATHINFO_FILENAME);
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $file = date('d-m-Y his a', time());
 
         for ($i = 1; $i <= $pageCount; $i++) {
             $newPdf = new Fpdi();
             $newPdf->addPage();
             $newPdf->setSourceFile(public_path('storage/media/' . $filename));
             $newPdf->useTemplate($newPdf->importPage($i));
-            $newFilename = sprintf('%s/%s_%s.pdf', 'storage/media/costsImputsTemp', $file, $i);
+            $newFilename = sprintf('%s/%s_%s.%s', public_path('storage/media/costsImputsTemp'), $file, $i, $extension);
             $newPdf->output($newFilename, 'F');
         }
 
@@ -75,7 +76,7 @@ class UploadCostsImputs implements ShouldQueue
 
         // read and rename each .pdf
 
-        $files = glob('storage/media/costsImputsTemp/*.*');
+        $files = glob(public_path('storage/media/costsImputsTemp/*.*'));
 
         foreach ($files as $index) {
             $pdfParser = new Parser();
@@ -148,10 +149,9 @@ class UploadCostsImputs implements ShouldQueue
             }
 
             if ($month . '20' . $year != $monthInput . $yearInput) {
-                $uploadError = "Error en las fechas/identificación del modelo de imputación de costes";
+                $uploadError[] = "Error en las fechas/identificación del modelo de imputación de costes";
             } else {
 
-                $oldFilename = basename($index);
 
                 if ($oldNif != $NIF) {
                     $x = 0;
@@ -160,14 +160,15 @@ class UploadCostsImputs implements ShouldQueue
                 }
 
                 $oldNif = $NIF;
-                rename('storage/media/costsImputsTemp/' . $oldFilename, 'storage/media/costsImputsTemp/' . $NIF . '_' . $month . 20 . $year . '_' . $x . '.pdf');
+
+                rename($index, public_path('storage/media/costsImputsTemp/' . $NIF . '_' . $month . 20 . $year . '_' . $x . '.' . $extension));
             }
         }
 
-        $files = glob(public_path('storage/media/costsImputsTemp/' . basename($filename, '.pdf') . '_*.*'));
+        $files = glob(public_path('storage/media/costsImputsTemp/' . basename($filename, '.' . $extension) . '_*.*'));
         foreach ($files as $file) {
-            if (Storage::exists($file)) {
-                Storage::delete($file);
+            if (Storage::exists('storage/media/costsImputsTemp/' . basename($file))) {
+                Storage::delete('storage/media/costsImputsTemp/' . basename($file));
             }
         }
 
@@ -186,8 +187,8 @@ class UploadCostsImputs implements ShouldQueue
             }
         }
 
-
-        $files = glob('storage/media/costsImputsTemp/*');
+        $files = glob(public_path('storage/media/costsImputsTemp/*.*'));
+        $path = 'storage/media/costsImputs/' . $yearInput . '/' . $monthInput;
 
         foreach ($files as $file) {
             $filename = basename($file);
@@ -202,13 +203,13 @@ class UploadCostsImputs implements ShouldQueue
                 ->delete();
 
             if ($delete) {
-                if (Storage::exists($path)) {
-                    Storage::delete($path);
+                if (Storage::exists($path . '/' . $filename)) {
+                    Storage::delete($path . '/' . $filename);
                 }
             }
 
             if ($monthInput . $yearInput == substr($filename, 10, 7)) {
-                rename('storage/media/costsImputsTemp/' . $filename, 'storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename);
+                rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
                 $costsImput = new CostsImput();
                 $costsImput->user_id = Db::Table('users')->where('nif', '=', $nif)->value('id');
                 $costsImput->filename = 'storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename;
@@ -223,14 +224,14 @@ class UploadCostsImputs implements ShouldQueue
             }
         }
 
-        Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new UploadCostsImputsNotification($uploadError, $monthInput, $yearInput));
-
         $files = glob(public_path('storage/media/costsImputsTemp/*.*'));
         foreach ($files as $index) {
-            if (Storage::exists($index)) {
-                Storage::delete($index);
+            if (Storage::exists('storage/media/costsImputsTemp/' . basename($index))) {
+                Storage::delete('storage/media/costsImputsTemp/' . basename($index));
             }
         }
+
+        Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new UploadCostsImputsNotification($uploadError, $monthInput, $yearInput));
     }
 
     /**
@@ -243,15 +244,15 @@ class UploadCostsImputs implements ShouldQueue
     {
         $files = glob(public_path('storage/media/costsImputsTemp/*.*'));
         foreach ($files as $index) {
-            if (Storage::exists($index)) {
-                Storage::delete($index);
+            if (Storage::exists('storage/media/costsImputsTemp/' . basename($index))) {
+                Storage::delete('storage/media/costsImputsTemp/' . basename($index));
             }
         }
 
         $files = glob(public_path('storage/media/*.*'));
         foreach ($files as $index) {
-            if (Storage::exists($index)) {
-                Storage::delete($index);
+            if (Storage::exists('storage/media/' . basename($index))) {
+                Storage::delete('storage/media/' . basename($index));
             }
         }
 

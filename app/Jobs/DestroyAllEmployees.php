@@ -37,24 +37,26 @@ class DestroyAllEmployees implements ShouldQueue
      */
     public function handle(Request $request)
     {
-        $path = 'storage/media/payrolls';
+        $path = public_path('storage/media/payrolls');
 
         if (Storage::exists($path)) {
             $delete = Storage::deleteDirectory($path);
             if ($delete) {
-                Storage::makeDirectory($path, 0777, true);
-                $delete = Db::Table('payrolls')->delete();
+                Storage::makeDirectory($path, 0775, true);
+                $delete = Db::Table('payrolls')
+                    ->delete();
                 if ($delete) {
-                    $delete = Db::Table('employees')->delete();
+                    $employees = Db::Table('employees')
+                        ->delete();
+                    if ($employees) {
+                        $passed = "El proceso de eliminación de todos los trabajadores ha finalizado con éxito";
+                    } else {
+                        $passed = "El proceso de eliminación de todos los trabajadores ha fallado";
+                    }
                 }
             }
         }
 
-        if ($delete) {
-            $passed = "El proceso de eliminación de todos los trabajadores ha finalizado con éxito";
-        } else {
-            $passed = "El proceso de eliminación de todos los trabajadores ha fallado";
-        }
 
         Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new DeleteNotification($passed));
     }
