@@ -15,7 +15,6 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id()->unsingned();
-            $table->foreignId('user_id')->constrained('users');
             $table->string('dni')->unique();
             $table->timestamps();
         });

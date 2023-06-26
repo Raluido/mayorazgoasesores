@@ -159,16 +159,18 @@
                 @foreach ($posts as $post)
                 @if($post->link == 0)
                 <div class="news">
-                    <h3>{{ $post->title }}</h3>
-                    <p>{{ $post->subtitle }}</p>
-                    <hr>
-                    <div class="date">
-                        <h5>Publicado en: {{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
-                    </div>
-                    <br>
-                    <div class="gotoNoticia">
+                    <a href="{{ route('posts.show', $post->id) }}" class="">
+                        <h3>{{ $post->title }}</h3>
+                        <p>{{ $post->subtitle }}</p>
+                        <hr>
+                        <div class="date">
+                            <h5>Publicado en: {{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
+                        </div>
+                        <br>
+                    </a>
+                    <!-- <div class="gotoNoticia">
                         <button class="gray stylingButtons"><a href="{{ route('posts.show', $post->id) }}" target="_blank" class="buttonTextWt">Ir a noticia</a></button>
-                    </div>
+                    </div> -->
                 </div>
                 @else
                 @php
@@ -229,9 +231,9 @@
                         <h5>Publicado en: {{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
                     </div>
                     <br>
-                    <div class="gotoNoticia">
+                    <!-- <div class="gotoNoticia">
                         <button class="gray stylingButtons"><a href="{{ $post->body }}" target="_blank" class="buttonTextWt">Ir a noticia</a></button>
-                    </div>
+                    </div> -->
                 </div>
                 @endif
                 @endforeach

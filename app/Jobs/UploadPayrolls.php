@@ -9,7 +9,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use setasign\Fpdi\Fpdi;
 use App\Models\Employee;
+use App\Models\User;
 use App\Models\Payroll;
+use App\Models\EmployeeUser;
 use DB;
 use Smalot\PdfParser\Parser;
 use Illuminate\Support\Facades\Storage;
@@ -167,15 +169,16 @@ class UploadPayrolls implements ShouldQueue
             $filename = basename($file);
             $nif = substr($filename, 0, 9);
             $dni = substr($filename, 10, 9);
+            $userId = User::where('nif', '=', $nif)->value('id');
+            $employeeId = Employee::where('dni', $dni)->value('id');
 
-            // delete if the payroll is already created
+            // delete if payroll if it is already created
 
             $delete = DB::table('payrolls')
                 ->where('month', $monthInput)
                 ->where('year', $yearInput)
-                ->where('filename', $file)
+                ->where('filename', $path . '/' . $filename)
                 ->delete();
-
 
             if ($delete) {
                 if (Storage::exists($path . '/' . $filename)) {
@@ -183,13 +186,19 @@ class UploadPayrolls implements ShouldQueue
                 }
             }
 
-            // check if the employee is already created or not
+            $employee = Db::Table('employees')
+                ->select('employees.id')
+                ->join('employee_user', 'employee_user.employee_id', '=', 'employees.id')
+                ->join('users', 'employee_user.user_id', '=', 'users.id')
+                ->where('users.nif', '=', $nif)
+                ->where('employees.dni', '=', $dni)
+                ->get();
 
-            if (Employee::where('dni', '=', $dni)->exists()) {
+            if (count($employee) > 0) {
                 if ($monthInput . $yearInput == substr($filename, 20, 7)) {
                     rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                     $payroll = new Payroll();
-                    $payroll->employee_id = Db::Table('employees')->where('dni', '=',  $dni)->value('id');
+                    $payroll->employee_user_id = Db::Table('employee_user')->where('user_id', '=', $userId)->where('employee_id', '=', $employeeId)->value('id');
                     $payroll->filename =  'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename;
                     $payroll->year = $yearInput;
                     $payroll->month = $monthInput;
@@ -202,29 +211,47 @@ class UploadPayrolls implements ShouldQueue
                 }
             } else {
                 try {
-                    $employee = new Employee();
-                    $userId = Db::Table('users')->where('nif', '=',  $nif)->value('id');
-                    $employee->user_id = $userId;
-                    $employee->dni = $dni;
-                    $employee->save();
+                    if ($employeeId == "") {
+                        $employee = new Employee();
+                        $employee->dni = $dni;
+                        $employee = $employee->save();
+
+                        if ($employee) {
+                            $employeeId = Employee::where('dni', $dni)->value('id');
+                        }
+                    }
+                    $user = User::find($userId);
+                    $user->employees()->attach($employeeId);
                 } catch (\Throwable $th) {
                     $uploadError[] = "No se ha podido agregar la nómina de la empresa " . $nif . ", compruebe si la empresa no está creada aún.";
                     continue;
                 }
 
-                if ($monthInput . $yearInput == substr($filename, 20, 7) && Employee::where('dni', '=', $dni)->exists()) {
-                    rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
-                    $payroll = new Payroll();
-                    $payroll->employee_id = Db::Table('employees')->where('dni', '=', $dni)->value('id');
-                    $payroll->filename =  'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename;
-                    $payroll->year = $yearInput;
-                    $payroll->month = $monthInput;
-                    $payroll->save();
-                } else {
-                    if (Storage::exists('storage/media/payrollsTemp/' . $filename)) {
-                        Storage::delete('storage/media/payrollsTemp/' . $filename);
+                $employee = Db::Table('employees')
+                    ->select('employees.id')
+                    ->join('employee_user', 'employee_user.employee_id', '=', 'employees.id')
+                    ->join('users', 'employee_user.user_id', '=', 'users.id')
+                    ->where('users.nif', '=', $nif)
+                    ->where('employees.dni', '=', $dni)
+                    ->get();
+
+                if (count($employee) > 0) {
+                    if ($monthInput . $yearInput == substr($filename, 20, 7)) {
+                        rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
+                        $payroll = new Payroll();
+                        $payroll->employee_user_id = Db::Table('employee_user')->where('user_id', '=', $userId)->where('employee_id', '=', $employeeId)->value('id');
+                        $payroll->filename =  'storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename;
+                        $payroll->year = $yearInput;
+                        $payroll->month = $monthInput;
+                        $payroll->save();
+                    } else {
+                        if (Storage::exists('storage/media/payrollsTemp/' . $filename)) {
+                            Storage::delete('storage/media/payrollsTemp/' . $filename);
+                        }
+                        $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
                     }
-                    $uploadError[] = 'Error, mes incorrecto:' . ' ' . $filename;
+                } else {
+                    $uploadError[] = "No se ha podido agregar la nómina de la empresa " . $nif . ", compruebe si la empresa no está creada aún.";
                 }
             }
         }

@@ -28,13 +28,13 @@ class StoreEmployeeRequest extends FormRequest
 
         switch ($this->input('companyIdSlc')) {
             case 'nif':
-                $rules['companyId'] = 'required|nif|unique:users,nif';
+                $rules['companyId'] = 'required|nif';
                 break;
             case 'nie':
-                $rules['companyId'] = 'required|nie|unique:users,nif';
+                $rules['companyId'] = 'required|nie';
                 break;
             case 'cif':
-                $rules['companyId'] = 'required|cif|unique:users,nif';
+                $rules['companyId'] = 'required|cif';
                 break;
             default:
                 break;
@@ -42,10 +42,10 @@ class StoreEmployeeRequest extends FormRequest
 
         switch ($this->input('employeeIdSlc')) {
             case 'nif':
-                $rules['employeeId'] = 'required|nif|unique:employees,dni';
+                $rules['employeeId'] = 'required|nif';
                 break;
             case 'nie':
-                $rules['employeeId'] = 'required|nie|unique:employees,dni';
+                $rules['employeeId'] = 'required|nie';
                 break;
             default:
                 break;
@@ -60,7 +60,6 @@ class StoreEmployeeRequest extends FormRequest
             'companyId.nif' => 'El nif no tiene un formato correcto.',
             'companyId.nie' => 'El nie no tiene un formato correcto.',
             'companyId.cif' => 'El cif no tiene un formato correcto.',
-            'companyId.unique' => 'Una empresa con éste id ya consta en nuestra base de datos',
             'employeeId.nif' => 'El nif no tiene un formato correcto.',
             'employeeId.nif' => 'El nie no tiene un formato correcto.',
             'employeeId.unique' => 'Una empleado con éste id ya consta en nuestra base de datos',

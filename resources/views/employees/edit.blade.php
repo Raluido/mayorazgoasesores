@@ -9,7 +9,7 @@
         </div>
         <div class="bottom">
             <div class="innerBottom">
-                <form method="post" action="{{ route('employees.update', $employeeFix[0]->id) }}">
+                <form method="post" action="{{ route('employees.update', $employee->id) }}">
                     @method('patch')
                     @csrf
 

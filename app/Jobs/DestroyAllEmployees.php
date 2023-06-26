@@ -37,7 +37,7 @@ class DestroyAllEmployees implements ShouldQueue
      */
     public function handle(Request $request)
     {
-        $path = public_path('storage/media/payrolls');
+        $path = 'storage/media/payrolls';
 
         if (Storage::exists($path)) {
             $delete = Storage::deleteDirectory($path);
@@ -53,7 +53,11 @@ class DestroyAllEmployees implements ShouldQueue
                     } else {
                         $passed = "El proceso de eliminación de todos los trabajadores ha fallado";
                     }
+                } else {
+                    $passed = "El proceso de eliminación de todos los trabajadores ha fallado";
                 }
+            } else {
+                $passed = "El proceso de eliminación de todos los trabajadores ha fallado";
             }
         }
 

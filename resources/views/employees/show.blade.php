@@ -29,7 +29,7 @@
         </div>
         <div class="buttonsNav">
             <button class="stylingButtons green"><a href="{{ route('employees.index') }}" class="buttonTextWt">Volver</a></button>
-            <!-- <button class="stylingButtons blue"><a href="route('employees.edit', $employeeData[0]->id)" class="buttonTextWt">Editar</a></button> -->
+            <button class="stylingButtons blue"><a href="{{ route('employees.edit', $employee[0]->id) }}" class="buttonTextWt">Editar</a></button>
         </div>
     </div>
     @endsection

@@ -48,6 +48,8 @@ class DestroyAll implements ShouldQueue
                 Storage::makeDirectory($path, 0775, true);
                 $payrolls = Db::Table('payrolls')
                     ->delete();
+                $employeeUser = Db::Table('employee_user')
+                    ->delete();
                 $employees = Db::Table('employees')
                     ->delete();
             }
@@ -75,18 +77,24 @@ class DestroyAll implements ShouldQueue
             }
         }
 
-        if ($payrolls >= 0 && $employees >= 0 && $costsImputs >= 0 && $othersDocuments >= 0) {
-            $users = Db::Table('users')
-                ->where('id', '>', '2')
-                ->delete();
-            if ($users) {
-                $passed = "El proceso de eliminación de toda la base de datos ha finalizado con éxito";
+        if (isset($payrolls) && isset($employeeUser) && isset($employees) && isset($costsImputs) && isset($othersDocuments)) {
+            if ($payrolls >= 0 && $employeeUser >= 0 && $employees >= 0 && $costsImputs >= 0 && $othersDocuments >= 0) {
+                $users = Db::Table('users')
+                    ->where('id', '>', '2')
+                    ->delete();
+                if ($users) {
+                    $passed = "El proceso de eliminación de toda la base de datos ha finalizado con éxito";
+                } else {
+                    $passed = "El proceso de eliminación de toda la base de datos ha fallado";
+                }
             } else {
                 $passed = "El proceso de eliminación de toda la base de datos ha fallado";
             }
-
-            Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new DeleteNotification($passed));
+        } else {
+            $passed = "El proceso de eliminación de toda la base de datos ha fallado";
         }
+
+        Mail::to(ENV('MAIL_TO_ADDRESS'))->send(new DeleteNotification($passed));
     }
 
     /**

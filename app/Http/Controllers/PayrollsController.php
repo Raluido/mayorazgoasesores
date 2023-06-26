@@ -12,6 +12,7 @@ use App\Jobs\UploadPayrolls;
 use App\Jobs\AddUsersPayrolls;
 use setasign\Fpdi\Fpdi;
 use Smalot\PdfParser\Parser;
+use App\Models\Payroll;
 
 class PayrollsController extends Controller
 {
@@ -106,13 +107,13 @@ class PayrollsController extends Controller
     {
         $presentYear = date("Y");
 
-        $payrolls = DB::Table('users')
-            ->select('payrolls.filename')
-            ->join('employees', 'employees.user_id', '=', 'users.id')
-            ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
-            ->where('users.nif', '=', Auth::user()->nif)
-            ->where('payrolls.year', '=', $year)
-            ->where('payrolls.month', '=', $month)
+        $payrolls = Db::Table('payrolls')
+            ->join('employee_user', 'payrolls.employee_user_id', '=', 'employee_user.id')
+            ->join('employees', 'employee_user.employee_id', '=', 'employees.id')
+            ->join('users', 'employee_user.user_id', '=', 'users.id')
+            ->where('users.id', Auth::user()->id)
+            ->where('month', $month)
+            ->where('year', $year)
             ->get();
 
         if (count($payrolls) > 0) {
@@ -159,12 +160,12 @@ class PayrollsController extends Controller
             $year = $request->input('year');
         }
 
-        $payrolls = DB::Table('users')
-            ->join('employees', 'employees.user_id', '=', 'users.id')
-            ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
-            ->where('payrolls.year', '=', $year)
-            ->where('payrolls.month', '=', $month)
-            ->select('users.nif', 'employees.dni', 'payrolls.id', 'payrolls.month', 'payrolls.year')
+        $payrolls = Db::Table('payrolls')
+            ->join('employee_user', 'payrolls.employee_user_id', '=', 'employee_user.id')
+            ->join('employees', 'employee_user.employee_id', '=', 'employees.id')
+            ->join('users', 'employee_user.user_id', '=', 'users.id')
+            ->where('month', $month)
+            ->where('year', $year)
             ->paginate(10);
 
         $payrolls->setPath('/payrolls/show?month=' . $month . '&year=' . $year);
@@ -180,17 +181,17 @@ class PayrollsController extends Controller
         }
     }
 
-    public function deletePayrolls($id, $month, $year)
+    public function deletePayrolls(Payroll $payroll, $month, $year)
     {
         $payroll = DB::Table('payrolls')
-            ->where('id', '=', $id)
+            ->where('id', '=', $payroll->id)
             ->value('filename');
 
         if ($payroll && Storage::exists($payroll)) {
             $delete = Storage::delete($payroll);
             if ($delete) {
                 $delete = DB::Table('payrolls')
-                    ->where('id', '=', $id)
+                    ->where('id', '=', $payroll->id)
                     ->delete();
                 if ($delete) {
                     return redirect()
