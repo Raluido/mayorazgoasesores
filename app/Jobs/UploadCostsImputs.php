@@ -152,7 +152,6 @@ class UploadCostsImputs implements ShouldQueue
                 $uploadError[] = "Error en las fechas/identificación del modelo de imputación de costes";
             } else {
 
-
                 if ($oldNif != $NIF) {
                     $x = 0;
                 } else {
@@ -196,17 +195,35 @@ class UploadCostsImputs implements ShouldQueue
 
             // delete if the costsImput is already created
 
-            $delete = DB::table('costs_imputs')
-                ->where('month', $monthInput)
-                ->where('year', $yearInput)
-                ->where('filename', $file)
-                ->delete();
-
-            if ($delete) {
-                if (Storage::exists($path . '/' . $filename)) {
-                    Storage::delete($path . '/' . $filename);
+            if (Storage::exists($path . '/' . $filename)) {
+                $delete = Storage::delete($path . '/' . $filename);
+                if ($delete) {
+                    $delete = DB::table('costs_imputs')
+                        ->where('month', $monthInput)
+                        ->where('year', $yearInput)
+                        ->where('filename', $path . '/' . $filename)
+                        ->delete();
+                    if (!$delete) {
+                        $uploadError[] = 'Error, no hemos podido el registro ' . $filename . '.duplicado.';
+                        break;
+                    }
+                } else {
+                    $uploadError[] = 'Error, no hemos podido el registro ' . $filename . '.duplicado.';
+                    break;
+                }
+            } else {
+                $delete = DB::table('costs_imputs')
+                    ->where('month', $monthInput)
+                    ->where('year', $yearInput)
+                    ->where('filename', $path . '/' . $filename)
+                    ->delete();
+                if (!$delete) {
+                    $uploadError[] = 'Error, no hemos podido el archivo ' . $filename . '.duplicado.';
+                    break;
                 }
             }
+
+            // end
 
             if ($monthInput . $yearInput == substr($filename, 10, 7)) {
                 rename(public_path('storage/media/costsImputsTemp/' . $filename), public_path('storage/media/costsImputs/' . $yearInput . '/' . $monthInput . '/' . $filename));
@@ -224,10 +241,10 @@ class UploadCostsImputs implements ShouldQueue
             }
         }
 
-        $files = glob(public_path('storage/media/costsImputsTemp/*.*'));
-        foreach ($files as $index) {
-            if (Storage::exists('storage/media/costsImputsTemp/' . basename($index))) {
-                Storage::delete('storage/media/costsImputsTemp/' . basename($index));
+        if (Storage::directoryExists('storage/media/costsImputsTemp')) {
+            $delete = Storage::deleteDirectory('storage/media/costsImputsTemp');
+            if ($delete) {
+                Storage::makeDirectory('storage/media/costsImputsTemp', 0775, true);
             }
         }
 
@@ -242,10 +259,10 @@ class UploadCostsImputs implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        $files = glob(public_path('storage/media/costsImputsTemp/*.*'));
-        foreach ($files as $index) {
-            if (Storage::exists('storage/media/costsImputsTemp/' . basename($index))) {
-                Storage::delete('storage/media/costsImputsTemp/' . basename($index));
+        if (Storage::directoryExists('storage/media/costsImputsTemp')) {
+            $delete = Storage::deleteDirectory('storage/media/costsImputsTemp');
+            if ($delete) {
+                Storage::makeDirectory('storage/media/costsImputsTemp', 0775, true);
             }
         }
 

@@ -12,6 +12,7 @@ use ZipArchive;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\UploadCostsImputs;
 use App\Jobs\AddUsersCostsImputs;
+use App\Models\CostsImput;
 
 class CostsImputsController extends Controller
 {
@@ -27,6 +28,8 @@ class CostsImputsController extends Controller
     public function uploadCostsImputs(Request $request)
     {
         $file = $request->file('costsimputs');
+        $month = $request->input('month');
+        $year = $request->input('year');
 
         if ($request->hasFile('costsimputs')) {
 
@@ -59,10 +62,11 @@ class CostsImputsController extends Controller
                     if (Storage::exists('/storage/media/' . $newFilename)) {
                         Storage::delete('/storage/media/' . $newFilename);
                     }
-                    $month = $request->input('month');
-                    $year = $request->input('year');
                     AddUsersCostsImputs::dispatch($filename, $month, $year);
                     UploadCostsImputs::dispatch($filename, $month, $year);
+                    return redirect()
+                        ->route('costsimputs.uploadForm')
+                        ->withSuccess(__('Los documentos de imputación de costes han comenzado a subirse, tardaremos unos minutos, gracias ;)'));
                 } else {
                     if (Storage::exists('storage/media/' . $filename)) {
                         Storage::delete('storage/media/' . $filename);
@@ -85,9 +89,6 @@ class CostsImputsController extends Controller
                 ->route('costsimputs.uploadForm')
                 ->withErrors(__('No has añadido ningun archivo aún.'));
         }
-        return redirect()
-            ->route('costsimputs.uploadForm')
-            ->withSuccess(__('Los documentos de imputación de costes han comenzado a subirse, tardaremos unos minutos, gracias ;)'));
     }
 
     public function downloadForm()
@@ -130,7 +131,7 @@ class CostsImputsController extends Controller
 
             if ($zip->open($path . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($files as $file) {
-                    $zip->addFile($file->filename);
+                    $zip->addFile(public_path($file->filename), basename($file->filename));
                 }
                 $zip->close();
             }
@@ -176,8 +177,7 @@ class CostsImputsController extends Controller
         $costsimputs->setPath('/costsimputs/show?month=' . $month . '&year=' . $year);
 
         if ($costsimputs->total() > 0) {
-            return view('costsimputs.showCostsImputs')
-                ->with('costsimputs', $costsimputs);
+            return view('costsimputs.showCostsImputs', ['costsimputs' => $costsimputs]);
         } else {
             return redirect()
                 ->route('costsimputs.showForm')
@@ -187,7 +187,7 @@ class CostsImputsController extends Controller
     }
 
 
-    public function deleteCostsImputs($id, $year, $month)
+    public function deleteCostsImputs(CostsImput $costsImput, $year, $month)
     {
         $presentYear = date("Y");
 
@@ -195,7 +195,7 @@ class CostsImputsController extends Controller
             ->select('filename', 'id')
             ->where('year', '=', $year)
             ->where('month', '=', $month)
-            ->where('user_id', '=', $id)
+            ->where('user_id', '=', $costsImput->id)
             ->get();
 
         if (count($costsImput) > 0) {

@@ -173,8 +173,9 @@ class AddUsersCostsImputs implements ShouldQueue
 
         foreach ($data as $index) {
 
-            if (User::where('nif', '=', $index[0])->exists()) {
-                $uploadError = "La empresa " . $index[0] . " ya está creada.";
+            if (Db::Table('users')->where('nif', $index[0])->exists()) {
+                log::info("aqui");
+                $uploadError[] = "La empresa " . $index[0] . " ya está creada.";
             } else {
 
                 $user = new User();

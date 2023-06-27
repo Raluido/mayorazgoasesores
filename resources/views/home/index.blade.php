@@ -215,22 +215,22 @@
                 }
                 @endphp
                 <div class="link">
-                    <div class="innerLink">
-                        <div class="linkImage">
-                            @if(!$image == "" && $checkImage != "")
-                            <a href="{{ $post->body }}" target="_blank" class="">
+                    <a href="{{ $post->body }}" target="_blank" class="">
+                        <div class="innerLink">
+                            <div class="linkImage">
+                                @if(!$image == "" && $checkImage != "")
                                 <img src="{{ $image }}" alt="" class="">
-                            </a>
-                            @endif
+                                @endif
+                            </div>
+                            <h3 class="">{{ $title }}</h3>
+                            <p class="">{{ $description }}</p>
                         </div>
-                        <h3 class="">{{ $title }}</h3>
-                        <p class="">{{ $description }}</p>
-                    </div>
-                    <hr>
-                    <div class="date">
-                        <h5>Publicado en: {{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
-                    </div>
-                    <br>
+                        <hr>
+                        <div class="date">
+                            <h5>Publicado en: {{ date('Y-m-d', strtotime($post->published_at)) }}</h5>
+                        </div>
+                        <br>
+                    </a>
                     <!-- <div class="gotoNoticia">
                         <button class="gray stylingButtons"><a href="{{ $post->body }}" target="_blank" class="buttonTextWt">Ir a noticia</a></button>
                     </div> -->
