@@ -45,11 +45,17 @@ class DestroyAllEmployees implements ShouldQueue
                 Storage::makeDirectory($path, 0775, true);
                 $delete = Db::Table('payrolls')
                     ->delete();
-                if ($delete) {
-                    $employees = Db::Table('employees')
+                if ($delete >= 0) {
+                    $delete = Db::Table('employee_user')
                         ->delete();
-                    if ($employees) {
-                        $passed = "El proceso de eliminación de todos los trabajadores ha finalizado con éxito";
+                    if ($delete >= 0) {
+                        $delete = Db::Table('employees')
+                            ->delete();
+                        if ($delete >= 0) {
+                            $passed = "El proceso de eliminación de todos los trabajadores ha finalizado con éxito";
+                        } else {
+                            $passed = "El proceso de eliminación de todos los trabajadores ha fallado";
+                        }
                     } else {
                         $passed = "El proceso de eliminación de todos los trabajadores ha fallado";
                     }

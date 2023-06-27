@@ -12,6 +12,10 @@ class Employee extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id'
+    ];
+
     protected $table = 'employees';
 
     public function users(): BelongsToMany

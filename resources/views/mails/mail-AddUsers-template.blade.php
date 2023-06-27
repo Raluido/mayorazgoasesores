@@ -25,10 +25,14 @@
 
 <h4>Listado de empresas que han dado error</h4>
 
+@if(is_array($uploadError))
 @if (count($uploadError) == 0)
 <p>No han habido errores</p>
 @else
 @foreach($uploadError as $index)
 <p>{{ $index }}</p>
 @endforeach
+@endif
+@else
+<p>{{ $uploadError }}</p>
 @endif

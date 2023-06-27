@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\User;
+use App\Models\EmployeeUser;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
@@ -30,6 +31,7 @@ class EmployeesController extends Controller
             ->select('users.id as userId', 'users.name', 'users.nif', 'employees.dni', 'employees.id')
             ->join('employee_user', 'employee_user.employee_id', '=', 'employees.id')
             ->join('users', 'employee_user.user_id', '=', 'users.id')
+            ->orderBy('employees.id')
             ->paginate(10);
 
         if (($employees->total()) > 0) {
@@ -80,9 +82,6 @@ class EmployeesController extends Controller
             ->where('employees.dni', '=', $dni)
             ->get();
 
-        log::info($employee);
-        die();
-
         if (count($employee) > 0) {
             return redirect()
                 ->route('employees.index')
@@ -90,13 +89,16 @@ class EmployeesController extends Controller
         } else {
             if ($employeeId == "") {
                 $employee = new Employee();
-                $employee->dni = $request->input('employeeId');
+                $employee->dni = $dni;
                 $employee->save($request->validated());
-                $employeeId = Employee::where('dni', $dni)->value('id');
             }
 
-            $user = User::find($userId);
-            $user->employees()->attach($employeeId);
+            $employeeId = Employee::where('dni', $dni)->value('id');
+
+            if ($employeeId != "") {
+                $user = User::find($userId);
+                $user->employees()->attach($employeeId);
+            }
 
             $created = Db::Table('users')
                 ->join('employee_user', 'employee_user.user_id', '=', 'users.id')
@@ -154,22 +156,27 @@ class EmployeesController extends Controller
     public function update(Employee $employee, UpdateEmployeeRequest $request)
     {
         $employee = Employee::find($employee->id);
-        $employee->update($request);
+        $employee->dni = $request->employeeId;
+        $save = $employee->save();
 
-        return redirect()
-            ->route('employees.index')
-            ->withSuccess(__('Empleado modificado correctamente.'));
+        if ($save) {
+            return redirect()
+                ->route('employees.index')
+                ->withSuccess(__('Empleado modificado correctamente.'));
+        }
     }
 
     public function destroy(Employee $employee, User $user)
     {
         $payrolls = Db::Table('payrolls')
+            ->select('payrolls.id', 'payrolls.filename')
             ->join('employee_user', 'payrolls.employee_user_id', '=', 'employee_user.id')
             ->join('employees', 'employee_user.employee_id', '=', 'employees.id')
             ->join('users', 'employee_user.user_id', '=', 'users.id')
             ->where('employees.id', $employee->id)
             ->where('users.id', $user->id)
             ->get();
+
 
         if (count($payrolls) > 0) {
             foreach ($payrolls as $payroll) {
@@ -180,10 +187,6 @@ class EmployeesController extends Controller
                         if (!$delete) {
                             return redirect()->route('employees.index')
                                 ->withErrors(__('Ha habido un error al intentar eliminar las nóminas del empleado, intentelo de nuevo.'));
-                        } else {
-                            $user = User::find($user->id);
-                            $user->employees()->detach($employee->id);
-                            break;
                         }
                     } else {
                         return redirect()->route('employees.index')
@@ -196,14 +199,24 @@ class EmployeesController extends Controller
             }
         }
 
-        $delete = Employee::find($employee->id)->delete();
-        if ($delete) {
-            return redirect()->route('employees.index')
-                ->withSuccess(__('Empleado eliminado correctamente.'));
-        } else {
-            return redirect()->route('employees.index')
-                ->withErrors(__('Ha habido un error al intentar eliminar las nóminas del empleado, intentelo de nuevo.'));
+        $user = User::find($user->id);
+        $user->employees()->detach($employee->id);
+
+        // delete the employee register if it isnot register in other company
+
+        $employeeCnt = EmployeeUser::where('employee_id', $employee->id)->count();
+        if ($employeeCnt == 0) {
+            $delete = Employee::find($employee->id)->delete();
+            if ($delete) {
+                return redirect()->route('employees.index')
+                    ->withSuccess(__('Empleado eliminado correctamente.'));
+            } else {
+                return redirect()->route('employees.index')
+                    ->withErrors(__('Ha habido un error al intentar eliminar las nóminas del empleado, intentelo de nuevo.'));
+            }
         }
+        return redirect()->route('employees.index')
+            ->withSuccess(__('Empleado eliminado correctamente, recuerda que la ficha del empleado con dni ' . $employee->dni . ' persistira porque aun forma parte de otra empresa.'));
     }
 
     public function deleteAll()

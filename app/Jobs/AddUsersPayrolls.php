@@ -156,7 +156,7 @@ class AddUsersPayrolls implements ShouldQueue
 
         foreach ($data as $index) {
             if (User::where('nif', '=', $index[0])->exists()) {
-                $uploadError = "La empresa" . $index[0] . " ya está creada.";
+                $uploadError = "La empresa " . $index[0] . " ya está creada.";
             } else {
                 $user = new User();
                 $user->nif = $index[0];
