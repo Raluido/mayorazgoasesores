@@ -22,15 +22,15 @@
                     </div>
                     <div class="inputForm">
                         <label for="">Título</label>
-                        <input type="text" name="title" class="form-control">
+                        <input type="text" name="title" class="form-control" required>
                     </div>
                     <div class="inputForm">
                         <label for="">Subtítulo</label>
-                        <input type="text" name="subtitle" class="form-control">
+                        <input type="text" name="subtitle" class="form-control" required>
                     </div>
                     <div class="inputForm">
                         <label for="">Cuerpo</label>
-                        <textarea name="body" id="" cols="30" rows="10" class="form-control"></textarea>
+                        <textarea name="body" id="" cols="30" rows="10" class="form-control" required></textarea>
                     </div>
 
                     <div class="inputForm">

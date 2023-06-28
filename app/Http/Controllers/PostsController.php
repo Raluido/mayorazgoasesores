@@ -29,22 +29,29 @@ class PostsController extends Controller
 
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'title' => 'required',
-        //     'subtitle' => 'required',
-        //     'body' => 'required',
-        // ]);
+        $request->validate([
+            'title' => 'required',
+            'subtitle' => 'required',
+            'body' => 'required',
+        ]);
+
+
+        if ($request->input('link') == null) {
+            $defaultLink = 0;
+        } else {
+            $defaultLink = 1;
+        }
 
         $post = new Post();
         $post->title = $request->input('title');
         $post->subtitle = $request->input('subtitle');
         $post->body = $request->input('body');
         $post->published_at = $request->input('published_at');
-        $post->link = $request->input('link', 1);
+        $post->link = $defaultLink;
         $post->save();
 
-        return redirect()
-            ->route('home.index');
+        return redirect('/posts')
+            ->with('success', 'Se ha creado correctamente!');
     }
 
     public function show(Post $post)
@@ -59,11 +66,11 @@ class PostsController extends Controller
 
     public function update(Post $post, Request $request)
     {
-        // $request->validate([
-        //     'title' => 'required',
-        //     'subtitle' => 'required',
-        //     'body' => 'required',
-        // ]);
+        $request->validate([
+            'title' => 'required',
+            'subtitle' => 'required',
+            'body' => 'required',
+        ]);
 
         if ($post->link == 0 && $request->input('link') == 0) {
             $defaultLink = 1;

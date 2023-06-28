@@ -397,7 +397,7 @@ header .innerNav .logoMenu .menu {
 .noticias .innerNoticias .bottom .innerBottom .news,
 .noticias .innerNoticias .bottom .innerBottom .noNews,
 .noticias .innerNoticias .bottom .innerBottom .link {
-    margin: 2em 0;
+    margin: 1em 0;
 }
 
 .noticias .innerNoticias .bottom p,
@@ -477,7 +477,7 @@ header .innerNav .logoMenu .menu {
 .noticiasAll .innerNoticias .bottom .innerBottom .news,
 .noticiasAll .innerNoticias .bottom .innerBottom .noNews,
 .noticiasAll .innerNoticias .bottom .innerBottom .link {
-    margin: 5em 0;
+    margin: 3em 0;
 }
 
 .noticiasAll .innerNoticias .bottom p,
