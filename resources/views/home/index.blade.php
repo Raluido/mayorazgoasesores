@@ -174,10 +174,16 @@
                 </div>
                 @else
                 @php
-                libxml_use_internal_errors(true);
+                $opts = [
+                'http' => [
+                'timeout' => 2, // 2 seconds
+                ]
+                ];
+                $context = stream_context_create($opts);
+                libxml_set_streams_context($context);
                 $doc = new \DomDocument();
                 try {
-                $doc->loadHTML(mb_convert_encoding(file_get_contents($post->body), 'HTML-ENTITIES', 'UTF-8'));
+                $doc->loadHTML($post->body);
                 } catch (\Throwable $th) {
                 echo '<div class="red">Ha habido un error, compruebe si selecciono correctamente entre link o noticia</div>';
                 }
