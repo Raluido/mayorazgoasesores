@@ -145,10 +145,10 @@ class AddUsersPayrolls implements ShouldQueue
 
         // delete temps files
 
-        $files = glob(public_path('storage/media/addUsersTemp/*.*'));
-        foreach ($files as $index) {
-            if (Storage::exists('storage/media/addUsersTemp/' . basename($index))) {
-                Storage::delete('storage/media/addUsersTemp/' . basename($index));
+        if (Storage::directoryExists('storage/media/addUsersTemp')) {
+            $delete = Storage::deleteDirectory('storage/media/addUsersTemp');
+            if ($delete) {
+                Storage::makeDirectory('storage/media/addUsersTemp', 0775, true);
             }
         }
 
@@ -187,10 +187,10 @@ class AddUsersPayrolls implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        $files = glob(public_path('storage/media/addUsersTemp/*.*'));
-        foreach ($files as $index) {
-            if (Storage::exists('storage/media/addUsersTemp/' . basename($index))) {
-                Storage::delete('storage/media/addUsersTemp/' . basename($index));
+        if (Storage::directoryExists('storage/media/addUsersTemp')) {
+            $delete = Storage::deleteDirectory('storage/media/addUsersTemp');
+            if ($delete) {
+                Storage::makeDirectory('storage/media/addUsersTemp', 0775, true);
             }
         }
 

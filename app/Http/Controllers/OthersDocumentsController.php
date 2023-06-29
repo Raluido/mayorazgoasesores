@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use setasign\Fpdi\Fpdi;
 use App\Models\OtherDocument;
-use App\Models\User;
 use DB;
 use ZipArchive;
 use Illuminate\Support\Facades\Auth;
@@ -36,11 +34,9 @@ class OthersDocumentsController extends Controller
             ->get();
 
         if (count($user) > 0) {
-
             if ($request->hasFile('othersdocuments')) {
 
                 $path = 'storage/media/othersDocuments/' . $year;
-
                 if (!Storage::exists($path)) {
                     Storage::makeDirectory($path, 0775, true);
                     $path = 'storage/media/othersDocuments/' . $year . '/' . $month;
@@ -79,18 +75,35 @@ class OthersDocumentsController extends Controller
                         if (Storage::exists($path . '/' . $filename)) {
                             $delete = Storage::delete($path . '/' . $filename);
                             if ($delete) {
-                                OtherDocument::where('filename', $filename)
+                                $othersDocuments = DB::Table('users')
+                                    ->join('others_documents', 'others_documents.user_id', '=', 'users.id')
+                                    ->where('others_documents.year', '=', $year)
+                                    ->where('others_documents.month', '=', $month)
+                                    ->where('others_documents.filename', '=', $filename)
+                                    ->where('users.nif', '=', $nif)
                                     ->delete();
+
+                                if ($delete) {
+                                    $index->storeAs($path . '/', $filename);
+                                    $otherDocument = new OtherDocument();
+                                    $otherDocument->user_id = $user[0]->id;
+                                    $otherDocument->filename = $path . '/' . $filename;
+                                    $otherDocument->month = $month;
+                                    $otherDocument->year = $year;
+                                    $otherDocument->save();
+                                } else {
+                                    return redirect()
+                                        ->route('othersdocuments.uploadForm')
+                                        ->with('presentYear', $presentYear)
+                                        ->withErrors(__('Ha habido un error al intentar eliminar el documento ' . $filename . '.'));
+                                }
+                            } else {
+                                return redirect()
+                                    ->route('othersdocuments.uploadForm')
+                                    ->with('presentYear', $presentYear)
+                                    ->withErrors(__('Ha habido un error al intentar eliminar el documento ' . $filename . '.'));
                             }
                         }
-
-                        $index->storeAs($path . '/', $filename);
-                        $otherDocument = new OtherDocument();
-                        $otherDocument->user_id = $user[0]->id;
-                        $otherDocument->filename = $path . '/' . $filename;
-                        $otherDocument->month = $month;
-                        $otherDocument->year = $year;
-                        $otherDocument->save();
                     } else {
                         $name = $index->getClientOriginalName();
                         $index->storeAs($path . '/', $name);
@@ -234,22 +247,29 @@ class OthersDocumentsController extends Controller
             ->where('id', '=', $id)
             ->value('filename');
 
-        if ($othersDocuments) {
-            $delete = Storage::delete($othersDocuments);
-            if ($delete) {
-                $delete = DB::Table('others_documents')
-                    ->where('id', '=', $id)
-                    ->delete();
+        if (!$othersDocuments == "") {
+            if (Storage::exists($othersDocuments)) {
+                $delete = Storage::delete($othersDocuments);
                 if ($delete) {
+                    $delete = DB::Table('others_documents')
+                        ->where('id', '=', $id)
+                        ->delete();
+                    if ($delete) {
+                        return redirect()
+                            ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
+                            ->withSuccess(__('Se ha eliminado correctamente el documento seleccionado.'));
+                    } else {
+                        return redirect()
+                            ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
+                            ->withErrors(__('Ha habido un error al intentar eliminar el documento.'));
+                    }
+                } else {
                     return redirect()
                         ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
-                        ->withSuccess(__('Se ha eliminado correctamente el documento seleccionado.'));
+                        ->withErrors(__('Ha habido un error al intentar eliminar el documento.'));
                 }
             }
         }
-        return redirect()
-            ->route('othersdocuments.showOthersDocuments', compact('month', 'year'))
-            ->withErrors(__('Ha habido un error al intentar eliminar el documento.'));
     }
 
     public function deleteAllOtherDocuments()
@@ -266,11 +286,16 @@ class OthersDocumentsController extends Controller
                     return redirect()
                         ->route('othersdocuments.showForm')
                         ->withSuccess(__('Se han eliminado correctamente todos los documentos.'));
+                } else {
+                    return redirect()
+                        ->route('othersdocuments.showForm')
+                        ->withErrors(__('Ha habido un error al intentar eliminar todos los documentos.'));
                 }
+            } else {
+                return redirect()
+                    ->route('othersdocuments.showForm')
+                    ->withErrors(__('Ha habido un error al intentar eliminar todos los documentos.'));
             }
         }
-        return redirect()
-            ->route('othersdocuments.showForm')
-            ->withErrors(__('Ha habido un error al intentar eliminar todos los documentos.'));
     }
 }

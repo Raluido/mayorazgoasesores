@@ -107,10 +107,10 @@ class PayrollsController extends Controller
     {
         $presentYear = date("Y");
 
-        $payrolls = Db::Table('payrolls')
-            ->join('employee_user', 'payrolls.employee_user_id', '=', 'employee_user.id')
+        $payrolls = Db::Table('users')
+            ->join('employee_user', 'employee_user.user_id', '=', 'users.id')
             ->join('employees', 'employee_user.employee_id', '=', 'employees.id')
-            ->join('users', 'employee_user.user_id', '=', 'users.id')
+            ->join('payrolls', 'payrolls.employee_user_id', '=', 'employee_user.id')
             ->where('users.id', Auth::user()->id)
             ->where('month', $month)
             ->where('year', $year)
@@ -125,7 +125,7 @@ class PayrollsController extends Controller
 
             if ($zip->open($path . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($payrolls as $payroll) {
-                    $zip->addFile($payroll->filename);
+                    $zip->addFile($path . '/' . $payroll->filename, $payroll->filename);
                 }
                 $zip->close();
             }
@@ -134,6 +134,11 @@ class PayrollsController extends Controller
                 return response()
                     ->download($path . '/' . $zipFilename)
                     ->deleteFileAfterSend(true);
+            } else {
+                return redirect()
+                    ->route('payrolls.downloadForm')
+                    ->with($month, $year, $presentYear)
+                    ->withErrors(__('Ha habido un error al intentar descargar las nóminas de ' . $month . $year . ' , inténtelo de nuevo.'));
             }
         } else {
             return redirect()
@@ -160,10 +165,10 @@ class PayrollsController extends Controller
             $year = $request->input('year');
         }
 
-        $payrolls = Db::Table('payrolls')
-            ->join('employee_user', 'payrolls.employee_user_id', '=', 'employee_user.id')
+        $payrolls = Db::Table('users')
+            ->join('employee_user', 'employee_user.user_id', '=', 'users.id')
             ->join('employees', 'employee_user.employee_id', '=', 'employees.id')
-            ->join('users', 'employee_user.user_id', '=', 'users.id')
+            ->join('payrolls', 'payrolls.employee_user_id', '=', 'employee_user.id')
             ->where('month', $month)
             ->where('year', $year)
             ->paginate(10);
@@ -187,30 +192,28 @@ class PayrollsController extends Controller
             ->where('id', '=', $payroll->id)
             ->value('filename');
 
-        if ($payroll && Storage::exists($payroll)) {
-            $delete = Storage::delete($payroll);
-            if ($delete) {
-                $delete = DB::Table('payrolls')
-                    ->where('id', '=', $payroll->id)
-                    ->delete();
+        if ($payroll != "") {
+            if (Storage::exists($payroll)) {
+                $delete = Storage::delete($payroll);
                 if ($delete) {
-                    return redirect()
-                        ->route('payrolls.showPayrolls', compact('year', 'month'))
-                        ->withSuccess(__('Se ha eliminado correctamente la nómina'));
+                    $delete = DB::Table('payrolls')
+                        ->where('id', '=', $payroll->id)
+                        ->delete();
+                    if ($delete) {
+                        return redirect()
+                            ->route('payrolls.showPayrolls', compact('year', 'month'))
+                            ->withSuccess(__('Se ha eliminado correctamente la nómina'));
+                    } else {
+                        return redirect()
+                            ->route('payrolls.showPayrolls', compact('year', 'month'))
+                            ->withErrors(__('Ha habido un error al intentar eliminar la nómina.'));
+                    }
                 } else {
                     return redirect()
                         ->route('payrolls.showPayrolls', compact('year', 'month'))
                         ->withErrors(__('Ha habido un error al intentar eliminar la nómina.'));
                 }
-            } else {
-                return redirect()
-                    ->route('payrolls.showPayrolls', compact('year', 'month'))
-                    ->withErrors(__('Ha habido un error al intentar eliminar la nómina.'));
             }
-        } else {
-            return redirect()
-                ->route('payrolls.showPayrolls', compact('year', 'month'))
-                ->withErrors(__('Ha habido un error al intentar eliminar la nómina.'));
         }
     }
 
@@ -238,10 +241,6 @@ class PayrollsController extends Controller
                     ->route('payrolls.showForm')
                     ->withErrors(__('Ha habido un error al intentar eliminar todas nóminas.'));
             }
-        } else {
-            return redirect()
-                ->route('payrolls.showForm')
-                ->withErrors(__('Ha habido un error al intentar eliminar todas nóminas.'));
         }
     }
 }

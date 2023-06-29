@@ -172,7 +172,7 @@ class UploadPayrolls implements ShouldQueue
             $userId = User::where('nif', '=', $nif)->value('id');
             $employeeId = Employee::where('dni', $dni)->value('id');
 
-            // delete if payroll if it is already created
+            // delete if payroll it is already created
 
             $delete = DB::table('payrolls')
                 ->where('month', $monthInput)
@@ -186,10 +186,10 @@ class UploadPayrolls implements ShouldQueue
                 }
             }
 
-            $employee = Db::Table('employees')
+            $employee = Db::Table('users')
                 ->select('employees.id')
-                ->join('employee_user', 'employee_user.employee_id', '=', 'employees.id')
-                ->join('users', 'employee_user.user_id', '=', 'users.id')
+                ->join('employee_user', 'employee_user.user_id', '=', 'users.id')
+                ->join('employees', 'employee_user.employee_id', '=', 'employees.id')
                 ->where('users.nif', '=', $nif)
                 ->where('employees.dni', '=', $dni)
                 ->get();
@@ -227,10 +227,10 @@ class UploadPayrolls implements ShouldQueue
                     continue;
                 }
 
-                $employee = Db::Table('employees')
+                $employee = Db::Table('users')
                     ->select('employees.id')
-                    ->join('employee_user', 'employee_user.employee_id', '=', 'employees.id')
-                    ->join('users', 'employee_user.user_id', '=', 'users.id')
+                    ->join('employee_user', 'employee_user.user_id', '=', 'users.id')
+                    ->join('employees', 'employee_user.employee_id', '=', 'employees.id')
                     ->where('users.nif', '=', $nif)
                     ->where('employees.dni', '=', $dni)
                     ->get();
@@ -256,11 +256,10 @@ class UploadPayrolls implements ShouldQueue
             }
         }
 
-
-        $files = glob(public_path('storage/media/payrollsTemp/*.*'));
-        foreach ($files as $index) {
-            if (Storage::exists('storage/media/payrollsTemp/' . basename($index))) {
-                Storage::delete('storage/media/payrollsTemp/' . basename($index));
+        if (Storage::directoryExists('storage/media/payrollsTemp')) {
+            $delete = Storage::deleteDirectory('storage/media/payrollsTemp');
+            if ($delete) {
+                Storage::makeDirectory('storage/media/payrollsTemp', 0775, true);
             }
         }
 
@@ -275,12 +274,13 @@ class UploadPayrolls implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        $files = glob(public_path('storage/media/payrollsTemp/*.*'));
-        foreach ($files as $index) {
-            if (Storage::exists('storage/media/payrollsTemp/' . basename($index))) {
-                Storage::delete('storage/media/payrollsTemp/' . basename($index));
+        if (Storage::directoryExists('storage/media/payrollsTemp')) {
+            $delete = Storage::deleteDirectory('storage/media/payrollsTemp');
+            if ($delete) {
+                Storage::makeDirectory('storage/media/payrollsTemp', 0775, true);
             }
         }
+
 
         $files = glob(public_path('storage/media/*.*'));
         foreach ($files as $index) {
