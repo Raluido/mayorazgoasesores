@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Employee;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Log;
@@ -112,11 +113,17 @@ class UsersController extends Controller
      */
     public function update(User $user, UpdateUserRequest $request)
     {
-        $user->update($request->validated());
+        $update = $user->update($request->validated());
 
-        return redirect()
-            ->route('users.index')
-            ->withSuccess(__('Usuario actualizado correctamente.'));
+        if ($update) {
+            return redirect()
+                ->route('users.index')
+                ->withSuccess(__('Usuario actualizado correctamente.'));
+        } else {
+            return redirect()
+                ->route('users.index')
+                ->withErrors(__('No hemos podido modificar la empresa.'));
+        }
     }
 
     /**
@@ -130,9 +137,10 @@ class UsersController extends Controller
     {
         $payrolls = DB::Table('users')
             ->select('payrolls.filename', 'payrolls.id')
-            ->join('employees', 'employees.user_id', '=', 'users.id')
-            ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
-            ->where('employees.user_id', '=', 100000)
+            ->join('employee_user', 'employee_user.user_id', '=', 'users.id')
+            ->join('employees', 'employee_user.employee_id', '=', 'employees.id')
+            ->join('payrolls', 'employee_user.id', '=', 'payrolls.employee_user_id')
+            ->where('users.id', '=', $user->id)
             ->get();
 
         if (count($payrolls) > 0) {
@@ -157,18 +165,23 @@ class UsersController extends Controller
             }
         }
 
-        $employees = DB::Table('employees')
-            ->where('user_id', '=', $user->id)
+        $employees = DB::Table('users')
+            ->join('employee_user', 'users.id', '=', 'employee_user.user_id')
+            ->join('employees', 'employees.id', '=', 'employee_user.employee_id')
+            ->where('users.id', '=', $user->id)
             ->get();
 
         if (count($employees) > 0) {
-            $delete = DB::Table('employees')
-                ->where('user_id', '=', $user->id)
-                ->delete();
-            if (!$delete) {
-                return redirect()
-                    ->route('users.index')
-                    ->withErrors('Hemos registrado un error al eliminar a un empleado de la empresa ' . $user->id);
+            foreach ($employees as $employee) {
+                $user->employees()->detach($employee->id);
+                if (Db::Table('employee_user')->where('user_id', $user->id)->get() > 0)
+                    $delete = Employee::where('id', $employee->id)->delete();
+                if (!$delete) {
+                    $user = User::find($user->id);
+                    return redirect()
+                        ->route('users.index')
+                        ->withErrors('Hemos registrado un error al eliminar a un empleado de la empresa ' . $user->id);
+                }
             }
         }
 
@@ -186,6 +199,7 @@ class UsersController extends Controller
                             ->where('user_id', '=', $user->id)
                             ->delete();
                         if (!$delete) {
+                            log::info("aqui");
                             return redirect()
                                 ->route('users.index')
                                 ->withErrors('Hemos registrado un error al eliminar el documento de imputación de costes ' . $index->filename);

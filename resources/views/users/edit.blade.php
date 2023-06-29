@@ -11,6 +11,7 @@
                 <form method="post" action="{{ route('users.update', $user->id) }}">
                     @method('patch')
                     @csrf
+                    <input type="hidden" value="{{ $user->id }}" name="id" class="">
                     <div class="inputDiv">
                         <label for="name" class="">Empresa</label>
                         <input value="{{ $user->name }}" type="text" class="" name="name" placeholder="Empresa" required>
