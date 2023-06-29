@@ -174,13 +174,7 @@
                 </div>
                 @else
                 @php
-                $opts = [
-                'http' => [
-                'timeout' => 2, // 2 seconds
-                ]
-                ];
-                $context = stream_context_create($opts);
-                libxml_set_streams_context($context);
+                libxml_use_internal_errors(true);
                 $doc = new \DomDocument();
                 try {
                 $doc->loadHTML($post->body);
