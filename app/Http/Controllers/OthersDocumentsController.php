@@ -115,16 +115,16 @@ class OthersDocumentsController extends Controller
                         $otherDocument->save();
                     }
                 }
+                return redirect()
+                    ->route('othersdocuments.uploadForm')
+                    ->with('presentYear', $presentYear)
+                    ->withSuccess(__('Los documentos se han subido correctamente ;)'));
             } else {
                 return redirect()
                     ->route('othersdocuments.uploadForm')
                     ->with('presentYear', $presentYear)
                     ->withErrors(__('No has añadido ningun archivo aún.'));
             }
-            return redirect()
-                ->route('othersdocuments.uploadForm')
-                ->with('presentYear', $presentYear)
-                ->withSuccess(__('Los documentos se han subido correctamente ;)'));
         } else {
             return redirect()
                 ->route('othersdocuments.uploadForm')
@@ -158,8 +158,9 @@ class OthersDocumentsController extends Controller
                 ->route('othersdocuments.downloadForm')
                 ->with('presentYear', $presentYear)
                 ->withErrors(__('Los documentos de ' . $month . $year . ' no están disponibles aún.'));
+        } else {
+            return view('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'));
         }
-        return view('othersdocuments.downloadList', compact('othersdocuments', 'month', 'year'));
     }
 
     public function downloadOthersDocuments(Request $request)

@@ -211,16 +211,6 @@ class UploadCostsImputs implements ShouldQueue
                     $uploadError[] = 'Error, no hemos podido el registro ' . $filename . '.duplicado.';
                     break;
                 }
-            } else {
-                $delete = DB::table('costs_imputs')
-                    ->where('month', $monthInput)
-                    ->where('year', $yearInput)
-                    ->where('filename', $path . '/' . $filename)
-                    ->delete();
-                if (!$delete) {
-                    $uploadError[] = 'Error, no hemos podido el archivo ' . $filename . '.duplicado.';
-                    break;
-                }
             }
 
             // end

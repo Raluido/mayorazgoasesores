@@ -93,10 +93,6 @@ class UploadPayrolls implements ShouldQueue
             preg_match_all('/[X-Z]{1}[0-9]{7}[A-Z]{1}/', $content, $nie, PREG_OFFSET_CAPTURE);
 
             try {
-                $month = substr($period[0][0][0], 9, 3);
-                $year = substr($period[0][0][0], 13);
-
-
                 if (count($cif[0]) == 1) {
                     $NIF = $cif[0][0][0];
                     if (count($dni[0]) == 1) {
@@ -128,8 +124,14 @@ class UploadPayrolls implements ShouldQueue
                     $DNI = $dni[0][0][0];
                 }
 
+                $month = substr($period[0][0][0], 9, 3);
+                $year = substr($period[0][0][0], 13);
 
-                rename(public_path('storage/media/payrollsTemp/' . basename($index)), public_path('storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.' . $extension));
+                if ($month == $monthInput && $year == $yearInput) {
+                    rename(public_path('storage/media/payrollsTemp/' . basename($index)), public_path('storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.' . $extension));
+                } else {
+                    $uploadError[] = "Error en las fechas/identificación del modelo de imputación de costes";
+                }
             } catch (\Throwable $th) {
                 $uploadError[] = "Error en las fechas/identificación de la nómina";
                 continue;
@@ -172,20 +174,6 @@ class UploadPayrolls implements ShouldQueue
             $userId = User::where('nif', '=', $nif)->value('id');
             $employeeId = Employee::where('dni', $dni)->value('id');
 
-            // delete if payroll it is already created
-
-            $delete = DB::table('payrolls')
-                ->where('month', $monthInput)
-                ->where('year', $yearInput)
-                ->where('filename', $path . '/' . $filename)
-                ->delete();
-
-            if ($delete) {
-                if (Storage::exists($path . '/' . $filename)) {
-                    Storage::delete($path . '/' . $filename);
-                }
-            }
-
             $employee = Db::Table('users')
                 ->select('employees.id')
                 ->join('employee_user', 'employee_user.user_id', '=', 'users.id')
@@ -196,6 +184,21 @@ class UploadPayrolls implements ShouldQueue
 
             if (count($employee) > 0) {
                 if ($monthInput . $yearInput == substr($filename, 20, 7)) {
+
+                    // delete if payroll it is already created
+
+                    $delete = DB::table('payrolls')
+                        ->where('month', $monthInput)
+                        ->where('year', $yearInput)
+                        ->where('filename', $path . '/' . $filename)
+                        ->delete();
+
+                    if ($delete) {
+                        if (Storage::exists($path . '/' . $filename)) {
+                            Storage::delete($path . '/' . $filename);
+                        }
+                    }
+
                     rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                     $payroll = new Payroll();
                     $payroll->employee_user_id = Db::Table('employee_user')->where('user_id', '=', $userId)->where('employee_id', '=', $employeeId)->value('id');
@@ -237,6 +240,21 @@ class UploadPayrolls implements ShouldQueue
 
                 if (count($employee) > 0) {
                     if ($monthInput . $yearInput == substr($filename, 20, 7)) {
+
+                        // delete if payroll it is already created
+
+                        $delete = DB::table('payrolls')
+                            ->where('month', $monthInput)
+                            ->where('year', $yearInput)
+                            ->where('filename', $path . '/' . $filename)
+                            ->delete();
+
+                        if ($delete) {
+                            if (Storage::exists($path . '/' . $filename)) {
+                                Storage::delete($path . '/' . $filename);
+                            }
+                        }
+
                         rename(public_path('storage/media/payrollsTemp/' . $filename), public_path('storage/media/payrolls/' . $yearInput . '/' . $monthInput . '/' . $filename));
                         $payroll = new Payroll();
                         $payroll->employee_user_id = Db::Table('employee_user')->where('user_id', '=', $userId)->where('employee_id', '=', $employeeId)->value('id');

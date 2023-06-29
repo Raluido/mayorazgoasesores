@@ -44,7 +44,7 @@
                 libxml_use_internal_errors(true);
                 $doc = new \DomDocument();
                 try {
-                $doc->loadHTML($post->body);
+                $doc->loadHTML(mb_convert_encoding(file_get_contents($post->body), 'HTML-ENTITIES', "UTF-8"));
                 } catch (\Throwable $th) {
                 echo '<div class="red">Ha habido un error, compruebe si selecciono correctamente entre link o noticia</div>';
                 }

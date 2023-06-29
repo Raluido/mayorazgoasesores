@@ -85,9 +85,6 @@ class AddUsersPayrolls implements ShouldQueue
             preg_match_all('/[X-Z]{1}[0-9]{7}[A-Z]{1}/', $content, $nie, PREG_OFFSET_CAPTURE);
 
             try {
-                $month = substr($period[0][0][0], 9, 3);
-                $year = substr($period[0][0][0], 13);
-
                 if (count($cif[0]) == 1) {
                     $NIF = $cif[0][0][0];
                     if (count($dni[0]) == 1) {
@@ -117,6 +114,14 @@ class AddUsersPayrolls implements ShouldQueue
                 } elseif (count($dni[0]) == 1 && count($nie[0]) == 1 && $dni[0][0][1] > $nie[0][0][1]) {
                     $NIF = $nie[0][0][0];
                     $DNI = $dni[0][0][0];
+                }
+                $month = substr($period[0][0][0], 9, 3);
+                $year = substr($period[0][0][0], 13);
+
+                if ($month == $monthInput && $year == $yearInput) {
+                    rename(public_path('storage/media/payrollsTemp/' . basename($index)), public_path('storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.' . $extension));
+                } else {
+                    $uploadError[] = "Error en las fechas/identificación del modelo de imputación de costes";
                 }
             } catch (\Throwable $th) {
                 $month = "";
@@ -155,8 +160,8 @@ class AddUsersPayrolls implements ShouldQueue
         // End
 
         foreach ($data as $index) {
-            if (User::where('nif', '=', $index[0])->exists()) {
-                $uploadError = "La empresa " . $index[0] . " ya está creada.";
+            if (Db::Table('users')->where('nif', $index[0])->exists()) {
+                $uploadError[] = "La empresa " . $index[0] . " ya está creada.";
             } else {
                 $user = new User();
                 $user->nif = $index[0];
