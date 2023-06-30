@@ -86,7 +86,6 @@ class UploadPayrolls implements ShouldQueue
             $pdf = $pdfParser->parseFile($index);
             $content = $pdf->getText();
 
-
             preg_match_all('/MENS\s+[0-9]{2}\s+[A-Z]{3}\s+[0-9]{2}/', $content, $period, PREG_OFFSET_CAPTURE);
             preg_match_all('/[0-9]{8}[A-Z]/', $content, $dni, PREG_OFFSET_CAPTURE);
             preg_match_all('/[A-Z]{1}[0-9]{8}/', $content, $cif, PREG_OFFSET_CAPTURE);
@@ -127,10 +126,10 @@ class UploadPayrolls implements ShouldQueue
                 $month = substr($period[0][0][0], 9, 3);
                 $year = substr($period[0][0][0], 13);
 
-                if ($month == $monthInput && $year == $yearInput) {
-                    rename(public_path('storage/media/payrollsTemp/' . basename($index)), public_path('storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.' . $extension));
+                if ($month . '20' . $year == $monthInput . $yearInput) {
+                    rename(public_path('storage/media/payrollsTemp/' . basename($index)), public_path('storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . '20' . $year . '.' . $extension));
                 } else {
-                    $uploadError[] = "Error en las fechas/identificación del modelo de imputación de costes";
+                    $uploadError[] = "Error en las fechas/identificación de la nómina";
                 }
             } catch (\Throwable $th) {
                 $uploadError[] = "Error en las fechas/identificación de la nómina";
@@ -172,7 +171,7 @@ class UploadPayrolls implements ShouldQueue
             $nif = substr($filename, 0, 9);
             $dni = substr($filename, 10, 9);
             $userId = User::where('nif', '=', $nif)->value('id');
-            $employeeId = Employee::where('dni', $dni)->value('id');
+            $employeeId = Employee::where('dni', '=', $dni)->value('id');
 
             $employee = Db::Table('users')
                 ->select('employees.id')

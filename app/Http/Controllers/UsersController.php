@@ -25,7 +25,7 @@ class UsersController extends Controller
 
     public function index()
     {
-        $users = User::latest()
+        $users = User::orderBy('id')
             ->paginate(10);
 
         return view('users.index', compact('users'));
@@ -174,13 +174,14 @@ class UsersController extends Controller
         if (count($employees) > 0) {
             foreach ($employees as $employee) {
                 $user->employees()->detach($employee->id);
-                if (Db::Table('employee_user')->where('user_id', $user->id)->get() > 0)
+                if (Db::Table('employee_user')->where('employee_id', $employee->id)->count() == 0) {
                     $delete = Employee::where('id', $employee->id)->delete();
-                if (!$delete) {
-                    $user = User::find($user->id);
-                    return redirect()
-                        ->route('users.index')
-                        ->withErrors('Hemos registrado un error al eliminar a un empleado de la empresa ' . $user->id);
+                    if (!$delete) {
+                        $user = User::find($user->id);
+                        return redirect()
+                            ->route('users.index')
+                            ->withErrors('Hemos registrado un error al eliminar a un empleado de la empresa ' . $user->id);
+                    }
                 }
             }
         }
@@ -197,17 +198,17 @@ class UsersController extends Controller
                     if ($delete) {
                         $delete = Db::Table('costs_imputs')
                             ->where('user_id', '=', $user->id)
+                            ->where('id', '=', $index->id)
                             ->delete();
                         if (!$delete) {
-                            log::info("aqui");
                             return redirect()
                                 ->route('users.index')
-                                ->withErrors('Hemos registrado un error al eliminar el documento de imputación de costes ' . $index->filename);
+                                ->withErrors('Hemos registrado un error al eliminar el documento de imputación de costes ' . basename($index->filename));
                         }
                     } else {
                         return redirect()
                             ->route('users.index')
-                            ->withErrors('Hemos registrado un error al eliminar el documento de imputación de costes ' . $index->filename);
+                            ->withErrors('Hemos registrado un error al eliminar el documento de imputación de costes ' . basename($index->filename));
                     }
                 }
             }
@@ -225,6 +226,7 @@ class UsersController extends Controller
                     if ($delete) {
                         $delete = Db::Table('others_documents')
                             ->where('user_id', '=', $user->id)
+                            ->where('id', '=', $index->id)
                             ->delete();
                         if (!$delete) {
                             return redirect()

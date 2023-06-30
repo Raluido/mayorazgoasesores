@@ -74,6 +74,8 @@ class AddUsersPayrolls implements ShouldQueue
 
         $files = glob(public_path('storage/media/addUsersTemp/*.*'));
 
+        // read ids, month and year
+
         foreach ($files as $index) {
             $pdfParser = new Parser();
             $pdf = $pdfParser->parseFile($index);
@@ -118,34 +120,31 @@ class AddUsersPayrolls implements ShouldQueue
                 $month = substr($period[0][0][0], 9, 3);
                 $year = substr($period[0][0][0], 13);
 
-                if ($month == $monthInput && $year == $yearInput) {
-                    rename(public_path('storage/media/payrollsTemp/' . basename($index)), public_path('storage/media/payrollsTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.' . $extension));
+                if ($month . '20' . $year == $monthInput . $yearInput) {
+                    rename(public_path('storage/media/addUsersTemp/' . basename($index)), public_path('storage/media/addUsersTemp/' . $NIF . '_' .  $DNI . '_' . $month . 20 . $year . '.' . $extension));
                 } else {
-                    $uploadError[] = "Error en las fechas/identificación del modelo de imputación de costes";
+                    $uploadError[] = "Error en las fechas/identificación de la nómina.";
+                    continue;
                 }
             } catch (\Throwable $th) {
-                $month = "";
-                $year = "";
-                $NIF = "";
                 continue;
             }
 
-            if ($month . '20' . $year != $monthInput . $yearInput) {
-                $uploadError[] = "Error en las fechas/identificación de la nómina";
-            } else {
-                $findme2 = 'EMPRESA';
-                $pos2 = strpos($content, $findme2);
-                $company = substr($content, ($pos2 + 37), 33);
+            // save the nif and company name in array
 
-                if ($oldNIF != $NIF) {
-                    $companyData = array();
-                    $companyData[] = $NIF;
-                    $companyData[] = $company;
-                    $data[] = $companyData;
-                }
+            $findme2 = 'EMPRESA';
+            $pos2 = strpos($content, $findme2);
+            $company = substr($content, ($pos2 + 37), 33);
 
-                $oldNIF = $NIF;
+            if ($oldNIF != $NIF) {
+                $companyData = array();
+                $companyData[] = $NIF;
+                $companyData[] = $company;
+                $data[] = $companyData;
             }
+            $oldNIF = $NIF;
+
+            // end
         }
 
         // delete temps files
