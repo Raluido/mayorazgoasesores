@@ -12,7 +12,7 @@ use ZipArchive;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\UploadCostsImputs;
 use App\Jobs\AddUsersCostsImputs;
-use App\Models\CostsImput;
+use App\Models\User;
 
 class CostsImputsController extends Controller
 {
@@ -187,7 +187,7 @@ class CostsImputsController extends Controller
     }
 
 
-    public function deleteCostsImputs(CostsImput $costsImput, $year, $month)
+    public function deleteCostsImputs(User $user, $year, $month)
     {
         $presentYear = date("Y");
 
@@ -195,7 +195,7 @@ class CostsImputsController extends Controller
             ->select('filename', 'id')
             ->where('year', '=', $year)
             ->where('month', '=', $month)
-            ->where('user_id', '=', $costsImput->id)
+            ->where('user_id', '=', $user->id)
             ->get();
 
         if (count($costsImput) > 0) {
@@ -210,18 +210,12 @@ class CostsImputsController extends Controller
                             return redirect()
                                 ->route('costsimputs.showCostsImputs', compact('month', 'year'))
                                 ->withErrors(__('Ha habido un error al intentar eliminar el modelo de imputación de costes.'));
-                        } else {
-                            break;
                         }
                     } else {
                         return redirect()
                             ->route('costsimputs.showCostsImputs', compact('month', 'year'))
                             ->withErrors(__('Ha habido un error al intentar eliminar el modelo de imputación de costes.'));
                     }
-                } else {
-                    return redirect()
-                        ->route('costsimputs.showCostsImputs', compact('month', 'year'))
-                        ->withErrors(__('Ha habido un error al intentar eliminar el modelo de imputación de costes.'));
                 }
             }
             return redirect()
@@ -254,10 +248,6 @@ class CostsImputsController extends Controller
                     ->route('costsimputs.showForm')
                     ->withErrors(__('Ha habido un error al intentar eliminar la carpeta con los modelos de imputación de costes.'));
             }
-        } else {
-            return redirect()
-                ->route('costsimputs.showForm')
-                ->withErrors(__('Ha habido un error al intentar eliminar la carpeta con los modelos de imputación de costes.'));
         }
     }
 }

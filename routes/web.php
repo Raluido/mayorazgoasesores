@@ -103,7 +103,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/download/{month}/{year}', 'CostsImputsController@downloadCostsImputs')->name('costsimputs.downloadCostsImputs');
             Route::get('/showForm', 'CostsImputsController@showForm')->name('costsimputs.showForm');
             Route::get('/show', 'CostsImputsController@showCostsImputs')->name('costsimputs.showCostsImputs');
-            Route::delete('/delete/{costsImput}/{year}/{month}', 'CostsImputsController@deleteCostsImputs')->name('costsimputs.deleteCostsImputs');
+            Route::delete('/delete/{user}/{year}/{month}', 'CostsImputsController@deleteCostsImputs')->name('costsimputs.deleteCostsImputs');
             Route::get('/deleteAll', 'CostsImputsController@deleteAllCostsImputs')->name('costsimputs.deleteAllCostsImputs');
         });
 
