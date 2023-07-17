@@ -99,68 +99,64 @@ class UploadCostsImputs implements ShouldQueue
                 } elseif (count($nie[0]) == 1) {
                     $NIF = $nie[0][0][0];
                 }
-            } catch (\Throwable $th) {
-                $month = "";
-                $year = "";
-                $NIF = "";
-                continue;
-            }
 
-            switch ($month) {
-                case '01':
-                    $month = 'ENE';
-                    break;
-                case '02':
-                    $month = 'FEB';
-                    break;
-                case '03':
-                    $month = 'MAR';
-                    break;
-                case '04':
-                    $month = 'ABR';
-                    break;
-                case '05':
-                    $month = 'MAY';
-                    break;
-                case '06':
-                    $month = 'JUN';
-                    break;
-                case '07':
-                    $month = 'JUL';
-                    break;
-                case '08':
-                    $month = 'AGO';
-                    break;
-                case '09':
-                    $month = 'SEP';
-                    break;
-                case '10':
-                    $month = 'OCT';
-                    break;
-                case '11':
-                    $month = 'NOV';
-                    break;
-                case '12':
-                    $month = 'DIC';
-                    break;
-                default:
-                    $month = "";
-                    break;
-            }
-
-            if ($month . '20' . $year != $monthInput . $yearInput) {
-                $uploadError[] = "Error en las fechas/identificación del modelo de imputación de costes";
-            } else {
-
-                if ($oldNif != $NIF) {
-                    $x = 0;
-                } else {
-                    $x++;
+                switch ($month) {
+                    case '01':
+                        $month = 'ENE';
+                        break;
+                    case '02':
+                        $month = 'FEB';
+                        break;
+                    case '03':
+                        $month = 'MAR';
+                        break;
+                    case '04':
+                        $month = 'ABR';
+                        break;
+                    case '05':
+                        $month = 'MAY';
+                        break;
+                    case '06':
+                        $month = 'JUN';
+                        break;
+                    case '07':
+                        $month = 'JUL';
+                        break;
+                    case '08':
+                        $month = 'AGO';
+                        break;
+                    case '09':
+                        $month = 'SEP';
+                        break;
+                    case '10':
+                        $month = 'OCT';
+                        break;
+                    case '11':
+                        $month = 'NOV';
+                        break;
+                    case '12':
+                        $month = 'DIC';
+                        break;
+                    default:
+                        $month = "";
+                        break;
                 }
 
-                $oldNif = $NIF;
+                if ($month . '20' . $year != $monthInput . $yearInput) {
+                    $uploadError[] = "Error en las fechas/identificación del modelo de imputación de costes";
+                } else {
 
-                rename($index, public_path('storage/media/costsImputsTemp/' . $NIF . '_' . $month . 20 . $year . '_' . $x . '.' . $extension));
+                    if ($oldNif != $NIF) {
+                        $x = 0;
+                    } else {
+                        $x++;
+                    }
+
+                    $oldNif = $NIF;
+                    rename($index, public_path('storage/media/costsImputsTemp/' . $NIF . '_' . $month . 20 . $year . '_' . $x . '.' . $extension));
+                }
+            } catch (\Throwable $th) {
+                break;
             }
         }
 

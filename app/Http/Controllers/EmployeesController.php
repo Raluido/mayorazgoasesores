@@ -27,10 +27,10 @@ class EmployeesController extends Controller
 
     public function index()
     {
-        $employees = Db::Table('employees')
+        $employees = Db::Table('users')
             ->select('users.id as userId', 'users.name', 'users.nif', 'employees.dni', 'employees.id')
-            ->join('employee_user', 'employee_user.employee_id', '=', 'employees.id')
-            ->join('users', 'employee_user.user_id', '=', 'users.id')
+            ->join('employee_user', 'employee_user.user_id', '=', 'users.id')
+            ->join('employees', 'employee_user.employee_id', '=', 'employees.id')
             ->orderBy('employees.id')
             ->paginate(10);
 
@@ -95,10 +95,14 @@ class EmployeesController extends Controller
 
             $employeeId = Employee::where('dni', $dni)->value('id');
 
+            // relate that employee with a company
+
             if ($employeeId != "") {
                 $user = User::find($userId);
                 $user->employees()->attach($employeeId);
             }
+
+            // end
 
             $created = Db::Table('users')
                 ->join('employee_user', 'employee_user.user_id', '=', 'users.id')
@@ -121,11 +125,7 @@ class EmployeesController extends Controller
 
     public function show(Employee $employee)
     {
-        $employee = Db::Table('users')
-            ->join('employee_user', 'employee_user.user_id', '=', 'users.id')
-            ->join('employees', 'employee_user.employee_id', '=', 'employees.id')
-            ->where('employees.id', '=', $employee->id)
-            ->get();
+        $employee = Employee::find($employee->id);
 
         return view('employees.show', ['employee' => $employee]);
     }
@@ -163,20 +163,23 @@ class EmployeesController extends Controller
             return redirect()
                 ->route('employees.index')
                 ->withSuccess(__('Empleado modificado correctamente.'));
+        } else {
+            return redirect()
+                ->route('employees.index')
+                ->withErrors(__('Ha habido un error al modificar los datos del empleado.'));
         }
     }
 
     public function destroy(Employee $employee, User $user)
     {
-        $payrolls = Db::Table('payrolls')
+        $payrolls = Db::Table('users')
             ->select('payrolls.id', 'payrolls.filename')
-            ->join('employee_user', 'payrolls.employee_user_id', '=', 'employee_user.id')
+            ->join('employee_user', 'employee_user.user_id', '=', 'users.id')
             ->join('employees', 'employee_user.employee_id', '=', 'employees.id')
-            ->join('users', 'employee_user.user_id', '=', 'users.id')
+            ->join('payrolls', 'payrolls.employee_user_id', '=', 'employee_user.id')
             ->where('employees.id', $employee->id)
             ->where('users.id', $user->id)
             ->get();
-
 
         if (count($payrolls) > 0) {
             foreach ($payrolls as $payroll) {
@@ -214,9 +217,10 @@ class EmployeesController extends Controller
                 return redirect()->route('employees.index')
                     ->withErrors(__('Ha habido un error al intentar eliminar las nóminas del empleado, intentelo de nuevo.'));
             }
+        } else {
+            return redirect()->route('employees.index')
+                ->withSuccess(__('Empleado eliminado correctamente, recuerda que la ficha del empleado con dni ' . $employee->dni . ' persistira porque aun forma parte de otra empresa.'));
         }
-        return redirect()->route('employees.index')
-            ->withSuccess(__('Empleado eliminado correctamente, recuerda que la ficha del empleado con dni ' . $employee->dni . ' persistira porque aun forma parte de otra empresa.'));
     }
 
     public function deleteAll()

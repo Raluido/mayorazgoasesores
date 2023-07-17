@@ -12,7 +12,7 @@
                 @include('layouts.partials.messages')
             </div>
             <div class="innerBottom">
-                <form method="POST" name="monthyearForm" action="{{ route('costsimputs.getData') }}">
+                <form method="POST" name="monthyearForm" action="{{ route('payrolls.getData') }}">
                     <div class="inputForm">
                         <input name="_token" type="hidden" value="{{ csrf_token() }}">
                         <label for="month">Selecciona un mes</label>

@@ -125,7 +125,7 @@ class PayrollsController extends Controller
 
             if ($zip->open($path . '/' . $zipFilename, ZipArchive::CREATE) === TRUE) {
                 foreach ($payrolls as $payroll) {
-                    $zip->addFile($path . '/' . $payroll->filename, $payroll->filename);
+                    $zip->addFile(public_path($payroll->filename), basename($payroll->filename));
                 }
                 $zip->close();
             }
@@ -166,11 +166,12 @@ class PayrollsController extends Controller
         }
 
         $payrolls = Db::Table('users')
+            ->select('payrolls.id', 'users.nif', 'employees.dni', 'payrolls.month', 'payrolls.year')
             ->join('employee_user', 'employee_user.user_id', '=', 'users.id')
             ->join('employees', 'employee_user.employee_id', '=', 'employees.id')
             ->join('payrolls', 'payrolls.employee_user_id', '=', 'employee_user.id')
-            ->where('month', $month)
-            ->where('year', $year)
+            ->where('payrolls.month', $month)
+            ->where('payrolls.year', $year)
             ->paginate(10);
 
         $payrolls->setPath('/payrolls/show?month=' . $month . '&year=' . $year);
@@ -190,14 +191,14 @@ class PayrollsController extends Controller
     {
         $payroll = DB::Table('payrolls')
             ->where('id', '=', $payroll->id)
-            ->value('filename');
+            ->get();
 
-        if ($payroll != "") {
-            if (Storage::exists($payroll)) {
-                $delete = Storage::delete($payroll);
+        if (count($payroll) > 0) {
+            if (Storage::exists($payroll[0]->filename)) {
+                $delete = Storage::delete($payroll[0]->filename);
                 if ($delete) {
                     $delete = DB::Table('payrolls')
-                        ->where('id', '=', $payroll->id)
+                        ->where('id', '=', $payroll[0]->id)
                         ->delete();
                     if ($delete) {
                         return redirect()
