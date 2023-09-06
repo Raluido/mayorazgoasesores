@@ -62,7 +62,7 @@ select {
 }
 
 iframe {
-    overflow-x: scroll !important;
+    flex-grow: 1;
 }
 
 html {

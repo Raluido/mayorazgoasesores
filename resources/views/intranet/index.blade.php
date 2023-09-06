@@ -50,7 +50,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="">
+            <!-- <div class="">
                 <h5>Gestionar blog</h5>
                 <hr><br>
                 <ul class="">
@@ -58,7 +58,7 @@
                         <a href="{{ route('posts.index') }}" class="">Crear, editar y borrar</a>
                     </li>
                 </ul>
-            </div>
+            </div> -->
         </div>
         @endrole
         @role('admin')
@@ -127,7 +127,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="">
+            <!-- <div class="">
                 <h5>Gestionar blog</h5>
                 <hr><br>
                 <ul class="">
@@ -135,7 +135,7 @@
                         <a href="{{ route('posts.index') }}" class="">Crear, editar y borrar</a>
                     </li>
                 </ul>
-            </div>
+            </div> -->
         </div>
         @endrole
         @role('user')
