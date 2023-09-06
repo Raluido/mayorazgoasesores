@@ -119,19 +119,19 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::get('/deleteAll', 'OthersDocumentsController@deleteAllOtherDocuments')->name('othersdocuments.deleteAllOthersDocuments');
         });
 
-        Route::group(['prefix' => 'posts'], function () {
-            Route::get('/', 'PostsController@index')->name('posts.index');
-            Route::get('/create', 'PostsController@create')->name('posts.create');
-            Route::post('/store', 'PostsController@store')->name('posts.store');
-            Route::get('/{post}/edit', 'PostsController@edit')->name('posts.edit');
-            Route::put('/{post}', 'PostsController@update')->name('posts.update');
-            Route::delete('/{post}', 'PostsController@destroy')->name('posts.destroy');
-        });
+        // Route::group(['prefix' => 'posts'], function () {
+        //     Route::get('/', 'PostsController@index')->name('posts.index');
+        //     Route::get('/create', 'PostsController@create')->name('posts.create');
+        //     Route::post('/store', 'PostsController@store')->name('posts.store');
+        //     Route::get('/{post}/edit', 'PostsController@edit')->name('posts.edit');
+        //     Route::put('/{post}', 'PostsController@update')->name('posts.update');
+        //     Route::delete('/{post}', 'PostsController@destroy')->name('posts.destroy');
+        // });
 
         Route::resource('roles', RolesController::class);
         Route::resource('permissions', PermissionsController::class);
     });
 
-    Route::get('/posts/showAll', 'PostsController@showAll')->name('posts.showAll');
-    Route::get('/posts/{post}', 'PostsController@show')->name('posts.show');
+    // Route::get('/posts/showAll', 'PostsController@showAll')->name('posts.showAll');
+    // Route::get('/posts/{post}', 'PostsController@show')->name('posts.show');
 });

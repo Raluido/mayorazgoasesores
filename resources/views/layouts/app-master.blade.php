@@ -19,7 +19,6 @@
     @include('layouts.partials.navbar')
 
     <main class="">
-        <iframe width="100%" height="100%" frameborder="0" id="bcw_iframe" scroll-top="yes" src="https://mayorazgoasesores.clientlink.es" instance="es" lang="es"></iframe>
         @yield('content')
     </main>
 
