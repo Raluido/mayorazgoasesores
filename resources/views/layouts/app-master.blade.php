@@ -19,6 +19,7 @@
     @include('layouts.partials.navbar')
 
     <main class="">
+        <iframe width="100%" height="100%" frameborder="0" id="bcw_iframe" scroll-top="yes" src="https://mayorazgoasesores.clientlink.es" instance="es" lang="es"></iframe>
         @yield('content')
     </main>
 
@@ -27,6 +28,8 @@
     <script src="{{ asset('js/jquery-3.6.4.min.js') }}">
     </script>
     <script src="{{ asset('js/mobileMenu.js') }}"></script>
+    <script src="https://repository.clientlink.es/assets/js/script_iframe.js"></script>
+    <script defer data-key="c38a2b6a-dfd8-4955-a86a-ca25d796edbd" src="https://widget.tochat.be/lefebvre/bundle.js"></script>
     @section('scripts')
     @show
     @yield('js')

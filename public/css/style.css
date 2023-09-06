@@ -61,6 +61,10 @@ select {
     width: 100%;
 }
 
+iframe {
+    overflow-x: scroll !important;
+}
+
 html {
     font-family: 'Times New Roman', Times, serif;
 }
