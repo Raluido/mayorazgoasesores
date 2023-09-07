@@ -154,7 +154,7 @@ header nav .innerNav .logoMenu .logo .imageLogo {
 
 header .innerNav .logoMenu .logo .imageLogo img {
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 header nav .innerNav .logoMenu .logo .nameLogo h3 {
@@ -277,7 +277,7 @@ header .innerNav .logoMenu .menu {
 
 .equipo .bottom .innerBottom img {
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 /* end */
@@ -350,7 +350,7 @@ header .innerNav .logoMenu .menu {
 
 .servicios .innerServicios .bottom>div .iconText img {
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 
@@ -454,7 +454,7 @@ header .innerNav .logoMenu .menu {
 
 .noticias .bottom .innerBottom .link .innerLink .linkImage img {
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 /* noticias All */
@@ -670,7 +670,7 @@ header .innerNav .logoMenu .menu {
 
 .contacto .innerContacto .bottom .iconContact img {
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 .contact form {
@@ -757,7 +757,7 @@ footer .innerFooter .publicAdtion .innerPublicAdtion .innerIconLinks:nth-child(2
 
 footer .innerFooter .publicAdtion .innerPublicAdtion .innerIconLinks img {
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 footer .websiwebs {
@@ -866,7 +866,7 @@ footer .websiwebs {
 
 .maintenance .innerMaintenance .bottom .innerBottom .logo img {
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 .maintenance .innerMaintenance .bottom .innerBottom .contactData .innerContactData h4 {
@@ -885,7 +885,7 @@ footer .websiwebs {
 
 .maintenance .innerMaintenance .bottom .innerBottom .contactData .innerContactData .iconContact .innerIconContact img {
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 
@@ -2735,7 +2735,7 @@ footer .websiwebs {
 
     header .innerNav .mobileMenu .innerMobileMenu img {
         width: 100%;
-        height: 100%;
+        height: auto;
         cursor: pointer;
     }
 
