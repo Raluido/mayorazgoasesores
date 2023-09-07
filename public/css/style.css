@@ -359,7 +359,7 @@ header .innerNav .logoMenu .menu {
 /* noticias */
 
 .noticias {
-    min-height: 100vh;
+    min-height: 130vh;
     display: flex;
     flex-direction: column;
 }
