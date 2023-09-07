@@ -359,7 +359,7 @@ header .innerNav .logoMenu .menu {
 /* noticias */
 
 .noticias {
-    min-height: 130vh;
+    min-height: 140vh;
     display: flex;
     flex-direction: column;
 }
@@ -2393,6 +2393,10 @@ footer .websiwebs {
 
     .servicios .innerServicios .bottom .innerBottom>div ul li {
         font-size: 1em;
+    }
+
+    .noticias {
+        min-height: 100vh;
     }
 
     .noticias .innerNoticias .bottom .innerBottom {
