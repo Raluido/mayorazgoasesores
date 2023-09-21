@@ -147,7 +147,7 @@
             <img src="{{ Storage::url('design/noticias.jpg') }}" alt="" class="">
         </div>
         <div class="bottom">
-            <iframe width="100%" height="100%" frameborder="0" id="bcw_iframe" scroll-top="yes" src="https://mayorazgoasesores.clientlink.es" instance="es" lang="es"></iframe>
+            <iframe width="100%" height="100%" frameborder="0" id="bcw_iframe" scroll-top="no" src="https://mayorazgoasesores.clientlink.es" instance="es" lang="es"></iframe>
         </div>
 </section>
 
