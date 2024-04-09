@@ -55,7 +55,7 @@
                 <hr><br>
                 <ul class="">
                     <li class="">
-                        <a href="{{ route('posts.index') }}" class="">Crear, editar y borrar</a>
+                        <a href="posts.index" class="">Crear, editar y borrar</a>
                     </li>
                 </ul>
             </div> -->
@@ -132,7 +132,7 @@
                 <hr><br>
                 <ul class="">
                     <li class="">
-                        <a href="{{ route('posts.index') }}" class="">Crear, editar y borrar</a>
+                        <a href="posts.index" class="">Crear, editar y borrar</a>
                     </li>
                 </ul>
             </div> -->
