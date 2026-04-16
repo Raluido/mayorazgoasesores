@@ -107,12 +107,12 @@
                         <li class="">
                             Reclamaciones frente a las Administraciones Públicas, particularmente frente a las resoluciones de la Administración Tributaria, Seguridad Social o SEPE.
                         </li>
-                        <li class="">
+                        <!-- <li class="">
                             Derecho Civil y de Familia, especialmente en asesoramiento de gestión patrimonial familiar y representación en procedimientos de Sucesiones y Donaciones, así como en reclamaciones procesales de impagos.
                         </li>
                         <li class="">
                             Defensa en el Orden Penal.
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
                 <div class="fiscal">
