@@ -41,11 +41,6 @@
                     <h3 class="">Mª Nieves Moleiro Rodríguez</h3>
                     <h4 class="">Administrativa Laboral</h4>
                 </div>
-                <div class="">
-                    <img src="{{ Storage::url('design/equipo/Ana.jpg') }}" alt="" class="">
-                    <h3 class="">Ana Raquel Ledesma Martín</h3>
-                    <h4 class="">Abogada</h4>
-                </div>
             </div>
         </div>
     </div>
